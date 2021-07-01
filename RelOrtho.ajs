@@ -1,3 +1,6 @@
+/*
+ *  not working yet
+ */
 console.show();
 console.clear();
 var debug = true

@@ -1,5 +1,6 @@
 /*
- * New Archi Script
+ * This script merges two relationships into a single one
+ * It does not remove the unused relationship
  */
  
 console.log("Merge two relatiopnships");

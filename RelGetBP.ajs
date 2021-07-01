@@ -1,3 +1,6 @@
+/*
+ * lit bendpoints of the selected relationships
+ */
 console.show();
 //console.clear();
 

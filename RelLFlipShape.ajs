@@ -1,3 +1,7 @@
+/*
+ *  Flip a 'L'-shape relationships connection point from the top-bottom edges to the left-right edges
+ *  or opposite from the selected relationship
+ */
 console.show();
 console.clear();
 

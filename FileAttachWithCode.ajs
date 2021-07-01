@@ -1,5 +1,10 @@
 /*
- * New Archi Script
+ * Attach file link into documentation of the selected object
+ *
+ * File link is added by default at the end of the documentation text of a view element
+ * unless a '<>' tag (without the quotes) is used to mark the position in the documentation
+ * text where to add the link
+ * The content of the file will be added as a code block after the link
  */
 console.clear() 
 console.show()

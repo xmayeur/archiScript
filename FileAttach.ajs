@@ -1,5 +1,9 @@
 /*
  * Attach file link into documentation of the selected object
+ *
+ * File link is added by default at the end of the documentation text of a view element
+ * unless a '<>' tag (without the quotes) is used to mark the position in the documentation
+ * text where to add the link
  */
 console.clear() 
 

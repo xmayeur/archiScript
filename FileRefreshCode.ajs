@@ -1,5 +1,6 @@
 /*
- * New Archi Script
+ * Read back the file defined by its link reference, added by the FileAttachWithCode script
+ * and update the code block with the actual content of the file
  */
  
 console.clear() 
