@@ -1,0 +1,51 @@
+/*
+ * New Archi Script
+ */
+console.clear() 
+console.show()
+load(__DIR__+"/lib/_fmt_lib.ajs")
+load(__DIR__+'/lib/_util.ajs');
+var exportFolder = "files\\";
+
+doc = $(selection).first().documentation
+if (!!doc) {
+
+	exportFile = getModelFileName(model); 
+	relativeName = exportFile.split("\\");
+	pathName = exportFile.substring(0, exportFile.length - relativeName[relativeName.length-1].length); 
+	// in case the Archimate model is under git control, the model file is actually in the .git folder that we should skip
+	var expr = /.git/
+	if (expr.test(pathName)) {
+		pathName = pathName.substring(0, pathName.length-5);
+	}
+	var filePath = window.promptOpenFile({ title: "Attach file", filterExtensions: [ "*.*" ], fileName: "" });
+	mkdir(pathName + exportFolder ); // create the export folder unless it already exists
+	exportFile = filePath;
+	exportFile = exportFile.replace(/\s/g, '%20');
+	exportFile = exportFile.replace(/\\/g, '/');
+
+	name = filePath.split("\\");
+	newFile = pathName+exportFolder+name[name.length-1];
+	newName = newFile.replace(/\s/g, '%20');
+	newName = newName.replace(/\\/g, '/');
+
+	//ret = rename(exportFile, newName)
+	//if (!ret) { console.log('file not renamed')}
+	fileText = readFile(filePath)
+	if (filePath != newFile) {
+		$.fs.writeFile(newFile, fileText);
+	}
+
+	// newText = '['+name[name.length-1]+']( file://'+newName+' )\n'
+	newText = '----\n\n['+name[name.length-1]+']( file://'+newName+' )\n\n' 
+	newText += '```\n' + fileText + '\n```\n----\n'
+	if (!!doc.match('<>')) {
+
+		doc = doc.replace('<>', newText)
+	}
+	else {
+		doc += newText
+	}
+
+	$(selection).first().documentation = doc
+}

@@ -1,20 +1,28 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# jArchi scripts
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+## Introduction
+This repo contains various scripts to use with the Archimate tool
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+# Installation
+- download and extract the file with the `.archiplugin` extension from the jarchiPlugIn GIT folder
+- from Archimate tool, go to the `Manage Plug-ins` menu under the `Help` one and install the downloaded plugin.
+   Refer to [jArchi wiki](https://github.com/archimatetool/archi-scripting-plugin/wiki) for more information.
+- copy all `.ajs` scripts, including the `lib` folder to any location of your desktop
+-  In Archimate tool Preferences / Scripting, update the Script folder field to that location  
+ 
+# Scripts
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+## Export to Markdown
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+### From Archimate tool
+- select a view in Archimate
+- execute the `exportToMarkdown` script
+- a `md` sub-folder under the path of the archimate model file is created
+- a `.md` document with the name of the model and the view is created
+- a `.png` file in the subfoler `.image` also contains the archimate drawing of the view
+- the script will then execute `toConfluence.exe` tool, if properly installed and callable from user path (else you need to change the `exportCmd` variable in the `Export to Markdown.ajs` script to define the exact pathname)
+
+### toConfluence image and usage information 
+- Download [toConfluence](https://artprodsu6weu.artifacts.visualstudio.com/Affcba4f3-9df1-4f1d-81bd-1c100139ef08/f55d8f82-468c-48a4-8e4b-6a4e99d3e101/_apis/artifact/cGlwZWxpbmVhcnRpZmFjdDovL1hhdmllck1heWV1ci9wcm9qZWN0SWQvZjU1ZDhmODItNDY4Yy00OGE0LThlNGItNmE0ZTk5ZDNlMTAxL2J1aWxkSWQvMTMvYXJ0aWZhY3ROYW1lL3RvY29uZmx1ZW5jZQ2/content?format=file&subPath=%2Ftoconfluence.exe)
+- Also see [toConfluence usage](https://dev.azure.com/XavierMayeur/toConfluence/_git/toConfluence?path=%2FREADME.md&version=GBmaster)
+

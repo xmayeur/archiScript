@@ -1,0 +1,165 @@
+/*
+ * Export View to Markdown
+ * 
+ * Requires jArchi - https://www.archimatetool.com/blog/2018/07/02/jarchi/
+ * 
+ * Markdown - https://www.markdownguide.org/
+ * 
+ * Version 2: Updated to support Diagram Groups
+ * Version 2.1: Add check for Selected View
+ * Version 2.2: Change to regex, added date of export
+ * Version 2.3: Include notes in documentation
+ * Version 3: Updated to include Relationships
+ * Version 3.1: Include name and description
+ * Version 3.2: Support repeated elements
+ * (c) 2018 Steven Mileham
+ *
+ * <<< X. Mayeur >>>
+ * create a separate library for generic functions
+ *
+ *
+ */
+ 
+// some flags to enable/disable showing some kind of information
+var showProperty = false;
+var showObjectType = false;
+var showToC = true;
+var debug = false;
+var exportCmd = '/c start "toConfluence" /W toconfluence.exe';
+// var exportCmd = '/c start "toConfluence" /W C:\\Users\\XY56RE\\AppData\\Roaming\\toConfluence\\toconfluence.exe';
+
+// require some libraries
+load(__DIR__+'/lib/_util.ajs')
+load(__DIR__+"/lib/_fmt_lib.ajs")
+
+// set the export folder - assume it exists
+var exportFolder = "md\\";
+var imageFolder =  exportFolder + '.images\\'
+
+// clear and show the console
+console.show();
+console.clear()
+console.log("Export to Markdown");
+
+// set some variables
+var theDocument = "";
+var theTOC = "* [Introduction](#introduction)";
+
+// select the view to export
+var theView = $(selection).filter("archimate-diagram-model").first();
+if (!theView) {
+    theView = $(selection).filter("canvas-model").first();
+}
+if (!theView) {
+    theView = $(selection).filter("sketch-model").first();
+}
+
+// work out the view
+if (theView) {
+	// set the export name
+	var defaultFileName = theView.name ? model.name + "-" + theView.name + ".md" : "Exported View.md"; // Default file name
+
+    exportFile = model.getPath(); // getModelFileName(model);
+	relativeName = exportFile.split("\\");
+    pathName = exportFile.substring(0, exportFile.length - relativeName[relativeName.length-1].length); 
+	// in case the Archimate model is under git control, the model file is actually in the .git folder that we should skip
+	var expr = /.git/
+	if (expr.test(pathName)) {
+		pathName = pathName.substring(0, pathName.length-5);
+	}
+	if (exportFile == null) {
+		exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.md" ], fileName: defaultFileName } );
+		exportImage = exportFile
+	} else {
+		mkdir(pathName + exportFolder ); // create the export folder unless it already exists
+		mkdir(pathName + imageFolder);
+		exportFile = pathName + exportFolder + defaultFileName;
+		exportImage = pathName + imageFolder + defaultFileName;
+	}
+
+    // if not exists, create a zOrder property, so we can order how documentation is exported
+    // Elements withthe highest zOrder are printed first
+    setZorderProperty(theView);
+
+    // Give the view name as first header
+    // theDocument+="# "+theView.name+"\n";
+
+	// Add document meta data from view properties
+	props = theView.prop();
+	if (!!props) {
+			theDocument += '<meta ';
+			for each ( var p in props) {
+				theDocument += p + '="' + theView.prop(p) + '" ';
+			}
+			
+			theDocument += '>\n';
+	}
+
+	// export the table of content
+	if (showToC) {
+		toc(0,theView);
+		theDocument+="\n## Table of Content\n"+theTOC+"\n";
+	}
+
+    // insert the introduction, which is the documentation of the View
+    // and also insert the diagram as a picture
+    theDocument+="\n## Introduction\n";
+	
+	imageURL = exportImage.substring(0,exportImage.length-3).replaceAll(" ","%20")+".png";
+    relativeURL = imageURL.split("\\");
+	theView.documentation!=""?theDocument+="\n"+theView.documentation+"\n":true;
+	
+	theDocument+="\n![" + theView.name + "](.images/" + relativeURL[relativeURL.length-1] + ")\n";
+    // Insert recursively the documentation of each element sorted (descending) by zOrder property
+    nestedDocumentation(0, theView);
+    // Insert Notes with no relationships
+	theDocument +="\n**Notes:**\n"
+    $(selection).find().not("element").not("relationship").each(function(c){
+        if (c.text) {
+            if ($(c).rels().length==0) {
+                theDocument+="\n> "+escapeMD(c.text).replaceAll("\n","\n> ")+"\n";
+            }
+        };
+    })
+
+
+
+    // export the text as a .md file
+    // and the diagram as a .png file separately
+    if(exportFile != null) {
+
+        theDocument+="\n\n\n\n----\n _Generated from Archimate Tool: "+ new Date().toLocaleString()+"_\n";
+
+        $.fs.writeFile(exportFile, theDocument);
+
+        var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 1, margin: 10});
+        $.fs.writeFile(exportImage.substring(0,exportImage.length-3) +".png", bytes, "BASE64");
+		console.log(exportFile)
+		
+		if (!!theView.prop()) {
+			wiki = (theView.prop('wiki') == 'orangesharing')? ' -o ':'';
+		}
+		
+		var rt = Java.type("java.lang.Runtime").getRuntime();
+		var proc = Java.type("java.lang.Process");
+		cmd = 'cmd.exe'
+		if (!!model.prop('pageId')) {
+			console.log('pageId: ' + model.prop('pageId'))
+			args = exportCmd + wiki + ' -pid ' + String(model.prop('pageId')) + ' "' + exportFile  + '" && pause';		
+			proc = rt.exec([cmd, args])
+		} else {
+			args = exportCmd + wiki + ' "' + exportFile + '" && pause'
+			proc = rt.exec(['cmd.exe', args])
+		}
+		exitval = proc.waitFor();
+		readDocMetaData(exportFile, theView)
+		console.log('Done');
+		
+    }
+    else {
+        console.log("> Export cancelled");
+    }
+}
+else {
+    console.log("> Please Select a View");
+}

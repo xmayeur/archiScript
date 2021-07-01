@@ -1,0 +1,143 @@
+/*
+ * Export View to Markdown
+ * 
+ * Requires jArchi - https://www.archimatetool.com/blog/2018/07/02/jarchi/
+ * 
+ * Markdown - https://www.markdownguide.org/
+ * 
+ * Version 2: Updated to support Diagram Groups
+ * Version 2.1: Add check for Selected View
+ * Version 2.2: Change to regex, added date of export
+ * Version 2.3: Include notes in documentation
+ * Version 3: Updated to include Relationships
+ * Version 3.1: Include name and description
+ * Version 3.2: Support repeated elements
+ * (c) 2018 Steven Mileham
+ *
+ * Version 3.3: fix table formatting + loop on all views
+ *              Put the documentation text just after the paragraph title
+ *
+ */
+
+var showProperty = false;
+var showObjectType = false;
+var showToC = true;
+load(__DIR__+'/lib/_util.ajs')
+load(__DIR__+"/lib/_fmt_lib.ajs")
+var exportFolder = "md\\";
+var imageFolder = exportFolder + '.images\\'
+
+/* 
+ * Main Program
+ * ============
+ * 
+ * Create a README.md file with the model purpose and the table of content for the views
+ *
+ * Then, create a .md file for each View
+ *
+ */
+
+console.show();
+console.clear()
+
+var theTOC="";
+var theDocument="";
+
+console.log("Export to Markdown - " + model.name);
+var defaultFileName = "README.md"; // Default file name
+var exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.md" ], fileName: defaultFileName } );
+
+if (exportFile != null) {
+    // Get the pathname of the README.md file
+    relativeName = exportFile.split("\\");
+    pathName = exportFile.substring(0, exportFile.length - relativeName[relativeName.length-1].length);  
+    // in case the Archimate model is under git control, the model file is actually in the .git folder that we should skip
+	var expr = /.git/
+	if (expr.test(pathName)) {
+		pathName = pathName.substring(0, pathName.length-5);
+	}
+    // Create here the code to export the README.md file with model purpose 
+    var theDocument = "## " + model.name + " ##\n";
+    if (model.purpose != null) {
+        theDocument += "# Model Purpose #\n";
+        model.purpose!=""?theDocument+="\n"+model.purpose+"\n":true;
+    }
+    theDocument += "# View index #\n";
+    $("view").each(function(theView) {
+        if (theView){
+            var viewFile = model.name + "-" + theView.name + ".md";
+            viewFile = viewFile.replaceAll(" ","%20");
+            theDocument+="* ["+theView.name+"](./md/"+ viewFile +")\n";
+        }
+    });
+    $.fs.writeFile(exportFile, theDocument);
+
+
+    // Create a markdown document for each view
+
+    $("view").each(function(theView) {
+    
+        if (theView) {
+            theDocument = "";
+            theTOC = "* [Introduction](#introduction)";
+
+            exportFile = theView.name ? model.name + "-" + theView.name + ".md" : "Exported View.md"; // Default file name
+			// add here some code to suppress non allowed character from a normal file name
+			exportFile = exportFile.replace(/[&\/\\#,+()$~%'":*?<>{}]/g,'_');
+			mkdir(pathName + exportFolder ); // create the export folder unless it already exists
+			mkdir(pathName + imageFolder);
+			exportImage = pathName + imageFolder + exportFile;
+            exportFile = pathName + exportFolder + exportFile;
+
+            console.log("Exporting to " + exportFile);
+
+            if(exportFile != null) {
+                imageURL = exportFile.substring(0,exportFile.length-3).replaceAll(" ","%20")+".png";
+                relativeURL = imageURL.split("\\");
+
+                // theDocument+="# "+theView.name+"\n";
+				if (showToC) {
+					toc(0,theView);
+					theDocument+="\n"+theTOC+"\n";
+				}
+
+                theDocument+="\n## Introduction\n";
+                theView.documentation!=""?theDocument+="\n"+theView.documentation+"\n":true;
+
+                theDocument+="\n![" + theView.name + "](.images/" + relativeURL[relativeURL.length-1] + ")\n";
+
+
+                // Notes with no relationships
+                $(selection).find().not("element").not("relationship").each(function(c){
+                    if (c.text) {
+                        if ($(c).rels().length==0) {
+                            theDocument+="\n> "+escapeMD(c.text).replaceAll("\n","\n> ")+"\n";
+                        }
+                    };
+                })
+
+                nestedDocumentation(0, theView);
+
+                theDocument+="\n\n*Generated: "+ new Date().toLocaleString()+"*\n";
+                
+                // console.log("Writting to: " + exportFile);
+                $.fs.writeFile(exportFile, theDocument);
+
+                var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 1, margin: 10});
+                console.log(exportImage.substring(0,exportImage.length-3) +".png")
+                $.fs.writeFile(exportImage.substring(0,exportImage.length-3) +".png", bytes, "BASE64");
+
+                console.log("> View export done\n\n");
+            }
+            else {
+                console.log("> View export skipped");
+            }
+        }
+        else {
+            console.log("> Please Select a View");
+        }
+    });
+
+} else {
+    console.log("> Export cancelled");
+}

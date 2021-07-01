@@ -1,0 +1,61 @@
+/*
+ * Attach file link into documentation of the selected object
+ */
+console.clear() 
+
+load(__DIR__+"/lib/_fmt_lib.ajs")
+load(__DIR__+'/lib/_util.ajs');
+var exportFolder = "files\\";
+var imgFolder = "images\\";
+
+
+doc = $(selection).first().documentation
+
+
+exportFile = getModelFileName(model); 
+relativeName = exportFile.split("\\");
+pathName = exportFile.substring(0, exportFile.length - relativeName[relativeName.length-1].length); 
+// in case the Archimate model is under git control, the model file is actually in the .git folder that we should skip
+var expr = /.git/
+if (expr.test(pathName)) {
+	pathName = pathName.substring(0, pathName.length-5);
+}
+
+var filePath = window.promptOpenFile({ title: "Attach file", filterExtensions: [ "*.*" ], fileName: "" });
+if (!!filePath) {
+	mkdir(pathName + exportFolder ); // create the export folder unless it already exists
+	mkdir(pathName + imgFolder );
+	exportFile = filePath;
+	exportFile = exportFile.replace(/\s/g, '%20');
+	exportFile = exportFile.replace(/\\/g, '/');
+
+	ext = filePath.replace(/.*\.(.*?)/, '$1');
+
+	var imgExt = ['jpg', 'jpeg', 'png', 'gif', 'bmp']
+	var isImg = imgExt.indexOf(ext)=== -1 ? '': '!' 
+
+	console.log(isImg, '\n', imgExt.indexOf(ext))
+
+	name = filePath.split("\\");
+	newFile = pathName
+	newFile += isImg==='!' ? imgFolder : exportFolder
+	newFile += name[name.length-1];
+	newName = newFile.replace(/\s/g, '%20');
+	newName = newName.replace(/\\/g, '/');
+
+	//ret = rename(exportFile, newName)
+	//if (!ret) { console.log('file not renamed')}
+	if (filePath != newFile) {
+		fileText = readFile(filePath)
+		$.fs.writeFile(newFile, fileText);
+	}
+
+	if (!!doc.match('<>')) {
+		doc = doc.replace('<>', isImg + '['+name[name.length-1]+']( file://'+newName+' )\n')
+	}
+	else {
+		doc += isImg + '['+name[name.length-1]+']( file://'+newName+' )\n' 
+	}
+	
+	$(selection).first().documentation = doc
+}

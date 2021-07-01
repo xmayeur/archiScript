@@ -1,0 +1,18 @@
+/*
+ * New Archi Script
+ */
+ 
+console.clear() 
+console.show()
+load(__DIR__+"/lib/_fmt_lib.ajs")
+load(__DIR__+'/lib/_util.ajs');
+var exportFolder = "files\\";
+
+doc = $(selection).first().documentation
+if (!!doc) {
+
+	pat = /```[\s\S]*?```/gm
+	doc = doc.replace(pat, '')
+	$(selection).first().documentation = doc	
+	
+}

@@ -1,0 +1,55 @@
+console.show();
+//console.clear();
+
+var incrY = -10;
+var incrX = -10;
+
+for each (var e in $(selection).filter('element')) {
+    console.log(e.name)
+    for each (var o in $(e).outRels()) {
+        console.log(o.source, " -> ", o.target)
+        var source = o.source;
+        var target = o.target;
+        sb = source.bounds;
+        tb = target.bounds;
+        dx = tb.x - sb.x;
+        dy = tb.y - sb.y;
+        var bps = o.getRelativeBendpoints()
+        for each (bp in bps) {
+            console.log("bp: ", bp)
+        }
+    }
+
+}
+
+
+for each (var o in $(selection).filter("relationship")) {
+    var view = o.view;
+    var rel = o.concept;
+    var source = o.source;
+    var target = o.target;
+    sb = source.bounds;
+    tb = target.bounds;
+
+   var pp = $(source).parents();
+    for each (p in pp) {
+        try  {
+            sb.x += p.bounds.x;
+            sb.y += p.bounds.y;
+        } catch(e){}
+    }
+
+    var pp = $(target).parents();
+    for each (p in pp) {
+        try  {
+            tb.x += p.bounds.x;
+            tb.y += p.bounds.y;
+        } catch(e){}
+    }
+    dx = tb.x - sb.x;
+    dy = tb.y - sb.y;
+
+    var bps = o.getRelativeBendpoints()
+    for each (bp in bps) {console.log('-bp', bp)}
+
+}

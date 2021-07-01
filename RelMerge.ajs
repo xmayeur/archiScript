@@ -1,0 +1,18 @@
+/*
+ * New Archi Script
+ */
+ 
+console.log("Merge two relatiopnships");
+
+var elems  = $(selection).filter("relationship");
+console.log(elems)
+if (elems.length === 2){
+    if (elems[0].type === elems[1].type) {
+        elems[0].merge(elems[1]);
+    } else {
+        console.log('Relationships should have the same type');
+    }
+
+} else {
+console.log('Can only merge two relationships');
+}

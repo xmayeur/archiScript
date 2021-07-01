@@ -1,0 +1,65 @@
+/*
+
+	Script to convert a view to a json object
+
+*/
+
+load(__DIR__+'/lib/_util.ajs')
+load(__DIR__+"/lib/_fmt_lib.ajs")
+var theView = $(selection).filter("archimate-diagram-model").first();
+var exportFolder = "files\\";
+console.clear();
+
+function myLoop(object, oo) {
+
+	var elements = $(object).children().not("relationship");
+
+	pSortObjects(elements, 'zOrder', 'asc');
+
+	for each (var e in elements){
+		try {
+			var o = {};
+			o.name = e.name;
+			if (!e.prop('uuid')) {
+				e.prop('uuid', e.id.substring(3, e.id.length-3))
+			}
+			o.uuid = e.prop("uuid");
+			o.level = e.prop("level");
+			o.outline = e.prop("outline");
+			o.documentation = e.documentation;
+			oo.push(o)
+			oo = myLoop(e, oo);
+		} catch(err) {
+			console.log ('Error '+err)
+			return undefined
+		}
+	}
+	// console.log(object.name,'\t', oo)
+	return oo
+}
+
+
+if (theView) {	
+	var oo =  [];
+	
+	rr = myLoop(theView, oo);
+	if (!!rr) {
+
+		s = JSON.stringify(rr)
+		
+		exportFile = getModelFileName(model); 
+		relativeName = exportFile.split("\\");
+		pathName = exportFile.substring(0, exportFile.length - relativeName[relativeName.length-1].length); 
+		// in case the Archimate model is under git control, the model file is actually in the .git folder that we should skip
+		var expr = /.git/
+		if (expr.test(pathName)) {
+			pathName = pathName.substring(0, pathName.length-5);
+		}	
+		mkdir(pathName + exportFolder ); // create the export folder unless it already exists
+		exportFile = pathName + exportFolder + theView.name+ ".json"
+		$.fs.writeFile(exportFile, s);
+		console.log('file ' + exportFile + ' updated')
+	}
+} else {
+	console.log('Please select a view')
+}

@@ -1,0 +1,11 @@
+function deleteUnusedElements() {
+    $("relationship").each(function(element) {
+        if($(element).objectRefs().isEmpty()) {
+            element.delete();
+        }
+    });
+}
+
+
+deleteUnusedElements();
+console.log("Done.");

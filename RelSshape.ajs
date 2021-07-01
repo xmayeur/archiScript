@@ -1,0 +1,87 @@
+/*
+ * New Archi Script
+ *
+ * Requires jArchi - https://www.archimatetool.com/blog/2018/07/02/jarchi/
+ *
+ * This script takes a selection of visual objects as input, filter it to keep only relationships
+ * and create S-shape ortho connector
+ */
+
+// console.show()
+console.clear()
+
+for each (var o in $(selection).filter("relationship")) {
+    var view = o.view;
+    var rel = o.concept;
+    var source = o.source;
+    var target = o.target;
+    sb = source.bounds
+    tb = target.bounds
+
+    // calculate the source and target element absolute (x,y) coordinate
+    var pp = $(source).parents()
+    for each (p in pp) {
+        try  {
+            sb.x += p.bounds.x
+            sb.y += p.bounds.y
+        } catch(e){}
+    }
+
+    var pp = $(target).parents()
+    for each (p in pp) {
+        try  {
+            tb.x += p.bounds.x
+            tb.y += p.bounds.y
+        } catch(e){}
+    }
+
+    // get the distance between source & target object
+    dx = tb.x - sb.x
+    dy = tb.y - sb.y
+
+    try {
+     o.deleteAllBendpoints()
+    } catch(e) {}
+    console.log(sb, tb)
+    // One object is above the other one, with overlap
+    if ( (sb.x < tb.x && tb.x < sb.x+sb.width)
+        | (tb.x < sb.x && sb.x < tb.x+tb.width)
+        ) {
+
+         var bp1 = {
+            startX: 0,
+            startY: dy/2,
+            endX: -dx,
+            endY: -dy/2
+        }
+        var bp2 = {
+            startX: dx,
+            startY: dy/2,
+            endX: 0,
+            endY: -dy/2
+
+        }
+    }
+    else {
+
+         var bp1 = {
+            startX: dx/2,
+            startY: -dy/2,
+            endX: -dx/2,
+            endY: 0
+        }
+        var bp2 = {
+            startX: dx/2,
+            startY: dy,
+            endX: -dx/2,
+            endY: 0
+        }
+    }
+
+    // Add bendpoints at index positions
+    try {
+        o.addRelativeBendpoint(bp1, 0);
+        o.addRelativeBendpoint(bp2, 1);
+    } catch (e) {}
+
+}

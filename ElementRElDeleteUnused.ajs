@@ -1,0 +1,15 @@
+/*
+ * Delete Unused Elements & relationships
+ */
+ 
+function deleteUnusedElements() {
+    $("concept").each(function(c) {
+        if($(c).objectRefs().isEmpty()) {
+            c.delete();
+        }
+    });
+}
+
+
+deleteUnusedElements();
+console.log("Done.");
