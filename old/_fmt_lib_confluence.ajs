@@ -1,0 +1,286 @@
+/*
+ * Library for Export View to Confluence Wiki Markdown
+ * 
+ * Requires jArchi - https://www.archimatetool.com/blog/2018/07/02/jarchi/
+ * 
+ * Confluence Wiki format - https://confluence.atlassian.com/doc/confluence-wiki-markup-251003035.html
+ *
+ *
+ */
+
+var tocMap = [];
+var bodyMap = [];
+
+/*
+var showProperty = false;
+var showObjectType = false;
+var showToC = false;
+*/
+
+
+
+// this function is replaced by model.getPath() as from jArchi 0.5
+/*
+function getModelPath(model) {
+	
+	if ( model == null || model.id == null )
+		fatal("You must select a model or some Archimate elements.");
+		
+	try {
+			// jArchi provides a ArchimateModelProxy class instead of a ArchimateModel class
+			// unfortunately, the getEObject() method that provides the underlying ArchimateModel class is protected
+			// so we use reflection to invoke this method.
+		var method = Packages.com.archimatetool.script.dom.model.ArchimateModelProxy.class.getDeclaredMethod("getEObject");
+		method.setAccessible(true);
+		var m = method.invoke(model);
+		var fileName = String(m.getFile());
+		var rName = fileName.split("\\");
+		var pathName = fileName.substring(0, fileName.length - rName[rName.length-1].length); 
+		return pathName;
+		
+	} catch (e) {
+		console.error("Failed to get the model's filename.");
+		return null;
+	}
+}
+*/
+
+function linkImg(imgName, w) {
+    w = w || "1300";
+    return ("!" + imgName + "|width=" + w + "!")
+}
+
+function convertToText(type) {
+    var theString = type.replaceAll("-", " ").split(" ");
+    var theResult = "";
+    for (var i = 0; i < theString.length; i++) {
+        theResult += theString[i][0].toUpperCase() + theString[i].substring(1, theString[i].length) + " ";
+    }
+    return theResult.trim();
+}
+
+function escapeMD(theString) {
+    return theString.replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;");
+}
+
+function generateLink(theString) {
+    return "[" + theString + "|#" + theString.replaceAll(" ", "") + "]";
+}
+
+function toc(d, element) {
+    var elements = $(element).children().not("relationship");
+    pSortObjects(elements, 'zOrder', 'desc');
+    elem = distinct(elements, 'name');
+
+    for each(var e
+in
+    elem
+)
+    {
+        if (e.name) {
+            headerDepth = 0;
+            for (var i = 0; i < d; i++) {
+                headerDepth += 1;
+            }
+            var theHash = e.name;
+            if (tocMap[theHash] == null) {
+                tocMap[theHash] = 1;
+            } else {
+                tocMap[theHash] += 1;
+            }
+
+            var linkNum = "";
+
+            if (tocMap[theHash] > 1) {
+                linkNum = "-" + tocMap[theHash];
+            }
+
+            theTOC += Array(d + 2).join('*') + " " + generateLink(escapeMD(e.name)) + "\n";
+            if ($(e).children().not("relationship").length > 0) {
+                d++;
+                toc(d, e);
+                d--;
+            }
+        }
+    }
+}
+
+function propertiesTable(element) {
+    var theProperties = element.prop();
+    var theHeader = "";
+    var theBody = "";
+    for (var i = 0; i < theProperties.length; i++) {
+        // if (theProperties.length >1 && theProperties[1] != "label") {
+        theHeader += "||" + theProperties[i];
+        theBody += "|  " + element.prop(theProperties[i]) + "|  ";
+        // }
+    }
+    return "_Properties_\n\n" + theHeader + "||\n" + "|\n" + theBody + "|\n\n";
+}
+
+function documentRelationships(element) {
+    var theHeader = "||From||Relationship||To||Name||Description||"
+    var theBody = "";
+    var s;
+
+    $(element).outRels().each(function (r) {
+        theBody += "| " + r.source.name;
+        theBody += "| " + convertToText(r.type);
+        theBody += "| " + generateLink(escapeMD(r.target.name));
+
+        s = "| " + r.name;
+        s += "| " + r.documentation + " |\n";
+        s = s.replace(/\[/g, '(');
+        s = s.replace(/\]/g, ')');
+
+        theBody += s;
+        // theBody = theBody.replaceAll("\n","\\")
+    });
+
+    return "\n{expand: Relationships for element " + element.name + "} \n\n" + theHeader + "\n" + theBody + " |\n{expand}\n";
+}
+
+function nestedDocumentation(d, element) {
+
+    var elements = $(element).children().not("relationship");
+    pSortObjects(elements, 'zOrder', 'desc');
+    elem = distinct(elements, 'name');
+
+    for each(var e in  elem)
+    {
+        if (e.name) {
+            
+            if (e.documentation.length > 0 
+            | (e.prop().length > 0 & showProperty)
+            | $(e).children().length > 0
+            | $(e).outRels().length > 0
+            ) 
+            {
+            
+            
+                // console.log('>> '+ e.name);
+                var headerDepth = 2;
+                for (var i = 0; i < d; i++) {
+                    headerDepth += 1;
+                }
+
+                var theHash = e.name;
+                if (bodyMap[theHash] == null) {
+                    bodyMap[theHash] = 1;
+                } else {
+                    bodyMap[theHash] += 1;
+                }
+
+                var linkNum = "";
+
+                if (bodyMap[theHash] > 1) {
+                    linkNum = " " + bodyMap[theHash];
+                }
+
+                if (headerDepth === 2) {
+                    theDocument += "\n----\n";
+                }
+                theDocument += "\nh" + headerDepth + ".  {color:blue}*" + escapeMD(e.name) + "*{color}";
+
+                e.documentation ? theDocument += "\n" + escapeMD(MDtoWiki(e.documentation)) + "\n" : true;
+
+                if (showProperty) {
+                    e.prop().length > 0 ? theDocument += "\n" + escapeMD(propertiesTable(e)) : true;
+                }
+
+                $(e).rels().ends().each(function (r) {
+                    if (r.text) {
+                        theDocument += "\n> " + escapeMD(r.text).replaceAll("\n", "\n> ") + "\n";
+                    }
+                });
+                debug ? console.log(e.name + ":" + $(e).children().not("relationship") + ":" + e) : true;
+                if ($(e).children().length > 0) {
+                    d++;
+                    nestedDocumentation(d, e);
+                    d--;
+                }
+                $(e).outRels().length > 0 ? theDocument += "\n" + escapeMD(documentRelationships(e)) : true;
+            }
+        }
+    }
+
+}
+
+function setZorderProperty(element) {
+    $(element).children().not('relationship').each(function (e) {
+        if (!e.prop('zOrder')) {
+            e.prop('zOrder', 0);
+        }
+        setZorderProperty(e);
+    });
+}
+
+
+function MDtoWiki(doc) {
+    // convert MD table header to confluence table header
+    var s;
+    s = doc.replace(/(\|[^\n]+)\|\s*\n\|\s*-+\s*\|[^\n]*\n/gmi, "|$1||\n");
+    s = s.replace(/(\|\|[^\||^\n]+)\|([^\|])/gi, "$1||$2")
+    // replace headers
+    s = s.replace(/^#####/g, "h5. ");
+    s = s.replace(/^####/g, "h4. ");
+    s = s.replace(/^###/g, "h3. ");
+    s = s.replace(/^##/g, "h2. ");
+    s = s.replace(/^#/g, "h1. ");
+    // replace italic
+    s = s.replace(/\*([^\s]*)\*/gi, "_$1_");
+    // replace bold
+    s = s.replace(/_\*(.*)\*_/gmi, "*$1*");
+    // Numbered List
+    s = s.replace(/^[0-9]\.\s+/gmi, "# ");
+    s = s.replace(/^\s+[0-9]\.\s+/gmi, "## ");
+    // Unordered Lists
+    s = s.replace(/^\s+\*\s+/gi, "** ");
+    // images
+    s = s.replace(/^([^\t].*)!\[.*!\]\((.*)\s+.*\)/gmi, "$1!$2!");
+    // links
+    s = s.replace(/^([^\t].*)\[(.*)\]\((.*)\)/gmi, "$1[$2|$3]");
+    // replace curly braces to avoid entering Confluence macros
+    s = s.replace(/\{(.*)\}/g, "{{$1}}")
+    // find code blocks  - old pattern
+    codePat = /\{\{code:(.*)\}\}([\s\S]*?)\n\{\{code\}\}/;
+    while (null != (codeBlock = codePat.exec(s))) {
+        if (!!codeBlock) {
+
+            try {
+                txt = codeBlock
+                codeBlock = txt[2]
+                codeBlock = codeBlock.replace(/\{\{/g, '{')
+                codeBlock = codeBlock.replace(/\}\}/g, '}')
+                codeBlock = codeBlock.replace(/\n/g, '\n')
+                s = s.replace(codePat, '{code:$1}' + codeBlock + '\n{code}')
+            } catch (e) {
+            }
+
+        }
+    }
+
+	// find code block new pattern with file link before code
+	pat = /\[(.*)\|\s*file\:/g
+    while (null != (txt = pat.exec(s))) {	
+		filePath = txt[1].split('\.')
+		pat2 = /```([\s\S]*?)```/gmi
+		txt = pat2.exec(s)
+		if (!!txt) {
+			code = txt[1]
+			// s = s.replace(pat2, '{code:title='+filePath[0] + '|linenumbers=true|language='+ filePath[1] + '|firstline=0001|collapse=true}\n' + code + '\n{code}')
+		}	
+	}	
+	
+	// manage file://... as attachments
+	pat = /\[(.*)\|\s*file\:.*/g
+	while (null != (txt = pat.exec(s))) {
+		fileName = txt[1]
+		console.log(fileName)
+		s = s.replace(pat, '['+fileName+'^'+fileName+']')
+	}
+	
+    return s;
+
+}

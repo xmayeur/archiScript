@@ -1,0 +1,16 @@
+/*
+ * New Archi Script
+ */
+ 
+console.clear()
+console.log("Add a Code section in the documentation field of the selected element");
+
+try {
+    var elem = $(selection).filter("element").first()
+    elem.documentation += '\n{code:title='+ elem.name
+    + '|linenumbers=true|language=yml|firstline=0001|collapse=true}'
+    + '\n\n\n{code}'
+    console.log(elem.documentation)
+
+} catch(e){ console.log('Error: '+e)}
+

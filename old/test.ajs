@@ -1,0 +1,15 @@
+/*
+ * New Archi Script
+ */
+ 
+console.log("New Archi Script");
+
+function escapeRegExp(stringToGoIntoTheRegex) {
+    return stringToGoIntoTheRegex.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+}
+
+
+var param = escapeRegExp("abc");
+var pat = new RegExp("___" + param + "___", "g");
+txt = '___abc___'
+console.log(txt.replace(pat, 'xyz'))

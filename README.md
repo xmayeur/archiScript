@@ -4,7 +4,7 @@
 This repo contains various scripts to use with the Archimate tool
 
 # Installation
-- download and extract the file with the `.archiplugin` extension from the jarchiPlugIn GIT folder
+- download and extract the [script plugin](jarchiPlugIn/com.archimatetool.script_1.1.0.202101121529.archiplugin) with the `.archiplugin` extension from the jarchiPlugIn GIT folder
 - from Archimate tool, go to the `Manage Plug-ins` menu under the `Help` one and install the downloaded plugin.
    Refer to [jArchi wiki](https://github.com/archimatetool/archi-scripting-plugin/wiki) for more information.
 - copy all `.ajs` scripts, including the `lib` folder to any location of your desktop
