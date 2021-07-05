@@ -1,0 +1,55 @@
+﻿/*
+ * This script parses the JSONschema from data-object concept with a property 'JSONschema'
+ * It replaces the data-object title, documentation by the schema title and description
+ * It adds the schema properties to the data object
+ * It finally format the object to display it with its attributes
+ */
+ 
+console.show();
+console.clear();
+
+$(selection).filter("data-object").each(function(o) {
+    try {
+        schema = JSON.parse(o.prop('JSONschema'));
+    } catch(e) {
+        console.log('No such properties "JSONschema" or invalid schema.');
+    }
+    const title  = schema.title;
+    const description  =schema.description;
+    o.name = title;
+    o.labelVisible = true;
+    o.documentation= description;
+    attributes = "";
+    let len = 0;
+    for (const p in schema.properties) {
+        len = Math.max(len, String(p).length);
+    }
+
+    for (const p in schema.properties) {
+        props = schema.properties[p];
+        desc = props.description;
+        delete props.description;
+        delete props.$id;
+        if (Object.keys(props).length) {
+            desc += ' '  + JSON.stringify(props);
+        }
+        o.prop(p, desc);
+        attributes += '+' + p + ":" + ' '.repeat(1+len - String(p).length) + props.type;
+        if (props.type == 'array') {
+            typ = props.items.type;
+            attributes += ' of ' + typ;
+        }
+        attributes += '\n';
+    }
+    o.prop('attributes', attributes);
+    o.labelExpression = " ".repeat(len/2) + "${name}\n" +
+        "_".repeat(1+2*len) +
+        "\n" +
+        "${documentation}\n" +
+        "_".repeat(1+2*len) +
+        "\n\n" +
+        "${property:attributes}";
+    o.fontName = "Courier New";
+
+
+});
