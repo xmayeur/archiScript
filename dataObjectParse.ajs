@@ -50,6 +50,9 @@ $(selection).filter("data-object").each(function(o) {
         "\n\n" +
         "${property:attributes}";
     o.fontName = "Courier New";
+    o.fontSize = 9;
+    b = o.bounds;
 
+    o.bounds = {width: (len + 2) * 14, height: (o.labelValue.split('\n').length +2) * 14}
 
 });
