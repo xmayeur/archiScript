@@ -1,58 +1,83 @@
 ﻿/*
  * This script parses the JSONschema from data-object concept with a property 'JSONschema'
+ * JSON schema is read from file and stored in the JSONschema property
  * It replaces the data-object title, documentation by the schema title and description
  * It adds the schema properties to the data object
  * It finally format the object to display it with its attributes
+ *
+ * Source: https://www.eaprincipals.com/content/data-modeling-archi-part-2-adding-entity-attributes
  */
  
 console.show();
 console.clear();
 
+
+var schema = {};
+
 $(selection).filter("data-object").each(function(o) {
+    var filePath = window.promptOpenFile({title: "Open JSON Schema for <<"+o.name+">>", filterExtensions: [ "*.json" ] });
+    var schemaTxt = "";
+    if (filePath) {
+        var FileReader = Java.type("java.io.FileReader");
+        var theSchemaFile = new FileReader(filePath);
+        data = theSchemaFile.read();
+        console.log("Loading " + filePath + '...');
+        while (data != -1) {
+            var c = String.fromCharCode(data);
+            schemaTxt += c;
+            data = theSchemaFile.read();
+        }
+        theSchemaFile.close();
+        o.prop('JSONschema', JSON.stringify(JSON.parse(schemaTxt)));
+    }
+    console.log("Processing schema...")
     try {
         schema = JSON.parse(o.prop('JSONschema'));
     } catch(e) {
         console.log('No such properties "JSONschema" or invalid schema.');
     }
-    const title  = schema.title;
-    const description  =schema.description;
-    o.name = title;
-    o.labelVisible = true;
-    o.documentation= description;
-    attributes = "";
-    let len = 0;
-    for (const p in schema.properties) {
-        len = Math.max(len, String(p).length);
-    }
-
-    for (const p in schema.properties) {
-        props = schema.properties[p];
-        desc = props.description;
-        delete props.description;
-        delete props.$id;
-        if (Object.keys(props).length) {
-            desc += ' '  + JSON.stringify(props);
+    if (!!schema) {
+        const title = schema.title;
+        const description = schema.description;
+        o.name = title;
+        o.labelVisible = true;
+        o.documentation = description;
+        let attributes = "";
+        let len = 0;
+        for (let p in schema.properties) {
+            len = Math.max(len, String(p).length);
         }
-        o.prop(p, desc);
-        attributes += '+' + p + ":" + ' '.repeat(1+len - String(p).length) + props.type;
-        if (props.type == 'array') {
-            typ = props.items.type;
-            attributes += ' of ' + typ;
+
+        for (let p in schema.properties) {
+            let props = schema.properties[p];
+            let desc = props.description;
+            delete props.description;
+            delete props.$id;
+            if (Object.keys(props).length) {
+                desc += ' ' + JSON.stringify(props);
+            }
+            o.prop(p, desc);
+            attributes += '+' + p + ":" + ' '.repeat(1 + len - String(p).length) + props.type;
+            if (props.type === 'array') {
+                let typ = props.items.type;
+                attributes += ' of ' + typ;
+            }
+            attributes += '\n';
         }
-        attributes += '\n';
+        o.prop('attributes', attributes);
+        o.labelExpression = " ".repeat(len / 2) + "${name}\n" +
+            "_".repeat(1 + 2 * len) +
+            "\n" +
+            "${documentation}\n" +
+            "_".repeat(1 + 2 * len) +
+            "\n\n" +
+            "${property:attributes}";
+        o.fontName = "Courier New";
+        o.fontSize = 9;
+
+        o.bounds = {width: (len + 2) * 14, height: (o.labelValue.split('\n').length + 2) * 14}
+        console.log("Done.")
+    } else{
+        console.log("No schema to process.")
     }
-    o.prop('attributes', attributes);
-    o.labelExpression = " ".repeat(len/2) + "${name}\n" +
-        "_".repeat(1+2*len) +
-        "\n" +
-        "${documentation}\n" +
-        "_".repeat(1+2*len) +
-        "\n\n" +
-        "${property:attributes}";
-    o.fontName = "Courier New";
-    o.fontSize = 9;
-    b = o.bounds;
-
-    o.bounds = {width: (len + 2) * 14, height: (o.labelValue.split('\n').length +2) * 14}
-
 });
