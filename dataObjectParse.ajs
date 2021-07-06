@@ -7,15 +7,18 @@
  *
  * Source: https://www.eaprincipals.com/content/data-modeling-archi-part-2-adding-entity-attributes
  */
- 
+
 console.show();
 console.clear();
 
 
 var schema = {};
 
-$(selection).filter("data-object").each(function(o) {
-    var filePath = window.promptOpenFile({title: "Open JSON Schema for <<"+o.name+">>", filterExtensions: [ "*.json" ] });
+$(selection).filter("data-object").each(function (o) {
+    var filePath = window.promptOpenFile({
+        title: "Open JSON Schema for <<" + o.name + ">>",
+        filterExtensions: ["*.json"]
+    });
     var schemaTxt = "";
     if (filePath) {
         var FileReader = Java.type("java.io.FileReader");
@@ -33,15 +36,18 @@ $(selection).filter("data-object").each(function(o) {
     console.log("Processing schema...")
     try {
         schema = JSON.parse(o.prop('JSONschema'));
-    } catch(e) {
+    } catch (e) {
         console.log('No such properties "JSONschema" or invalid schema.');
     }
     if (!!schema) {
         const title = schema.title;
-        const description = schema.description;
+        const description = String(schema.description);
         o.name = title;
         o.labelVisible = true;
-        o.documentation = description;
+        o.documentation = description + '\n\n';
+        o.documentation += '| attribute | description | type | object |\n';
+        o.documentation += '|---|---|---|---|\n';
+        o.prop('objectDescription', description)
         let attributes = "";
         let len = 0;
         for (let p in schema.properties) {
@@ -54,26 +60,30 @@ $(selection).filter("data-object").each(function(o) {
             let desc = props.description;
             delete props.description;
             delete props.$id;
+            o.documentation += '| ' + String(p) + ' | ' + desc + ' | ' + props.type + ' | ';
             if (Object.keys(props).length) {
                 desc += ' ' + JSON.stringify(props);
+                o.documentation += JSON.stringify(props);
             }
             o.prop(p, desc);
 
-           let att = '+' + p + ":" + ' '.repeat(1 + len - String(p).length) + props.type;
+            let att = '+' + p + ":" + ' '.repeat(1 + len - String(p).length) + props.type;
             if (props.type === 'array') {
                 let typ = props.items.type;
                 att += ' of ' + typ;
             }
             len2 = Math.max(len2, att.length)
             attributes += att + '\n';
+            o.documentation += ' |\n';
+
         }
         o.prop('attributes', attributes);
 
         len2 += 2;
-        o.labelExpression = " ".repeat( (len2 - o.name.length) / 2) + "${name}\n" +
+        o.labelExpression = " ".repeat((len2 - o.name.length) / 2) + "${name}\n" +
             ".".repeat(len2) +
             "\n" +
-            " ".repeat((len2 - o.documentation.length) / 2) + "${documentation}\n" +
+            " ".repeat((len2 - description.length) / 2) + "${property:objectDescription}\n" +
             "_".repeat(len2) +
             "\n\n" +
             "${property:attributes}";
@@ -83,10 +93,10 @@ $(selection).filter("data-object").each(function(o) {
         o.fontSize = 9;
         o.textAlignment = TEXT_ALIGNMENT.LEFT;
 
-        o.bounds = {width: (len2-2) * 8, height: (o.labelValue.split('\n').length + 2) * 14}
+        o.bounds = {width: (len2 - 2) * 8.5, height: (o.labelValue.split('\n').length + 2) * 14}
 
         console.log("Done.")
-    } else{
+    } else {
         console.log("No schema to process.")
     }
 });
