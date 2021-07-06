@@ -42,40 +42,54 @@ $(selection).filter("data-object").each(function (o) {
     if (!!schema) {
         const title = schema.title;
         const description = String(schema.description);
+        let attributes = "";
+        let len = 0;
         o.name = title;
         o.labelVisible = true;
         o.documentation = description + '\n\n';
-        o.documentation += '| attribute | description | type | object |\n';
-        o.documentation += '|---|---|---|---|\n';
         o.prop('objectDescription', description)
-        let attributes = "";
-        let len = 0;
-        for (let p in schema.properties) {
-            len = Math.max(len, String(p).length);
-        }
-
-        var len2 = 0;
-        for (let p in schema.properties) {
-            let props = schema.properties[p];
-            let desc = props.description;
-            delete props.description;
-            delete props.$id;
-            o.documentation += '| ' + String(p) + ' | ' + desc + ' | ' + props.type + ' | ';
-            if (Object.keys(props).length) {
-                desc += ' ' + JSON.stringify(props);
-                o.documentation += JSON.stringify(props);
+        var len2 = description.length
+        if ('properties' in schema) {
+            o.documentation += '| attribute | description | type | object |\n';
+            o.documentation += '|---|---|---|---|\n';
+            for (let p in schema.properties) {
+                len = Math.max(len, String(p).length);
             }
-            o.prop(p, desc);
 
-            let att = '+' + p + ":" + ' '.repeat(1 + len - String(p).length) + props.type;
-            if (props.type === 'array') {
-                let typ = props.items.type;
-                att += ' of ' + typ;
+
+            for (let p in schema.properties) {
+                let props = schema.properties[p];
+                let desc = props.description;
+                delete props.description;
+                delete props.$id;
+                o.documentation += '| ' + String(p) + ' | ' + desc + ' | ' + props.type + ' | ';
+                if (Object.keys(props).length) {
+                    desc += ' ' + JSON.stringify(props);
+                    o.documentation += JSON.stringify(props);
+                }
+                o.prop(p, desc);
+
+                let att = '+' + p + ":" + ' '.repeat(1 + len - String(p).length) + props.type;
+                if (props.type === 'array') {
+                    let typ = props.items.type;
+                    att += ' of ' + typ;
+                }
+                len2 = Math.max(len2, att.length)
+                attributes += att + '\n';
+                o.documentation += ' |\n';
+
             }
-            len2 = Math.max(len2, att.length)
-            attributes += att + '\n';
-            o.documentation += ' |\n';
+        } else if ('enum' in schema){
+            schema.enum.forEach(function(p) {
+                len = Math.max(len, String(p).length);
+            });
 
+            schema.enum.forEach(function(p) {
+                o.prop(p, '');
+                let att = '-' + p;
+                len2 = Math.max(len2, att.length)
+                attributes += att + '\n';
+            });
         }
         o.prop('attributes', attributes);
 
