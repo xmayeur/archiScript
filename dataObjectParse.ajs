@@ -48,6 +48,7 @@ $(selection).filter("data-object").each(function(o) {
             len = Math.max(len, String(p).length);
         }
 
+        var len2 = 0;
         for (let p in schema.properties) {
             let props = schema.properties[p];
             let desc = props.description;
@@ -57,25 +58,33 @@ $(selection).filter("data-object").each(function(o) {
                 desc += ' ' + JSON.stringify(props);
             }
             o.prop(p, desc);
-            attributes += '+' + p + ":" + ' '.repeat(1 + len - String(p).length) + props.type;
+
+           let att = '+' + p + ":" + ' '.repeat(1 + len - String(p).length) + props.type;
             if (props.type === 'array') {
                 let typ = props.items.type;
-                attributes += ' of ' + typ;
+                att += ' of ' + typ;
             }
-            attributes += '\n';
+            len2 = Math.max(len2, att.length)
+            attributes += att + '\n';
         }
         o.prop('attributes', attributes);
-        o.labelExpression = " ".repeat(len / 2) + "${name}\n" +
-            "_".repeat(1 + 2 * len) +
+
+        len2 += 2;
+        o.labelExpression = " ".repeat( (len2 - o.name.length) / 2) + "${name}\n" +
+            ".".repeat(len2) +
             "\n" +
-            "${documentation}\n" +
-            "_".repeat(1 + 2 * len) +
+            " ".repeat((len2 - o.documentation.length) / 2) + "${documentation}\n" +
+            "_".repeat(len2) +
             "\n\n" +
             "${property:attributes}";
+
+
         o.fontName = "Courier New";
         o.fontSize = 9;
+        o.textAlignment = TEXT_ALIGNMENT.LEFT;
 
-        o.bounds = {width: (len + 2) * 14, height: (o.labelValue.split('\n').length + 2) * 14}
+        o.bounds = {width: (len2-2) * 8, height: (o.labelValue.split('\n').length + 2) * 14}
+
         console.log("Done.")
     } else{
         console.log("No schema to process.")
