@@ -46,7 +46,7 @@ $(selection).filter("data-object").each(function (o) {
         let len = 0;
         o.name = title;
         o.labelVisible = true;
-        o.documentation = description + '\n\n';
+        o.documentation += description + '\n\n';
         o.prop('objectDescription', description)
         var len2 = description.length
         if ('properties' in schema) {
