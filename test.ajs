@@ -1,0 +1,11 @@
+﻿/*
+ * New Archi Script
+ */
+// require some libraries
+load(__DIR__+'/lib/_util.ajs')
+$('element').forEach(function(e){
+
+    if(!!e.documentation) {
+        e.documentation = e.documentation.replaceAll('###', '####');
+    }
+});
