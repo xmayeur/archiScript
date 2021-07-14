@@ -6,24 +6,49 @@ console.clear();
 var debug = true
 var incr = 50;
 
-function log(msg)
-{
-     console.log(msg);
-
+function log(msg) {
+    console.log(msg);
 }
 
 
-for each(var o in $(selection).filter("relationship"))
-{
+function angleBetweenElements(source, target) {
+    sb = source.bounds
+    tb = target.bounds
+    // calculate the angle theta from the deltaY and deltaX values
+    // (atan2 returns radians values from [-PI,PI])
+    // 0 currently points EAST.
+    // NOTE: By preserving Y and X param order to atan2,  we are expecting
+    // a CLOCKWISE angle direction.
+    theta = Math.atan2(tb.y - sb.y, tb.x - sb.x);
+
+    // convert from radians to degrees
+    // this will give you an angle from [0->270],[-180,0]
+    angle = theta * 360 / (2 * Math.PI)
+
+    // convert to positive range [0-360)
+    // since we want to prevent negative angles, adjust them now.
+    // we can assume that atan2 will not return a negative value
+    // greater than one partial rotation
+    if (angle < 0) {
+        angle += 360;
+    }
+
+    return angle;
+}
+
+
+/*
+$(selection).filter("relationship").forEach(function(o) {
     var view = o.view;
     var rel = o.concept;
     var source = o.source;
     var target = o.target;
+    var pp;
     sb = source.bounds;
     tb = target.bounds;
 
-    var pp = $(source).parents();
-    for each(p in pp) {
+    pp = $(source).parents();
+    for (let p in pp) {
         try {
             sb.x += p.bounds.x;
             sb.y += p.bounds.y;
@@ -31,8 +56,8 @@ for each(var o in $(selection).filter("relationship"))
         }
     }
 
-    var pp = $(target).parents();
-    for each(p in pp) {
+    pp = $(target).parents();
+    for (let p in pp) {
         try {
             tb.x += p.bounds.x;
             tb.y += p.bounds.y;
@@ -52,40 +77,44 @@ for each(var o in $(selection).filter("relationship"))
         dir = 1
     }
 
-    posBP(o, 0, dx/2-(tb.length+sb.length)*dir, -dy)
-    posBP(o, 1, -dx/2+(tb.length+sb.length)*dir, dy+(tb.height+sb.height)*dir)
+    posBP(o, 0, dx / 2 - (tb.length + sb.length) * dir, -dy)
+    posBP(o, 1, -dx / 2 + (tb.length + sb.length) * dir, dy + (tb.height + sb.height) * dir)
 }
+);
+*/
 
+doOrtho();
 
 function posBP(rel, bpidx, x, y) {
     var sb = rel.source.bounds;
     var tb = rel.target.bounds;
     var bps = rel.getRelativeBendpoints();
+    var bp;
     if (bpidx < bps.length) {
-        var bp = bps[bpidx]
+        bp = bps[bpidx]
         console.log(bp)
         bp.startX = x
         bp.endY = y
-        bp.endX  = 0;
+        bp.endX = 0;
         bp.startY = 0;
         rel.setRelativeBendpoint(bp, bpidx);
     } else {
-        var bp = {
-            "startX": tb.x ,
-            "endY": sb.y ,
-            "endX": 0 ,
+        bp = {
+            "startX": tb.x,
+            "endY": sb.y,
+            "endX": 0,
             "startY": 0
         }
         rel.addRelativeBendpoint(bp, bps.length);
     }
-    bps = o.getRelativeBendpoints()
+    bps = rel.getRelativeBendpoints()
     console.log(bps[bpidx])
 }
 
 
 // return the position of a blendpoint with respect to an object as a angle (in degree)
 // 0° corresponds to the bendpoint being to the right of the object, angle is calculated wrt to clockwize rotation
-function bpPos(bp, o, src=true) {
+function bpPos(bp, o, src = true) {
     if (src) {
         if ((Math.abs(bp.startX) < o.bounds.width / 2) && (Math.abs(bp.startY) > o.bounds.height / 2) && bp.startY > 0) {
             return 90
@@ -114,32 +143,35 @@ function bpPos(bp, o, src=true) {
 }
 
 function alignBp(bp1, bp2, dir) {
+    let bp=bp2;
     if (dir) {
-        bp.startY = bp1.startY
-        bp.endY = bp1.endY
-        bp.startX = bp2.endX
-        bp.endX = bp2.startX
+        bp.endY = 0
+        bp.startY = 0
+        //bp.endY = bp1.endY
+        bp.startX = bp1.endX
+        //bp.endX = bp2.endX
     } else {
         bp.startX = bp1.startX
-        bp.endX = bp1.endX
-        bp.startY = bp2.startY
-        bp.endY = bp2.endY
+        // bp.endX = bp1.endX
+        //bp.startY = bp2.endY
+        //bp.endY = -bp2.startY
     }
     return bp
 }
 
 function doOrtho() {
-    for each(var o in $(selection).filter("relationship"))
-    {
+    $(selection).filter("relationship").forEach(function (o) {
+
         var view = o.view;
         var rel = o.concept;
         var source = o.source;
         var target = o.target;
+        var pp;
         sb = source.bounds;
         tb = target.bounds;
 
-        var pp = $(source).parents();
-        for each(p in pp) {
+        pp = $(source).parents();
+        for (let p in pp) {
             try {
                 sb.x += p.bounds.x;
                 sb.y += p.bounds.y;
@@ -147,8 +179,8 @@ function doOrtho() {
             }
         }
 
-        var pp = $(target).parents();
-        for each(p in pp) {
+        pp = $(target).parents();
+        for (let p in pp) {
             try {
                 tb.x += p.bounds.x;
                 tb.y += p.bounds.y;
@@ -159,27 +191,24 @@ function doOrtho() {
         dx = tb.x - sb.x;
         dy = tb.y - sb.y;
 
-        var bps = o.getRelativeBendpoints()
-        blen = bps.length
-
+        let bps = o.getRelativeBendpoints()
+        let blen = bps.length
+        console.log("bps: ",bps);
         if (bps.length > 0) {
 
-            for each(bp in bps) {
-                log(bp);
-            }
             log('\n');
 
             a = bpPos(bps[0], o.source)
-            if (blen == 1) {
-                bp = bps[0]
+            if (blen === 1) {
+                bp = bps[0];
                 b = bpPos(bp, o.target, false)
                 if ((-90 < a <= -45) || (-135 <= a < -90)
                     || (90 < a < 135) || (45 < a < 90)) {
                     bp.startY = 0;
                 } else if ((-45 <= a < 0) || (-179 < a < 135) ||
                     (135 < a < 180) || (0 < a < 45)) {
-                    bp.startX =0;
-                    bp.startY = 0
+                    bp.startX = 0;
+                    bp.startY = 0;
                 }
                 if ((-90 < b <= -45) || (-135 <= b < -90)
                     || (90 < b < 135) || (45 < b < 90)) {
@@ -191,66 +220,17 @@ function doOrtho() {
 
             }
             o.setRelativeBendpoint(bps[0], 0);
-            log(bps[0])
+            log('bps_0: '+bps[0])
 
-            if (a == 0 || a == 180) {
-                dir = true;
-            } else {
-                dir = false
-            }
-
-            for (i = 1; i < blen - 1; i++) {
-                bps[i] = alignBp(bps[i - 1], bps[i], !dir);
+            dir = a === 0 || a === 180;
+            console.log(a, ' - ',dir)
+            for (i = 1; i < blen ; i++) {
+                bps[i] = alignBp(bps[i - 1], bps[i], dir);
                 dir = !dir
                 o.setRelativeBendpoint(bps[i], i);
-                log(bps[i]);
-
+                log(i+' - '+bps[i]);
             }
 
-
-            /*
-                bp1 = bps[0]
-                log(bpPos(bp1, o.source))
-                log(sb, bp1)
-
-                bp2 = bps[1]
-                bp2.startY = bp1.startY
-                bp2.startX = -bp1.endX
-
-                // Add bendpoints at index positions
-                try {
-                    o.addRelativeBendpoint(bp1, 0);
-                    o.addRelativeBendpoint(bp2, 1);
-                } catch (e) {log(e)}
-            */
         }
-    }
-}
-
-function angleBetweenElements(source, target)
-{
-
-    sb = source.bounds
-    tb = target.bounds
-    // calculate the angle theta from the deltaY and deltaX values
-    // (atan2 returns radians values from [-PI,PI])
-    // 0 currently points EAST.
-    // NOTE: By preserving Y and X param order to atan2,  we are expecting
-    // a CLOCKWISE angle direction.
-    theta = Math.atan2(tb.y - sb.y, tb.x - sb.x);
-
-
-    // convert from radians to degrees
-    // this will give you an angle from [0->270],[-180,0]
-    angle = theta * 360 / (2 * Math.PI)
-
-    // convert to positive range [0-360)
-    // since we want to prevent negative angles, adjust them now.
-    // we can assume that atan2 will not return a negative value
-    // greater than one partial rotation
-    if (angle < 0) {
-        angle += 360;
-    }
-
-    return angle;
+    });
 }

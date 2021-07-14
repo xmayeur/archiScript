@@ -10,7 +10,7 @@
 console.show();
 console.clear();
 
-for each (var o in $(selection).filter("relationship")) {
+$(selection).filter("relationship").forEach(function(o) {
 
     var view = o.view;
     var rel = o.concept;
@@ -20,4 +20,4 @@ for each (var o in $(selection).filter("relationship")) {
     rel.source = target.concept;
     console.log('reversed!');
 
-}
+});

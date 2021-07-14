@@ -10,64 +10,67 @@
 // console.show()
 console.clear()
 
-for each (var o in $(selection).filter("relationship")) {
-    var view = o.view;
-    var rel = o.concept;
-    var source = o.source;
-    var target = o.target;
+$(selection).filter("relationship").forEach(function (o) {
+    let view = o.view;
+    let rel = o.concept;
+    let source = o.source;
+    let target = o.target;
     sb = source.bounds
     tb = target.bounds
 
     // calculate the source and target element absolute (x,y) coordinate
-    var pp = $(source).parents()
-    for each (p in pp) {
-        try  {
-            sb.x += p.bounds.x
-            sb.y += p.bounds.y
-        } catch(e){}
-    }
+    $(source).parents().forEach(function (p) {
+        try {
+            sb.x += p.bounds.x;
+            sb.y += p.bounds.y;
+        } catch (e) {
+        }
+    });
 
-    var pp = $(target).parents()
-    for each (p in pp) {
-        try  {
-            tb.x += p.bounds.x
-            tb.y += p.bounds.y
-        } catch(e){}
-    }
+    $(target).parents().forEach(function (p) {
+        try {
+            tb.x += p.bounds.x;
+            tb.y += p.bounds.y;
+        } catch (e) {
+        }
+    });
 
 
     dx = tb.x - sb.x
     dy = tb.y - sb.y
 
     try {
-     o.deleteAllBendpoints()
-    } catch(e) {}
+        o.deleteAllBendpoints()
+    } catch (e) {
+    }
 
+    let bp1 = {};
+    let bp2 = {};
     if (sb.y < tb.y) {
-        var bp1 = {
+        bp1 = {
             startX: 0,
             startY: 0,
             endX: -dx,
-            endY: tb.y+dy+tb.height
+            endY: tb.y + dy + tb.height
         }
-        var bp2 = {
+        bp2 = {
             startX: dx,
-            startY: tb.y+tb.height,
+            startY: tb.y + tb.height,
             endX: 0,
             endY: 0
         }
     } else {
-        var bp1 = {
+        bp1 = {
             startX: 0,
-            startY: 3*tb.height,
+            startY: 3 * tb.height,
             endX: -dx,
-            endY: tb.y+tb.height
+            endY: tb.y + tb.height
         }
-        var bp2 = {
+        bp2 = {
             startX: dx,
-            startY: tb.y+tb.height-dy,
+            startY: tb.y + tb.height - dy,
             endX: 0,
-            endY:3*tb.height
+            endY: 3 * tb.height
         }
     }
 
@@ -75,7 +78,9 @@ for each (var o in $(selection).filter("relationship")) {
     try {
         o.addRelativeBendpoint(bp1, 0);
         o.addRelativeBendpoint(bp2, 1);
-    } catch (e) {console.log(e)}
+    } catch (e) {
+        console.log(e)
+    }
 
 
-}
+});

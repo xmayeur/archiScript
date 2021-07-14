@@ -10,78 +10,88 @@
 // console.show()
 console.clear()
 
-for each (var o in $(selection).filter("relationship")) {
-    var view = o.view;
-    var rel = o.concept;
-    var source = o.source;
-    var target = o.target;
+let def_x = 0;
+let def_y = 0;
+
+$(selection).filter("relationship").forEach(function (o) {
+    let view = o.view;
+    let rel = o.concept;
+    let source = o.source;
+    let target = o.target;
     sb = source.bounds
     tb = target.bounds
 
     // calculate the source and target element absolute (x,y) coordinate
-    var pp = $(source).parents()
-    for each (p in pp) {
-        try  {
-            sb.x += p.bounds.x
-            sb.y += p.bounds.y
-        } catch(e){}
-    }
+        $(source).parents().forEach(function(p){
+        try {
+            sb.x += p.bounds.x;
+            sb.y += p.bounds.y;
+        } catch (e) {
+        }
+    });
 
-    var pp = $(target).parents()
-    for each (p in pp) {
-        try  {
-            tb.x += p.bounds.x
-            tb.y += p.bounds.y
-        } catch(e){}
-    }
+    $(target).parents().forEach(function(p){
+        try {
+            tb.x += p.bounds.x;
+            tb.y += p.bounds.y;
+        } catch (e) {
+        }
+    });
+    let pp = $(source).parents()
 
     // get the distance between source & target object
     dx = tb.x - sb.x
     dy = tb.y - sb.y
 
     try {
-     o.deleteAllBendpoints()
-    } catch(e) {}
-    console.log(sb, tb)
-    // One object is above the other one, with overlap
-    if ( (sb.x < tb.x && tb.x < sb.x+sb.width)
-        | (tb.x < sb.x && sb.x < tb.x+tb.width)
-        ) {
-
-         var bp1 = {
-            startX: 0,
-            startY: dy/2,
-            endX: -dx,
-            endY: -dy/2
-        }
-        var bp2 = {
-            startX: dx,
-            startY: dy/2,
-            endX: 0,
-            endY: -dy/2
-
-        }
+        o.deleteAllBendpoints()
+    } catch (e) {
     }
-    else {
 
-         var bp1 = {
-            startX: dx/2,
-            startY: -dy/2,
-            endX: -dx/2,
-            endY: 0
+    let bp1 = {};
+    let bp2 = {};
+
+    // One object is above the other one, with overlap
+    if ((sb.x < tb.x && tb.x < sb.x + sb.width)
+        || (tb.x < sb.x && sb.x < tb.x + tb.width)
+    ) {
+        console.log("->here")
+        bp1 = {
+            startX: def_x,
+            startY: dy / 2,
+            endX: -dx,
+            endY: -dy / 2
         }
-        var bp2 = {
-            startX: dx/2,
+        bp2 = {
+            startX: dx,
+            startY: dy / 2,
+            endX: def_y,
+            endY: -dy / 2
+
+        }
+    } else {
+
+        bp1 = {
+            startX: dx / 2,
+            startY: -dy / 2,
+            endX: -dx / 2,
+            endY: def_y
+        }
+        bp2 = {
+            startX: dx / 2,
             startY: dy,
-            endX: -dx/2,
-            endY: 0
+            endX: -dx / 2,
+            endY: def_y
         }
+        console.log("->there", bp1, bp2)
     }
 
     // Add bendpoints at index positions
     try {
         o.addRelativeBendpoint(bp1, 0);
         o.addRelativeBendpoint(bp2, 1);
-    } catch (e) {}
+    } catch (e) {
+        console.log("Oops", e)
+    }
 
-}
+});

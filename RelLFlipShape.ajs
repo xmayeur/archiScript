@@ -5,86 +5,77 @@
 console.show();
 console.clear();
 
-var incrY = -10;
-var incrX = -10;
+let incrY = -10;
+let incrX = -10;
 
-for each (var e in $(selection).filter('element')) {
+$(selection).filter('element').forEach(function (e) {
     console.log(e.name)
-    for each (var o in $(e).outRels()) {
+    $(e).outRels().forEach(function (o) {
         console.log(o.source, " -> ", o.target)
-        var source = o.source;
-        var target = o.target;
+        let source = o.source;
+        let target = o.target;
         sb = source.bounds;
         tb = target.bounds;
         dx = tb.x - sb.x;
         dy = tb.y - sb.y;
-        var bps = o.getRelativeBendpoints()
-        for each (bp in bps) {
-            console.log("bp: ", bp)
-        }
-    }
-
-}
+        let bps = o.getRelativeBendpoints()
+    });
+});
 
 
-for each (var o in $(selection).filter("relationship")) {
-    var view = o.view;
-    var rel = o.concept;
-    var source = o.source;
-    var target = o.target;
+$(selection).filter("relationship").forEach(function (o) {
+    let view = o.view;
+    let rel = o.concept;
+    let source = o.source;
+    let target = o.target;
     sb = source.bounds;
     tb = target.bounds;
 
-
-   var pp = $(source).parents();
-    for each (p in pp) {
-        try  {
+    $(source).parents().forEach(function(p){
+        try {
             sb.x += p.bounds.x;
             sb.y += p.bounds.y;
-        } catch(e){}
-    }
+        } catch (e) {
+        }
+    });
 
-    var pp = $(target).parents();
-    for each (p in pp) {
-        try  {
+    $(target).parents().forEach(function(p){
+        try {
             tb.x += p.bounds.x;
             tb.y += p.bounds.y;
-        } catch(e){}
-    }
+        } catch (e) {
+        }
+    });
     dx = tb.x - sb.x;
     dy = tb.y - sb.y;
 
-    var bps = o.getRelativeBendpoints()
-    for each (bp in bps){console.log(bp)}
-    o.deleteAllBendpoints()
+    let bps = o.getRelativeBendpoints();
+    o.deleteAllBendpoints();
 
     if (bps.length === 0) {
-        var bp = {};
-        bp.startY=0
-        bp.startX=0
-        bp.endY = dy
-        bp.endX=-dx
-        var bps=[]
-        bps.push(bp)
+        let bp = {};
+        bp.startY = 0;
+        bp.startX = 0;
+        bp.endY = dy;
+        bp.endX = -dx;
+        bps = [];
+        bps.push(bp);
 
     }
     if (bps.length === 1) {
-
-        bps[0].startX = -bps[0].startX
-        bps[0].startY = -bps[0].startY
-        bps[0].endX = -bps[0].endX
-        bps[0].endY = -bps[0].endY
-
+        bps[0].startX = -bps[0].startX;
+        bps[0].startY = -bps[0].startY;
+        bps[0].endX = -bps[0].endX;
+        bps[0].endY = -bps[0].endY;
     }
 
-
+    console.log("> ", bps)
     try {
-
-        var i = 0
-        for each (var bp in bps) {
-            // console.log("bp: ", bp)
-            o.addRelativeBendpoint(bp, i++)
-        }
-    } catch(e) {console.log(e)}
-
-}
+        let i = 0
+        bps.forEach(function (x) {
+            o.addRelativeBendpoint(x, i++);
+        });
+    } catch (e) {
+        console.log("! ", e);
+    }
+});
