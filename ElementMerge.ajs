@@ -15,26 +15,26 @@
 console.show();
 console.clear();
 
-var el_selection = selection.filter("element");
+let el_selection = selection.filter("element");
 
 if(el_selection.size() < 2) {
   window.alert("You have to select at least two elements to run this script. Note: merging relationships is not supported for the moment.");
   exit();
 }
 
-var list = "Which element do you want to keep (enter its index)?";
-var index = 1;
+let list = "Which element do you want to keep (enter its index)?";
+let index = 1;
 
 el_selection.each(function(o) {
   list += "\n  ("+index+") "+o.name;
   index++
 })
-var answer = window.prompt(list, "1");
+let answer = window.prompt(list, "1");
 if(answer) {
-  var relaxed = window.confirm('By default, only documentation and properties of the target element are saved (those of merged elements are cleared). Click Ok for this behavior or Cancel if you want a "strict" mode where they are copied into target element.');
+  let relaxed = window.confirm('By default, only documentation and properties of the target element are saved (those of merged elements are cleared). Click Ok for this behavior or Cancel if you want a "strict" mode where they are copied into target element.');
 
-  var merge_target = el_selection.get(answer-1);
-  var to_be_deleted = $("#null");
+  let merge_target = el_selection.get(answer-1);
+  let to_be_deleted = $("#null");
   el_selection.not($(merge_target)).each(function(o) {
     console.log('Merging "', o.name, '" into "', merge_target.name, '"');
     // We don't want to delete while iterating on the collection, so create
@@ -71,7 +71,7 @@ function removeDocAndProps(c) {
 /*
 console.log("Merge two elements");
 
-var elems  = $(selection).filter("element");
+let elems  = $(selection).filter("element");
 console.log(elems)
 if (elems.length === 2){
     if (elems[0].type === elems[1].type) {

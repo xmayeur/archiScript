@@ -42,7 +42,7 @@ if (!!doc) {
 		newName = newName.replace(/\\/g, '/');
 
 		fileText = readFile(filePath)
-		if (filePath != newFile) {
+		if (filePath !== newFile) {
 			$.fs.writeFile(newFile, fileText);
 		}
 

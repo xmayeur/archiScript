@@ -15,7 +15,6 @@ var imgFolder = "images\\";
 
 doc = $(selection).first().documentation
 
-
 exportFile = getModelFileName(model); 
 relativeName = exportFile.split("\\");
 pathName = exportFile.substring(0, exportFile.length - relativeName[relativeName.length-1].length); 

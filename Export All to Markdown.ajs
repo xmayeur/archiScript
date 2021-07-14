@@ -19,13 +19,13 @@
  *
  */
 
-var showProperty = false;
-var showObjectType = false;
-var showToC = true;
+let showProperty = false;
+let showObjectType = false;
+let showToC = true;
 load(__DIR__+'/lib/_util.ajs')
 load(__DIR__+"/lib/_fmt_lib.ajs")
-var exportFolder = "md\\";
-var imageFolder = exportFolder + '.images\\'
+let exportFolder = "md\\";
+let imageFolder = exportFolder + '.images\\'
 
 /* 
  * Main Program
@@ -40,24 +40,24 @@ var imageFolder = exportFolder + '.images\\'
 console.show();
 console.clear()
 
-var theTOC="";
-var theDocument="";
+let theTOC="";
+let theDocument="";
 
 console.log("Export to Markdown - " + model.name);
-var defaultFileName = "README.md"; // Default file name
-var exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.md" ], fileName: defaultFileName } );
+let defaultFileName = "README.md"; // Default file name
+let exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.md" ], fileName: defaultFileName } );
 
 if (exportFile != null) {
     // Get the pathname of the README.md file
     relativeName = exportFile.split("\\");
     pathName = exportFile.substring(0, exportFile.length - relativeName[relativeName.length-1].length);  
     // in case the Archimate model is under git control, the model file is actually in the .git folder that we should skip
-	var expr = /.git/
+	let expr = /.git/
 	if (expr.test(pathName)) {
 		pathName = pathName.substring(0, pathName.length-5);
 	}
     // Create here the code to export the README.md file with model purpose 
-    var theDocument = "## " + model.name + " ##\n";
+    let theDocument = "## " + model.name + " ##\n";
     if (model.purpose != null) {
         theDocument += "# Model Purpose #\n";
         model.purpose!=""?theDocument+="\n"+model.purpose+"\n":true;
@@ -65,7 +65,7 @@ if (exportFile != null) {
     theDocument += "# View index #\n";
     $("view").each(function(theView) {
         if (theView){
-            var viewFile = model.name + "-" + theView.name + ".md";
+            let viewFile = model.name + "-" + theView.name + ".md";
             viewFile = viewFile.replaceAll(" ","%20");
             theDocument+="* ["+theView.name+"](./md/"+ viewFile +")\n";
         }
@@ -123,7 +123,7 @@ if (exportFile != null) {
                 // console.log("Writting to: " + exportFile);
                 $.fs.writeFile(exportFile, theDocument);
 
-                var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 1, margin: 10});
+                let bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 1, margin: 10});
                 console.log(exportImage.substring(0,exportImage.length-3) +".png")
                 $.fs.writeFile(exportImage.substring(0,exportImage.length-3) +".png", bytes, "BASE64");
 

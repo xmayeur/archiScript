@@ -7,6 +7,5 @@ function deleteUnusedElements() {
     });
 }
 
-
 deleteUnusedElements();
 console.log("Done.");

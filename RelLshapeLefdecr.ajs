@@ -1,0 +1,64 @@
+/*
+ * New Archi Script
+ *
+ * Requires jArchi - https://www.archimatetool.com/blog/2018/07/02/jarchi/
+ *
+ * This script takes a selection of visual objects as input, filter it to keep only relationships
+ * and create L-shape ortho connector
+ */
+
+console.show();
+console.clear();
+let incr = -25;
+
+$(selection).filter("relationship").forEach(function (o) {
+    let view = o.view;
+    let rel = o.concept;
+    let source = o.source;
+    let target = o.target;
+    sb = source.bounds
+    tb = target.bounds
+
+    // calculate the source and target element absolute (x,y) coordinate
+    $(source).parents().forEach(function (p) {
+        try {
+            sb.x += p.bounds.x;
+            sb.y += p.bounds.y;
+        } catch (e) {
+        }
+    });
+
+    $(target).parents().forEach(function (p) {
+        try {
+            tb.x += p.bounds.x;
+            tb.y += p.bounds.y;
+        } catch (e) {
+        }
+    });
+
+    dx = tb.x - sb.x
+    dy = tb.y - sb.y
+
+    let bps = o.getRelativeBendpoints();
+    if (bps.length !== 1) {
+        return
+    }
+
+    let bp1 = bps[0]
+
+    try {
+        o.deleteAllBendpoints()
+    } catch (e) {
+    }
+    bp1.startX += incr
+    bp1.endY -= incr
+
+    // Add bendpoints at index positions
+    try {
+        o.addRelativeBendpoint(bp1, 0);
+    } catch (e) {
+    }
+
+
+});
+
