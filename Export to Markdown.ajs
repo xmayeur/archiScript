@@ -132,7 +132,7 @@ if (theView) {
 
         $.fs.writeFile(exportFile, theDocument);
 
-        var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 1, margin: 10});
+        var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
         $.fs.writeFile(exportImage.substring(0,exportImage.length-3) +".png", bytes, "BASE64");
 		console.log(exportFile)
 		

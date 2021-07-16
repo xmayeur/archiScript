@@ -37,11 +37,12 @@ $(selection).filter("data-object").each(function (o) {
     try {
         schema = JSON.parse(o.prop('JSONschema'));
     } catch (e) {
-        console.log('No such properties "JSONschema" or invalid schema.');
+        console.log('No such properties "JSONschema" or invalid schema.', e);
     }
     if (!!schema) {
         const title = schema.title;
-        const description = String(schema.description);
+        let description = String(schema.description);
+        if (!description) {description = '-'; }
         let attributes = "";
         let len = 0;
         o.name = title;
@@ -49,6 +50,7 @@ $(selection).filter("data-object").each(function (o) {
         o.documentation = description + '\n\n';
         o.prop('objectDescription', description)
         var len2 = description.length
+        len2 = Math.max(len2, o.name.length)
         if ('properties' in schema) {
             o.documentation += '| attribute | description | type | object |\n';
             o.documentation += '|---|---|---|---|\n';
