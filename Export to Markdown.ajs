@@ -54,12 +54,13 @@ if (!theView) {
     theView = $(selection).filter("sketch-model").first();
 }
 
+
 // work out the view
 if (theView) {
 	// set the export name
 	var defaultFileName = theView.name ? model.name + "-" + theView.name + ".md" : "Exported View.md"; // Default file name
 
-    exportFile = model.getPath(); // getModelFileName(model);
+    exportFile = model.getPath();
 	relativeName = exportFile.split("\\");
     pathName = exportFile.substring(0, exportFile.length - relativeName[relativeName.length-1].length); 
 	// in case the Archimate model is under git control, the model file is actually in the .git folder that we should skip

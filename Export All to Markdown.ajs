@@ -19,14 +19,15 @@
  *
  */
 
-let showProperty = false;
-let showObjectType = false;
+
+
 let showToC = true;
 load(__DIR__+'/lib/_util.ajs')
 load(__DIR__+"/lib/_fmt_lib.ajs")
 let exportFolder = "md\\";
 let imageFolder = exportFolder + '.images\\'
-
+showProperty = false;
+showObjectType = false;
 /* 
  * Main Program
  * ============
