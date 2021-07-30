@@ -12,6 +12,8 @@ console.clear()
 
 let def_x = 0;
 let def_y = 0;
+let sb;
+let tb;
 
 $(selection).filter("relationship").forEach(function (o) {
     let view = o.view;
@@ -22,7 +24,7 @@ $(selection).filter("relationship").forEach(function (o) {
     tb = target.bounds
 
     // calculate the source and target element absolute (x,y) coordinate
-        $(source).parents().forEach(function(p){
+    $(source).parents().forEach(function(p){
         try {
             sb.x += p.bounds.x;
             sb.y += p.bounds.y;
@@ -43,6 +45,7 @@ $(selection).filter("relationship").forEach(function (o) {
     dx = tb.x - sb.x
     dy = tb.y - sb.y
 
+
     try {
         o.deleteAllBendpoints()
     } catch (e) {
@@ -55,7 +58,7 @@ $(selection).filter("relationship").forEach(function (o) {
     if ((sb.x < tb.x && tb.x < sb.x + sb.width)
         || (tb.x < sb.x && sb.x < tb.x + tb.width)
     ) {
-        console.log("->here")
+
         bp1 = {
             startX: def_x,
             startY: dy / 2,
@@ -83,7 +86,7 @@ $(selection).filter("relationship").forEach(function (o) {
             endX: -dx / 2,
             endY: def_y
         }
-        console.log("->there", bp1, bp2)
+
     }
 
     // Add bendpoints at index positions
