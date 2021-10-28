@@ -1,6 +1,0 @@
-﻿/*
- * New Archi Script
- */
-// require some libraries
-let s  = '{"$schema":"https://json-schema.org/draft/2020-12/schema","title":"Architecture Info","description":"IT Solution related architecture info","type":"object","properties":{"architectureCapability":{"type":"uuid","description":"the uuid of an architecture capability"},"archiStandard":{"type":"enum","description":"indicate whether the IT Solution is a global or local standard"},"archiStandardExpiryDate":{"type":"long"},"developmentType":{"type":"array","items":{"type":"string"}"description":"list of types of development of the IT Product"},"runTimeTarget":{"type":"array","items":{"type":"string"}"description":"list of run time targets"},"itProductScope":{"type":"enum","description":"IT Solution scope (local/shared/global)"}}}'
-console.log(JSON.parse(s))
