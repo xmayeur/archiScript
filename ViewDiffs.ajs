@@ -1,0 +1,41 @@
+﻿/*
+ * New Archi Script
+ */
+load(__DIR__ + '/lib/_util.ajs')
+load(__DIR__ + "/lib/_fmt_lib.ajs")
+console.clear()
+var theViews = $(selection).filter("archimate-diagram-model")
+
+
+if (theViews.length != 2) {
+    console.log('Please select two views')
+} else {
+    let dict1 = {};
+    let dict2 = {};
+
+    findAllElement(theViews.get(0), dict1);
+    findAllElement(theViews.get(1), dict2);
+
+    findMatching(dict1, dict2)
+    findMatching(dict2, dict1)
+
+
+}
+
+function findAllElement(o, dict) {
+    $(o).children().each(function (e) {
+        dict[e.concept.id] = e.id;
+        findAllElement(e, dict)
+    })
+    return dict;
+}
+
+function findMatching(d1, d2) {
+    for (var key in d1) {
+        if ((key in d2)==false) {
+            o = $('#'+d1[key]).first()
+            darken(o)
+        }
+    }
+}
+

@@ -1,0 +1,16 @@
+﻿/*
+ * New Archi Script
+ */
+load(__DIR__ + '/lib/_util.ajs')
+load(__DIR__ + "/lib/_fmt_lib.ajs")
+console.clear()
+
+var v = $(selection).filter("archimate-diagram-model").first()
+resetColor(v)
+
+function resetColor(o) {
+    $(o).children().each(function (e) {
+        setDefaultColor(e)
+        resetColor(e)
+    });
+}
