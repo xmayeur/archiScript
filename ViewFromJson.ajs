@@ -1,0 +1,17 @@
+﻿load(__DIR__+'/lib/_util.ajs')
+load(__DIR__+"/lib/_fmt_lib.ajs")
+var theView = $(selection).filter("archimate-diagram-model").first();
+let x=10;
+let y=10
+let importFile = window.promptOpenFile({ title: "JSON file to import", filterExtensions: [ "*.json" ] } );
+data = JSON.parse(readFile(importFile, 'char'));
+for each (let o in data) {
+    console.log(o.name)
+    c = model.createElement("capability", o.name)
+    e = theView.add(c, 10, 10, 150, 75)
+    e.proplevel=', o['level'])
+    e.prop('outline', o['outline'])
+    e.prop('uuid', o['uuid'])
+    e.labelExpression="${property:outline} ${name}"
+
+}
