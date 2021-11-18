@@ -5,3 +5,4 @@ load(__DIR__ + '/lib/_util.ajs')
 load(__DIR__ + "/lib/_fmt_lib.ajs")
 console.clear()
 
+console.log($.process.env)
