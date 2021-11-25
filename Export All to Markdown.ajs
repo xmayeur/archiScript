@@ -19,9 +19,6 @@
  *
  */
 
-
-
-let showToC = true;
 load(__DIR__+'/lib/_util.ajs')
 load(__DIR__+"/lib/_fmt_lib.ajs")
 let exportFolder = "md\\";
@@ -32,7 +29,7 @@ showObjectType = false;
  * Main Program
  * ============
  * 
- * Create a README.md file with the model purpose and the table of content for the views
+ * Create a Model_README.md file with the model purpose and the table of content for the views
  *
  * Then, create a .md file for each View
  *
@@ -45,8 +42,17 @@ let theTOC="";
 let theDocument="";
 
 console.log("Export to Markdown - " + model.name);
-let defaultFileName = "README.md"; // Default file name
-let exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.md" ], fileName: defaultFileName } );
+let defaultFileName = model.name + ".md"; // Default file name
+// let exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.md" ], fileName: defaultFileName } );
+exportFile = model.getPath();
+relativeName = exportFile.split("\\");
+pathName = exportFile.substring(0, exportFile.length - relativeName[relativeName.length-1].length);
+// in case the Archimate model is under git control, the model file is actually in the .git folder that we should skip
+var expr = /.git/
+if (expr.test(pathName)) {
+    pathName = pathName.substring(0, pathName.length-5);
+	}
+exportFile = pathName + defaultFileName;
 
 if (exportFile != null) {
     // Get the pathname of the README.md file
@@ -81,6 +87,7 @@ if (exportFile != null) {
         if (theView) {
             theDocument = "";
             theTOC = "* [Introduction](#introduction)";
+            var showToC = (theView.prop('noTOC'));
 
             exportFile = theView.name ? model.name + "-" + theView.name + ".md" : "Exported View.md"; // Default file name
 			// add here some code to suppress non allowed character from a normal file name

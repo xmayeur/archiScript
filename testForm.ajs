@@ -1,0 +1,215 @@
+﻿/*
+ * New Archi Script
+ */
+load(__DIR__ + '/lib/_util.ajs')
+load(__DIR__ + "/lib/_fmt_lib.ajs")
+console.clear()
+
+//@ts-check
+/**
+ * Test of a dialog box in jarchi, SWT style
+ */
+
+
+/**
+ * @typedef {any} JavaClass
+ * @typedef {Object<string, function>} JavaObject
+ */
+"use strict"
+
+if (typeof Java == null) {
+    /**
+     * @type {{type: (s: string) => JavaClass, extend: (c: JavaClass) => JavaClass, super: (o: JavaObject) => JavaObject }}
+     */
+    var Java
+    var shell
+}
+
+
+/** @type JavaClass */ const SWT = Java.type('org.eclipse.swt.SWT')
+/** @type JavaClass */ const LabelWidget = Java.type('org.eclipse.swt.widgets.Label')
+/** @type JavaClass */ const CompositeWidget = Java.type('org.eclipse.swt.widgets.Composite')
+/** @type JavaClass */ const SpinnerWidget = Java.type('org.eclipse.swt.widgets.Spinner')
+/** @type JavaClass */ const GroupWidget = Java.type('org.eclipse.swt.widgets.Group')
+/** @type JavaClass */ const ButtonWidget = Java.type('org.eclipse.swt.widgets.Button')
+/** @type JavaClass */ const GridData = Java.type('org.eclipse.swt.layout.GridData')
+/** @type JavaClass */ const GridLayout = Java.type('org.eclipse.swt.layout.GridLayout')
+/** @type JavaClass */ const GridDataFactory = Java.type('org.eclipse.jface.layout.GridDataFactory')
+/** @type JavaClass */ const GridLayoutFactory = Java.type('org.eclipse.jface.layout.GridLayoutFactory')
+/** @type JavaClass */ const RowLayoutFactory = Java.type('org.eclipse.jface.layout.RowLayoutFactory')
+/** @type JavaClass */ const RowLayout = Java.type('org.eclipse.swt.layout.RowLayout')
+/** @type JavaClass */ const IMessageProvider = Java.type('org.eclipse.jface.dialogs.IMessageProvider')
+/** @type JavaClass */ const TitleAreaDialog = Java.type("org.eclipse.jface.dialogs.TitleAreaDialog")
+
+const ConfigDialog = Java.extend(TitleAreaDialog)
+
+let cfgDialog = {
+
+    /**
+     * Default values
+     */
+    config: {
+        strategies: ["#NA"],
+        strategy: "#NA",
+        maxDepth: 20,
+        hSpacing: 60,
+        vSpacing: 30,
+        width: 140,
+        height: 55,
+        layout: {hFactor: 1, vFactor: 0}
+    },
+
+    // widgets memorized to get value from before closing
+    widgets: {},
+
+    /**
+     * Helper to create a widget
+     *
+     * @param {string} name - The widget name
+     * @param {JavaClass} widgetClass - the Java widget class
+     * @param {JavaObject} c - The container
+     * @param {string} label - the label if any for the widget. A Label widget will be created if necessary
+     * @param {(...a: any) => void} init - a function to finalize initialisation (value, etc )
+     */
+    createWidget: function (name, widgetClass, c, label, init, flags = SWT.BORDER) {
+        if (label != null) {
+            let txt = new LabelWidget(c, SWT.NONE)
+            txt.setText(label)
+            GridDataFactory.fillDefaults().align(SWT.END, SWT.CENTER).applyTo(txt)
+        }
+        let widget = new widgetClass(c, flags)
+        if (init != null) init(widget)
+        // saving in widgets reference array
+        if (name != null) this.widgets[name] = widget
+    },
+
+    /**
+     * as open() will destroy the widgets on close, saving values to config
+     */
+    saveInput: function () {
+
+        /** no simpler way to get the selected radio button in a group :-(
+         * @param {JavaObject} g - a group control
+         * @returns - the selected radio button text
+         */
+        function getRadioGroupSelectedValue(g) {
+            for (let r of g.getChildren()) {
+                if (r.getSelection()) {
+                    return r.getText()
+                }
+            }
+        }
+        this.config.strategy = getRadioGroupSelectedValue(this.widgets.grpStrategy)
+        this.config.hSpacing = parseInt(this.widgets.spinHSpacing.getText(), 10)
+        this.config.vSpacing = parseInt(this.widgets.spinVSpacing.getText(), 10)
+        this.config.width = parseInt(this.widgets.spinWidth.getText(), 10)
+        this.config.height = parseInt(this.widgets.spinHeight.getText(), 10)
+        this.config.maxDepth = parseInt(this.widgets.spinMaxDepth.getText(), 10)
+        const direction = getRadioGroupSelectedValue(this.widgets.grpDirection)
+        this.config.layout = {}
+        this.config.layout.hFactor = ( direction == 'right, then down' ? 1 : (direction == 'left, then down' ? -1 : 0))
+        this.config.layout.vFactor = ( direction == 'down, then right' ? 1 : (direction == 'up, then right'  ? -1 : 0))
+    },
+
+
+    open: function() {
+        return (this.dialog.open() == 0)  // OK = 0, Cancel = 1, Closed = -1
+    },
+
+    // NB: Nashorn specific JS syntax! (like java anonymous function)
+    // also not possible to define anything else than inherited method to override. No new method, no property
+    dialog: new ConfigDialog(shell) {
+
+        create: function () {
+            Java.super(cfgDialog.dialog).create()
+            cfgDialog.dialog.setTitle("Analysis configuration")
+            cfgDialog.dialog.setMessage("Please define all parameters necessary for the visual analysis", IMessageProvider.WARNING);
+        },
+
+        createDialogArea: function (parent) {
+            var cfg = cfgDialog.config
+            let area = Java.super(cfgDialog.dialog).createDialogArea(parent)
+            // the area contains an horizontal sep, and a grid layout
+            let container = new CompositeWidget(area, SWT.NONE)
+            GridDataFactory.swtDefaults().align(SWT.FILL, SWT.BEGINNING).applyTo(container)
+            GridLayoutFactory.swtDefaults().numColumns(3).margins(10,10).spacing(10, 5).applyTo(container)
+            // strategy section
+            let group = new GroupWidget(container, SWT.NONE)
+            GridDataFactory.swtDefaults().span(2,1).grab(true, false).align(SWT.FILL, SWT.FILL).applyTo(group)
+            group.setText('Strategy to use')
+            group.setLayout(new RowLayout (SWT.VERTICAL))
+            cfgDialog.widgets.grpStrategy = group
+            for (let x of cfg.strategies) {
+                cfgDialog.createWidget(null, ButtonWidget, group, null,
+                    (w) => {
+                        w.setText(x)
+                        //GridDataFactory.swtDefaults().align(SWT.FILL, SWT.CENTER).applyTo(w)
+                    }, SWT.RADIO)
+            }
+            // nodes (sizes, spacing) section
+            group = new GroupWidget(container, SWT.NONE)
+            group.setText('Nodes')
+            GridDataFactory.fillDefaults().align(SWT.END, SWT.BEGINNING).applyTo(group)
+            let layout = new GridLayout(5, false)
+            group.setLayout(layout)
+            let label = new LabelWidget(group, SWT.NONE)
+            label.setText('Spacing: ')
+            cfgDialog.createWidget('spinHSpacing', SpinnerWidget, group, "Horizontal",
+                (w) => {
+                    w.setValues(cfg.hSpacing, 5, 100, 0, 5, 10)
+                    GridDataFactory.fillDefaults().applyTo(w)
+                })
+            cfgDialog.createWidget('spinVSpacing', SpinnerWidget, group, "Vertical",
+                (w) => {
+                    w.setValues(cfg.vSpacing, 5, 100, 0, 5, 10)
+                    GridDataFactory.fillDefaults().applyTo(w)
+                })
+            label = new LabelWidget(group, SWT.NONE)
+            label.setText('Size: ')
+            cfgDialog.createWidget('spinWidth', SpinnerWidget, group, "Width",
+                (w) => {
+                    w.setValues(cfg.width, 5, 200, 0, 5, 10)
+                    GridDataFactory.fillDefaults().applyTo(w)
+                })
+            cfgDialog.createWidget('spinHeight', SpinnerWidget, group, "Height",
+                (w) => {
+                    w.setValues(cfg.height, 5, 100, 0, 5, 10)
+                    GridDataFactory.fillDefaults().applyTo(w)
+                })
+            // max depth section
+            cfgDialog.createWidget('spinMaxDepth', SpinnerWidget, container, "Max depth",
+                (w) => {
+                    w.setValues(cfg.maxDepth, 1, 100, 0, 1, 5)
+                    GridDataFactory.fillDefaults().align(SWT.END, SWT.CENTER).applyTo(w)
+                })
+            // layout direction section
+            group = new GroupWidget(container, SWT.NONE)
+            GridDataFactory.swtDefaults().align(SWT.FILL, SWT.CENTER).applyTo(group)
+            group.setText('Layout direction')
+            GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(true).applyTo(group)
+            cfgDialog.widgets.grpDirection = group
+            for (let x of ['right, then down', 'left, then down']) { //}, 'down, then right', 'up, then right']) {
+                cfgDialog.createWidget(null, ButtonWidget, group, null,
+                    (w) => {
+                        w.setText(x)
+                    }, SWT.RADIO)
+            }
+            group.getChildren()[0].setSelection(true)
+            return area
+        },
+
+        okPressed: function() {
+            cfgDialog.saveInput()
+            Java.super(cfgDialog.dialog).okPressed()
+        }
+    }
+}
+
+
+// Test
+console.clear()
+cfgDialog.config.strategies = ["Impact", "Root cause", "Root cause with sheets"]
+cfgDialog.config.strategy = cfgDialog.config.strategies[0] // default is 1st of line
+console.log('origin =>\n', cfgDialog.config)
+const OK = cfgDialog.open()
+console.log(OK, '=>\n', cfgDialog.config)

@@ -23,7 +23,7 @@
 // some flags to enable/disable showing some kind of information
 var showProperty = false;
 var showObjectType = false;
-var showToC = true;
+
 var debug = false;
 var exportCmd = '/c start "toConfluence" /W toconfluence.exe';
 // var exportCmd = '/c start "toConfluence" /W C:\\Users\\XY56RE\\AppData\\Roaming\\toConfluence\\toconfluence.exe';
@@ -53,7 +53,7 @@ if (!theView) {
 if (!theView) {
     theView = $(selection).filter("sketch-model").first();
 }
-
+var showToC = (theView.prop('noTOC'));
 
 // work out the view
 if (theView) {
@@ -136,24 +136,27 @@ if (theView) {
         var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
         $.fs.writeFile(exportImage.substring(0,exportImage.length-3) +".png", bytes, "BASE64");
 		console.log(exportFile)
-		
-		if (!!theView.prop()) {
-			wiki = (theView.prop('wiki') == 'orangesharing')? ' -o ':'';
+
+		if (!!theView.prop('wiki')) {
+
+			if (!!theView.prop()) {
+				wiki = (theView.prop('wiki') == 'orangesharing') ? ' -o ' : '';
+			}
+
+			var rt = Java.type("java.lang.Runtime").getRuntime();
+			var proc = Java.type("java.lang.Process");
+			cmd = 'cmd.exe'
+			if (!!model.prop('pageId')) {
+				console.log('pageId: ' + model.prop('pageId'))
+				args = exportCmd + wiki + ' -pid ' + String(model.prop('pageId')) + ' "' + exportFile + '" && pause';
+				proc = rt.exec([cmd, args])
+			} else {
+				args = exportCmd + wiki + ' "' + exportFile + '" && pause'
+				proc = rt.exec(['cmd.exe', args])
+			}
+			exitval = proc.waitFor();
+			readDocMetaData(exportFile, theView)
 		}
-		
-		var rt = Java.type("java.lang.Runtime").getRuntime();
-		var proc = Java.type("java.lang.Process");
-		cmd = 'cmd.exe'
-		if (!!model.prop('pageId')) {
-			console.log('pageId: ' + model.prop('pageId'))
-			args = exportCmd + wiki + ' -pid ' + String(model.prop('pageId')) + ' "' + exportFile  + '" && pause';		
-			proc = rt.exec([cmd, args])
-		} else {
-			args = exportCmd + wiki + ' "' + exportFile + '" && pause'
-			proc = rt.exec(['cmd.exe', args])
-		}
-		exitval = proc.waitFor();
-		readDocMetaData(exportFile, theView)
 		console.log('Done');
 		
     }
