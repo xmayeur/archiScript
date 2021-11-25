@@ -1,0 +1,58 @@
+load(__DIR__ + '/lib/_util.ajs')
+load(__DIR__ + "/lib/_fmt_lib.ajs")
+console.clear()
+/*
+exportFile = model.getPath();
+relativeName = exportFile.split("\\");
+pathName = exportFile.substring(0, exportFile.length - relativeName[relativeName.length-1].length);
+// in case the Archimate model is under git control, the model file is actually in the .git folder that we should skip
+var expr = /.git/
+if (expr.test(pathName)) {
+    pathName = pathName.substring(0, pathName.length-5);
+	}
+console.log(pathName)
+*/
+
+// var theView = $(selection).filter("archimate-diagram-model").first();
+let img = 'img.tmp'
+let height = 200
+let x = 10
+let y = 10
+let max_x = 700
+let gap = 40
+let name = '__Summary view__'
+let views = $('view')
+let viewExist = false
+views.forEach(function(v){
+    if (v.name === name) {
+        viewExist =  true
+        theView = v
+        $(v).children().forEach(function(o){o.delete()})
+    }
+})
+
+if (!viewExist) {
+    theView = model.createArchimateView(name)
+}
+
+let n = 0
+views.forEach(function(v){
+
+    if (v.name !== theView.name) {
+
+        $.model.renderViewToFile(v, img, "PNG", {scale:2, margin:10})
+        i = model.createImage(img)
+        let width = height * i.width / i.height
+        o = theView.createViewReference(v, x, y, width , height)
+        o.image = i
+        o.imagePosition = IMAGE_POSITION.FILL
+        deleteFile(img)
+
+        x += width +gap
+        if (x > max_x) {
+            x = 10
+            y += height + gap
+        }
+    }
+
+});
