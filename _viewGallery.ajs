@@ -46,6 +46,11 @@ views.forEach(function(v){
         o = theView.createViewReference(v, x, y, width , height)
         o.image = i
         o.imagePosition = IMAGE_POSITION.FILL
+        o.fontSize = 14
+        o.fontColor = "#0000FF"
+        o.textAlignment = TEXT_ALIGNMENT.CENTER
+        o.textPosition = TEXT_POSITION.TOP
+        o.fontStyle = "bold"
         deleteFile(img)
 
         x += width +gap
