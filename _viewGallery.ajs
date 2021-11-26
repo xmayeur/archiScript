@@ -20,7 +20,7 @@ let x = 10
 let y = 10
 let max_x = 700
 let gap = 40
-let name = '__Summary view__'
+let name = '__View Gallery__'
 let views = $('view')
 let viewExist = false
 views.forEach(function(v){
