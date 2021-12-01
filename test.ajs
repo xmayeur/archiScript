@@ -1,0 +1,12 @@
+﻿/*
+ * New Archi Script
+ */
+console.clear()
+console.log("New Archi Script");
+// require some libraries
+load(__DIR__+'/lib/_util.ajs')
+load(__DIR__+"/lib/_fmt_lib.ajs")
+xml = readFile('C:\\Users\\XY56RE\\PycharmProjects\\archiScripts\\examples\\AppDepPat.xml')
+//console.log(o)
+
+var domparser = new DOMParser();

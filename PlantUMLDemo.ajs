@@ -1,0 +1,73 @@
+﻿var service=$(selection).filter("application-component").first();
+if (!service)
+	console.log("Select the service in the model tree before you launch this script");
+else {
+	// PlantUML generated ArchiMate diagram description
+	var plantUMLText = "@startuml\n";
+	plantUMLText += "!include Archimate.puml\n"; // To be adapted...
+	plantUMLText += "left to right direction\n"
+		
+	// Service to be displayed in generated ArchiMate diagram
+	plantUMLText += "Application_Component(Service, " + service.name + ")\n";
+	var plantUMLOperations = "together {\n";
+	var plantUMLClients = "together {\n";
+	var plantUMLOperationRelationships = "";
+	var plantUMLClientRelationships = "";
+
+	var serviceRealizationRelations = $(service).rels().filter("realization-relationship");
+		
+	// Use a map to filter out multiple client occurrences
+	var clientMap = new Packages.java.util.HashMap();
+
+	for (var rr = 0; rr < serviceRealizationRelations.length; rr++) {
+		var operation = $(serviceRealizationRelations[rr].target).filter("application-service").first();
+		if (operation) {
+			// Operation to be displayed in generated ArchiMate diagram...
+			plantUMLOperations += "Application_Service(Operation_" + rr + ", " + operation.name + ")\n";
+
+			// ...along with its realization relation with the service
+			plantUMLOperationRelationships += "Rel_Realization(Service, Operation_" + rr + ")\n";
+
+			var operationTriggeringRelations = $(operation).rels().filter("triggering-relationship");
+			// Process each operation client...
+			for (var tr = 0; tr < operationTriggeringRelations.length;) {
+				var client = $(operationTriggeringRelations[tr].source).first();
+				tr++;
+				// Filter out null client and operation triggering itself another component
+				if (client && client.concept.id !== operation.concept.id) {
+					var plantUMLClientId = clientMap.get(client.concept.id);
+					if (plantUMLClientId == null) {
+						plantUMLClientId = "Client_" + rr + "_" + tr;
+						clientMap.put(client.concept.id, plantUMLClientId);
+
+						// Client to be displayed (only once) in generated ArchiMate diagram...
+						var plantUMLKeyword = client.type.replace(client.type.charAt(0), client.type.charAt(0).toUpperCase());
+						var position = plantUMLKeyword.indexOf("-");
+						plantUMLKeyword = plantUMLKeyword.replace(plantUMLKeyword.charAt(position) + plantUMLKeyword.charAt(position + 1),
+							"_" + plantUMLKeyword.charAt(position + 1).toUpperCase());
+						plantUMLClients += plantUMLKeyword + "(" + plantUMLClientId + ", " + client.name + ")\n";
+					}
+
+					// ...along with its triggering relation with the operation
+					plantUMLClientRelationships += "Rel_Triggering_Up(" + plantUMLClientId + ", Operation_" + rr + ")\n";
+				}
+			}
+		}
+	}
+
+	// End of PlantUML : Concatenate previously processed instructions to generate elements and associated relations
+	plantUMLOperations += "}\n";
+	plantUMLClients += "}\n";
+	plantUMLText += plantUMLOperations + plantUMLOperationRelationships + plantUMLClients + plantUMLClientRelationships;
+	plantUMLText += "@enduml\n";
+	
+	console.log("Generated PlantUML diagram description :");
+	console.log(plantUMLText);
+
+	// Generate PlantUML ArchiMate diagram in a PNG file that will be writen in Archi installation directory
+	var fileOutputStream = new Packages.java.io.FileOutputStream("PlantUMLDemo.png");
+	var reader = new Packages.net.sourceforge.plantuml.SourceStringReader(plantUMLText);
+	console.log("Generation result : " + reader.outputImage(fileOutputStream).getDescription());
+	fileOutputStream.close();
+	console.log("Done.");
+}
