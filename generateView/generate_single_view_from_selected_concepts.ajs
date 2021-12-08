@@ -17,7 +17,7 @@ console.log("Executing " + __FILE__.substring(6) + " ...");
 try {
 	load(__DIR__ + "generate_view/generate_view.js");
 	
-	var view = generate_view({concepts: "selected", graphDepth: 1});
+	var view = generate_view({concepts: "selected", graphDepth: 1, graphDirection: "BT", graphAlign: "UL", OnlySelectedRelationships: true});
 
 	if ( view !== undefined ) {
 		console.log("The view \"" + view.name + "\" has been generated.");
