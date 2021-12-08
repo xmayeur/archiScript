@@ -6,7 +6,77 @@ console.log("New Archi Script");
 // require some libraries
 load(__DIR__+'/lib/_util.ajs')
 load(__DIR__+"/lib/_fmt_lib.ajs")
-xml = readFile('C:\\Users\\XY56RE\\PycharmProjects\\archiScripts\\examples\\AppDepPat.xml')
-//console.log(o)
+// xml = readFile('C:\\Users\\XY56RE\\PycharmProjects\\archiScripts\\examples\\AppDepPat.xml')
 
-var domparser = new DOMParser();
+console.show();
+console.clear();
+
+$(selection).filter("relationship").forEach(function (o) {
+    let view = o.view;
+    let rel = o.concept;
+    let source = o.source;
+    let target = o.target;
+    sb = source.bounds
+    tb = target.bounds
+    var bps = o.getRelativeBendpoints()
+    for each (bp in bps) {console.log('-bp', bp)}
+    try {
+        o.deleteAllBendpoints()
+    } catch (e) {
+    }
+
+    // calculate the source and target element absolute (x,y) coordinate
+    $(source).parents().forEach(function(p){
+        try {
+            sb.x += p.bounds.x;
+            sb.y += p.bounds.y;
+        } catch (e) {
+        }
+    });
+
+    $(target).parents().forEach(function(p){
+        try {
+            tb.x += p.bounds.x;
+            tb.y += p.bounds.y;
+        } catch (e) {
+        }
+    });
+    
+    sb.cx = sb.x + sb.width/2
+    sb.cy = sb.y + sb.height/2
+    tb.cx = tb.x + tb.width/2
+    tb.cy = tb.y + tb.height/2
+    dx = tb.x - sb.x
+    dy = tb.y - sb.y
+
+    console.log(sb)
+    console.log(tb)
+    console.log(dx, dy)
+
+    bp = {
+        startX:  dx/2 ,
+        startY: 0,
+        endY: -dy,
+        endX: -dx/2
+    }
+    o.addRelativeBendpoint(bp, 0);
+
+    bp = {
+        startX: dx/2,
+        startY: dy/2,
+        endY: -dy/2,
+        endX: -dx/2
+    }
+    o.addRelativeBendpoint(bp, 1);
+
+    bp = {
+        startX:  dx,
+        startY: dy/2,
+        endX: 0,
+        endY: -dy/2
+    }
+    o.addRelativeBendpoint(bp, 2);
+
+    var bps = o.getRelativeBendpoints()
+    for each (bp in bps) {console.log('-bp', bp)}
+})
