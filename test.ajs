@@ -54,18 +54,18 @@ $(selection).filter("relationship").forEach(function (o) {
     console.log(dx, dy)
 
     bp = {
-        startX:  dx/2 ,
+        startX:  dx/3 ,
         startY: 0,
         endY: -dy,
-        endX: -dx/2
+        endX: -2*dx/3
     }
     o.addRelativeBendpoint(bp, 0);
 
     bp = {
-        startX: dx/2,
+        startX: dx/3,
         startY: dy/2,
         endY: -dy/2,
-        endX: -dx/2
+        endX: -2*dx/3
     }
     o.addRelativeBendpoint(bp, 1);
 
