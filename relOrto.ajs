@@ -14,17 +14,9 @@ console.show();
 var incrY = -10;
 var incrX = -10;
 
-for each(var e
-in
-$(selection).filter('element')
-)
-{
+$(selection).filter('element').forEach(function (e) {
     console.log(e.name)
-    for each(var o
-in
-    $(e).outRels()
-)
-    {
+    $(e).outRels().forEach(function(o){
         console.log(o.source, " -> ", o.target)
         var source = o.source;
         var target = o.target;
@@ -34,18 +26,14 @@ in
         dy = tb.y - sb.y;
         console.log('dx: ', dx, ' dy: ', dy)
         var bps = o.getRelativeBendpoints()
-        for each(bp in bps) {
-            console.log("bp: ", bp)
-        }
-    }
+    bps.forEach(function(bp){
+        console.log('-bp', bp)
+    });
+    });
 
-}
+});
 
-for each(var o
-in
-$(selection).filter("relationship")
-)
-{
+$(selection).filter("relationship").forEach(function(o){
     var view = o.view;
     var rel = o.concept;
     var source = o.source;
@@ -53,31 +41,33 @@ $(selection).filter("relationship")
     sb = source.bounds;
     tb = target.bounds;
 
-    var pp = $(source).parents();
-    for each(p in pp) {
+    $(source).parents().forEach(function(p){
         try {
             sb.x += p.bounds.x;
             sb.y += p.bounds.y;
         } catch (e) {
         }
-    }
+    });
 
-    var pp = $(target).parents();
-    for each(p in pp) {
+    $(target).parents().forEach(function(p){
         try {
             tb.x += p.bounds.x;
             tb.y += p.bounds.y;
         } catch (e) {
         }
-    }
+    });
+
     dx = tb.x - sb.x;
     dy = tb.y - sb.y;
+
     console.log('dx: ', dx, ' dy: ', dy)
     var bps = o.getRelativeBendpoints()
-    for each(bp in bps) {
+
+    bps.forEach(function(bp){
         console.log('-bp', bp)
-    }
+    });
     console.log('\n\n')
+
     try {
         o.deleteAllBendpoints()
     } catch (e) {
@@ -118,4 +108,4 @@ $(selection).filter("relationship")
         prev = bp;
     });
 
-}
+});
