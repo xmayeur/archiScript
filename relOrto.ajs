@@ -1,11 +1,11 @@
 /*
  * Ortho relationships
  */
-console.clear()
+console.clear();
 console.log("New Archi Script");
 // require some libraries
-load(__DIR__ + '/lib/_util.ajs')
-load(__DIR__ + "/lib/_fmt_lib.ajs")
+load(__DIR__ + '/lib/_util.ajs');
+load(__DIR__ + "/lib/_fmt_lib.ajs");
 // xml = readFile('C:\\Users\\XY56RE\\PycharmProjects\\archiScripts\\examples\\AppDepPat.xml')
 //console.log(o)
 console.show();
@@ -38,8 +38,8 @@ $(selection).filter("relationship").forEach(function(o){
     var rel = o.concept;
     var source = o.source;
     var target = o.target;
-    sb = source.bounds;
-    tb = target.bounds;
+    var sb = source.bounds;
+    var tb = target.bounds;
 
     $(source).parents().forEach(function(p){
         try {
@@ -57,19 +57,30 @@ $(selection).filter("relationship").forEach(function(o){
         }
     });
 
-    dx = tb.x - sb.x;
-    dy = tb.y - sb.y;
+    let dx = tb.x + (tb.width/2) - sb.x - (sb.width/2);
+    let dy = tb.y + (tb.height/2) - sb.y - (sb.height/2);
 
-    console.log('dx: ', dx, ' dy: ', dy)
-    var bps = o.getRelativeBendpoints()
+    console.log('dx: ', dx, ' dy: ', dy);
+    var bps = o.getRelativeBendpoints();
+
+    if (bps.length === 0) {
+        bps = [];
+        let b = {
+            startX: 20,
+            endX: 20 - dx,
+            startY: 0,
+            endY: dy
+        };
+        bps.push(b);
+    }
 
     bps.forEach(function(bp){
-        console.log('-bp', bp)
+        console.log('-bp', bp);
     });
-    console.log('\n\n')
+    console.log('\n\n');
 
     try {
-        o.deleteAllBendpoints()
+        o.deleteAllBendpoints();
     } catch (e) {
     }
     bp0 = bps[0];
@@ -99,7 +110,6 @@ $(selection).filter("relationship").forEach(function(o){
             b.endX = b.startX - dx;
             b.startY = prev.startY * dir + bp.startY * (1 - dir);
             b.endY = b.startY - dy;
-
 
         }
         o.addRelativeBendpoint(b, n);
