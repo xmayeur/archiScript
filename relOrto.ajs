@@ -123,9 +123,9 @@ function ortho(o) {
         if (n === 0) {
             b = bp;
         } else if (n === bps.length - 1) {
-            b.startX = dx * dir + prev.startX * (1 - dir);
+            b.startX = bp.startX* dir + prev.startX * (1 - dir);
             b.endX = b.startX - dx;
-            b.startY = dir * prev.startY + dy * (1 - dir);
+            b.startY = dir * prev.startY + bp.startY * (1 - dir);
             b.endY =  b.startY - dy;
 
 
