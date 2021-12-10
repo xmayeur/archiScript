@@ -2,7 +2,7 @@
  * Ortho relationships
  */
 console.clear();
-console.log("New Archi Script");
+
 // require some libraries
 load(__DIR__ + '/lib/_util.ajs');
 load(__DIR__ + "/lib/_fmt_lib.ajs");
@@ -15,25 +15,18 @@ var incrY = -10;
 var incrX = -10;
 
 $(selection).filter('element').forEach(function (e) {
-    console.log(e.name)
-    $(e).outRels().forEach(function(o){
-        console.log(o.source, " -> ", o.target)
-        var source = o.source;
-        var target = o.target;
-        sb = source.bounds;
-        tb = target.bounds;
-        dx = tb.x - sb.x;
-        dy = tb.y - sb.y;
-        console.log('dx: ', dx, ' dy: ', dy)
-        var bps = o.getRelativeBendpoints()
-    bps.forEach(function(bp){
-        console.log('-bp', bp)
-    });
+    // console.log(e.name)
+    $(e).outRels().forEach(function (o) {
+        ortho(o);
     });
 
 });
 
-$(selection).filter("relationship").forEach(function(o){
+$(selection).filter("relationship").forEach(function (o) {
+    ortho(o);
+});
+
+function ortho(o) {
     var view = o.view;
     var rel = o.concept;
     var source = o.source;
@@ -41,7 +34,7 @@ $(selection).filter("relationship").forEach(function(o){
     var sb = source.bounds;
     var tb = target.bounds;
 
-    $(source).parents().forEach(function(p){
+    $(source).parents().forEach(function (p) {
         try {
             sb.x += p.bounds.x;
             sb.y += p.bounds.y;
@@ -49,7 +42,7 @@ $(selection).filter("relationship").forEach(function(o){
         }
     });
 
-    $(target).parents().forEach(function(p){
+    $(target).parents().forEach(function (p) {
         try {
             tb.x += p.bounds.x;
             tb.y += p.bounds.y;
@@ -57,33 +50,64 @@ $(selection).filter("relationship").forEach(function(o){
         }
     });
 
-    let dx = tb.x + (tb.width/2) - sb.x - (sb.width/2);
-    let dy = tb.y + (tb.height/2) - sb.y - (sb.height/2);
+    sb.cpx = sb.x + (sb.width / 2);
+    sb.cpy = sb.y + (sb.height / 2);
+    tb.cpx = tb.x + (tb.width / 2);
+    tb.cpy = tb.y + (tb.height / 2);
 
-    console.log('dx: ', dx, ' dy: ', dy);
+    let dx = tb.cpx - sb.cpx;
+    let dy = tb.cpy - sb.cpy;
+
+    // console.log('dx: ', dx, ' dy: ', dy);
     var bps = o.getRelativeBendpoints();
 
+    if (bps.length === 0) {return;}
+
+/*
     if (bps.length === 0) {
-        bps = [];
-        let b = {
-            startX: 20,
-            endX: 20 - dx,
-            startY: 0,
-            endY: dy
-        };
-        bps.push(b);
+        // find if the source and target objects are aligned
+        if (   sb.x < tb.x < sb.x + sb.width
+            || sb.x < tb.x + tb.width < sb.x + sb.width
+            || tb.x < sb.x < tb.x + tb.width
+            || tb.x < sb.x + sb.width < tb.x + tb.width
+            || sb.y < tb.y < sb.y + sb.height
+            || sb.y < tb.y + tb.height < sb.y + sb.height
+            || tb.y < sb.y < tb.y + tb.height
+            || tb.y < sb.y + sb.height < tb.y + tb.height
+        )
+        {
+            console.log(sb, tb);
+            return;
+        }     else   {
+            // add a bendpoint
+            bps = [];
+            let b = {
+                startX: 20,
+                endX: 20 - dx,
+                startY: 0,
+                endY: dy
+            };
+            bps.push(b);
+            o.addRelativeBendpoint(b, 0);
+        }
     }
 
+ */
+    /*
     bps.forEach(function(bp){
         console.log('-bp', bp);
     });
     console.log('\n\n');
+    */
 
-    try {
-        o.deleteAllBendpoints();
-    } catch (e) {
-    }
+    // force the first bendpoint position
     bp0 = bps[0];
+    bp0.startX += 0;
+    bp0.endX = bp0.startX - dx;
+    bp0.startY += 0;
+    bp0.endY = bp0.startY - dy;
+    o.setRelativeBendpoint(bp0, 0);
+
     var dir = 1;
     if (Math.abs(bp0.startX) < sb.height / 2) {
         dir = 0;
@@ -102,7 +126,7 @@ $(selection).filter("relationship").forEach(function(o){
             b.startX = dx * dir + prev.startX * (1 - dir);
             b.endX = b.startX - dx;
             b.startY = dir * prev.startY + dy * (1 - dir);
-            b.endY = b.startY - dy;
+            b.endY =  b.startY - dy;
 
 
         } else if (n !== 0) {
@@ -112,10 +136,11 @@ $(selection).filter("relationship").forEach(function(o){
             b.endY = b.startY - dy;
 
         }
-        o.addRelativeBendpoint(b, n);
-        console.log(n, dir, ' -bp', bp, ' -prev', prev);
+        // o.addRelativeBendpoint(b, n);
+        o.setRelativeBendpoint(b, n);
+        // console.log(n, dir, ' -bp', bp, ' -prev', prev);
         dir = (++dir) % 2;
         prev = bp;
     });
 
-});
+}
