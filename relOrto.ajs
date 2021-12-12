@@ -128,7 +128,7 @@ function ortho(o) {
             b.startX = (dx-xy.x)* dir + prev.startX * (1 - dir);
             b.endX = b.startX - dx;
             b.startY = dir * prev.startY + (dy-xy.y)* (1 - dir);
-            b.endY =  -b.startY + dy;
+            b.endY =  b.startY - dy;
         } else if (n !== 0) {
             b.startX = bp.startX * dir + prev.startX * (1 - dir);
             b.endX = b.startX - dx;
