@@ -11,41 +11,56 @@ load(__DIR__ + "/lib/_fmt_lib.ajs");
 //console.log(o)
 console.show();
 //console.clear();
-debug = true;
+debug = false;
 var incrY = -10;
 var incrX = -10;
 
-$(selection).filter('element').forEach(function (e) {
-    // console.log(e.name)
-    $(e).outRels().forEach(function (o) {
+if ($(selection) === undefined){
+       $('element').outRels().forEach(function (o) {
         ortho(o);
     });
 
-});
+} else {
 
-$(selection).filter("relationship").forEach(function (o) {
-    ortho(o);
-});
+    $(selection).filter('element').forEach(function (e) {
+        // console.log(e.name)
+        $(e).outRels().forEach(function (o) {
+            ortho(o);
+        });
+
+    });
+
+    $(selection).filter("relationship").forEach(function (o) {
+        ortho(o);
+    });
+}
 
 
 // --------------------------------------------------
 
-function objectOverlaps(s, t) {
-    const isBetween = (num1,num2,value) => value > num1 && value < num2 ;
+function addFirstBendpoint(s, t, dx, dy) {
+
     let sxm = s.x + s.width;
     let sym = s.y +s.height;
     let txm = t.x + t.width;
     let tym = t.y + t.height;
-    return (
-        isBetween(s.x, sxm, t.x)
-        || isBetween(s.x, sxm, txm)
-        || isBetween(t.x, txm, s.x)
-        || isBetween(t.x, txm, sxm)
-        || isBetween(s.y, sym, t.y)
-        || isBetween(s.y, sym, tym)
-        || isBetween(t.y, tym, s.y)
-        || isBetween(t.y, tym, sym)
-    );
+    let b={};
+    if (txm < s.x) {
+        b.startX = -dx / 2;
+        b.endX = dx / 2;
+    } else if (t.x > sxm){
+        b.startX = dx/2;
+        b.endX = -dx/2;
+    }
+    if (tym < s.y) {
+        b.startY = -dy/2;
+        b.endY = dy/2;
+    } else if (t.y > sym){
+        b.startY = dy/2;
+        b.endY = -dy/2
+    }
+
+    return b;
 }
 
 // --------------------------------------------------
@@ -126,17 +141,15 @@ function ortho(o) {
     var bps = o.getRelativeBendpoints();
 
     if (bps.length === 0) {
-        if (!objectOverlaps(sb,tb)){
+        let b = addFirstBendpoint(sb, tb, dx, dy);
+
+        if ('startX' in b) {
+            o.addRelativeBendpoint(b, 0);
             bps = [];
-            bps.push({
-                startX:dx/2,
-                startY: dy/2,
-                endX: -dx/2,
-                endY: -dy/2
-            });
-            o.addRelativeBendpoint(bps[0],0);
+            bps.push(b);
+        } else {
+            return;
         }
-        return;
     }
 
 
@@ -158,11 +171,14 @@ function ortho(o) {
             b = bp;
         }
         if (n === bps.length - 1) {
+            log('>'+bp +' - dy:' + dy)
             let xy = setXY(tb, bp.endX, bp.endY);
+            log(xy)
             b.startX = (dx-xy.x)* dir + prev.startX * (1 - dir);
             b.endX = b.startX - dx;
             b.startY = dir * prev.startY + (dy-xy.y) * (1 - dir);
             b.endY =  b.startY - dy;
+            log(b)
         } else if (n !== 0) {
             b.startX = bp.startX * dir + prev.startX * (1 - dir);
             b.endX = b.startX - dx;
