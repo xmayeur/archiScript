@@ -11,12 +11,12 @@ load(__DIR__ + "/lib/_fmt_lib.ajs");
 //console.log(o)
 console.show();
 //console.clear();
-debug = false;
+debug = true;
 var incrY = -10;
 var incrX = -10;
 
 if ($(selection) === undefined){
-       $('element').outRels().forEach(function (o) {
+       $('*').outRels().forEach(function (o) {
         ortho(o);
     });
 
@@ -45,6 +45,7 @@ function addFirstBendpoint(s, t, dx, dy) {
     let txm = t.x + t.width;
     let tym = t.y + t.height;
     let b={};
+
     if (txm < s.x) {
         b.startX = -dx / 2;
         b.endX = dx / 2;
@@ -52,12 +53,13 @@ function addFirstBendpoint(s, t, dx, dy) {
         b.startX = dx/2;
         b.endX = -dx/2;
     }
+
     if (tym < s.y) {
         b.startY = -dy/2;
         b.endY = dy/2;
     } else if (t.y > sym){
         b.startY = dy/2;
-        b.endY = -dy/2
+        b.endY = -dy/2;
     }
 
     return b;
@@ -152,7 +154,6 @@ function ortho(o) {
         }
     }
 
-
     // force the first bendpoint position
     let bp0 = bps[0];
     let xy = setXY(sb, bp0.startX, bp0.startY);
@@ -171,26 +172,26 @@ function ortho(o) {
             b = bp;
         }
         if (n === bps.length - 1) {
-            log('>'+bp +' - dy:' + dy)
+            log('>'+bp +' - dy:' + dy + ' - dx:'+dx)
             let xy = setXY(tb, bp.endX, bp.endY);
-            log(xy)
+            log(xy);
             b.startX = (dx-xy.x)* dir + prev.startX * (1 - dir);
-            b.endX = b.startX - dx;
+            b.endX = -(b.startX - dx);
             b.startY = dir * prev.startY + (dy-xy.y) * (1 - dir);
-            b.endY =  b.startY - dy;
-            log(b)
+            b.endY =  (b.startY - dy);
+            log(b);
         } else if (n !== 0) {
             b.startX = bp.startX * dir + prev.startX * (1 - dir);
             b.endX = b.startX - dx;
             b.startY = prev.startY * dir + bp.startY * (1 - dir);
             b.endY = b.startY - dy;
         }
-        // o.addRelativeBendpoint(b, n);
+
         o.setRelativeBendpoint(b, n);
 
-        log(n +' '+ dir +' -bp '+ bp + ' -prev '+  prev);
+        log(n +' '+ dir +' -b '+ b + ' -prev '+  prev);
         dir = (++dir) % 2;
-        prev = bp;
+        prev = b;
     });
 
 }
