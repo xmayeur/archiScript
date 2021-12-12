@@ -126,7 +126,16 @@ function ortho(o) {
     var bps = o.getRelativeBendpoints();
 
     if (bps.length === 0) {
-        log('Overlap:' + objectOverlaps(sb,tb));
+        if (!objectOverlaps(sb,tb)){
+            bps = [];
+            bps.push({
+                startX:dx/2,
+                startY: dy/2,
+                endX: -dx/2,
+                endY: -dy/2
+            });
+            o.addRelativeBendpoint(bps[0],0);
+        }
         return;
     }
 
