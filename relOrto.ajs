@@ -41,7 +41,7 @@ function setXY(bnd, x, y){
     if ((xa > w && ya > h)  ) {
         if (ya / xa > hw) {
             log(1)
-            return {x: (x / xa) * (w - 20), y: ym, dir: 0};
+            return {x: (x / xa) * (w - 10), y: ym, dir: 0};
         } else {
             log(2)
             return {x: xm, y: (y / ya) * (h - 10), dir: 1};
@@ -57,11 +57,14 @@ function setXY(bnd, x, y){
             return {x: xm, y: y, dir: 1};
     }
     } else if (xa > w && ya < h){
-        log(3)
+        log(3+" ya:"+ya+" y:"+y)
         return {x:xm, y:y, dir:1};
-    } else {
-        log(4)
+    } else if (xa < w && ya > h) {
+        log(4+" ya:"+ya+" y:"+y)
         return {x:x, y:ym, dir:0};
+    } else {
+        log(7)
+        return  {x:x, y:y, dir:0}
     }
 
 }
@@ -127,7 +130,7 @@ function ortho(o) {
             let xy = setXY(tb, bp.endX, bp.endY);
             b.startX = (dx-xy.x)* dir + prev.startX * (1 - dir);
             b.endX = b.startX - dx;
-            b.startY = dir * prev.startY + (dy-xy.y)* (1 - dir);
+            b.startY = dir * prev.startY + (dy-xy.y) * (1 - dir);
             b.endY =  b.startY - dy;
         } else if (n !== 0) {
             b.startX = bp.startX * dir + prev.startX * (1 - dir);
@@ -137,6 +140,7 @@ function ortho(o) {
         }
         // o.addRelativeBendpoint(b, n);
         o.setRelativeBendpoint(b, n);
+
         log(n +' '+ dir +' -bp '+ bp + ' -prev '+  prev);
         dir = (++dir) % 2;
         prev = bp;
