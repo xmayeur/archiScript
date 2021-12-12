@@ -11,7 +11,7 @@ load(__DIR__ + "/lib/_fmt_lib.ajs");
 //console.log(o)
 console.show();
 //console.clear();
-
+debug = true
 var incrY = -10;
 var incrX = -10;
 
@@ -34,17 +34,34 @@ function setXY(bnd, x, y){
     let ya = Math.abs(y);
     let w = bnd.width/2;
     let h = bnd.height/2;
+    let xm = (x/xa)*Math.max(xa, w);
+    let ym = (y/ya)*Math.max (ya, h);
+    let hw = bnd.height / bnd.width;
 
-    if (xa > w && ya > h) {
-        if (ya/xa < h/w) {
-            return {x:x, y:(y/ya)*(h-10), dir:0};
+    if ((xa > w && ya > h)  ) {
+        if (ya / xa > hw) {
+            log(1)
+            return {x: (x / xa) * (w - 20), y: ym, dir: 0};
         } else {
-            return {x:(x/xa)*(w-10), y:y, dir:1};
+            log(2)
+            return {x: xm, y: (y / ya) * (h - 10), dir: 1};
+
         }
-    } else if(xa<w && y<h) {
-        return {x:Math.max(x, w+10), y:Math.max(y, h+10), dir:1};
+    } else if (xa < w && ya < h) {
+          if (ya / xa > hw) {
+            log(5)
+              return {x: x, y: ym, dir: 0};
+
+        } else {
+            log(6)
+            return {x: xm, y: y, dir: 1};
+    }
+    } else if (xa > w && ya < h){
+        log(3)
+        return {x:x, y:y, dir:1};
     } else {
-        return {x:x, y:y, dir:(ya/xa < h/w)};
+        log(4)
+        return {x:x, y:y, dir:0};
     }
 
 }
@@ -104,7 +121,8 @@ function ortho(o) {
         n = bps.indexOf(bp);
         if (n === 0) {
             b = bp;
-        } else if (n === bps.length - 1) {
+        }
+        if (n === bps.length - 1) {
             let xy = setXY(tb, bp.endX, bp.endY);
             b.startX = (dx-xy.x)* dir + prev.startX * (1 - dir);
             b.endX = b.startX - dx;
