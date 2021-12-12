@@ -34,8 +34,8 @@ function setXY(bnd, x, y){
     let ya = Math.abs(y);
     let w = bnd.width/2;
     let h = bnd.height/2;
-    let xm = (x/xa)*Math.max(xa, w);
-    let ym = (y/ya)*Math.max (ya, h);
+    let xm = (x/xa)*Math.max(xa, w+30);
+    let ym = (y/ya)*Math.max (ya, h+30);
     let hw = bnd.height / bnd.width;
 
     if ((xa > w && ya > h)  ) {
@@ -58,10 +58,10 @@ function setXY(bnd, x, y){
     }
     } else if (xa > w && ya < h){
         log(3)
-        return {x:x, y:y, dir:1};
+        return {x:xm, y:y, dir:1};
     } else {
         log(4)
-        return {x:x, y:y, dir:0};
+        return {x:x, y:ym, dir:0};
     }
 
 }
@@ -99,10 +99,11 @@ function ortho(o) {
     let dx = tb.cpx - sb.cpx;
     let dy = tb.cpy - sb.cpy;
 
-    // console.log('dx: ', dx, ' dy: ', dy);
     var bps = o.getRelativeBendpoints();
 
-    if (bps.length === 0) {return;}
+    if (bps.length === 0) {
+        return;
+    }
 
 
     // force the first bendpoint position
@@ -136,7 +137,7 @@ function ortho(o) {
         }
         // o.addRelativeBendpoint(b, n);
         o.setRelativeBendpoint(b, n);
-        console.log(n, dir, ' -bp', bp, ' -prev', prev);
+        log(n +' '+ dir +' -bp '+ bp + ' -prev '+  prev);
         dir = (++dir) % 2;
         prev = bp;
     });
