@@ -11,7 +11,7 @@ load(__DIR__ + "/lib/_fmt_lib.ajs");
 //console.log(o)
 console.show();
 //console.clear();
-debug = false
+debug = true;
 var incrY = -10;
 var incrX = -10;
 
@@ -26,6 +26,27 @@ $(selection).filter('element').forEach(function (e) {
 $(selection).filter("relationship").forEach(function (o) {
     ortho(o);
 });
+
+
+// --------------------------------------------------
+
+function objectOverlaps(s, t) {
+    const isBetween = (num1,num2,value) => value > num1 && value < num2 ;
+    let sxm = s.x + s.width;
+    let sym = s.y +s.height;
+    let txm = t.x + t.width;
+    let tym = t.y + t.height;
+    return (
+        isBetween(s.x, sxm, t.x)
+        || isBetween(s.x, sxm, txm)
+        || isBetween(t.x, txm, s.x)
+        || isBetween(t.x, txm, sxm)
+        || isBetween(s.y, sym, t.y)
+        || isBetween(s.y, sym, tym)
+        || isBetween(t.y, tym, s.y)
+        || isBetween(t.y, tym, sym)
+    );
+}
 
 // --------------------------------------------------
 
@@ -105,6 +126,7 @@ function ortho(o) {
     var bps = o.getRelativeBendpoints();
 
     if (bps.length === 0) {
+        log('Overlap:' + objectOverlaps(sb,tb));
         return;
     }
 
