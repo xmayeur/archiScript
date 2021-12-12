@@ -11,7 +11,7 @@ load(__DIR__ + "/lib/_fmt_lib.ajs");
 //console.log(o)
 console.show();
 //console.clear();
-debug = true
+debug = false
 var incrY = -10;
 var incrX = -10;
 
