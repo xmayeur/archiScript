@@ -186,17 +186,22 @@ function ortho(o) {
         if (n === 0) {
             b = bp;
         }
-        if (n === bps.length - 1) {
+        if (n !== bps.length - 1) {
+            // all bendpoints which are the not first and the last ones
+            if (n !== 0) {
+                b.startX = bp.startX * dir + prev.startX * (1 - dir);
+                b.endX = b.startX - dx;
+                b.startY = prev.startY * dir + bp.startY * (1 - dir);
+                b.endY = b.startY - dy;
+            }
+        } else {
+            // special handling for the last bendpoint
             let xy = setXY(tb, bp.endX, bp.endY);
             b.startX = (dx - xy.x) * dir + prev.startX * (1 - dir);
             b.endX = (1 - 2 * dir) * (b.startX - dx);
             b.startY = dir * prev.startY + (dy - xy.y) * (1 - dir);
             b.endY = (-1 + 2 * dir) * (b.startY - dy);
-        } else if (n !== 0) {
-            b.startX = bp.startX * dir + prev.startX * (1 - dir);
-            b.endX = b.startX - dx;
-            b.startY = prev.startY * dir + bp.startY * (1 - dir);
-            b.endY = b.startY - dy;
+
         }
 
         o.setRelativeBendpoint(b, n);
