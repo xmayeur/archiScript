@@ -152,7 +152,7 @@ function ortho(o) {
         }
 
     } else if (bps.length === 1) {
-        // if objects are aligned and there is only one bendpoint, remove it
+        // if objects are aligned and there is only one bendpoint, remove it to make a straight line
         if (bn < 3) {
             o.deleteAllBendpoints();
             return;

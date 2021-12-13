@@ -17,6 +17,7 @@ for each (var e in $(selection).filter('element')) {
         tb = target.bounds;
         dx = tb.x - sb.x;
         dy = tb.y - sb.y;
+        console.log(sb, '\n', tb)
         console.log('dx: ', dx, ' dy: ', dy)
         var bps = o.getRelativeBendpoints()
         for each (bp in bps) {
@@ -52,6 +53,7 @@ for each (var o in $(selection).filter("relationship")) {
     }
     dx = tb.x - sb.x;
     dy = tb.y - sb.y;
+    console.log(sb, '\n', tb)
     console.log('dx: ', dx, ' dy: ', dy)
     var bps = o.getRelativeBendpoints()
     for each (bp in bps) {console.log('-bp', bp)}
