@@ -1,34 +1,41 @@
-
 /*
  * Ortho relationships
  */
 console.clear();
 console.show();
 
-var incrY = -10;
-var incrX = -10;
-
-if ($(selection) === undefined){
-       $('*').outRels().forEach(function (o) {
-        ortho(o);
-    });
-
-} else {
-
-    $(selection).filter('element').forEach(function (e) {
-        // console.log(e.name)
+// if a view is selected, check all objects
+$(selection).filter("archimate-diagram-model").forEach(function (v) {
+    function orthoRel(e) {
         $(e).outRels().forEach(function (o) {
             ortho(o);
         });
         $(e).inRels().forEach(function (o) {
             ortho(o);
         });
-    });
+        $(e).children().filter('element').forEach(function(o){ orthoRel(o);});
+    }
 
-    $(selection).filter("relationship").forEach(function (o) {
+    $(v).children().filter('element').forEach(function(e){
+        orthoRel(e);
+    });
+});
+
+// if few objects are selected, managed them
+$(selection).filter('element').forEach(function (e) {
+
+    $(e).outRels().forEach(function (o) {
         ortho(o);
     });
-}
+    $(e).inRels().forEach(function (o) {
+        ortho(o);
+    });
+});
+
+// if relationships are selected,managed them
+$(selection).filter("relationship").forEach(function (o) {
+    ortho(o);
+});
 
 
 // --------------------------------------------------
@@ -36,25 +43,25 @@ if ($(selection) === undefined){
 function addFirstBendpoint(s, t, dx, dy) {
 
     let sxm = s.x + s.width;
-    let sym = s.y +s.height;
+    let sym = s.y + s.height;
     let txm = t.x + t.width;
     let tym = t.y + t.height;
-    let _b={};
+    let _b = {};
 
     if (txm < s.x) {
         _b.startX = -dx / 2;
         _b.endX = dx / 2;
-    } else if (t.x > sxm){
-        _b.startX = dx/2;
-        _b.endX = -dx/2;
+    } else if (t.x > sxm) {
+        _b.startX = dx / 2;
+        _b.endX = -dx / 2;
     }
 
     if (tym < s.y) {
-        _b.startY = -dy/2;
-        _b.endY = dy/2;
-    } else if (t.y > sym){
-        _b.startY = dy/2;
-        _b.endY = -dy/2;
+        _b.startY = -dy / 2;
+        _b.endY = dy / 2;
+    } else if (t.y > sym) {
+        _b.startY = dy / 2;
+        _b.endY = -dy / 2;
     }
 
     return _b;
@@ -62,16 +69,16 @@ function addFirstBendpoint(s, t, dx, dy) {
 
 // --------------------------------------------------
 
-function setXY(bnd, x, y){
+function setXY(bnd, x, y) {
     let xa = Math.abs(x);
     let ya = Math.abs(y);
-    let w = bnd.width/2;
-    let h = bnd.height/2;
-    let xm = (x/xa)*Math.max(xa, w+30);
-    let ym = (y/ya)*Math.max (ya, h+30);
+    let w = bnd.width / 2;
+    let h = bnd.height / 2;
+    let xm = (x / xa) * Math.max(xa, w + 30);
+    let ym = (y / ya) * Math.max(ya, h + 30);
     let hw = bnd.height / bnd.width;
 
-    if ((xa > w && ya > h)  ) {
+    if ((xa > w && ya > h)) {
         if (ya / xa > hw) {
             return {x: (x / xa) * (w - 10), y: ym, dir: 0};
         } else {
@@ -79,18 +86,18 @@ function setXY(bnd, x, y){
 
         }
     } else if (xa < w && ya < h) {
-          if (ya / xa > hw) {
-              return {x: x, y: ym, dir: 0};
+        if (ya / xa > hw) {
+            return {x: x, y: ym, dir: 0};
 
         } else {
             return {x: xm, y: y, dir: 1};
-    }
-    } else if (xa > w && ya < h){
-        return {x:xm, y:y, dir:1};
+        }
+    } else if (xa > w && ya < h) {
+        return {x: xm, y: y, dir: 1};
     } else if (xa < w && ya > h) {
-        return {x:x, y:ym, dir:0};
+        return {x: x, y: ym, dir: 0};
     } else {
-        return  {x:x, y:y, dir:0}
+        return {x: x, y: y, dir: 0}
     }
 
 }
@@ -131,7 +138,7 @@ function ortho(o) {
     var bps = o.getRelativeBendpoints();
 
     let b = addFirstBendpoint(sb, tb, dx, dy);
-    bn= Object.keys(b).length;
+    bn = Object.keys(b).length;
     // there is no bendpoint
     if (bps.length === 0) {
         // source & destination objects are not aligned, so create a bendpoint
@@ -144,7 +151,7 @@ function ortho(o) {
             return;
         }
 
-    } else if (bps.length === 1){
+    } else if (bps.length === 1) {
         // if objects are aligned and there is only one bendpoint, remove it
         if (bn < 3) {
             o.deleteAllBendpoints();
@@ -170,10 +177,10 @@ function ortho(o) {
         }
         if (n === bps.length - 1) {
             let xy = setXY(tb, bp.endX, bp.endY);
-            b.startX = (dx-xy.x)* dir + prev.startX * (1 - dir);
-            b.endX = (1-2*dir)*(b.startX - dx);
-            b.startY = dir * prev.startY + (dy-xy.y) * (1 - dir);
-            b.endY = (-1+2*dir)* (b.startY - dy);
+            b.startX = (dx - xy.x) * dir + prev.startX * (1 - dir);
+            b.endX = (1 - 2 * dir) * (b.startX - dx);
+            b.startY = dir * prev.startY + (dy - xy.y) * (1 - dir);
+            b.endY = (-1 + 2 * dir) * (b.startY - dy);
         } else if (n !== 0) {
             b.startX = bp.startX * dir + prev.startX * (1 - dir);
             b.endX = b.startX - dx;
@@ -182,7 +189,7 @@ function ortho(o) {
         }
 
         o.setRelativeBendpoint(b, n);
-        
+
         dir = (++dir) % 2;
         prev = b;
     });
