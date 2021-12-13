@@ -1,5 +1,6 @@
 /*
  * Ortho relationships
+ *
  */
 console.clear();
 console.show();
@@ -168,6 +169,15 @@ function ortho(o) {
     o.setRelativeBendpoint(bp0, 0);
     let dir = xy.dir;
 
+    let n= bps.length;
+    if (n > 1) {
+        let t_xy = setXY(tb, bps[n-1].endX, bps[n-1].endY);
+        // console.log(n, xy, t_xy)
+        if (dir === t_xy.dir && n % 2 === 1) {
+            o.deleteBendpoint(n-2);
+            bps = o.getRelativeBendpoints();
+        }
+    }
     b = {startX: 0, startY: 0, endX: 0, endY: 0};
     let prev = bp0;
     bps.forEach(function (bp) {
