@@ -145,8 +145,7 @@ function ortho(o) {
         // source & destination objects are not aligned, so create a bendpoint
         if (bn > 2) {
             o.addRelativeBendpoint(b, 0);
-            bps = [];
-            bps.push(b);
+            bps = o.getRelativeBendpoints();
         } else {
             // or leave as is
             return;
@@ -156,11 +155,14 @@ function ortho(o) {
         // if objects are aligned and there is only one bendpoint, remove it
         if (bn < 3) {
             o.deleteAllBendpoints();
+            return;
         }
     }
 
     // force the first bendpoint position to overcome some flaw after the source have been moved
+
     let bp0 = bps[0];
+
     let xy = setXY(sb, bp0.startX, bp0.startY);
     bp0.startX = xy.x;
     bp0.endX = bp0.startX - dx;
@@ -172,7 +174,6 @@ function ortho(o) {
     let n= bps.length;
     if (n > 1) {
         let t_xy = setXY(tb, bps[n-1].endX, bps[n-1].endY);
-        // console.log(n, xy, t_xy)
         if (dir === t_xy.dir && n % 2 === 1) {
             o.deleteBendpoint(n-2);
             bps = o.getRelativeBendpoints();
