@@ -3,15 +3,8 @@
  * Ortho relationships
  */
 console.clear();
-
-// require some libraries
-load(__DIR__ + '/lib/_util.ajs');
-load(__DIR__ + "/lib/_fmt_lib.ajs");
-// xml = readFile('C:\\Users\\XY56RE\\PycharmProjects\\archiScripts\\examples\\AppDepPat.xml')
-//console.log(o)
 console.show();
-//console.clear();
-debug = true;
+
 var incrY = -10;
 var incrX = -10;
 
@@ -27,7 +20,9 @@ if ($(selection) === undefined){
         $(e).outRels().forEach(function (o) {
             ortho(o);
         });
-
+        $(e).inRels().forEach(function (o) {
+            ortho(o);
+        });
     });
 
     $(selection).filter("relationship").forEach(function (o) {
@@ -44,25 +39,25 @@ function addFirstBendpoint(s, t, dx, dy) {
     let sym = s.y +s.height;
     let txm = t.x + t.width;
     let tym = t.y + t.height;
-    let b={};
+    let _b={};
 
     if (txm < s.x) {
-        b.startX = -dx / 2;
-        b.endX = dx / 2;
+        _b.startX = -dx / 2;
+        _b.endX = dx / 2;
     } else if (t.x > sxm){
-        b.startX = dx/2;
-        b.endX = -dx/2;
+        _b.startX = dx/2;
+        _b.endX = -dx/2;
     }
 
     if (tym < s.y) {
-        b.startY = -dy/2;
-        b.endY = dy/2;
+        _b.startY = -dy/2;
+        _b.endY = dy/2;
     } else if (t.y > sym){
-        b.startY = dy/2;
-        b.endY = -dy/2;
+        _b.startY = dy/2;
+        _b.endY = -dy/2;
     }
 
-    return b;
+    return _b;
 }
 
 // --------------------------------------------------
@@ -78,30 +73,23 @@ function setXY(bnd, x, y){
 
     if ((xa > w && ya > h)  ) {
         if (ya / xa > hw) {
-            log(1)
             return {x: (x / xa) * (w - 10), y: ym, dir: 0};
         } else {
-            log(2)
             return {x: xm, y: (y / ya) * (h - 10), dir: 1};
 
         }
     } else if (xa < w && ya < h) {
           if (ya / xa > hw) {
-            log(5)
               return {x: x, y: ym, dir: 0};
 
         } else {
-            log(6)
             return {x: xm, y: y, dir: 1};
     }
     } else if (xa > w && ya < h){
-        log(3+" ya:"+ya+" y:"+y)
         return {x:xm, y:y, dir:1};
     } else if (xa < w && ya > h) {
-        log(4+" ya:"+ya+" y:"+y)
         return {x:x, y:ym, dir:0};
     } else {
-        log(7)
         return  {x:x, y:y, dir:0}
     }
 
@@ -142,19 +130,28 @@ function ortho(o) {
 
     var bps = o.getRelativeBendpoints();
 
+    let b = addFirstBendpoint(sb, tb, dx, dy);
+    bn= Object.keys(b).length;
+    // there is no bendpoint
     if (bps.length === 0) {
-        let b = addFirstBendpoint(sb, tb, dx, dy);
-
-        if ('startX' in b) {
+        // source & destination objects are not aligned, so create a bendpoint
+        if (bn > 2) {
             o.addRelativeBendpoint(b, 0);
             bps = [];
             bps.push(b);
         } else {
+            // or leave as is
             return;
+        }
+
+    } else if (bps.length === 1){
+        // if objects are aligned and there is only one bendpoint, remove it
+        if (bn < 3) {
+            o.deleteAllBendpoints();
         }
     }
 
-    // force the first bendpoint position
+    // force the first bendpoint position to overcome some flaw after the source have been moved
     let bp0 = bps[0];
     let xy = setXY(sb, bp0.startX, bp0.startY);
     bp0.startX = xy.x;
@@ -164,7 +161,7 @@ function ortho(o) {
     o.setRelativeBendpoint(bp0, 0);
     let dir = xy.dir;
 
-    let b = {startX: 0, startY: 0, endX: 0, endY: 0};
+    b = {startX: 0, startY: 0, endX: 0, endY: 0};
     let prev = bp0;
     bps.forEach(function (bp) {
         n = bps.indexOf(bp);
@@ -172,14 +169,11 @@ function ortho(o) {
             b = bp;
         }
         if (n === bps.length - 1) {
-            log('>'+bp +' - dy:' + dy + ' - dx:'+dx)
             let xy = setXY(tb, bp.endX, bp.endY);
-            log(xy);
             b.startX = (dx-xy.x)* dir + prev.startX * (1 - dir);
             b.endX = (1-2*dir)*(b.startX - dx);
             b.startY = dir * prev.startY + (dy-xy.y) * (1 - dir);
             b.endY = (-1+2*dir)* (b.startY - dy);
-            log(b);
         } else if (n !== 0) {
             b.startX = bp.startX * dir + prev.startX * (1 - dir);
             b.endX = b.startX - dx;
@@ -188,8 +182,7 @@ function ortho(o) {
         }
 
         o.setRelativeBendpoint(b, n);
-
-        log(n +' '+ dir +' -b '+ b + ' -prev '+  prev);
+        
         dir = (++dir) % 2;
         prev = b;
     });
