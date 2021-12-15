@@ -141,7 +141,7 @@ function generate_view(param) {
     debug("Loading dependencies...");
     require.addPath(__DIR__);
     require.addPath(__DIR__ + "/lib");
-    G__dagre = require('dagre');
+    G__dagre = require('jsScripts/generateView/generate_view/dagre');
 
     // we get an array with all the selected elements
     var allElements = $("element");			// contains all the elements in the model
