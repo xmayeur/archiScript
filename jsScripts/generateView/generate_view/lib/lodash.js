@@ -17087,7 +17087,7 @@
     // Use `_.noConflict` to remove Lodash from the global object.
     root._ = _;
 
-    // Define as an anonymous module so, through path mapping, it can be
+    // Define as an anonymous module so, through path type_map, it can be
     // referenced as the "underscore" module.
     define(function() {
       return _;

@@ -31,7 +31,7 @@ const mappingConfig = {
   'entry': path.join(fpPath, '_mapping.js'),
   'output': {
     'path': distPath,
-    'filename': 'mapping.fp.js',
+    'filename': 'type_map.fp.js',
     'library': 'mapping',
     'libraryTarget': 'umd'
   }

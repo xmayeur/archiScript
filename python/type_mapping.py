@@ -1,7 +1,7 @@
 # TODO : Verify ARIS keys
 # http://www.opengroup.org/xsd/archimate/3.0/archimate3_Model.xsd
 
-mapping = {
+type_map = {
     # Business Layer
     "ST_ARCHIMATE_BUSINESS_ACTOR": "BusinessActor",
     "ST_ARCHIMATE_BUSINESS_ROLE": "BusinessRole",
@@ -13,7 +13,6 @@ mapping = {
     "ST_ARCHIMATE_BUSINESS_EVENT": "BusinessEvent",
     "ST_ARCHIMATE_BUSINESS_SERVICE": "BusinessService",
     "ST_ARCHIMATE_BUSINESS_OBJECT": "BusinessObject",
-    "ST_ARCHIMATE_CAPABILITY": "Capability",
     "ST_ARCHIMATE_CONTRACT": "Contract",
     "ST_ARCHIMATE_REPRESENTATION": "Representation",
     "ST_ARCHIMATE_PRODUCT": "Product",
@@ -23,9 +22,11 @@ mapping = {
     "ST_ARCHIMATE_APPLICATION_COMPONENT": "ApplicationComponent",
     "ST_ARCHIMATE_APPLICATION_INTERFACE": "ApplicationInterface",
     "ST_ARCHIMATE_APPLICATION_COLLABORATION": "ApplicationCollaboration",
+    "ST_ARCHIMATE_APPLICATION_FUNCTION": "ApplicationFunction",
     "ST_ARCHIMATE_APPLICATION_PROCESS": "ApplicationProcess",
     "ST_ARCHIMATE_APPLICATION_EVENT": "ApplicationEvent",
     "ST_ARCHIMATE_APPLICATION_SERVICE": "ApplicationService",
+    "ST_APPL_SYS_TYPE": "", # TODO What is that?
     "ST_ARCHIMATE_DATA_OBJECT": "DataObject",
 
     # Technology layer
@@ -33,7 +34,7 @@ mapping = {
     "ST_ARCHIMATE_NODE": "Node",
     "ST_ARCHIMATE_DEVICE": "Device",
     "ST_ARCHIMATE_PATH": "Path",
-    "ST_ARCHIMATE_COMMUNICATION_NETWORK": "CommunicationNetwork",
+    "ST_ARCHIMATE_NETWORK": "CommunicationNetwork",
     "ST_ARCHIMATE_SYSTEM_SOFTWARE": "SystemSoftware",
     "ST_ARCHIMATE_TECHNOLOGY_COLLABORATION": "TechnologyCollaboration",
     "ST_ARCHIMATE_TECHNOLOGY_INTERFACE": "TechnologyInterface",
@@ -53,32 +54,32 @@ mapping = {
 
     #  Motivation
 
-    "S_ARCHIMATE_Stakeholder": "Stakeholder",
-    "S_ARCHIMATE_Driver": "Driver",
-    "S_ARCHIMATE_Assessment": "Assessment",
-    "S_ARCHIMATE_Goal": "Goal",
-    "S_ARCHIMATE_Outcome": "Outcome",
-    "S_ARCHIMATE_Principle": "Principle",
-    "S_ARCHIMATE_Requirement": "Requirement",
-    "S_ARCHIMATE_Constraint": "Constraint",
-    "S_ARCHIMATE_Meaning": "Meaning",
-    "S_ARCHIMATE_Value": "Value",
+    "ST_ARCHIMATE_STAKEHOLDER": "Stakeholder",
+    "ST_ARCHIMATE_DRIVER": "Driver",
+    "ST_ARCHIMATE_ASSESSMENT": "Assessment",
+    "ST_ARCHIMATE_GOAL": "Goal",
+    "ST_ARCHIMATE_OUTCOME": "Outcome",
+    "ST_ARCHIMATE_PRINCIPLE": "Principle",
+    "ST_ARCHIMATE_REQUIREMENT": "Requirement",
+    "ST_ARCHIMATE_CONSTRAINT": "Constraint",
+    "ST_ARCHIMATE_MEANING": "Meaning",
+    "ST_ARCHIMATE_VALUE": "Value",
 
     # Strategy
 
-    "S_ARCHIMATE_Resource": "Resource",
-    "S_ARCHIMATE_Capability": "Capability",
-    "S_ARCHIMATE_CourseOfAction": "CourseOfAction",
+    "ST_ARCHIMATE_RESOURCE": "Resource",
+    "ST_ARCHIMATE_CAPABILITY": "Capability",
+    "ST_ARCHIMATE_COURSE_OF_ACTION": "CourseOfAction",
 
     # Implementation & Migration
 
-    "S_ARCHIMATE_WorkPackage": "WorkPackage",
-    "S_ARCHIMATE_Deliverable": "Deliverable",
-    "S_ARCHIMATE_ImplementationEvent": "ImplementationEvent",
-    "S_ARCHIMATE_Plateau": "Plateau",
-    "S_ARCHIMATE_Gap": "Gap",
-    "S_ARCHIMATE_Grouping": "Grouping",
-    "S_ARCHIMATE_Location": "Location",
+    "ST_ARCHIMATE_WORK_PACKAGE": "WorkPackage",
+    "ST_ARCHIMATE_DELIVERABLE": "Deliverable",
+    "ST_ARCHIMATE_IMPLEMENTATION_EVENT": "ImplementationEvent",
+    "ST_ARCHIMATE_PLATEAU": "Plateau",
+    "ST_ARCHIMATE_GAP": "Gap",
+    "ST_ARCHIMATE_GROUP": "Grouping",
+    "ST_ARCHIMATE_Location": "Location",
 
     # Composite
 
@@ -87,8 +88,8 @@ mapping = {
 
     # Junction
 
-    "S_ARCHIMATE_AndJunction": "AndJunction",
-    "S_ARCHIMATE_OrJunction": "OrJunction",
+    "ST_ARCHIMATE_AND_JJUNCTION": "AndJunction",
+    "ST_ARCHIMATE_OR_JUNCTION": "OrJunction",
 
     # Relationships
 
@@ -97,12 +98,13 @@ mapping = {
     "CT_ARCHIMATE_REALIZES": "Realization",
     "CT_ARCHIMATE_SERVES": "Serving",
     "CT_ARCHIMATE_IS_COMPOSED_OF": "Composition",
-    "CT_ARCHIMATE_IS_??_OF": "Aggregation",
-    "CT_1": "Access",  # ! TODO Access Type enum
-    "CT_2": "Influence",  # TODO InfluenceStrengthEnum, InfluenceModiferType
-    "CT_3": "Triggering",
-    "CT_4": "Flow",
-    "CT_5": "Specialization",
+    "CT_ARCHIMATE_AGGREGATES": "Aggregation",
+    "CT_ARCHIMATE_ACCESSES": "Access",  # ! TODO Access Type enum
+    "CT_ARCHIMATE_INFLUENCES": "Influence",  # TODO InfluenceStrengthEnum, InfluenceModiferType
+    "CT_ARCHIMATE_TRIGGERS": "Triggering",
+    "CT_ARCHIMATE_FLOW": "Flow",
+    "CT_ARCHIMATE_IS_SPECIALIZATION_OF": "Specialization",
+    "CT_ARCHIMATE_EXCHNG_INFO": "Flow",  # TODO WHAT IS THAT???
 
 }
 
