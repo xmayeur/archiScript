@@ -1,5 +1,16 @@
-import json
-from jsonpath_ng import jsonpath, parse
+"""
+*   Conversion program from ARIS AML xml file to Archimate Open Exchange File format
+*   Author: X. Mayeur
+*   Date: Decemeber 2021
+*   Version 0.1
+*
+*
+*   TODO Implement folder structure
+*   TODO Implement label objects
+*   TODO Implement styling
+*
+"""
+from jsonpath_ng import parse
 import os
 import xmltodict
 from archiObjects import *
@@ -10,8 +21,48 @@ import logging as log
 
 
 class AML:
+    """
+    Class to perform the parsing of ARIS AML data and to generate OpenExchangeFile data
+    """
 
-    def __init__(self, aml_file: str, name='aris_export', scaleX=0.3, scaleY=0.3):
+    def __init__(self, aml_file: str, name='aris_export', scale_x=0.3, scale_y=0.3, skip_bendpoint=True):
+        """
+        Parameters:
+             aml_file : str
+                file path  to ARIS AML
+            name : str
+                name of the model
+            scale_x : float
+                scale factor to enlarge or reduce the diagrams (X-axis)
+            scale_x : float
+                scale factor to enlarge or reduce the diagrams (Y-axis)
+            skip_bendpoint : bool
+                flag to indicate whether bendpoints of connections should not be managed
+
+        properties:
+            data : orderedDict
+                ARIS AML data converted to an ordered dictionary object
+            eof_data : XML
+                Result of the conversion in XML format
+            model : orderedDict
+                Result of the conversion as an orderedDict
+
+        methods:
+            parse_elements : None
+                Extract all elements 'ObjDef" from ARIS data
+            parse_relationships : None
+                Extract all relationships 'CxnDef' between elements from Aris data
+                Note that some relationships are not processed as they relates to object in the central Aris database
+                not shown in the view. A warning is generated in such case
+            parse_view : None
+                Extract all views and invokes parse_nodes and parse_connections
+            parse_nodes : None
+                Extract all nodes 'ObjOcc' and check whether the related target element exists
+            parse_connections: None
+                Extract all connections between node and check whether the related target node exist
+
+
+        """
         self.data = xmltodict.parse(open(aml_file, 'r').read())
         self.folders = []
         self.name = name
@@ -21,11 +72,14 @@ class AML:
         self.model.add_property_def(self.pdef)
         self.elements = []
         self.relationships = []
-        self.scaleX = scaleX
-        self.scaleY = scaleY
+        self.scaleX = scale_x
+        self.scaleY = scale_y
+        self.skip_bendpoint = skip_bendpoint
+
         self.parse_elements()
         self.parse_relationships()
         self.parse_views()
+        self.oef_data = xmltodict.unparse(self.model.OEF, pretty=True)
 
     def get_attributes(self, o):
         o_name = ''
@@ -45,7 +99,6 @@ class AML:
                 if ad['@AttrDef.Type'] == 'AT_NAME':
                     o_name += ' '.join([x.value for x in find_text(ad)])
                     o_name = o_name.encode('ascii', 'replace').decode()
-
                 else:
                     prop_key = ad['@AttrDef.Type'][3]  # skip the 'AT_' prefix
                     prop_val = ' '.join([x.value for x in find_text(ad)])
@@ -224,10 +277,6 @@ class AML:
             objects = grp['ObjOcc']
             for o in objects:
                 o_id = o['@ObjOcc.ID']
-                o_elem_ref = o['@ObjDef.IdRef']
-                size = o['Size']
-                w = int(size['@Size.dX']) * self.scaleX
-                h = int(size['@Size.dY']) * self.scaleY
 
                 if 'CxnOcc' in o:
                     conns = o['CxnOcc']
@@ -241,12 +290,14 @@ class AML:
                         if '@Visible' in conn and conn['@Visible'] == 'NO':
                             continue
                         c = Connection(ref=c_rel_id, source=o_id, target=c_target, uuid=c_id)
-                        if 'Position' in conn:
+                        if 'Position' in conn and not self.skip_bendpoint:
                             bps = conn['Position']
                             for i in range(1, len(bps) - 1):
+                                bp_x = int(bps[i]['@Pos.X'])
+                                bp_y = int(bps[i]['@Pos.Y'])
+
                                 c.add_bendpoint(
-                                    str(int(bps[i]['@Pos.X']) * self.scaleX + (w / 2)),
-                                    str(int(bps[i]['@Pos.Y']) * self.scaleY + (h / 2))
+                                    (bp_x * self.scaleX, bp_y * self.scaleY)
                                 )
                         view.add_connection(c)
             return
@@ -256,8 +307,10 @@ class AML:
 
 
 def main():
-    aris_file = None
-
+    """
+    Read the XML file given as first argument and convert it to Open Exchange File format
+    TODO: add more structured arguments parsing to define input & output file and other parameters
+    """
     if len(sys.argv) > 1:
         aris_file = sys.argv[1]
     else:
@@ -265,11 +318,7 @@ def main():
         input_file = 'AppDepPat.xml'
         aris_file = os.path.join(input_path, input_file)
 
-    aris = AML(aris_file, scaleX=0.3, scaleY=0.4)
-    # aris.parse_folders()
-
-    #    print(json.dumps(aris.folders))
-    #    print(json.dumps(aris.model.OEF, indent=4))
+    aris = AML(aris_file, name='x', scale_x=0.3, scale_y=0.4, skip_bendpoint=False)
 
     file = os.path.join('output', 'out.yml')
     yaml.dump(aris.model.OEF, open(file, 'w'), indent=4)
