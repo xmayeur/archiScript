@@ -11,7 +11,7 @@ import logging as log
 
 class AML:
 
-    def __init__(self, aml_file: str, name='aris_export'):
+    def __init__(self, aml_file: str, name='aris_export', scaleX=0.3, scaleY=0.3):
         self.data = xmltodict.parse(open(aml_file, 'r').read())
         self.folders = []
         self.name = name
@@ -21,7 +21,8 @@ class AML:
         self.model.add_property_def(self.pdef)
         self.elements = []
         self.relationships = []
-        self.scale = 0.3
+        self.scaleX = scaleX
+        self.scaleY = scaleY
         self.parse_elements()
         self.parse_relationships()
         self.parse_views()
@@ -62,7 +63,7 @@ class AML:
         groups = groups['Group']
         if not isinstance(groups, list):
             groups = [groups]
-        for grp in groups: 
+        for grp in groups:
             if 'AttrDef' in grp:
                 name, props = self.get_attributes(grp)
                 self.folders.append(name)
@@ -194,10 +195,10 @@ class AML:
                 size = o['Size']
                 n = Node(
                     ref=o_elem_ref,
-                    x=int(pos['@Pos.X']) * self.scale,
-                    y=int(pos['@Pos.Y']) * self.scale,
-                    w=int(size['@Size.dX']) * self.scale,
-                    h=int(size['@Size.dY']) * self.scale,
+                    x=int(pos['@Pos.X']) * self.scaleX,
+                    y=int(pos['@Pos.Y']) * self.scaleY,
+                    w=int(size['@Size.dX']) * self.scaleX,
+                    h=int(size['@Size.dY']) * self.scaleY,
                     uuid=o_id
                 )
                 view.add_node(n)
@@ -224,6 +225,9 @@ class AML:
             for o in objects:
                 o_id = o['@ObjOcc.ID']
                 o_elem_ref = o['@ObjDef.IdRef']
+                size = o['Size']
+                w = int(size['@Size.dX']) * self.scaleX
+                h = int(size['@Size.dY']) * self.scaleY
 
                 if 'CxnOcc' in o:
                     conns = o['CxnOcc']
@@ -234,14 +238,16 @@ class AML:
                         c_id = conn['@CxnOcc.ID']
                         c_rel_id = conn['@CxnDef.IdRef']
                         c_target = conn['@ToObjOcc.IdRef']
+                        if '@Visible' in conn and conn['@Visible'] == 'NO':
+                            continue
                         c = Connection(ref=c_rel_id, source=o_id, target=c_target, uuid=c_id)
-                        # if 'Position' in conn:
-                        #     bps = conn['Position']
-                        #     for bp in bps:
-                        #         c.add_bendpoint(
-                        #             str(int(bp['@Pos.X'])+(n.w/2)),
-                        #             str(int(bp['@Pos.Y'])+(n.h/2))
-                        #         )
+                        if 'Position' in conn:
+                            bps = conn['Position']
+                            for i in range(1, len(bps) - 1):
+                                c.add_bendpoint(
+                                    str(int(bps[i]['@Pos.X']) * self.scaleX + (w / 2)),
+                                    str(int(bps[i]['@Pos.Y']) * self.scaleY + (h / 2))
+                                )
                         view.add_connection(c)
             return
 
@@ -259,9 +265,8 @@ def main():
         input_file = 'AppDepPat.xml'
         aris_file = os.path.join(input_path, input_file)
 
-    aris = AML(aris_file)
+    aris = AML(aris_file, scaleX=0.3, scaleY=0.4)
     # aris.parse_folders()
-
 
     #    print(json.dumps(aris.folders))
     #    print(json.dumps(aris.model.OEF, indent=4))
