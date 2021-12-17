@@ -1,6 +1,9 @@
 from uuid import uuid4, UUID
 from collections import OrderedDict
+import logging as log
 
+
+IDs = {}  # key = object id, value = object name
 
 def is_valid_uuid(uuid_to_test, version=4):
     """
@@ -68,12 +71,14 @@ class OpenExchange:
             self.OEF['model']['elements'] = {'element': []}
         for e in elements:
             self.OEF['model']['elements']['element'].append(e.element)
+            IDs[e.uuid] = e.name
 
     def add_relationship(self, *relationships):
         if 'relationships' not in self.OEF['model']:
             self.OEF['model']['relationships'] = {'relationship': []}
         for r in relationships:
             self.OEF['model']['relationships']['relationship'].append(r.relationship)
+            IDs[r.uuid] = r.name
 
     def add_view(self, *views):
         if 'views' not in self.OEF['model']:
@@ -223,13 +228,21 @@ class View:
         if 'node' not in self.view:
             self.view['node'] = []
         for n in nodes:
-            self.view['node'].append(n.node)
+            # check whether nodes refers to a known element
+            if n.ref in IDs:
+                self.view['node'].append(n.node)
+            else:
+                log.warning(f"In 'View.add_node', node '{n.uuid}' refers to undefined element reference '{n.ref}'")
 
     def add_connection(self, *connections):
         if 'connection' not in self.view:
             self.view['connection'] = []
         for c in connections:
-            self.view['connection'].append(c.connection)
+            if c.ref in IDs:
+                self.view['connection'].append(c.connection)
+            else:
+                log.warning(f"In 'View.add_connection', node '{c.uuid}' refers "
+                            f"to undefined relationship reference '{c.ref}'")
 
     def add_property(self, *properties):
         if 'properties' not in self.view:

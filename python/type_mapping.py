@@ -26,7 +26,7 @@ type_map = {
     "ST_ARCHIMATE_APPLICATION_PROCESS": "ApplicationProcess",
     "ST_ARCHIMATE_APPLICATION_EVENT": "ApplicationEvent",
     "ST_ARCHIMATE_APPLICATION_SERVICE": "ApplicationService",
-    "ST_APPL_SYS_TYPE": "", # TODO What is that?
+    "ST_APPL_SYS_TYPE": "ApplicationComponent", # TODO What is that?
     "ST_ARCHIMATE_DATA_OBJECT": "DataObject",
 
     # Technology layer
@@ -43,7 +43,7 @@ type_map = {
     "ST_ARCHIMATE_TECHNOLOGY_INTERACTION": "TechnologyInteraction",
     "ST_ARCHIMATE_TECHNOLOGY_EVENT": "TechnologyEvent",
     "ST_ARCHIMATE_TECHNOLOGY_SERVICE": "TechnologyService",
-    "ST_ARCHIMATE_ARTIFACT": "TechnologyArtifact",
+    "ST_ARCHIMATE_ARTIFACT": "Artifact",
 
     # Physical elements
 
@@ -104,7 +104,10 @@ type_map = {
     "CT_ARCHIMATE_TRIGGERS": "Triggering",
     "CT_ARCHIMATE_FLOW": "Flow",
     "CT_ARCHIMATE_IS_SPECIALIZATION_OF": "Specialization",
-    "CT_ARCHIMATE_EXCHNG_INFO": "Flow",  # TODO WHAT IS THAT???
+    "CT_ARCHIMATE_EXCHNG_INFO": "Association",  # TODO WHAT IS THAT???
+
+    # Other
+    "?": "label"
 
 }
 

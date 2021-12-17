@@ -5,6 +5,8 @@ import xmltodict
 from archiObjects import *
 from type_mapping import type_map
 import sys
+import yaml
+import logging as log
 
 
 class AML:
@@ -38,34 +40,13 @@ class AML:
             for ad in attr:
                 if ad['@AttrDef.Type'] == 'AT_NAME':
                     o_name += ' '.join([x.value for x in find_text(ad)])
-                    
-                    # vals = ad['AttrValue']['StyledElement']['StyledElement']
-                    
-                    # if 'Container' in vals:
-                    #     vals = vals['StyledElement']
-                    # elif isinstance(vals, list):
-                    #     vals = [x['StyledElement'] for x in vals]
-                    # else:
-                    #     vals = [vals]
-                    # 
-                    # for v in vals:
-                    #     o_name += ' ' if 'LineBreak' in v else v['PlainText']['@TextValue']
+                    o_name = o_name.encode('ascii', 'replace').decode()
 
                 else:
                     prop_key = ad['@AttrDef.Type'][3]  # skip the 'AT_' prefix
                     prop_val = ' '.join([x.value for x in find_text(ad)])
-                    # vals = ad['AttrValue']['StyledElement']['StyledElement']
-                    # if not isinstance(vals, list):
-                    #     vals = [vals]
-                    # for v in vals:
-                    #     if 'PlainText' in v:
-                    #         prop_val += v['PlainText']['@TextValue']
-                    #     elif 'StyledElement' in v:
-                    #         vv = v['StyledElement']
-                    #         if 'StyledElement' in vv:
-                    #             vv = v['StyledElement']['StyledElement']
-                    #         if 'PlainText' in vv:
-                    #             prop_val += vv['PlainText']['@TextValue']
+                    prop_val = prop_val.encode('ascii', 'replace').decode()
+
                     props.append(Property(prop_key, prop_val, self.pdef))
         return o_name, props
 
@@ -103,6 +84,9 @@ class AML:
                 objects = grp['ObjDef']
                 for o in objects:
                     o_type = type_map[o['@SymbolNum']]
+                    if o_type == "":
+                        o_type = 'label'
+                        log.warning("In 'parse_element', empty type found")
                     o_id = o['@ObjDef.ID']
                     o_uuid = o['GUID']
                     o_name, props = self.get_attributes(o)
@@ -120,9 +104,13 @@ class AML:
                             r_type = type_map[rel['@CxnDef.Type']]
                             r_id = rel['@CxnDef.ID']
                             r_target = rel['@ToObjDef.IdRef']
-                            r = Relationship(source=o_id, target=r_target, type=r_type, uuid=r_id)
-                            # TODO check how to manage access & influence relation metadata
-                            self.model.add_relationship(r)
+                            # Check if target is known
+                            if r_target in IDs:
+                                r = Relationship(source=o_id, target=r_target, type=r_type, uuid=r_id)
+                                # TODO check how to manage access & influence relation metadata
+                                self.model.add_relationship(r)
+                            else:
+                                log.warning(f"In 'parse_element', unknown relationship target {r_target} for element '{o_name}' - {o_id}")
                 return
 
             self.parse_elements(grp)
@@ -229,10 +217,13 @@ def main():
     #    print(json.dumps(aris.folders))
     #    print(json.dumps(aris.model.OEF, indent=4))
 
-    file = os.path.join('output', 'out.json')
-    json.dump(aris.model.OEF, open(file, 'w'), indent=4)
+    file = os.path.join('output', 'out.yml')
+    yaml.dump(aris.model.OEF, open(file, 'w'), indent=4)
     file = os.path.join('output', 'out.xml')
     xmltodict.unparse(aris.model.OEF, open(file, 'w'), pretty=True)
+
+    file = os.path.join('output', 'IDs.yml')
+    yaml.dump(IDs, open(file, 'w'))
 
 
 if __name__ == "__main__":
