@@ -37,8 +37,8 @@ def set_id(uuid=None):
     _id = str(uuid4()) if (uuid is None) else uuid
     if is_valid_uuid(_id):
         _id = _id.replace('-', '')
-        if _id[:3] != 'set_id-':
-            _id = 'set_id-' + _id
+        if _id[:3] != 'id-':
+            _id = 'id-' + _id
     return _id
 
 
@@ -233,6 +233,31 @@ class View:
             else:
                 log.warning(f"In 'View.add_node', node '{n.uuid}' refers to undefined element reference '{n.ref}'")
 
+    def add_container(self, container, label):
+        if 'node' not in self.view:
+            self.view['node'] = []
+
+        container.node['@xsi:type'] = 'Container'
+        container.node['label'] = {
+            '@xml:lang': 'en',
+            '#text': label,  # label NAME
+        }
+        del container.node['@elementRef']
+        self.view['node'].append(container.node)
+
+    def add_label(self, label_node, label):
+        if 'node' not in self.view:
+            self.view['node'] = []
+
+        label_node.node['@xsi:type'] = 'Label'
+        label_node.node['label'] = {
+            '@xml:lang': 'en',
+            '#text': label,  # label NAME
+        }
+        del label_node.node['@elementRef']
+        self.view['node'].append(label_node.node)
+        IDs[label_node.uuid] = label
+
     def add_connection(self, *connections):
         if 'connection' not in self.view:
             self.view['connection'] = []
@@ -409,26 +434,3 @@ class Style:
                 }
             }
 
-            # self.style = {
-            #     'fillColor': {
-            #         '@r': self.fc.r,  # RED 0-255
-            #         '@g': self.fc.g,  # GREEN
-            #         '@b': self.fc.b,  # BLUE
-            #         '@a': self.fc.a  # OPACITY 0-100
-            #     },
-            #     'lineColor': {
-            #         '@r': self.lc.r,  # RED 0-255
-            #         '@g': self.lc.g,  # GREEN
-            #         '@b': self.lc.b,  # BLUE
-            #         '@a': self.lc.a  # OPACITY 0-100
-            #     },
-            #     'font': {
-            #         '@name': self.f.name,  # FONT NAME
-            #         '@size': self.f.size,  # FONT SIZE
-            #         'color': {
-            #             '@r': self.f.color.r,  # RED 0-255
-            #             '@g': self.f.color.g,  # GREEN
-            #             '@b': self.f.color.b,  # BLUE
-            #         }
-            #     }
-            # }

@@ -1,7 +1,7 @@
 """
 *   Conversion program from ARIS AML xml file to Archimate Open Exchange File format
 *   Author: X. Mayeur
-*   Date: Decemeber 2021
+*   Date: December 2021
 *   Version 0.1
 *
 *
@@ -72,12 +72,16 @@ class AML:
         self.model.add_property_def(self.pdef)
         self.elements = []
         self.relationships = []
+        self.labels = {}
         self.scaleX = scale_x
         self.scaleY = scale_y
         self.skip_bendpoint = skip_bendpoint
+        self.oef_data = None
 
+    def convert(self):
         self.parse_elements()
         self.parse_relationships()
+        self.parse_labels()
         self.parse_views()
         self.oef_data = xmltodict.unparse(self.model.OEF, pretty=True)
 
@@ -219,6 +223,9 @@ class AML:
                     view = View(name=view_name, uuid=view_id)
                     self.parse_nodes(m, view)
                     self.parse_connections(m, view)
+                    self.parse_containers(m, view)
+                    self.parse_labels_in_view(m, view)
+
                     self.model.add_view(view)
 
             self.parse_views(grp)
@@ -315,6 +322,127 @@ class AML:
         self.parse_connections(grp)
         return
 
+    def parse_containers(self, grp=None, view=None):
+        if grp is None:
+            return
+
+        if 'GfxObj' not in grp:
+            return
+
+        if view is None:
+            return
+
+        if not isinstance(view, View):
+            raise ValueError("'view' is not an instance of class 'View'")
+
+        if 'GfxObj' in grp:
+            objects = grp['GfxObj']
+            if not isinstance(object, list):
+                objects = [objects]
+            for o in objects:
+                if 'RoundedRectangle' not in o:
+                    continue
+                pos = o['Position']
+                size = o['Size']
+
+                def hex_to_rgb(value):
+                    value = value.lstrip('#')
+                    lv = len(value)
+                    return tuple(int(value[i:i + lv // 3], 16) for i in range(0, lv, lv // 3))
+
+                r, g, b = hex_to_rgb(o['Brush']['@Color'])
+                line_color = RGBA()
+                line_color.r = r
+                line_color.g = g
+                line_color.b = b
+                fc = RGBA()
+                fc.r = '0'
+                fc.g = '0'
+                fc.b = '0'
+                fc.a = '0'
+
+                s = Style(line_color=line_color, fill_color=fc)
+
+                n = Node(
+                    ref=None,
+                    x=int(pos['@Pos.X']) * self.scaleX,
+                    y=int(pos['@Pos.Y']) * self.scaleY,
+                    w=int(size['@Size.dX']) * self.scaleX,
+                    h=int(size['@Size.dY']) * self.scaleY,
+                )
+                view.add_container(n, ' ')
+                n.add_style(s)
+            return
+
+        self.parse_containers(grp)
+        return
+
+    def parse_labels(self, groups=None):
+        if groups is None:
+            groups = self.data['AML']
+
+        # if 'Group' not in groups:
+        #     return
+        #
+        # groups = groups['Group']
+        if not isinstance(groups, list):
+            groups = [groups]
+
+        for grp in groups:
+            if 'FFTextDef' in grp:
+                objects = grp['FFTextDef']
+                for o in objects:
+                    o_id = o['@FFTextDef.ID']
+                    o_name, _ = self.get_attributes(o)
+                    self.labels[o_id] = o_name
+                return
+
+            self.parse_labels(grp)
+        return
+
+    def parse_labels_in_view(self, grp=None, view=None):
+        if grp is None:
+            return
+        if 'FFTextOcc' not in grp:
+            return
+        if view is None:
+            return
+        if not isinstance(view, View):
+            raise ValueError("'view' is not an instance of class 'View'")
+
+        if 'FFTextOcc' in grp:
+            objects = grp['FFTextOcc']
+            for o in objects:
+                pos = o['Position']
+                # calculate size in function of text
+                n = Node(
+                    ref=o['@FFTextDef.IdRef'],
+                    x=int(pos['@Pos.X']) * self.scaleX,
+                    y=int(pos['@Pos.Y']) * self.scaleY,
+                    w=150,
+                    h=30
+                )
+
+                line_color = RGBA()
+                line_color.r = '0'
+                line_color.g = '0'
+                line_color.b = '0'
+                line_color.a = '0'
+                fc = RGBA()
+                fc.r = '0'
+                fc.g = '0'
+                fc.b = '0'
+                fc.a = '0'
+
+                s = Style(line_color=line_color, fill_color=fc)
+
+                view.add_label(n, self.labels[o['@FFTextDef.IdRef']])
+                n.add_style(s)
+            return
+
+        self.parse_labels_in_view(grp)
+        return
+
 
 def main():
     """
@@ -329,7 +457,7 @@ def main():
         aris_file = os.path.join(input_path, input_file)
 
     aris = AML(aris_file, name='x', scale_x=0.3, scale_y=0.4, skip_bendpoint=False)
-
+    aris.convert()
     file = os.path.join('output', 'out.yml')
     yaml.dump(aris.model.OEF, open(file, 'w'), indent=4)
     file = os.path.join('output', 'out.xml')
