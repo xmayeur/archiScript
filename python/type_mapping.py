@@ -107,7 +107,7 @@ type_map = {
     "CT_ARCHIMATE_EXCHNG_INFO": "Association",  # TODO WHAT IS THAT???
 
     # Other
-    "?": "label"
+    "?": "Label"
 
 }
 

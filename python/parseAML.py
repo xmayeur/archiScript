@@ -21,7 +21,10 @@ class AML:
         self.model.add_property_def(self.pdef)
         self.elements = []
         self.relationships = []
-        self.scale = 3
+        self.scale = 0.3
+        self.parse_elements()
+        self.parse_relationships()
+        self.parse_views()
 
     def get_attributes(self, o):
         o_name = ''
@@ -46,7 +49,6 @@ class AML:
                     prop_key = ad['@AttrDef.Type'][3]  # skip the 'AT_' prefix
                     prop_val = ' '.join([x.value for x in find_text(ad)])
                     prop_val = prop_val.encode('ascii', 'replace').decode()
-
                     props.append(Property(prop_key, prop_val, self.pdef))
         return o_name, props
 
@@ -95,6 +97,29 @@ class AML:
                     e.add_property(*props)
                     self.model.add_element(e)
 
+                return
+
+            self.parse_elements(grp)
+        return
+
+    def parse_relationships(self, groups=None):
+        if groups is None:
+            groups = self.data['AML']
+
+        if 'Group' not in groups:
+            return
+
+        groups = groups['Group']
+        if not isinstance(groups, list):
+            groups = [groups]
+
+        for grp in groups:
+            if 'ObjDef' in grp:
+                objects = grp['ObjDef']
+                for o in objects:
+                    o_id = o['@ObjDef.ID']
+                    o_name, props = self.get_attributes(o)
+
                     if 'CxnDef' in o:
                         rels = o['CxnDef']
                         if not isinstance(rels, list):
@@ -110,10 +135,11 @@ class AML:
                                 # TODO check how to manage access & influence relation metadata
                                 self.model.add_relationship(r)
                             else:
-                                log.warning(f"In 'parse_element', unknown relationship target {r_target} for element '{o_name}' - {o_id}")
+                                log.warning(f"In 'parse_element', unknown relationship target {r_target} "
+                                            f"for element '{o_name}' - {o_id}")
                 return
 
-            self.parse_elements(grp)
+            self.parse_relationships(grp)
         return
 
     def parse_views(self, groups=None):
@@ -138,6 +164,7 @@ class AML:
                     view_name, model_props = self.get_attributes(m)
                     view = View(name=view_name, uuid=view_id)
                     self.parse_nodes(m, view)
+                    self.parse_connections(m, view)
                     self.model.add_view(view)
 
             self.parse_views(grp)
@@ -167,13 +194,36 @@ class AML:
                 size = o['Size']
                 n = Node(
                     ref=o_elem_ref,
-                    x=int(pos['@Pos.X']) / self.scale,
-                    y=int(pos['@Pos.Y']) / self.scale,
-                    w=int(size['@Size.dX']) / self.scale,
-                    h=int(size['@Size.dY']) / self.scale,
+                    x=int(pos['@Pos.X']) * self.scale,
+                    y=int(pos['@Pos.Y']) * self.scale,
+                    w=int(size['@Size.dX']) * self.scale,
+                    h=int(size['@Size.dY']) * self.scale,
                     uuid=o_id
                 )
                 view.add_node(n)
+            return
+
+        self.parse_nodes(grp)
+        return
+
+    def parse_connections(self, grp=None, view=None):
+        if grp is None:
+            return
+
+        if 'ObjOcc' not in grp:
+            return
+
+        if view is None:
+            return
+
+        if not isinstance(view, View):
+            raise ValueError("'view' is not an instance of class 'View'")
+
+        if 'ObjOcc' in grp:
+            objects = grp['ObjOcc']
+            for o in objects:
+                o_id = o['@ObjOcc.ID']
+                o_elem_ref = o['@ObjDef.IdRef']
 
                 if 'CxnOcc' in o:
                     conns = o['CxnOcc']
@@ -195,7 +245,7 @@ class AML:
                         view.add_connection(c)
             return
 
-        self.parse_nodes(grp)
+        self.parse_connections(grp)
         return
 
 
@@ -211,8 +261,7 @@ def main():
 
     aris = AML(aris_file)
     # aris.parse_folders()
-    aris.parse_elements()
-    aris.parse_views()
+
 
     #    print(json.dumps(aris.folders))
     #    print(json.dumps(aris.model.OEF, indent=4))
