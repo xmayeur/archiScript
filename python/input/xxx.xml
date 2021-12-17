@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model xmlns="http://www.opengroup.org/xsd/archimate/3.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengroup.org/xsd/archimate/3.0/ http://www.opengroup.org/xsd/archimate/3.1/archimate3_Diagram.xsd" identifier="id-47e6cd09d13b4016be266afb0cadba3f">
+  <name xml:lang="en">(new model)</name>
+  <elements>
+    <element identifier="id-68e905c5db164393b5cc7c26da80a37b" xsi:type="ApplicationComponent">
+      <name xml:lang="en">Application Component</name>
+    </element>
+  </elements>
+  <organizations>
+    <item>
+      <label xml:lang="en">Application</label>
+      <item identifierRef="id-68e905c5db164393b5cc7c26da80a37b" />
+    </item>
+    <item>
+      <label xml:lang="en">Views</label>
+      <item identifierRef="id-4ed3759709c64146905254d640022326" />
+    </item>
+  </organizations>
+  <views>
+    <diagrams>
+      <view identifier="id-4ed3759709c64146905254d640022326" xsi:type="Diagram">
+        <name xml:lang="en">Default View</name>
+        <node identifier="id-4472037836a54efd89cd12f3f7e8e5c5" elementRef="id-68e905c5db164393b5cc7c26da80a37b" xsi:type="Element" x="644" y="129" w="120" h="55">
+          <style>
+            <fillColor r="181" g="255" b="255" a="100" />
+            <lineColor r="92" g="92" b="92" a="100" />
+            <font name="Segoe UI" size="9">
+              <color r="0" g="0" b="0" />
+            </font>
+          </style>
+        </node>
+        <node identifier="id-231df60443e1457781732462ec48b6a9" xsi:type="Label" x="320" y="179" w="185" h="80">
+          <label xml:lang="en">Note</label>
+          <style>
+            <fillColor r="255" g="255" b="255" a="100" />
+            <lineColor r="92" g="92" b="92" a="100" />
+            <font name="Segoe UI" size="9">
+              <color r="0" g="0" b="0" />
+            </font>
+          </style>
+        </node>
+      </view>
+    </diagrams>
+  </views>
+</model>
