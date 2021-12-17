@@ -240,7 +240,7 @@ class AML:
         if 'ObjOcc' in grp:
             objects = grp['ObjOcc']
             for o in objects:
-                # o_type = type_map[o['@SymbolNum']]
+                o_type = type_map[o['@SymbolNum']]
                 o_id = o['@ObjOcc.ID']
                 # o_uuid = o['ExternalGUID']
                 o_elem_ref = o['@ObjDef.IdRef']
@@ -255,6 +255,16 @@ class AML:
                     uuid=o_id
                 )
                 view.add_node(n)
+
+                if o_type == 'Grouping':
+                    fc = RGBA()
+                    fc.r = '0'
+                    fc.g = '0'
+                    fc.b = '0'
+                    fc.a = '0'
+                    s = Style(fill_color=fc)
+                    n.add_style(s)
+
             return
 
         self.parse_nodes(grp)

@@ -2,8 +2,8 @@ from uuid import uuid4, UUID
 from collections import OrderedDict
 import logging as log
 
-
 IDs = {}  # key = object id, value = object name
+
 
 def is_valid_uuid(uuid_to_test, version=4):
     """
@@ -40,7 +40,6 @@ def set_id(uuid=None):
         if _id[:3] != 'set_id-':
             _id = 'set_id-' + _id
     return _id
-
 
 
 class OpenExchange:
@@ -164,14 +163,14 @@ class Relationship:
 
     def __init__(self, source, target, type='', uuid=None, name='', access_type=None, influcence_strength=None):
         self.uuid = set_id(uuid)
-        
+
         if isinstance(source, Element):
             self.source = source.uuid
         elif isinstance(source, str):
             self.source = source
         else:
             raise ValueError("'source' argument is not an instance of 'Element' class.")
-            
+
         if isinstance(target, Element):
             self.target = target.uuid
         elif isinstance(source, str):
@@ -179,7 +178,7 @@ class Relationship:
         else:
             raise ValueError("'target' argument is not an instance of 'Element' class.")
         self.type = type
-        
+
         self.name = name
         self.relationship = {
             '@identifier': self.uuid,  # RELATIONSHIP UUID
@@ -318,7 +317,7 @@ class Connection:
             self.source = source
         else:
             raise ValueError("'source' is not an instance of 'Node' class.")
-        
+
         if isinstance(target, Node):
             self.target = target.uuid
         elif isinstance(target, str):
@@ -379,31 +378,57 @@ class Font:
 
 class Style:
 
-    def __init__(self, fill_color: RGBA, line_color: RGBA, font: Font):
+    def __init__(self, fill_color=None, line_color=None, font=None):
         self.fc = fill_color
         self.lc = line_color
-        self. f = font
+        self.f = font
+        self.style = {}
 
-        self.style = {
-            'fillColor': {
+        if fill_color is not None and isinstance(fill_color, RGBA):
+            self.style['fillColor'] = {
                 '@r': self.fc.r,  # RED 0-255
                 '@g': self.fc.g,  # GREEN
                 '@b': self.fc.b,  # BLUE
                 '@a': self.fc.a  # OPACITY 0-100
-            },
-            'lineColor': {
+            }
+        if line_color is not None and isinstance(line_color, RGBA):
+            self.style['lineColor'] = {
                 '@r': self.lc.r,  # RED 0-255
                 '@g': self.lc.g,  # GREEN
                 '@b': self.lc.b,  # BLUE
                 '@a': self.lc.a  # OPACITY 0-100
-            },
-            'font': {
-                '@name': self.f.name,  # FONT NAME
-                '@size': self.f.size,  # FONT SIZE
+            }
+        if font is not None and isinstance(font, Font):
+            self.style['font'] = {
+                '@name': self.f.name,
+                '@size': self.f.size,
                 'color': {
-                    '@r': self.f.color.r,  # RED 0-255
-                    '@g': self.f.color.g,  # GREEN
-                    '@b': self.f.color.b,  # BLUE
+                    '@r': self.f.color.r,
+                    '@g': self.f.color.g,
+                    '@b': self.f.color.b
                 }
             }
-        }
+
+            # self.style = {
+            #     'fillColor': {
+            #         '@r': self.fc.r,  # RED 0-255
+            #         '@g': self.fc.g,  # GREEN
+            #         '@b': self.fc.b,  # BLUE
+            #         '@a': self.fc.a  # OPACITY 0-100
+            #     },
+            #     'lineColor': {
+            #         '@r': self.lc.r,  # RED 0-255
+            #         '@g': self.lc.g,  # GREEN
+            #         '@b': self.lc.b,  # BLUE
+            #         '@a': self.lc.a  # OPACITY 0-100
+            #     },
+            #     'font': {
+            #         '@name': self.f.name,  # FONT NAME
+            #         '@size': self.f.size,  # FONT SIZE
+            #         'color': {
+            #             '@r': self.f.color.r,  # RED 0-255
+            #             '@g': self.f.color.g,  # GREEN
+            #             '@b': self.f.color.b,  # BLUE
+            #         }
+            #     }
+            # }

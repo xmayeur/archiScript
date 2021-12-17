@@ -1,42 +1,343 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<model xmlns="http://www.opengroup.org/xsd/archimate/3.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengroup.org/xsd/archimate/3.0/ http://www.opengroup.org/xsd/archimate/3.1/archimate3_Diagram.xsd" identifier="set_id-b1756c5f9ba94cbaac472b04e9b183b4">
-  <name xml:lang="en">x</name>
+<model xmlns="http://www.opengroup.org/xsd/archimate/3.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengroup.org/xsd/archimate/3.0/ http://www.opengroup.org/xsd/archimate/3.1/archimate3_Diagram.xsd" identifier="set_id-0f7c181d86574d1c958295d907df6e0a">
+  <name xml:lang="fr">x</name>
   <elements>
-    <element identifier="ObjDef.5MvAEWHgkTy-p-L" xsi:type="ApplicationComponent">
-      <name xml:lang="en">Application component</name>
+    <element identifier="ObjDef.2_yTu_rfYdP-p-L" xsi:type="Capability">
+      <name xml:lang="fr">Capability Lvl 1 (Capability)</name>
       <properties>
         <property propertyDefinitionRef="propid-1">
-          <value xml:lang="en">5a4c8fa2-5f1d-11ec-288d-0050568b5c9f</value>
+          <value xml:lang="fr">d411ea0a-edec-11ea-4ee3-0050568b5c9f</value>
         </property>
       </properties>
     </element>
-    <element identifier="ObjDef.7Kycdo1fi4c-p-L" xsi:type="ApplicationCollaboration">
-      <name xml:lang="en">Application collaboration</name>
+    <element identifier="ObjDef.-4j-SPjKHTXK-p-L" xsi:type="Capability">
+      <name xml:lang="fr">Capability Lvl 2 (Capability)</name>
       <properties>
         <property propertyDefinitionRef="propid-1">
-          <value xml:lang="en">5a4c8fa0-5f1d-11ec-288d-0050568b5c9f</value>
+          <value xml:lang="fr">d411ea0c-edec-11ea-4ee3-0050568b5c9f</value>
+        </property>
+      </properties>
+    </element>
+    <element identifier="ObjDef.-3MQgV4u-nRC-p-L" xsi:type="Capability">
+      <name xml:lang="fr">Capability Lvl 3 (Capability)</name>
+      <properties>
+        <property propertyDefinitionRef="propid-1">
+          <value xml:lang="fr">d411ea0f-edec-11ea-4ee3-0050568b5c9f</value>
+        </property>
+      </properties>
+    </element>
+    <element identifier="ObjDef.6dmwjeY7lpk-p-L" xsi:type="CourseOfAction">
+      <name xml:lang="fr">[BU Name] Strategic Plan (Course of Action)</name>
+      <properties>
+        <property propertyDefinitionRef="propid-1">
+          <value xml:lang="fr">391b8883-ee0e-11ea-4ee3-0050568b5c9f</value>
+        </property>
+      </properties>
+    </element>
+    <element identifier="ObjDef.-QPtcKMHKfC-p-L" xsi:type="BusinessProcess">
+      <name xml:lang="fr">VS Value Stream Stage 2 (Value Stream)</name>
+      <properties>
+        <property propertyDefinitionRef="propid-1">
+          <value xml:lang="fr">d411e9f2-edec-11ea-4ee3-0050568b5c9f</value>
+        </property>
+      </properties>
+    </element>
+    <element identifier="ObjDef.50HZZ1qEzAE-p-L" xsi:type="BusinessRole">
+      <name xml:lang="fr">[BU Name] Business Role A (Business Role)</name>
+      <properties>
+        <property propertyDefinitionRef="propid-1">
+          <value xml:lang="fr">6ee11658-edb5-11ea-4ee3-0050568b5c9f</value>
+        </property>
+      </properties>
+    </element>
+    <element identifier="ObjDef.-4a314CFI9zW-p-L" xsi:type="BusinessService">
+      <name xml:lang="fr">[BU Name] Business Service A (Business Service)</name>
+      <properties>
+        <property propertyDefinitionRef="propid-1">
+          <value xml:lang="fr">6ee11650-edb5-11ea-4ee3-0050568b5c9f</value>
+        </property>
+      </properties>
+    </element>
+    <element identifier="ObjDef.3ZiypTbEBh5-p-L" xsi:type="BusinessObject">
+      <name xml:lang="fr">Information (Business Object)</name>
+      <properties>
+        <property propertyDefinitionRef="propid-1">
+          <value xml:lang="fr">391b8891-ee0e-11ea-4ee3-0050568b5c9f</value>
+        </property>
+      </properties>
+    </element>
+    <element identifier="ObjDef.5upqcqlU3tk-p-L" xsi:type="Product">
+      <name xml:lang="fr">[BU Name] Product Offered (Product)</name>
+      <properties>
+        <property propertyDefinitionRef="propid-1">
+          <value xml:lang="fr">d6c93314-edf2-11ea-4ee3-0050568b5c9f</value>
+        </property>
+      </properties>
+    </element>
+    <element identifier="ObjDef.6AnFRIe2EUm-p-L" xsi:type="BusinessProcess">
+      <name xml:lang="fr">VS Value Stream Stage 1 (Value Stream)</name>
+      <properties>
+        <property propertyDefinitionRef="propid-1">
+          <value xml:lang="fr">d411e9f0-edec-11ea-4ee3-0050568b5c9f</value>
+        </property>
+      </properties>
+    </element>
+    <element identifier="ObjDef.-2Vii1zPlW3x-p-L" xsi:type="BusinessProcess">
+      <name xml:lang="fr">VS Value Stream (Value Stream)</name>
+      <properties>
+        <property propertyDefinitionRef="propid-1">
+          <value xml:lang="fr">d411e9f5-edec-11ea-4ee3-0050568b5c9f</value>
+        </property>
+      </properties>
+    </element>
+    <element identifier="ObjDef.-22J_Z_V7vNH-p-L" xsi:type="BusinessProcess">
+      <name xml:lang="fr">[BU Name] Business Process A (Business Process)</name>
+      <properties>
+        <property propertyDefinitionRef="propid-1">
+          <value xml:lang="fr">6ee11655-edb5-11ea-4ee3-0050568b5c9f</value>
+        </property>
+      </properties>
+    </element>
+    <element identifier="ObjDef.5WQeZFdxxAI-p-L" xsi:type="BusinessProcess">
+      <name xml:lang="fr">[BU Name] Business Process (Business Process)</name>
+      <properties>
+        <property propertyDefinitionRef="propid-1">
+          <value xml:lang="fr">d6c93301-edf2-11ea-4ee3-0050568b5c9f</value>
+        </property>
+      </properties>
+    </element>
+    <element identifier="ObjDef.-5m7nTlRsup7-p-L" xsi:type="BusinessActor">
+      <name xml:lang="fr">ING Department or specific function therein (Business Actor)</name>
+      <properties>
+        <property propertyDefinitionRef="propid-1">
+          <value xml:lang="fr">d6c93323-edf2-11ea-4ee3-0050568b5c9f</value>
+        </property>
+      </properties>
+    </element>
+    <element identifier="ObjDef.-5UJs50RKJz3-p-L" xsi:type="BusinessService">
+      <name xml:lang="fr">[BU Name] Business Service (Business Service)</name>
+      <properties>
+        <property propertyDefinitionRef="propid-1">
+          <value xml:lang="fr">d6c93308-edf2-11ea-4ee3-0050568b5c9f</value>
+        </property>
+      </properties>
+    </element>
+    <element identifier="ObjDef.-24A-xMeto3q-p-L" xsi:type="BusinessInterface">
+      <name xml:lang="fr">[BU Name] Business Interface A (Business Interface)</name>
+      <properties>
+        <property propertyDefinitionRef="propid-1">
+          <value xml:lang="fr">6ee11652-edb5-11ea-4ee3-0050568b5c9f</value>
+        </property>
+      </properties>
+    </element>
+    <element identifier="ObjDef.-paihkzznVO-p-L" xsi:type="BusinessObject">
+      <name xml:lang="fr">Business object</name>
+      <properties>
+        <property propertyDefinitionRef="propid-1">
+          <value xml:lang="fr">6ee1165e-edb5-11ea-4ee3-0050568b5c9f</value>
+        </property>
+      </properties>
+    </element>
+    <element identifier="ObjDef.1S_2qzRclKv-p-L" xsi:type="DataObject">
+      <name xml:lang="fr">[App Name] Data Object (Data Object)</name>
+      <properties>
+        <property propertyDefinitionRef="propid-1">
+          <value xml:lang="fr">6ee1167d-edb5-11ea-4ee3-0050568b5c9f</value>
+        </property>
+      </properties>
+    </element>
+    <element identifier="ObjDef.77pCK0JfCbK-p-L" xsi:type="ApplicationService">
+      <name xml:lang="fr">[App Name] Application Service (Application Service)</name>
+      <properties>
+        <property propertyDefinitionRef="propid-1">
+          <value xml:lang="fr">2e262064-ee01-11ea-4ee3-0050568b5c9f</value>
+        </property>
+      </properties>
+    </element>
+    <element identifier="ObjDef.1GSvfp-6ZzC-p-L" xsi:type="ApplicationFunction">
+      <name xml:lang="fr">[App Name] Logical Information System (Application Function)</name>
+      <properties>
+        <property propertyDefinitionRef="propid-1">
+          <value xml:lang="fr">2e262069-ee01-11ea-4ee3-0050568b5c9f</value>
+        </property>
+      </properties>
+    </element>
+    <element identifier="ObjDef.6Q8zrBaVzrk-p-L" xsi:type="ApplicationComponent">
+      <name xml:lang="fr">[App Name] Application Component (Application Component)</name>
+      <properties>
+        <property propertyDefinitionRef="propid-1">
+          <value xml:lang="fr">2e26206e-ee01-11ea-4ee3-0050568b5c9f</value>
+        </property>
+      </properties>
+    </element>
+    <element identifier="ObjDef.5f4EZdoILhE-p-L" xsi:type="ApplicationComponent">
+      <name xml:lang="fr">[App Name] Application Component A (Application Component)</name>
+      <properties>
+        <property propertyDefinitionRef="propid-1">
+          <value xml:lang="fr">6ee11674-edb5-11ea-4ee3-0050568b5c9f</value>
+        </property>
+      </properties>
+    </element>
+    <element identifier="ObjDef.21o3QgZjtyI-p-L" xsi:type="ApplicationInterface">
+      <name xml:lang="fr">[App Name] Application Interface A (Application Interface)</name>
+      <properties>
+        <property propertyDefinitionRef="propid-1">
+          <value xml:lang="fr">6ee11671-edb5-11ea-4ee3-0050568b5c9f</value>
+        </property>
+      </properties>
+    </element>
+    <element identifier="ObjDef.12ucRIxPOlp-p-L" xsi:type="ApplicationService">
+      <name xml:lang="fr">[App Name] Application Service A (Application Service)</name>
+      <properties>
+        <property propertyDefinitionRef="propid-1">
+          <value xml:lang="fr">6ee1166b-edb5-11ea-4ee3-0050568b5c9f</value>
+        </property>
+      </properties>
+    </element>
+    <element identifier="ObjDef.-49rHh7hLMpt-p-L" xsi:type="ApplicationFunction">
+      <name xml:lang="fr">[App Name] Application Function A (Application Function)</name>
+      <properties>
+        <property propertyDefinitionRef="propid-1">
+          <value xml:lang="fr">6ee1166e-edb5-11ea-4ee3-0050568b5c9f</value>
+        </property>
+      </properties>
+    </element>
+    <element identifier="ObjDef.-lpimAwwMo1-p-L" xsi:type="TechnologyService">
+      <name xml:lang="fr">[App/Platform Name] Application Exploitation Service (Technology Service)</name>
+      <properties>
+        <property propertyDefinitionRef="propid-1">
+          <value xml:lang="fr">22979df1-ee1f-11ea-4ee3-0050568b5c9f</value>
+        </property>
+      </properties>
+    </element>
+    <element identifier="ObjDef.-5fCTTlRvQVr-p-L" xsi:type="TechnologyInterface">
+      <name xml:lang="fr">[Node Name] Node Interface A (Technology Interface)</name>
+      <properties>
+        <property propertyDefinitionRef="propid-1">
+          <value xml:lang="fr">ddc56cd7-edb8-11ea-4ee3-0050568b5c9f</value>
+        </property>
+      </properties>
+    </element>
+    <element identifier="ObjDef.-24LYMT76QO5-p-L" xsi:type="TechnologyFunction">
+      <name xml:lang="fr">[Node Name] Node Function A (Technology Function)</name>
+      <properties>
+        <property propertyDefinitionRef="propid-1">
+          <value xml:lang="fr">ddc56cde-edb8-11ea-4ee3-0050568b5c9f</value>
+        </property>
+      </properties>
+    </element>
+    <element identifier="ObjDef.7UiGkCGj0gE-p-L" xsi:type="Node">
+      <name xml:lang="fr">[Node Name] Technology Node (Technology Node)</name>
+      <properties>
+        <property propertyDefinitionRef="propid-1">
+          <value xml:lang="fr">ddc56cda-edb8-11ea-4ee3-0050568b5c9f</value>
+        </property>
+      </properties>
+    </element>
+    <element identifier="ObjDef.-rZv3WOtNyv-p-L" xsi:type="Artifact">
+      <name xml:lang="fr">[Node Name] Artifact A (Artifact)</name>
+      <properties>
+        <property propertyDefinitionRef="propid-1">
+          <value xml:lang="fr">ddc56ce4-edb8-11ea-4ee3-0050568b5c9f</value>
+        </property>
+      </properties>
+    </element>
+    <element identifier="ObjDef.4qzu76R7tGd-p-L" xsi:type="SystemSoftware">
+      <name xml:lang="fr">[App/Platform Name] Business Software (System Software)</name>
+      <properties>
+        <property propertyDefinitionRef="propid-1">
+          <value xml:lang="fr">22979df6-ee1f-11ea-4ee3-0050568b5c9f</value>
+        </property>
+      </properties>
+    </element>
+    <element identifier="ObjDef.-3ubkS97ZTIU-p-L" xsi:type="TechnologyService">
+      <name xml:lang="fr">[Node Name] Technology Service A (Technology Service)</name>
+      <properties>
+        <property propertyDefinitionRef="propid-1">
+          <value xml:lang="fr">ddc56cd4-edb8-11ea-4ee3-0050568b5c9f</value>
+        </property>
+      </properties>
+    </element>
+    <element identifier="ObjDef.-4LcLjCGggG6-p-L" xsi:type="Grouping">
+      <name xml:lang="fr">Simple TI Pattern</name>
+      <properties>
+        <property propertyDefinitionRef="propid-1">
+          <value xml:lang="fr">ddc56cd2-edb8-11ea-4ee3-0050568b5c9f</value>
+        </property>
+      </properties>
+    </element>
+    <element identifier="ObjDef.-6x_VspECguP-p-L" xsi:type="Grouping">
+      <name xml:lang="fr">Basic Business Layer Pattern</name>
+      <properties>
+        <property propertyDefinitionRef="propid-1">
+          <value xml:lang="fr">6ee1165c-edb5-11ea-4ee3-0050568b5c9f</value>
+        </property>
+      </properties>
+    </element>
+    <element identifier="ObjDef.79929RQlqGC-p-L" xsi:type="Grouping">
+      <name xml:lang="fr">Basic Application Layer Pattern</name>
+      <properties>
+        <property propertyDefinitionRef="propid-1">
+          <value xml:lang="fr">ddc56cd0-edb8-11ea-4ee3-0050568b5c9f</value>
         </property>
       </properties>
     </element>
   </elements>
   <relationships>
-    <relationship identifier="CxnDef.-7ZjsZGPTgrX-q-L" source="ObjDef.7Kycdo1fi4c-p-L" target="ObjDef.5MvAEWHgkTy-p-L" xsi:type="Aggregation" />
+    <relationship identifier="CxnDef.4Lktwo-K_Mx-q-L" source="ObjDef.-lpimAwwMo1-p-L" target="ObjDef.-3MQgV4u-nRC-p-L" xsi:type="Realization" />
+    <relationship identifier="CxnDef.7K1fqhW1wfz-q-L" source="ObjDef.-lpimAwwMo1-p-L" target="ObjDef.1GSvfp-6ZzC-p-L" xsi:type="Serving" />
+    <relationship identifier="CxnDef.-7UJM2XGoorx-q-L" source="ObjDef.1S_2qzRclKv-p-L" target="ObjDef.-paihkzznVO-p-L" xsi:type="Realization" />
+    <relationship identifier="CxnDef.1iduJICW1b8-q-L" source="ObjDef.77pCK0JfCbK-p-L" target="ObjDef.5WQeZFdxxAI-p-L" xsi:type="Serving" />
+    <relationship identifier="CxnDef.5L3AV7vb50W-q-L" source="ObjDef.77pCK0JfCbK-p-L" target="ObjDef.-3MQgV4u-nRC-p-L" xsi:type="Realization" />
+    <relationship identifier="CxnDef.2K6xvmN-ZBl-q-L" source="ObjDef.1GSvfp-6ZzC-p-L" target="ObjDef.77pCK0JfCbK-p-L" xsi:type="Realization" />
+    <relationship identifier="CxnDef.-16ca1zo-vTE-q-L" source="ObjDef.6Q8zrBaVzrk-p-L" target="ObjDef.-5m7nTlRsup7-p-L" xsi:type="Serving" />
+    <relationship identifier="CxnDef.-EmSGaBTmLc-q-L" source="ObjDef.6Q8zrBaVzrk-p-L" target="ObjDef.1GSvfp-6ZzC-p-L" xsi:type="Assignment" />
+    <relationship identifier="CxnDef.1r1UqXipGO3-q-L" source="ObjDef.5f4EZdoILhE-p-L" target="ObjDef.21o3QgZjtyI-p-L" xsi:type="Composition" />
+    <relationship identifier="CxnDef.2aYBPb9ABt8-q-L" source="ObjDef.5f4EZdoILhE-p-L" target="ObjDef.-49rHh7hLMpt-p-L" xsi:type="Assignment" />
+    <relationship identifier="CxnDef.2i0D7zhIqGU-q-L" source="ObjDef.21o3QgZjtyI-p-L" target="ObjDef.50HZZ1qEzAE-p-L" xsi:type="Serving" />
+    <relationship identifier="CxnDef.-1IXUEUShH6M-q-L" source="ObjDef.21o3QgZjtyI-p-L" target="ObjDef.12ucRIxPOlp-p-L" xsi:type="Assignment" />
+    <relationship identifier="CxnDef.Hs0sHJDoL5-q-L" source="ObjDef.-QPtcKMHKfC-p-L" target="ObjDef.-2Vii1zPlW3x-p-L" xsi:type="Aggregation" />
+    <relationship identifier="CxnDef.5JfqbkAk3no-q-L" source="ObjDef.50HZZ1qEzAE-p-L" target="ObjDef.-24A-xMeto3q-p-L" xsi:type="Composition" />
+    <relationship identifier="CxnDef.-HD_rORWGX2-q-L" source="ObjDef.50HZZ1qEzAE-p-L" target="ObjDef.-22J_Z_V7vNH-p-L" xsi:type="Assignment" />
+    <relationship identifier="CxnDef.-56mNUrio2Ap-q-L" source="ObjDef.-5fCTTlRvQVr-p-L" target="ObjDef.5f4EZdoILhE-p-L" xsi:type="Serving" />
+    <relationship identifier="CxnDef.3gOZ7y55COF-q-L" source="ObjDef.-5fCTTlRvQVr-p-L" target="ObjDef.-4LcLjCGggG6-p-L" xsi:type="Access" accessType="Write" />
+    <relationship identifier="CxnDef.TioEsIAMGN-q-L" source="ObjDef.-5fCTTlRvQVr-p-L" target="ObjDef.-3ubkS97ZTIU-p-L" xsi:type="Assignment" />
+    <relationship identifier="CxnDef.-7iyTd_baPTd-q-L" source="ObjDef.5upqcqlU3tk-p-L" target="ObjDef.77pCK0JfCbK-p-L" xsi:type="Aggregation" />
+    <relationship identifier="CxnDef.1X9fekwjk0b-q-L" source="ObjDef.5upqcqlU3tk-p-L" target="ObjDef.-5UJs50RKJz3-p-L" xsi:type="Aggregation" />
+    <relationship identifier="CxnDef.-3dhhFkrfhrd-q-L" source="ObjDef.5upqcqlU3tk-p-L" target="ObjDef.-lpimAwwMo1-p-L" xsi:type="Aggregation" />
+    <relationship identifier="CxnDef.55CGRoXDPzS-q-L" source="ObjDef.5upqcqlU3tk-p-L" target="ObjDef.3ZiypTbEBh5-p-L" xsi:type="Aggregation" />
+    <relationship identifier="CxnDef.3YZPg-NrCvu-q-L" source="ObjDef.6AnFRIe2EUm-p-L" target="ObjDef.-2Vii1zPlW3x-p-L" xsi:type="Aggregation" />
+    <relationship identifier="CxnDef.z7YgqBqBV-q-L" source="ObjDef.6AnFRIe2EUm-p-L" target="ObjDef.-QPtcKMHKfC-p-L" xsi:type="Association" />
+    <relationship identifier="CxnDef.-71C3N-jCIX8-q-L" source="ObjDef.12ucRIxPOlp-p-L" target="ObjDef.-22J_Z_V7vNH-p-L" xsi:type="Serving" />
+    <relationship identifier="CxnDef.-67S16ixvtYA-q-L" source="ObjDef.-2Vii1zPlW3x-p-L" target="ObjDef.-QPtcKMHKfC-p-L" xsi:type="Composition" />
+    <relationship identifier="CxnDef.6K7LlhQEtjg-q-L" source="ObjDef.-2Vii1zPlW3x-p-L" target="ObjDef.6AnFRIe2EUm-p-L" xsi:type="Composition" />
+    <relationship identifier="CxnDef.-2aUkartlT5h-q-L" source="ObjDef.-22J_Z_V7vNH-p-L" target="ObjDef.-4a314CFI9zW-p-L" xsi:type="Realization" />
+    <relationship identifier="CxnDef.-3BNenM28Dg0-q-L" source="ObjDef.-22J_Z_V7vNH-p-L" target="ObjDef.-paihkzznVO-p-L" xsi:type="Access" accessType="Write" />
+    <relationship identifier="CxnDef.7KIj5_i8dhK-q-L" source="ObjDef.5WQeZFdxxAI-p-L" target="ObjDef.-5UJs50RKJz3-p-L" xsi:type="Realization" />
+    <relationship identifier="CxnDef.-4YvduKEMtaO-q-L" source="ObjDef.5WQeZFdxxAI-p-L" target="ObjDef.3ZiypTbEBh5-p-L" xsi:type="Access" accessType="Write" />
+    <relationship identifier="CxnDef.-7IsiYrk173y-q-L" source="ObjDef.-24LYMT76QO5-p-L" target="ObjDef.-4LcLjCGggG6-p-L" xsi:type="Access" accessType="Write" />
+    <relationship identifier="CxnDef.3f8Zl6UXS_a-q-L" source="ObjDef.-24LYMT76QO5-p-L" target="ObjDef.-3ubkS97ZTIU-p-L" xsi:type="Realization" />
+    <relationship identifier="CxnDef.4r8Ys8Fp_XJ-q-L" source="ObjDef.-24LYMT76QO5-p-L" target="ObjDef.-rZv3WOtNyv-p-L" xsi:type="Access" accessType="Write" />
+    <relationship identifier="CxnDef.24cv0DsDJs4-q-L" source="ObjDef.-4j-SPjKHTXK-p-L" target="ObjDef.6AnFRIe2EUm-p-L" xsi:type="Association" />
+    <relationship identifier="CxnDef.InN0yKkYjG-q-L" source="ObjDef.-4j-SPjKHTXK-p-L" target="ObjDef.2_yTu_rfYdP-p-L" xsi:type="Aggregation" />
+    <relationship identifier="CxnDef.-fB-RR7hEri-q-L" source="ObjDef.-3MQgV4u-nRC-p-L" target="ObjDef.-4j-SPjKHTXK-p-L" xsi:type="Aggregation" />
+    <relationship identifier="CxnDef.6jDst_41gyK-q-L" source="ObjDef.-3MQgV4u-nRC-p-L" target="ObjDef.6dmwjeY7lpk-p-L" xsi:type="Realization" />
+    <relationship identifier="CxnDef.-5mKhjbTQoBl-q-L" source="ObjDef.-5m7nTlRsup7-p-L" target="ObjDef.5WQeZFdxxAI-p-L" xsi:type="Assignment" />
+    <relationship identifier="CxnDef.-4zkzTl7B_vq-q-L" source="ObjDef.7UiGkCGj0gE-p-L" target="ObjDef.-5fCTTlRvQVr-p-L" xsi:type="Composition" />
+    <relationship identifier="CxnDef.1aADHRK5Q6m-q-L" source="ObjDef.7UiGkCGj0gE-p-L" target="ObjDef.-4LcLjCGggG6-p-L" xsi:type="Aggregation" />
+    <relationship identifier="CxnDef.-3kZyjE5XicX-q-L" source="ObjDef.7UiGkCGj0gE-p-L" target="ObjDef.4qzu76R7tGd-p-L" xsi:type="Serving" />
+    <relationship identifier="CxnDef.39Q8svUcihu-q-L" source="ObjDef.7UiGkCGj0gE-p-L" target="ObjDef.-24LYMT76QO5-p-L" xsi:type="Assignment" />
+    <relationship identifier="CxnDef.-2FDFXgYD7JL-q-L" source="ObjDef.-rZv3WOtNyv-p-L" target="ObjDef.-4LcLjCGggG6-p-L" xsi:type="Access" accessType="Write" />
+    <relationship identifier="CxnDef.-3Ob-6Hj4BRc-q-L" source="ObjDef.-rZv3WOtNyv-p-L" target="ObjDef.1S_2qzRclKv-p-L" xsi:type="Realization" />
+    <relationship identifier="CxnDef.-19JRrkwgMVl-q-L" source="ObjDef.4qzu76R7tGd-p-L" target="ObjDef.-lpimAwwMo1-p-L" xsi:type="Assignment" />
+    <relationship identifier="CxnDef.-6x0UO7C2N4r-q-L" source="ObjDef.4qzu76R7tGd-p-L" target="ObjDef.6Q8zrBaVzrk-p-L" xsi:type="Serving" />
+    <relationship identifier="CxnDef.-1PSeuOT3Grf-q-L" source="ObjDef.-49rHh7hLMpt-p-L" target="ObjDef.12ucRIxPOlp-p-L" xsi:type="Realization" />
+    <relationship identifier="CxnDef.-7C1mpwr7jYs-q-L" source="ObjDef.-49rHh7hLMpt-p-L" target="ObjDef.1S_2qzRclKv-p-L" xsi:type="Access" accessType="Write" />
+    <relationship identifier="CxnDef.2HSnHFWV2eF-q-L" source="ObjDef.-5UJs50RKJz3-p-L" target="ObjDef.-3MQgV4u-nRC-p-L" xsi:type="Realization" />
+    <relationship identifier="CxnDef.3Dx0umS3HIy-q-L" source="ObjDef.-3ubkS97ZTIU-p-L" target="ObjDef.-49rHh7hLMpt-p-L" xsi:type="Serving" />
+    <relationship identifier="CxnDef.3kXEB6L_iK4-q-L" source="ObjDef.-3ubkS97ZTIU-p-L" target="ObjDef.-4LcLjCGggG6-p-L" xsi:type="Access" accessType="Write" />
+    <relationship identifier="CxnDef.5tAiqF7nNjr-q-L" source="ObjDef.-24A-xMeto3q-p-L" target="ObjDef.-4a314CFI9zW-p-L" xsi:type="Assignment" />
   </relationships>
-  <organizations>
-    <item>
-      <label xml:lang="en">Application</label>
-      <item identifierRef="ObjDef.5MvAEWHgkTy-p-L" />
-      <item identifierRef="ObjDef.7Kycdo1fi4c-p-L" />
-    </item>
-    <item>
-      <label xml:lang="en">Relations</label>
-      <item identifierRef="CxnDef.-7ZjsZGPTgrX-q-L" />
-    </item>
-    <item>
-      <label xml:lang="en">Views</label>
-      <item identifierRef="Model.-OExSlylsyf-u-L" />
-    </item>
-  </organizations>
   <propertyDefinitions>
     <propertyDefinition identifier="propid-1" type="string">
       <name>UUID</name>
@@ -44,35 +345,101 @@
   </propertyDefinitions>
   <views>
     <diagrams>
-      <view identifier="Model.-OExSlylsyf-u-L" xsi:type="Diagram">
-        <name xml:lang="en">test</name>
-        <node identifier="ObjOcc.-OExSlylsyf-u-L-2il1fjktRrW-x-L-33-c" elementRef="ObjDef.5MvAEWHgkTy-p-L" xsi:type="Element" x="487" y="410" w="135" h="60">
+      <view identifier="Model.-6bdwMJXsIc9-u-L" xsi:type="Diagram">
+        <name xml:lang="fr">00 START HERE Basic ArchiMate structure in Core Layers</name>
+        <node identifier="ObjOcc.-6bdwMJXsIc9-u-L-1utJdkWz1C4-x-L-33-c" elementRef="ObjDef.-6x_VspECguP-p-L" xsi:type="Element" x="67" y="180" w="825" h="300">
           <style>
-            <fillColor r="181" g="255" b="255" a="100" />
+            <fillColor r="255" g="255" b="255" a="0" />
             <lineColor r="92" g="92" b="92" a="100" />
-            <font name="Segoe UI" size="9">
+            <font name="Sans" size="9">
               <color r="0" g="0" b="0" />
             </font>
           </style>
         </node>
-        <node identifier="ObjOcc.-OExSlylsyf-u-L--1SLoBeA4wDM-x-L-33-c" elementRef="ObjDef.7Kycdo1fi4c-p-L" xsi:type="Element" x="24" y="144" w="135" h="60">
+        <node identifier="ObjOcc.-6bdwMJXsIc9-u-L--4XpMGb6rtgM-x-L-33-c" elementRef="ObjDef.-4a314CFI9zW-p-L" xsi:type="Element" x="397" y="230" w="165" h="60">
           <style>
-            <fillColor r="181" g="255" b="255" a="100" />
+            <fillColor r="255" g="255" b="181" a="100" />
             <lineColor r="92" g="92" b="92" a="100" />
-            <font name="Segoe UI" size="9">
+            <font name="Sans" size="9">
               <color r="0" g="0" b="0" />
             </font>
           </style>
         </node>
-        <connection identifier="CxnOcc.-OExSlylsyf-u-L--4SEoTQU_Tl5-y-L-34-c" relationshipRef="CxnDef.-7ZjsZGPTgrX-q-L" xsi:type="Relationship" source="ObjOcc.-OExSlylsyf-u-L--1SLoBeA4wDM-x-L-33-c" target="ObjOcc.-OExSlylsyf-u-L-2il1fjktRrW-x-L-33-c">
+        <node identifier="ObjOcc.-6bdwMJXsIc9-u-L--3Es33IFT6aZ-x-L-33-c" elementRef="ObjDef.-paihkzznVO-p-L" xsi:type="Element" x="142" y="370" w="165" h="60">
           <style>
-            <lineColor r="0" g="0" b="255" />
-            <font name="Segoe UI" size="9">
+            <fillColor r="255" g="255" b="181" a="100" />
+            <lineColor r="92" g="92" b="92" a="100" />
+            <font name="Sans" size="9">
               <color r="0" g="0" b="0" />
             </font>
           </style>
-          <bendpoint x="240" y="180" />
-          <bendpoint x="240" y="444" />
+        </node>
+        <node identifier="ObjOcc.-6bdwMJXsIc9-u-L--1xizob94gQf-x-L-33-c" elementRef="ObjDef.50HZZ1qEzAE-p-L" xsi:type="Element" x="682" y="370" w="165" h="60">
+          <style>
+            <fillColor r="255" g="255" b="181" a="100" />
+            <lineColor r="92" g="92" b="92" a="100" />
+            <font name="Sans" size="9">
+              <color r="0" g="0" b="0" />
+            </font>
+          </style>
+        </node>
+        <node identifier="ObjOcc.-6bdwMJXsIc9-u-L--6IGNM1F6GAQ-x-L-33-c" elementRef="ObjDef.-24A-xMeto3q-p-L" xsi:type="Element" x="682" y="230" w="165" h="60">
+          <style>
+            <fillColor r="255" g="255" b="181" a="100" />
+            <lineColor r="92" g="92" b="92" a="100" />
+            <font name="Sans" size="9">
+              <color r="0" g="0" b="0" />
+            </font>
+          </style>
+        </node>
+        <node identifier="ObjOcc.-6bdwMJXsIc9-u-L-6tdAgzhx_OE-x-L-33-c" elementRef="ObjDef.-22J_Z_V7vNH-p-L" xsi:type="Element" x="397" y="370" w="165" h="60">
+          <style>
+            <fillColor r="255" g="255" b="181" a="100" />
+            <lineColor r="92" g="92" b="92" a="100" />
+            <font name="Sans" size="9">
+              <color r="0" g="0" b="0" />
+            </font>
+          </style>
+        </node>
+        <connection identifier="CxnOcc.-6bdwMJXsIc9-u-L--16PkYfsEl90-y-L-34-c" relationshipRef="CxnDef.5JfqbkAk3no-q-L" xsi:type="Relationship" source="ObjOcc.-6bdwMJXsIc9-u-L--1xizob94gQf-x-L-33-c" target="ObjOcc.-6bdwMJXsIc9-u-L--6IGNM1F6GAQ-x-L-33-c">
+          <style>
+            <lineColor r="0" g="0" b="0" />
+            <font name="Sans" size="9">
+              <color r="0" g="0" b="0" />
+            </font>
+          </style>
+        </connection>
+        <connection identifier="CxnOcc.-6bdwMJXsIc9-u-L-7JjCwCvvKgX-y-L-34-c" relationshipRef="CxnDef.-HD_rORWGX2-q-L" xsi:type="Relationship" source="ObjOcc.-6bdwMJXsIc9-u-L--1xizob94gQf-x-L-33-c" target="ObjOcc.-6bdwMJXsIc9-u-L-6tdAgzhx_OE-x-L-33-c">
+          <style>
+            <lineColor r="0" g="0" b="0" />
+            <font name="Sans" size="9">
+              <color r="0" g="0" b="0" />
+            </font>
+          </style>
+        </connection>
+        <connection identifier="CxnOcc.-6bdwMJXsIc9-u-L-5ChxV_WSGXA-y-L-34-c" relationshipRef="CxnDef.5tAiqF7nNjr-q-L" xsi:type="Relationship" source="ObjOcc.-6bdwMJXsIc9-u-L--6IGNM1F6GAQ-x-L-33-c" target="ObjOcc.-6bdwMJXsIc9-u-L--4XpMGb6rtgM-x-L-33-c">
+          <style>
+            <lineColor r="0" g="0" b="0" />
+            <font name="Sans" size="9">
+              <color r="0" g="0" b="0" />
+            </font>
+          </style>
+        </connection>
+        <connection identifier="CxnOcc.-6bdwMJXsIc9-u-L--2TfQC-Yv6DV-y-L-34-c" relationshipRef="CxnDef.-3BNenM28Dg0-q-L" xsi:type="Relationship" source="ObjOcc.-6bdwMJXsIc9-u-L-6tdAgzhx_OE-x-L-33-c" target="ObjOcc.-6bdwMJXsIc9-u-L--3Es33IFT6aZ-x-L-33-c">
+          <style>
+            <lineColor r="0" g="0" b="0" />
+            <font name="Sans" size="9">
+              <color r="0" g="0" b="0" />
+            </font>
+          </style>
+        </connection>
+        <connection identifier="CxnOcc.-6bdwMJXsIc9-u-L-2A1bfZVUuvi-y-L-34-c" relationshipRef="CxnDef.-2aUkartlT5h-q-L" xsi:type="Relationship" source="ObjOcc.-6bdwMJXsIc9-u-L-6tdAgzhx_OE-x-L-33-c" target="ObjOcc.-6bdwMJXsIc9-u-L--4XpMGb6rtgM-x-L-33-c">
+          <style>
+            <lineColor r="0" g="0" b="0" />
+            <font name="Sans" size="9">
+              <color r="0" g="0" b="0" />
+            </font>
+          </style>
         </connection>
       </view>
     </diagrams>
