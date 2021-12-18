@@ -6,7 +6,6 @@
 *
 *
 *   TODO Implement folder structure
-*   TODO Implement label objects
 *   TODO Implement styling
 *
 """
@@ -85,7 +84,7 @@ class AML:
         self.parse_views()
         self.oef_data = xmltodict.unparse(self.model.OEF, pretty=True)
 
-    def get_attributes(self, o):
+    def get_attributes(self, o, sep=' '):
         o_name = ''
         props = []
 
@@ -101,11 +100,11 @@ class AML:
                 attr = [attr]
             for ad in attr:
                 if ad['@AttrDef.Type'] == 'AT_NAME':
-                    o_name += ' '.join([x.value for x in find_text(ad)])
+                    o_name += sep.join([x.value for x in find_text(ad)])
                     o_name = o_name.encode('ascii', 'replace').decode()
                 else:
                     prop_key = ad['@AttrDef.Type'][3]  # skip the 'AT_' prefix
-                    prop_val = ' '.join([x.value for x in find_text(ad)])
+                    prop_val = sep.join([x.value for x in find_text(ad)])
                     prop_val = prop_val.encode('ascii', 'replace').decode()
                     props.append(Property(prop_key, prop_val, self.pdef))
         return o_name, props
@@ -264,11 +263,7 @@ class AML:
                 view.add_node(n)
 
                 if o_type == 'Grouping':
-                    fc = RGBA()
-                    fc.r = '0'
-                    fc.g = '0'
-                    fc.b = '0'
-                    fc.a = '0'
+                    fc = RGBA(0, 0, 0, 0)
                     s = Style(fill_color=fc)
                     n.add_style(s)
 
@@ -351,16 +346,8 @@ class AML:
                     return tuple(int(value[i:i + lv // 3], 16) for i in range(0, lv, lv // 3))
 
                 r, g, b = hex_to_rgb(o['Brush']['@Color'])
-                line_color = RGBA()
-                line_color.r = r
-                line_color.g = g
-                line_color.b = b
-                fc = RGBA()
-                fc.r = '0'
-                fc.g = '0'
-                fc.b = '0'
-                fc.a = '0'
-
+                line_color = RGBA(r, g, b, 100)
+                fc = RGBA(0, 0, 0, 0)
                 s = Style(line_color=line_color, fill_color=fc)
 
                 n = Node(
@@ -381,10 +368,6 @@ class AML:
         if groups is None:
             groups = self.data['AML']
 
-        # if 'Group' not in groups:
-        #     return
-        #
-        # groups = groups['Group']
         if not isinstance(groups, list):
             groups = [groups]
 
@@ -393,7 +376,7 @@ class AML:
                 objects = grp['FFTextDef']
                 for o in objects:
                     o_id = o['@FFTextDef.ID']
-                    o_name, _ = self.get_attributes(o)
+                    o_name, _ = self.get_attributes(o, '\n')
                     self.labels[o_id] = o_name
                 return
 
@@ -414,29 +397,22 @@ class AML:
             objects = grp['FFTextOcc']
             for o in objects:
                 pos = o['Position']
+                lbl = self.labels[o['@FFTextDef.IdRef']]
                 # calculate size in function of text
                 n = Node(
                     ref=o['@FFTextDef.IdRef'],
                     x=int(pos['@Pos.X']) * self.scaleX,
                     y=int(pos['@Pos.Y']) * self.scaleY,
-                    w=150,
-                    h=30
+                    w=15 * len(max(lbl.split('\n'))),
+                    h=30 + 13 * lbl.count('\n')
                 )
 
-                line_color = RGBA()
-                line_color.r = '0'
-                line_color.g = '0'
-                line_color.b = '0'
-                line_color.a = '0'
-                fc = RGBA()
-                fc.r = '0'
-                fc.g = '0'
-                fc.b = '0'
-                fc.a = '0'
+                line_color = RGBA(0, 0, 0, 0)
+                fc = RGBA(0, 0, 0, 0)
 
                 s = Style(line_color=line_color, fill_color=fc)
 
-                view.add_label(n, self.labels[o['@FFTextDef.IdRef']])
+                view.add_label(n, lbl)
                 n.add_style(s)
             return
 

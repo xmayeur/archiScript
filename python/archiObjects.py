@@ -380,25 +380,20 @@ class Connection:
 
 
 class RGBA:
-    r: str
-    g: str
-    b: str
-    a: str
 
-    r = None
-    g = None
-    b = None
-    a = '100'
+    def __init__(self, r: int, g: int, b: int, a: int = 100):
+        self.r = r
+        self.g = g
+        self.b = b
+        self.a = a
 
 
 class Font:
-    name: str
-    size: str
-    color: RGBA
 
-    name = 'Segoe UI'
-    size = '9'
-    color = None
+    def __init__(self, name: str = 'Segoe UI' , size: int = 9, color: RGBA = (0,0,0,100)):
+        self.name = name
+        self.size = size
+        self.color = color
 
 
 class Style:
@@ -411,26 +406,26 @@ class Style:
 
         if fill_color is not None and isinstance(fill_color, RGBA):
             self.style['fillColor'] = {
-                '@r': self.fc.r,  # RED 0-255
-                '@g': self.fc.g,  # GREEN
-                '@b': self.fc.b,  # BLUE
-                '@a': self.fc.a  # OPACITY 0-100
+                '@r': str(self.fc.r),  # RED 0-255
+                '@g': str(self.fc.g),  # GREEN
+                '@b': str(self.fc.b),  # BLUE
+                '@a': str(self.fc.a)  # OPACITY 0-100
             }
         if line_color is not None and isinstance(line_color, RGBA):
             self.style['lineColor'] = {
-                '@r': self.lc.r,  # RED 0-255
-                '@g': self.lc.g,  # GREEN
-                '@b': self.lc.b,  # BLUE
-                '@a': self.lc.a  # OPACITY 0-100
+                '@r': str(self.lc.r),  # RED 0-255
+                '@g': str(self.lc.g),  # GREEN
+                '@b': str(self.lc.b),  # BLUE
+                '@a': str(self.lc.a)  # OPACITY 0-100
             }
         if font is not None and isinstance(font, Font):
             self.style['font'] = {
                 '@name': self.f.name,
                 '@size': self.f.size,
                 'color': {
-                    '@r': self.f.color.r,
-                    '@g': self.f.color.g,
-                    '@b': self.f.color.b
+                    '@r': str(self.f.color.r),
+                    '@g': str(self.f.color.g),
+                    '@b': str(self.f.color.b)
                 }
             }
 
