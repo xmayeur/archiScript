@@ -6,17 +6,15 @@
 *
 *
 *   TODO Implement folder structure
-*   TODO Implement styling
+*   TODO Implement styles
 *
 """
 from jsonpath_ng import parse
-import os
 import xmltodict
 from archiObjects import *
 from type_mapping import type_map
-import sys
-import yaml
 import logging as log
+import argparse
 
 
 class AML:
@@ -403,7 +401,7 @@ class AML:
                     ref=o['@FFTextDef.IdRef'],
                     x=int(pos['@Pos.X']) * self.scaleX,
                     y=int(pos['@Pos.Y']) * self.scaleY,
-                    w=15 * len(max(lbl.split('\n'))),
+                    w=13 * len(max(lbl.split('\n'))),
                     h=30 + 13 * lbl.count('\n')
                 )
 
@@ -423,24 +421,21 @@ class AML:
 def main():
     """
     Read the XML file given as first argument and convert it to Open Exchange File format
-    TODO: add more structured arguments parsing to define input & output file and other parameters
     """
-    if len(sys.argv) > 1:
-        aris_file = sys.argv[1]
-    else:
-        input_path = 'input'
-        input_file = 'AppDepPat.xml'
-        aris_file = os.path.join(input_path, input_file)
 
-    aris = AML(aris_file, name='x', scale_x=0.3, scale_y=0.4, skip_bendpoint=False)
+    parser = argparse.ArgumentParser("Convert ARIS AML to Archimate Open Exchange Fine")
+    parser.add_argument('file', help="AML input file")
+    parser.add_argument('-o', '--outputfile', required=False, help="Output converted file")
+
+    args = parser.parse_args()
+
+    aris = AML(args.file, name='x', scale_x=0.3, scale_y=0.4, skip_bendpoint=False)
     aris.convert()
-    file = os.path.join('output', 'out.yml')
-    yaml.dump(aris.model.OEF, open(file, 'w'), indent=4)
-    file = os.path.join('output', 'out.xml')
-    xmltodict.unparse(aris.model.OEF, open(file, 'w'), pretty=True)
 
-    file = os.path.join('output', 'IDs.yml')
-    yaml.dump(IDs, open(file, 'w'))
+    if args.outputfile:
+        xmltodict.unparse(aris.model.OEF, open(args.outputfile, 'w'), pretty=True)
+    else:
+        print(xmltodict.unparse(aris.model.OEF, pretty=True))
 
 
 if __name__ == "__main__":
