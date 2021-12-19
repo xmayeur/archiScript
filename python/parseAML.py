@@ -399,8 +399,8 @@ class AML:
                 # calculate size in function of text
                 n = Node(
                     ref=o['@FFTextDef.IdRef'],
-                    x=int(pos['@Pos.X']) * self.scaleX,
-                    y=int(pos['@Pos.Y']) * self.scaleY,
+                    x=max(int(pos['@Pos.X']) * self.scaleX - 30, 0),
+                    y=max(int(pos['@Pos.Y']) * self.scaleY - 37, 0),
                     w=13 * len(max(lbl.split('\n'))),
                     h=30 + 13 * lbl.count('\n')
                 )
@@ -425,11 +425,22 @@ def main():
 
     parser = argparse.ArgumentParser("Convert ARIS AML to Archimate Open Exchange Fine")
     parser.add_argument('file', help="AML input file")
+    parser.add_argument('-s', '--scale', required=False, help='Diagram scale factor')
     parser.add_argument('-o', '--outputfile', required=False, help="Output converted file")
 
     args = parser.parse_args()
+    if args.scale:
+        scale = eval(args.scale)
+        if isinstance(scale, tuple):
+            scale_x, scale_y = scale
+        else:
+            scale_x = 0.3
+            scale_y = 0.4
+    else:
+        scale_x = 0.3
+        scale_y = 0.4
 
-    aris = AML(args.file, name='x', scale_x=0.3, scale_y=0.4, skip_bendpoint=False)
+    aris = AML(args.file, name='x', scale_x=scale_x, scale_y=scale_y, skip_bendpoint=False)
     aris.convert()
 
     if args.outputfile:
