@@ -475,10 +475,10 @@ class Connection:
 class RGBA:
 
     def __init__(self, r: int, g: int, b: int, a: int = 100):
-        self.r = r
-        self.g = g
-        self.b = b
-        self.a = a
+        self.r = max(0, min(255, r))
+        self.g = max(0, min(255, g))
+        self.b = max(0, min(255, b))
+        self.a = max(0, min(100, a))
 
 
 class Font:
