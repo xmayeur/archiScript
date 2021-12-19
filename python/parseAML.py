@@ -429,7 +429,7 @@ def main():
     parser.add_argument('-o', '--outputfile', required=False, help="Output converted file")
 
     args = parser.parse_args()
-    if args.scale
+    if args.scale:
         scale = eval(args.scale)
         if isinstance(scale, tuple):
             scale_x, scale_y = scale
