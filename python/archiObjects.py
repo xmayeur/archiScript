@@ -1,7 +1,21 @@
+"""
+* A library to create Archimate Open Exchange File documents.
+*
+* Author: Xavier Mayeur
+* Date: December 2021
+* Version 0.1
+*
+* TODO verify if Elements or Relationships Type are compliant
+*
+*
+"""
 from uuid import uuid4, UUID
 from collections import OrderedDict
 import logging as log
+import xmltodict
 
+
+# Dictionary with all artefact identifier keys & name as value
 IDs = {}  # key = object id, value = object name
 
 
@@ -34,6 +48,9 @@ def is_valid_uuid(uuid_to_test, version=4):
 
 
 def set_id(uuid=None):
+    """
+    Function to create an identifier if none exists
+    """
     _id = str(uuid4()) if (uuid is None) else uuid
     if is_valid_uuid(_id):
         _id = _id.replace('-', '')
@@ -43,6 +60,39 @@ def set_id(uuid=None):
 
 
 class OpenExchange:
+    """
+    OpenExchange class define the methods and properties to create an Open Exchange document
+
+    Properties:
+    OEF : OrderedDict
+        An OrderedDict dictionary as a model, compliant with the OEF format
+
+    name : str
+        the name of the Archimate model
+    uuid: str
+        the identifier of the Archimate model
+
+    Methods:
+    generate_xml: xml
+        convert the OEF dictionary into xml
+
+    add_elements : None
+        add a collection of Elements to the model
+
+    add_relationships : None
+        add a collection of Relationships to the model
+
+    add_view : None
+        add a collection of Views to the model
+
+    add_property_def : None
+        add a list of property definitions to the model
+
+    add_properties: None
+        add a collection of properties to an Element, a Relationship or a View
+
+
+    """
 
     def __init__(self, name, uuid=None):
         self.name = name
@@ -65,21 +115,24 @@ class OpenExchange:
         }
         }
 
-    def add_element(self, *elements):
+    def generate_xml(self):
+        return xmltodict.unparse(self.OEF, pretty=True)
+
+    def add_elements(self, *elements):
         if 'elements' not in self.OEF['model']:
             self.OEF['model']['elements'] = {'element': []}
         for e in elements:
             self.OEF['model']['elements']['element'].append(e.element)
             IDs[e.uuid] = e.name
 
-    def add_relationship(self, *relationships):
+    def add_relationships(self, *relationships):
         if 'relationships' not in self.OEF['model']:
             self.OEF['model']['relationships'] = {'relationship': []}
         for r in relationships:
             self.OEF['model']['relationships']['relationship'].append(r.relationship)
             IDs[r.uuid] = r.name
 
-    def add_view(self, *views):
+    def add_views(self, *views):
         if 'views' not in self.OEF['model']:
             self.OEF['model']['views'] = {'diagrams': {'view': []}}
         for v in views:
@@ -88,7 +141,7 @@ class OpenExchange:
     def add_property_def(self, propdef):
         self.OEF['model']['propertyDefinitions'] = {'propertyDefinition': propdef.propertyDefinitions}
 
-    def add_property(self, *properties):
+    def add_properties(self, *properties):
         if 'properties' not in self.OEF['model']:
             self.OEF['model']['properties'] = {'property': []}
         for p in properties:
@@ -98,7 +151,18 @@ class OpenExchange:
 
 
 class Element:
+    """
+    Define an Element artifact
 
+    Properties:
+    name : str
+        Name of the Element
+    uuid : str
+        identifier of the Element - can be a UUID4 string, or any unique identifier string
+    element: dict
+        the element object that will be added to the model
+
+    """
     def __init__(self, name=None, type=None, uuid=None):
         self.name = name
         self.type = type
@@ -123,6 +187,22 @@ class Element:
 
 
 class Property:
+    """
+    Define a Property
+
+    Parameters:
+    key : str
+        the Property key
+    value : str
+        the Property value
+    propdef : PropertyDefinition
+        a PropertyDefinition object
+
+    Properties:
+    property : dict
+        the property object to be added to a model artefact
+
+    """
 
     def __init__(self, key: str, value: str, propdef):
         self.value = value
@@ -145,6 +225,19 @@ class Property:
 
 
 class PropertyDefinitions:
+    """
+    Define an PropertyDefinition object
+
+    Properties:
+    propertyDefinition : list
+        a list of property key objects
+
+    Methods:
+    add : str
+        add a new key to the list
+        :param  str key
+        :return str key identifier
+    """
 
     def __init__(self):
         self.propertyDefinitions = []

@@ -45,6 +45,9 @@ class AML:
                 Result of the conversion as an orderedDict
 
         methods:
+
+            convert : None
+                Convert AML object to OEF one by calling the parsers
             parse_elements : None
                 Extract all elements 'ObjDef" from ARIS data
             parse_relationships : None
@@ -55,8 +58,16 @@ class AML:
                 Extract all views and invokes parse_nodes and parse_connections
             parse_nodes : None
                 Extract all nodes 'ObjOcc' and check whether the related target element exists
-            parse_connections: None
+            parse_connections : None
                 Extract all connections between node and check whether the related target node exist
+            parse_containers: None
+                Extract all rectangle graphical objects and convert them in containers.
+                It is a specialization of parse_nodes
+            parse_labels : None
+                Extract all text label
+            parse_labels_in_view : None
+                Extract labels meta data (position, style) and convert them as labels.
+                It is a specialization of parse_nodes
 
 
         """
@@ -150,7 +161,7 @@ class AML:
                     e = Element(name=o_name, type=o_type, uuid=o_id)
                     e.add_property(Property('UUID', o_uuid, self.pdef))
                     e.add_property(*props)
-                    self.model.add_element(e)
+                    self.model.add_elements(e)
 
                 return
 
@@ -188,7 +199,7 @@ class AML:
                             if r_target in IDs:
                                 r = Relationship(source=o_id, target=r_target, type=r_type, uuid=r_id)
                                 # TODO check how to manage access & influence relation metadata
-                                self.model.add_relationship(r)
+                                self.model.add_relationships(r)
                             else:
                                 log.warning(f"In 'parse_element', unknown relationship target {r_target} "
                                             f"for element '{o_name}' - {o_id}")
@@ -223,7 +234,7 @@ class AML:
                     self.parse_containers(m, view)
                     self.parse_labels_in_view(m, view)
 
-                    self.model.add_view(view)
+                    self.model.add_views(view)
 
             self.parse_views(grp)
         return
