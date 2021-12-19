@@ -70,8 +70,8 @@ class AML:
         self.elements = []
         self.relationships = []
         self.labels = {}
-        self.scaleX = scale_x
-        self.scaleY = scale_y
+        self.scaleX = float(scale_x)
+        self.scaleY = float(scale_y)
         self.skip_bendpoint = skip_bendpoint
         self.oef_data = None
 
@@ -399,8 +399,8 @@ class AML:
                 # calculate size in function of text
                 n = Node(
                     ref=o['@FFTextDef.IdRef'],
-                    x=max(int(pos['@Pos.X']) * self.scaleX - 30, 0),
-                    y=max(int(pos['@Pos.Y']) * self.scaleY - 37, 0),
+                    x=max(int(pos['@Pos.X']) * self.scaleX, 0),
+                    y=max(int(pos['@Pos.Y']) * self.scaleY, 0),
                     w=13 * len(max(lbl.split('\n'))),
                     h=30 + 13 * lbl.count('\n')
                 )
@@ -429,16 +429,16 @@ def main():
     parser.add_argument('-o', '--outputfile', required=False, help="Output converted file")
 
     args = parser.parse_args()
-    if args.scale:
+    if args.scale
         scale = eval(args.scale)
         if isinstance(scale, tuple):
             scale_x, scale_y = scale
         else:
-            scale_x = 0.3
-            scale_y = 0.4
+            scale_x = scale
+            scale_y = scale
     else:
-        scale_x = 0.3
-        scale_y = 0.4
+        scale_x = 1
+        scale_y = 1
 
     aris = AML(args.file, name='x', scale_x=scale_x, scale_y=scale_y, skip_bendpoint=False)
     aris.convert()
