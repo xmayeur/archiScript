@@ -1,0 +1,94 @@
+console.clear();
+
+if ($.process.engine != "com.oracle.truffle.js.scriptengine.GraalJSScriptEngine") {
+    console.log("This script only works with GraalVM script engine.")
+    exit();
+}
+
+var System = Java.type("java.lang.System");
+if (System.getProperties().get("polyglot.js.commonjs-require") != "true") {
+    System.getProperties().put("polyglot.js.commonjs-require", "true");
+    System.getProperties().put("polyglot.js.commonjs-require-cwd", __SCRIPTS_DIR__);
+    console.log("GraalJS Module loading was previously disabled. Restart your script");
+    exit();
+}
+
+papa = require('papaparse')
+
+let filePath = __DIR__ + 'Test.csv';
+data = readFile(filePath);
+o = papa.parse(data, {header: true});
+let laaMap = {};
+
+headers = [
+    ["CMDB ID", "ING ID", "Application business owner", "Application IT Custodian", "Assigned architect"],
+    ["CMDB ID", "ING ID", "Asset Owner", "IT Custodian", "Architect"]
+];
+
+o.data.forEach(function (d) {
+    var baName = d['Unique Mainframe applications'];
+    // get business app object
+    var ba = $("." + baName).first();
+    if (ba === null) {
+        // create a new business application if not existing yet
+        ba = model.createElement("application-collaboration", baName);
+    }
+    headers[0].forEach(function (x, idx) {
+        ba.prop(headers[1][idx], d[x]);
+        // console.log(baName, idx, headers[1][idx], ": ", d[x])
+    });
+    ba.prop('Environment', 'Production');
+
+    // get LAA block references
+    var pat = /^(\d+.?\d*.?\d*) /
+    var laaRef = pat.exec(d['LAA block']);
+    if (laaRef !== null) {
+        laaRef = laaRef[1]
+        if (!(laaRef in laaMap)) {
+            // find LAA concept in LAA framework
+            try {
+                $('business-function').forEach(function (x) {
+                    if (x.prop('outline') === laaRef) {
+                        laaMap[laaRef] = x;
+                        throw 'Break';
+                    }
+                });
+            } catch (exception) {
+                if (exception !== 'Break') throw exception
+            }
+        }
+        var e = laaMap[laaRef];
+        // console.log(ba, laaRef, e.id, e.name);
+
+        // check if a relation of the same type already exists before creating a new one
+        if ($(e).inRels('serving-relationship').length === 0)
+            try {
+                model.createRelationship('serving-relationship', "", ba, e);
+            } catch (exception) {
+                console.log("!! ", ba, e, exception)
+            }
+
+
+    }
+});
+
+console.log('Done')
+
+// ---------------------------------------------------------------------------------
+function readFile(filePath) {
+    var FileReader = Java.type("java.io.FileReader");
+    var Types = Java.type("java.nio.charset.StandardCharsets");
+    var theFile = new FileReader(filePath, Types.UTF_8);
+
+    var buffer = "";
+
+    var data = theFile.read();
+    console.log("> Please Wait...");
+    while (data !== -1) {
+        var theCharacter = String.fromCharCode(data);
+        buffer += theCharacter;
+        data = theFile.read();
+    }
+    theFile.close();
+    return buffer
+}

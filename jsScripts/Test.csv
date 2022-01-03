@@ -1,0 +1,177 @@
+﻿CMDB ID;ING ID;PBB;Unique Mainframe applications;CMDB Name;is Business or Infra;Business unit;Application business owner;Application IT Custodian;Assigned architect;LAA block;Buisiness Capability Level 1;Buisiness Capability Level 2;Buisiness Capability Level 3;Decommissioning planned date
+#N/A;#N/A;;AGF;Non-mainframe, Solaris, in decomm;Business;;;;;;;;;
+f04d51ed3762ee4061eb2b2943990e64;application-business-34122;;AIP;;Business;BE/Domestic Products/Core Banking;Amaury Vanthournout;Patrick Ghysen;Danny Smalle;3.1.8 Payments Execution Engine;;;;31/12/2099
+26265de53722ee4061eb2b2943990e88;application-business-34485;;AIS;AIS_App;Business;;;;;;;;;
+#N/A;#N/A;;ALL;X;???;;;;;;;;;
+534b99293762ee4061eb2b2943990e98;application-support-561473;;AMI;AMIQ;Business;;;;;;;;;
+3e73392d3726ee4061eb2b2943990e61;application-business-38762;;ANS;;Business;WB/Transaction Services;Chantal Fokke;Ward Thijs;Tim Neckebroeck;2.4.1 Instruction & Order Management;;;;31/12/2099
+8aaf21a53726ee4061eb2b2943990e8a;application-support-561475;;APS;;Infra;BE/Customer & Data/Doc. MGT. & CREFS;Jean Pinte;Koen Michiels;Luc VanLathem;2.3.5 Dossier Management;;;;31/12/2025
+#N/A;#N/A;;ARB;X;???;;;;;;;;;
+9b9b9d693762ee4061eb2b2943990e97;application-business-34133;;ART;;Business;BE/Domestic Products/Core Banking;Amaury Vanthournout;Patrick Ghysen;Danny Smalle;2.4.3 Customer Reporting;;;;31/12/2099
+e7c2a16d37a2ee4061eb2b2943990ed8;application-business-34379;;ATT;;???;BE/Domestic Products/Core Banking;Rosario Aguilar Ruiz;Patrick Ghysen;Ruud van Kessel;2.4.3 Customer Reporting;;;;31/12/2099
+b76fe9653726ee4061eb2b2943990e9f;application-business-33966;;AVO;;Business;BE/Domestic Products/Lending;Albin Moreau;Filip Queeckers;Vipin Zharotia;3.1.12 Business Lending Engine;;;;31/12/2099
+49f2a96d37a2ee4061eb2b2943990ead;application-business-34139;;BBP;;Business;WB/Transaction Services;Chantal Fokke;Ward Thijs;Tim Neckebroeck;2.3.2 Arrangement Management;;;;31/12/2099
+7704252137e2ee4061eb2b2943990e4d;application-business-34303;;BEC;FAR;Business;;;;;;;;;
+#N/A;#N/A;;BNB;X;???;;;;;;;;;
+6ea9ede937e2ee4061eb2b2943990ef3;application-business-39030;;BRB;;Business;BE/Domestic Products/Lending;Albin Moreau;Filip Queeckers;Kathy Mottet;2.3.3 Party Management;;;;31/12/2099
+02f679a13766ee4061eb2b2943990e3a;application-business-33971;;CAS;;Business;BE/Customer & Data/KYC, Onboarding & Customer Data;Johan Van Assche;Marijke De Jonckheer;Tim Neckebroeck;2.3.2 Arrangement Management;;;;31/12/2099
+0700b9a53726ee4061eb2b2943990efc;application-business-33729;;CCL;CCLayer;Business;;;;;;;;;
+2a94d1a13722ee4061eb2b2943990ece;application-business-39573;;CDW;;Business;BE/HR & Finance & Risk;Camille Villeroy de Galhau;Tine Puttenaers;Kathy Mottet;4.1.4 Finance & Risk Reporting & Analytics;;;;31/05/2024
+a78e65253726ee4061eb2b2943990e88;application-business-34153;;CHQ;;Business;BE/Domestic Products/Core Banking;Amaury Vanthournout;Patrick Ghysen;Danny Smalle;2.4.1 Instruction & Order Management;;;;31/12/2099
+2a3ca5213726ee4061eb2b2943990e9c;application-business-44989;;CIA;;Infra;BE/Infrastructure & Platforms/End User & Core Banking;Johan Smessaert;Johann Ahrens;Tim Neckebroeck;Infrastructure & Connectivity/System Services;;;;31/12/2099
+#N/A;#N/A;;CNM;runs;Business;;;;;;;;;
+d3c865a937e2ee4061eb2b2943990e6c;application-business-562269;;COP;;Business;BE/Domestic Products/Core Banking;Amaury Vanthournout;Patrick Ghysen;David Vendrame;3.1.14 Cards Engine;;;;31/12/2099
+737579ed3726ee4061eb2b2943990e7f;application-business-27380;;COR;CSI;Business;;;;;;;;;
+#N/A;#N/A;;CPC;X;???;;;;;;;;;
+f7af1d6537a2ee4061eb2b2943990e00;application-business-39041;;CPM;;Business;BE/HR & Finance & Risk;Camille Villeroy de Galhau;Tine Puttenaers;Kathy Mottet;4.1.4 Finance & Risk Reporting & Analytics;;;;30/06/2024
+cd7859ed3722ee4061eb2b2943990e72;application-business-38546;;CPS;;Business;BE/Domestic Products/Investments;Erik Hagreis;Arnaud Gaudissart;Els Van Opstal;3.1.15 Securities Engine;;;;30/06/2023
+9b17bda13766ee4061eb2b2943990ebc;application-business-33974;;CRE;;Business;BE/Domestic Products/Lending;Albin Moreau;Filip Queeckers;Vipin Zharotia;3.2.1 Reference Data Management;;;;31/12/2099
+61d7596d3722ee4061eb2b2943990ece;application-business-44998;;CRR;;Business;BE/Domestic Products/Lending;Ellen Szapinszky;Filip Queeckers;Vipin Zharotia;2.2.7 Solution Selling;;;;31/12/2021
+#N/A;#N/A;;CSH;=CSI - runs;Business;;;;;;;;;
+737579ed3726ee4061eb2b2943990e7f;application-business-27380;;CSI;;Business;BE/Customer & Data/KYC, Onboarding & Customer Data;Johan Van Assche;Marijke De Jonckheer;Tim Neckebroeck;2.3.3 Party Management;;;;31/12/2099
+#N/A;#N/A;;CSM;=CSI - runs;Business;;;;;;;;;
+#N/A;#N/A;;CSX;=CSI - runs;Business;;;;;;;;;
+be9f596537a2ee4061eb2b2943990e8f;application-business-34158;;CZA;;Business;BE/Domestic Products/Core Banking;Amaury Vanthournout;Patrick Ghysen;Danny Smalle;2.4.3 Customer Reporting;;;;31/12/2099
+d9df11a537a2ee4061eb2b2943990e53;application-business-38748;;DEV;;Business;WB/Transaction Services;Chantal Fokke;Ward Thijs;Tim Neckebroeck;3.2.1 Reference Data Management;;;;31/12/2099
+d48c1d2d3762ee4061eb2b2943990e51;application-business-34170;;DOM;;Business;WB/Transaction Services;Chantal Fokke;Ward Thijs;Danny Smalle;3.1.8 Payments Execution Engine;;;;31/12/2099
+402f25653726ee4061eb2b2943990e25;application-business-34174;;DOP;;Business;BE/Domestic Products/Core Banking;Amaury Vanthournout;Patrick Ghysen;Danny Smalle;2.4.1 Instruction & Order Management;;;;31/12/2099
+#N/A;#N/A;;DPD;X;???;;;;;;;;;
+9438ed2937e2ee4061eb2b2943990e60;application-business-44401;;DTR;;Business;BE/Domestic Products/Lending;Sofie Gullentops;Filip Queeckers;Jan Mutsaars;3.1.6 Trade Finance Engine;;;;31/12/2022
+d5cd592137a2ee4061eb2b2943990e3d;application-business-33877;;EBE;EBE_TLK_LEB;Business;;;;;;;;;
+cf11296937a2ee4061eb2b2943990e5d;application-business-33857;;EBK;;Business;BE/Channels/Digital Business Banking;Rob Gneo;Joris Nys;Jacques Muller;1.3.3 Interaction Context Management;;;;31/12/2099
+737579ed3726ee4061eb2b2943990e7f;application-business-27380;;ECO;CSI;Business;;;;Renaud Delville;2.3.3 Party Management;;;;
+7546bd213766ee4061eb2b2943990e46;application-support-561495;;ECS;;Infra;BE/Infrastructure & Platforms/End User & Core Banking;Johan Smessaert;Johann Ahrens;Marc Depasse;Middleware & Integration;;;;31/12/2099
+b18c5d2d3762ee4061eb2b2943990ec6;application-business-34183;;ECU;;Business;BE/Domestic Products/Core Banking;Amaury Vanthournout;Patrick Ghysen;Danny Smalle;2.4.1 Instruction & Order Management;;;;31/12/2099
+9ae3aded37a2ee4061eb2b2943990e69;application-business-39785;;EPS;;Business;BE/Domestic Products/Investments;Erik Hagreis;Arnaud Gaudissart;Els Van Opstal;3.1.15 Securities Engine;;;;31/03/2022
+#N/A;#N/A;;ETW;X;Business;;;;Tim Neckebroeck;3.1.6 Trade Finance Engine;;;;30/06/2021
+547ae16d37e2ee4061eb2b2943990e14;application-business-34301;;EUA;;Business;BE/Customer & Data/KYC, Onboarding & Customer Data;Johan Van Assche;Marijke De Jonckheer;Ruud van Kessel;2.3.2 Arrangement Management;;;;31/12/2099
+3aee1de137a2ee4061eb2b2943990e36;application-business-597166;;FAM;;Business;BE/Domestic Products/Core Banking;Rosario Aguilar Ruiz;Patrick Ghysen;Mario Denorme;3.1.9 Current Account Engine;;;;31/12/2099
+7704252137e2ee4061eb2b2943990e4d;application-business-34303;;FAR;;Business;BE/Domestic Products/Core Banking;Amaury Vanthournout;Patrick Ghysen;Marc Depasse;2.4.1 Instruction & Order Management;;;;31/12/2099
+7e52e12d37a2ee4061eb2b2943990e51;application-business-38556;;FBO;;Business;BE/Domestic Products/Investments;Erik Hagreis;Arnaud Gaudissart;Els Van Opstal;3.1.15 Securities Engine;;;;30/06/2023
+c177f9e13766ee4061eb2b2943990ebf;application-business-38735;;FCO;;Business;WB/Transaction Services;Chantal Fokke;Ward Thijs;Tim Neckebroeck;2.3.1 Product Management;;;;31/12/2099
+9beca9613726ee4061eb2b2943990e7f;application-business-38741;;FCP;;Business;WB/Transaction Services;Chantal Fokke;Ward Thijs;Tim Neckebroeck;3.1.8 Payments Execution Engine;;;;31/12/2099
+278769e537e2ee4061eb2b2943990e80;application-business-34001;;FIL;;Business;BE/Domestic Products/Lending;Francisco Schram;Filip Queeckers;Vipin Zharotia;3.1.12 Business Lending Engine;;;;31/12/2099
+b963b52d3726ee4061eb2b2943990ed4;application-business-34013;;FIN;;Business;BE/Domestic Products/Lending;Albin Moreau;Filip Queeckers;Vipin Zharotia;3.1.12 Business Lending Engine;;;;31/12/2099
+00addded3762ee4061eb2b2943990e49;application-business-39599;;FMI;;Business;BE/HR & Finance & Risk;Amaury Vanthournout;Tine Puttenaers;Kathy Mottet;4.1.4 Finance & Risk Reporting & Analytics;;;;31/05/2024
+9a745d613722ee4061eb2b2943990e05;application-business-39602;;FPM;;Business;BE/HR & Finance & Risk;Camille Villeroy de Galhau;Tine Puttenaers;Kathy Mottet;4.1.4 Finance & Risk Reporting & Analytics;;;;31/05/2024
+#N/A;#N/A;;FTS;X - KOC;Business;;;;;;;;;
+3146216537e2ee4061eb2b2943990e54;application-business-34462;;GAL;;Business;BE/HR & Finance & Risk;Camille Villeroy de Galhau;Tine Puttenaers;Kathy Mottet;4.1.2 Finance & Risk Engine;;;;31/12/2099
+6c7539ed3726ee4061eb2b2943990e8c;application-business-34019;;GAR;;Business;BE/Domestic Products/Lending;Albin Moreau;Filip Queeckers;Vipin Zharotia;3.1.4 Collateral Management;;;;31/12/2024
+#N/A;#N/A;;GCI;X;???;;;;;;;;;
+#N/A;#N/A;;GGD;X;???;;;;Jan Mutsaars;3.1.6 Trade Finance Engine;;;;31/03/2020
+51c5d5a53722ee4061eb2b2943990e35;application-business-39614;;GIB;;Business;BE/HR & Finance & Risk;Amaury Vanthournout;Tine Puttenaers;Kathy Mottet;4.1.4 Finance & Risk Reporting & Analytics;;;;31/05/2024
+c6892de937e2ee4061eb2b2943990e4d;application-business-39619;;GPM;;Business;BE/HR & Finance & Risk;Camille Villeroy de Galhau;Tine Puttenaers;Kathy Mottet;4.1.4 Finance & Risk Reporting & Analytics;;;;30/06/2024
+#N/A;#N/A;;GSP;X;Business;;;;;;;;;
+44e1e1e937a2ee4061eb2b2943990edd;application-business-36655;;IAM;;Business;BE/Domestic Products/Core Banking;Rosario Aguilar Ruiz;Patrick Ghysen;Mario Denorme;3.1.9 Current Account Engine;;;;31/12/2099
+b88525e137e2ee4061eb2b2943990e8e;application-business-34199;;ICH;;Business;WB/Transaction Services;Chantal Fokke;Ward Thijs;Danny Smalle;3.1.18 Clearing & Settlement Engine;;;;31/12/2099
+8d4735e13766ee4061eb2b2943990ef1;application-business-34935;;IFS;;Business;WB/Transaction Services;Dingeman de Bondt;Eric Baudinot;Danny Smalle;3.1.8 Payments Execution Engine;;;;31/12/2029
+430179293726ee4061eb2b2943990e4e;application-business-39625;;IMC;;???;BE/HR & Finance & Risk;Camille Villeroy de Galhau;Tine Puttenaers;Kathy Mottet;4.1.4 Finance & Risk Reporting & Analytics;;;;31/05/2024
+808e25253726ee4061eb2b2943990e6c;application-business-34316;;INT;;Business;BE/Domestic Products/Core Banking;Rosario Aguilar Ruiz;Patrick Ghysen;Mario Denorme;3.1.10 Savings Engine;;;;31/12/2099
+a977d12d3722ee4061eb2b2943990eae;application-business-34030;;INV;;Business;BE/Domestic Products/Lending;Albin Moreau;Filip Queeckers;Vipin Zharotia;3.1.12 Business Lending Engine;;;;31/12/2099
+0c01256937a2ee4061eb2b2943990e8d;application-business-463078;;IRM;IRM_BE;Business;;;;;;;;;
+10c7f5253766ee4061eb2b2943990ec5;application-business-34036;;KDC;;Business;BE/Domestic Products/Lending;Albin Moreau;Filip Queeckers;Vipin Zharotia;2.2.7 Solution Selling;;;;31/12/2023
+9af731653766ee4061eb2b2943990e8b;application-business-34043;;KFC;;Business;BE/Domestic Products/Lending;Albin Moreau;Filip Queeckers;Vipin Zharotia;2.2.7 Solution Selling;;;;31/12/2099
+a2dd9d2137a2ee4061eb2b2943990e32;application-business-34052;;KGC;KLCKGC;Business;;;;;;;;;
+#N/A;#N/A;;KHC;X - KIC;Business;;;;;;;;;
+1ca8b9a53766ee4061eb2b2943990e75;application-business-33896;;KIC;;Business;WB/Transaction Services;Jouke Hooghiemstra;Ward Thijs;Patrick Van de Putte;2.4.1 Instruction & Order Management;;;;31/12/2099
+a2dd9d2137a2ee4061eb2b2943990e32;application-business-34052;;KLC;KLCKGC;Business;;;;;;;;;
+b4971d2d3722ee4061eb2b2943990e7d;application-business-33898;;KOC;;Business;WB/Transaction Services;Annelinda Koldewe;Ward Thijs;Patrick Van de Putte;2.4.3 Customer Reporting;;;;31/12/2099
+#N/A;#N/A;;KPC;X - KOC;Business;;;;;;;;;
+#N/A;#N/A;;LEA;X;???;;;;;;;;;
+#N/A;#N/A;;LIF;X - LIF_PO_003_ABRU0120;Business;;;;;;;;;
+a9827da93726ee4061eb2b2943990ef5;application-business-34067;;LIL;;Business;BE/Domestic Products/Lending;Albin Moreau;Filip Queeckers;Vipin Zharotia;3.1.2 Lease Engine;;;;01/07/2022
+#N/A;#N/A;;MAM;X;???;;;;;;;;;
+2cd6f1a13766ee4061eb2b2943990e2b;application-business-45470;;MCA;;Business;WB/Transaction Services;Michiel Ranke;Ward Thijs;Mario Denorme;2.4.4 Customer Billing;;;;31/12/2099
+#N/A;#N/A;;MCS;runs;Infra;;;;;;;;;
+#N/A;#N/A;;MES;runs (MESSAGE SUPPORT);Business;;;;;;;;;
+e83d21a13726ee4061eb2b2943990e62;application-business-36665;;NAM;;Business;BE/Domestic Products/Core Banking;Rosario Aguilar Ruiz;Patrick Ghysen;Jean-Francois Richard;3.1.9 Current Account Engine;;;;31/12/2099
+fd773de13766ee4061eb2b2943990e73;application-business-34337;;NCN;;Business;BE/Customer & Data/KYC, Onboarding & Customer Data;Johan Van Assche;Marijke De Jonckheer;Pascal Giltaire;2.3.2 Arrangement Management;;;;31/12/2099
+#N/A;#N/A;;OAM;;Business;BE/Domestic Products/Core Banking;Rosario Aguilar Ruiz;Patrick Ghysen;Mario Denorme;3.1.9 Current Account Engine;;;;31/12/2099
+#N/A;#N/A;;OAV;;Business;BE/Domestic Products/Core Banking;Amaury Vanthournout;Patrick Ghysen;Danny Smalle;3.1.8 Payments Execution Engine;;;;31/12/2099
+#N/A;#N/A;;OBA;runs;Business;;;;;;;;;
+#N/A;#N/A;;OBB;;Business;BE/Domestic Products/Investments;Erik Hagreis;Arnaud Gaudissart;Els Van Opstal;2.4.1 Instruction & Order Management;;;;30/06/2023
+#N/A;#N/A;;OFN;X;???;;;;Kathy Mottet;4.1.4 Finance & Risk Reporting & Analytics;;;;31/12/2020
+#N/A;#N/A;;OVI;;Business;BE/Domestic Products/Core Banking;Amaury Vanthournout;Patrick Ghysen;Danny Smalle;3.1.8 Payments Execution Engine;;;;31/12/2099
+#N/A;#N/A;;PAC;;Business;BE/Domestic Products/Core Banking;Amaury Vanthournout;Patrick Ghysen;David Vendrame;3.1.14 Cards Engine;;;;31/12/2099
+1ca8b9a53766ee4061eb2b2943990e75;application-business-33896;;PAF;KIC;Business;;;;;;;;;
+#N/A;#N/A;;PAN;;Business;BE/Domestic Products/Core Banking;Rosario Aguilar Ruiz;Patrick Ghysen;Mario Denorme;3.1.9 Current Account Engine;;;;31/12/2099
+#N/A;#N/A;;PAS;;Business;BE/Domestic Products/Investments;Erik Hagreis;Arnaud Gaudissart;Els Van Opstal;2.4.1 Instruction & Order Management;;;;30/06/2023
+#N/A;#N/A;;PGP;;Business;BE/HR & Finance & Risk;Dorien Tuerlinckx;Tine Puttenaers;Martin Da Silva;4.3.3 Workforce Administration;;;;31/12/2024
+#N/A;#N/A;;PHL;;Business;BE/Domestic Products/Lending;Ellen Szapinszky;Filip Queeckers;Vipin Zharotia;3.1.13 Mortgages Engine;;;;31/12/2099
+#N/A;#N/A;;PHM;;Business;BE/Domestic Products/Core Banking;Amaury Vanthournout;Patrick Ghysen;Danny Smalle;3.1.6 Trade Finance Engine;;;;31/12/2099
+278769e537e2ee4061eb2b2943990e80;application-business-34001;;PIL;FIL;Infra;;;;;;;;;
+#N/A;#N/A;;PRP;X - CPM;Business;;;;;;;;;
+#N/A;#N/A;;RAM;;Business;BE/Domestic Products/Core Banking;Rosario Aguilar Ruiz;Patrick Ghysen;Mario Denorme;3.1.9 Current Account Engine;;;;31/12/2099
+#N/A;#N/A;;RBD;;Infra;BE/Infrastructure & Platforms/End User & Core Banking;Johan Smessaert;Johann Ahrens;Stephane Wargny;3.2.1 Reference Data Management;;;;31/12/2099
+#N/A;#N/A;;RBG;;Business;BE/Domestic Products/Core Banking;Amaury Vanthournout;Patrick Ghysen;Danny Smalle;3.1.8 Payments Execution Engine;;;;31/12/2099
+#N/A;#N/A;;RBK;;Business;BE/Channels/Assisted Channels;Filip Rombouts;Andries Depuydt;Serge Cordon;2.4.7 Service request management;;;;31/12/2022
+#N/A;#N/A;;RCC;PAN;Business;;;;;;;;;
+#N/A;#N/A;;REG;X - PCA;Business;;;;;;;;;
+#N/A;#N/A;;RER;;Business;BE/Domestic Products/Lending;Ellen Szapinszky;Filip Queeckers;Vipin Zharotia;2.4.5 Arrear Management;;;;31/12/2099
+#N/A;#N/A;;RNR;X;???;;;;;;;;;
+#N/A;#N/A;;SAS;;???;;;;;;;;;
+#N/A;#N/A;;SBB;;Business;BE/Domestic Products/Investments;Erik Hagreis;Arnaud Gaudissart;Els Van Opstal;2.4.1 Instruction & Order Management;;;;30/06/2023
+1ca8b9a53766ee4061eb2b2943990e75;application-business-33896;;SDP;KIC;Business;;;;;;;;;
+#N/A;#N/A;;SDR;;Business;BE/Domestic Products/Lending;Ellen Szapinszky;Filip Queeckers;Vipin Zharotia;2.4.5 Arrear Management;;;;31/12/2099
+#N/A;#N/A;;SDS;;Business;;;;;;;;;
+#N/A;#N/A;;SIC;X;Business;;;;;;;;;
+#N/A;#N/A;;SIL;;Business;BE/Domestic Products/Lending;Francisco Schram;Filip Queeckers;Vipin Zharotia;2.2.7 Solution Selling;;;;31/12/2099
+#N/A;#N/A;;SOS;runs (dev only);Infra;;;;;;;;;
+#N/A;#N/A;;STL;;Infra;BE/Domestic Products/Investments;Erik Hagreis;Arnaud Gaudissart;Els Van Opstal;3.1.15 Securities Engine;;;;30/06/2023
+#N/A;#N/A;;TAG;runs;Infra;;;;;;;;;
+#N/A;#N/A;;TAM;;Business;BE/Domestic Products/Core Banking;Rosario Aguilar Ruiz;Patrick Ghysen;Tim Neckebroeck;3.1.9 Current Account Engine;;;;31/12/2099
+#N/A;#N/A;;TAR;;Business;BE/Domestic Products/Core Banking;Rosario Aguilar Ruiz;Patrick Ghysen;Michaël Farris;2.4.4 Customer Billing;;;;31/12/2099
+#N/A;#N/A;;TAT;;Business;BE/HR & Finance & Risk;Camille Villeroy de Galhau;Tine Puttenaers;Kathy Mottet;4.1.4 Finance & Risk Reporting & Analytics;;;;31/05/2023
+#N/A;#N/A;;TBT;X (BE MF Platform);Business;;;;;;;;;
+#N/A;#N/A;;TCL;;Business;BE/Domestic Products/Investments;Erik Hagreis;Arnaud Gaudissart;Els Van Opstal;2.4.4 Customer Billing;;;;30/06/2023
+#N/A;#N/A;;TER;;Business;BE/Domestic Products/Core Banking;Rosario Aguilar Ruiz;Patrick Ghysen;Mario Denorme;3.1.10 Savings Engine;;;;31/12/2099
+7e52e12d37a2ee4061eb2b2943990e51;application-business-38556;;TIC;FBO;Business;;;;;;;;;
+#N/A;#N/A;;TIT;SBB;Business;;;;;;;;;
+d5cd592137a2ee4061eb2b2943990e3d;application-business-33877;;TLK;EBE_TLK_LEB;Business;;;;;;;;;
+#N/A;#N/A;;TPA;TPA_CENTRAL;Business;;;;;;;;;
+#N/A;#N/A;;TPC;;Business;BE/Domestic Products/Investments;Erik Hagreis;Arnaud Gaudissart;Els Van Opstal;2.4.3 Customer Reporting;;;;30/06/2023
+#N/A;#N/A;;TPF;;Business;BE/Domestic Products/Core Banking;Amaury Vanthournout;Patrick Ghysen;Tim Neckebroeck;2.4.3 Customer Reporting;;;;31/12/2099
+#N/A;#N/A;;TSD;X;Business;;;;;;;;;
+#N/A;#N/A;;TVL;;Business;BE/HR & Finance & Risk;Camille Villeroy de Galhau;Tine Puttenaers;Kathy Mottet;4.1.4 Finance & Risk Reporting & Analytics;;;;30/06/2024
+#N/A;#N/A;;VAE;;Business;BE/Customer & Data/KYC, Onboarding & Customer Data;Johan Van Assche;Marijke De Jonckheer;Ruud van Kessel;2.3.3 Party Management;;;;31/12/2099
+#N/A;#N/A;;VIR;;Business;BE/Domestic Products/Core Banking;Amaury Vanthournout;Patrick Ghysen;Danny Smalle;2.4.1 Instruction & Order Management;;;;31/12/2099
+#N/A;#N/A;;WIN;runs;Business;;;;;;;;;
+#N/A;#N/A;;AMK;;Business;;;;;;;;;
+#N/A;#N/A;;BCC;;Business;;;;;;;;;
+#N/A;#N/A;;BOL;;Business;;;;;;;;;
+#N/A;#N/A;;CEC;;Business;;;;;;;;;
+d7c07552dbd0e38cd1fb34bffe96190e;d7c07552dbd0e38cd1fb34bffe96190e;;CMT;;Business;;;;;;;;;
+#N/A;#N/A;;CPG;;Business;;;;;;;;;
+#N/A;#N/A;;CQL;;Business;;;;;;;;;
+#N/A;#N/A;;DBL;;Business;;;;;;;;;
+#N/A;#N/A;;EOT;;Business;;;;;;;;;
+#N/A;#N/A;;ICM;;Business;;;;;;;;;
+8d51bec1db7ffa80b83bf3651d9619a1;8d51bec1db7ffa80b83bf3651d9619a1;;KBS;;Business;;;;;;;;;
+#N/A;#N/A;;MDA;;Business;;;;;;;;;
+#N/A;#N/A;;MHS;;Business;;;;;;;;;
+d569e5e937e2ee4061eb2b2943990ea0;application-support-753043;;MTT;;Business;;;;;;;;;
+#N/A;#N/A;;RSC;;Business;;;;;;;;;
+#N/A;#N/A;;STI;;Business;;;;;;;;;
+#N/A;#N/A;;WFL;;Business;;;;;;;;;
+7926b9213766ee4061eb2b2943990e0b;application-support-561477;;ARS;;Infra;;;;;;;;;
+#N/A;#N/A;;BIA;;Infra;;;;;;;;;
+#N/A;#N/A;;BIN;;Infra;;;;;;;;;
+#N/A;#N/A;;DBA;;Infra;;;;;;;;;
+#N/A;#N/A;;DMV;;Infra;;;;;;;;;
+44b66d6537e2ee4061eb2b2943990eff;application-support-561497;;ESY;;Infra;;;;;;;;;
+3055c185db6e63044644522bdc96193c;3055c185db6e63044644522bdc96193c;;ETC;;Infra;;;;;;;;;
+#N/A;#N/A;;FAS;;Infra;;;;;;;;;
+#N/A;#N/A;;FLA;;Infra;;;;;;;;;
+#N/A;#N/A;;LAP;;Infra;;;;;;;;;
+#N/A;#N/A;;MQI;;Infra;;;;;;;;;
+#N/A;#N/A;;MUS;;Infra;;;;;;;;;
+#N/A;#N/A;;RBI;;Infra;;;;;;;;;
+#N/A;#N/A;;RBS;;Infra;;;;;;;;;
+#N/A;#N/A;;RUP;;Infra;;;;;;;;;
+#N/A;#N/A;;SAG;;Infra;;;;;;;;;
+#N/A;#N/A;;SAM;;Infra;;;;;;;;;
+#N/A;#N/A;;SCH;;Infra;;;;;;;;;
+#N/A;#N/A;;SCS;;Infra;;;;;;;;;
+#N/A;#N/A;;SDI;;Infra;;;;;;;;;
+#N/A;#N/A;;SEC;;Infra;;;;;;;;;
+#N/A;#N/A;;SYS;;Infra;;;;;;;;;
