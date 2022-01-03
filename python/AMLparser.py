@@ -151,6 +151,8 @@ class AML:
         for grp in groups:
             if 'ObjDef' in grp:
                 objects = grp['ObjDef']
+                if not isinstance(objects, list):
+                    objects = [objects]
                 for o in objects:
                     o_type = type_map[o['@SymbolNum']]
                     if o_type == "":
@@ -183,6 +185,8 @@ class AML:
         for grp in groups:
             if 'ObjDef' in grp:
                 objects = grp['ObjDef']
+                if not isinstance(objects, list):
+                    objects = [objects]
                 for o in objects:
                     o_id = o['@ObjDef.ID']
                     o_name, props = self.get_attributes(o)
@@ -378,20 +382,14 @@ class AML:
         if groups is None:
             groups = self.data['AML']
 
-        if not isinstance(groups, list):
-            groups = [groups]
+        if 'FFTextDef' in groups:
+            objects = grp['FFTextDef']
+            for o in objects:
+                o_id = o['@FFTextDef.ID']
+                o_name, _ = self.get_attributes(o, '\n')
+                self.labels[o_id] = o_name
+            return
 
-        for grp in groups:
-            if 'FFTextDef' in grp:
-                objects = grp['FFTextDef']
-                for o in objects:
-                    o_id = o['@FFTextDef.ID']
-                    o_name, _ = self.get_attributes(o, '\n')
-                    self.labels[o_id] = o_name
-                return
-
-            self.parse_labels(grp)
-        return
 
     def parse_labels_in_view(self, grp=None, view=None):
         if grp is None:
@@ -405,6 +403,8 @@ class AML:
 
         if 'FFTextOcc' in grp:
             objects = grp['FFTextOcc']
+            if not isinstance(objects, list):
+                objects = [objects]
             for o in objects:
                 pos = o['Position']
                 lbl = self.labels[o['@FFTextDef.IdRef']]

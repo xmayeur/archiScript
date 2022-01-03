@@ -1,0 +1,18 @@
+console.clear();
+
+if($.process.engine != "com.oracle.truffle.js.scriptengine.GraalJSScriptEngine") {
+  console.log("This script only works with GraalVM script engine.")
+  exit();
+}
+
+var System = Java.type("java.lang.System");
+if(System.getProperties().get("polyglot.js.commonjs-require") != "true") {
+  System.getProperties().put("polyglot.js.commonjs-require", "true");
+  System.getProperties().put("polyglot.js.commonjs-require-cwd", __SCRIPTS_DIR__);
+  console.log("GraalJS Module loading was previously disabled. Restart your script");
+  exit();
+}
+
+const add = require('add');
+
+console.log(add(4, 5))
