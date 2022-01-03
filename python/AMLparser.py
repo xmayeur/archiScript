@@ -383,13 +383,12 @@ class AML:
             groups = self.data['AML']
 
         if 'FFTextDef' in groups:
-            objects = grp['FFTextDef']
+            objects = groups['FFTextDef']
             for o in objects:
                 o_id = o['@FFTextDef.ID']
                 o_name, _ = self.get_attributes(o, '\n')
                 self.labels[o_id] = o_name
             return
-
 
     def parse_labels_in_view(self, grp=None, view=None):
         if grp is None:

@@ -21,8 +21,8 @@ def main():
             scale_x = scale
             scale_y = scale
     else:
-        scale_x = 1
-        scale_y = 1
+        scale_x = 0.3
+        scale_y = 0.4
 
     aris = AML(args.file, name='x', scale_x=scale_x, scale_y=scale_y, skip_bendpoint=False)
     result = aris.convert()
