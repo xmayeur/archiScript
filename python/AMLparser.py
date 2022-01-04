@@ -9,12 +9,10 @@
 *   TODO Implement styles
 *
 """
+import logging as log
 from jsonpath_ng import parse
-import xmltodict
 from archiObjects import *
 from type_mapping import type_map
-import logging as log
-import argparse
 
 
 class AML:
@@ -87,10 +85,15 @@ class AML:
         self.oef_data = None
 
     def convert(self):
+        log.info('Parsing elements')
         self.parse_elements()
+        log.info('Parsing relationships')
         self.parse_relationships()
+        log.info('Parsing Labels')
         self.parse_labels()
+        log.info('Parsing Views')
         self.parse_views()
+        log.info('Converting to OEF format')
         self.oef_data = xmltodict.unparse(self.model.OEF, pretty=True)
         return self.oef_data
 
@@ -165,9 +168,6 @@ class AML:
                     e.add_property(Property('UUID', o_uuid, self.pdef))
                     e.add_property(*props)
                     self.model.add_elements(e)
-
-                return
-
             self.parse_elements(grp)
         return
 
@@ -238,7 +238,7 @@ class AML:
                     self.parse_connections(m, view)
                     self.parse_containers(m, view)
                     self.parse_labels_in_view(m, view)
-
+                    view.sort_node()
                     self.model.add_views(view)
 
             self.parse_views(grp)
@@ -281,6 +281,8 @@ class AML:
                     s = Style(fill_color=fc)
                     n.add_style(s)
 
+            # Sort nodes by area, the biggest first
+
             return
 
         self.parse_nodes(grp)
@@ -313,8 +315,8 @@ class AML:
                         c_id = conn['@CxnOcc.ID']
                         c_rel_id = conn['@CxnDef.IdRef']
                         c_target = conn['@ToObjOcc.IdRef']
-                        if '@Visible' in conn and conn['@Visible'] == 'NO':
-                            continue
+                        # if '@Visible' in conn and conn['@Visible'] == 'NO':
+                        #     continue
                         c = Connection(ref=c_rel_id, source=o_id, target=c_target, uuid=c_id)
                         if 'Position' in conn and not self.skip_bendpoint:
                             bps = conn['Position']

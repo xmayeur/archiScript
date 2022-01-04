@@ -30,7 +30,9 @@ def main():
     if args.outputfile:
         open(args.outputfile, 'w').write(result)
     else:
-        print(result)
+        #  print(result)
+        outFile = args.file[:-4]+"_OEF.xml"
+        open(outFile, 'w').write(result)
 
 
 if __name__ == "__main__":

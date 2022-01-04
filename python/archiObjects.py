@@ -13,6 +13,7 @@ from uuid import uuid4, UUID
 from collections import OrderedDict
 import logging as log
 import xmltodict
+from operator import itemgetter, attrgetter, methodcaller
 
 
 # Dictionary with all artefact identifier keys & name as value
@@ -326,6 +327,9 @@ class View:
             else:
                 log.warning(f"In 'View.add_node', node '{n.uuid}' refers to undefined element reference '{n.ref}'")
 
+    def sort_node(self):
+        self.view['node'].sort(key=lambda x: int(x['@x'])*int(x['@y']))
+
     def add_container(self, container, label):
         if 'node' not in self.view:
             self.view['node'] = []
@@ -384,6 +388,7 @@ class Node:
         self.y = int(y)
         self.w = int(w)
         self.h = int(h)
+        self.area = w * h
         self.style = style
         self.node = node
         self.node = {

@@ -73,7 +73,7 @@ if (exportFile != null) {
     $("view").each(function(theView) {
         if (theView){
             let viewFile = model.name + "-" + theView.name + ".md";
-            viewFile = viewFile.replaceAll(" ","%20");
+            viewFile = viewFile.replace(/\s/g,"%20");
             theDocument+="* ["+theView.name+"](./md/"+ viewFile +")\n";
         }
     });
@@ -100,7 +100,7 @@ if (exportFile != null) {
             console.log("Exporting to " + exportFile);
 
             if(exportFile != null) {
-                imageURL = exportFile.substring(0,exportFile.length-3).replaceAll(" ","%20")+".png";
+                imageURL = exportFile.substring(0,exportFile.length-3).replace(/\s/g,"%20")+".png";
                 relativeURL = imageURL.split("\\");
 
                 // theDocument+="# "+theView.name+"\n";
@@ -119,7 +119,7 @@ if (exportFile != null) {
                 $(selection).find().not("element").not("relationship").each(function(c){
                     if (c.text) {
                         if ($(c).rels().length==0) {
-                            theDocument+="\n> "+escapeMD(c.text).replaceAll("\n","\n> ")+"\n";
+                            theDocument+="\n> "+escapeMD(c.text).replace(/\n/g,"\n> ")+"\n";
                         }
                     };
                 })

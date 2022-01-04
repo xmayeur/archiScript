@@ -15,6 +15,7 @@ console.log(pathName)
 
 // var theView = $(selection).filter("archimate-diagram-model").first();
 let img = 'img.tmp'
+let width = 400
 let height = 200
 let x = 10
 let y = 10
@@ -42,7 +43,8 @@ views.forEach(function(v){
 
         $.model.renderViewToFile(v, img, "PNG", {scale:2, margin:10})
         i = model.createImage(img)
-        let width = height * i.width / i.height
+        // width = Math.max(400, height * i.width / i.height)
+        width = 400
         o = theView.createViewReference(v, x, y, width , height)
         o.image = i
         o.imagePosition = IMAGE_POSITION.FILL
@@ -61,3 +63,4 @@ views.forEach(function(v){
     }
 
 });
+console.log('Done')
