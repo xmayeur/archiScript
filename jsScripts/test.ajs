@@ -1,0 +1,6 @@
+var theView = $(selection).filter("archimate-diagram-model").first()
+
+if (!!theView){
+    
+
+} else {console.log('please select a view')}

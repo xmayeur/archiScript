@@ -317,7 +317,7 @@ var graphlib;
 
 if (typeof require === "function") {
   try {
-    graphlib = require("jsScripts/generateView/generate_view/graphlib");
+    graphlib = require("./generateView/generate_view/graphlib");
   } catch (e) {}
 }
 

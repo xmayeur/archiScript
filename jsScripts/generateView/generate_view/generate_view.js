@@ -139,9 +139,9 @@ function generate_view(param) {
         param.OnlySelectedRelationships = true;
 
     debug("Loading dependencies...");
-    require.addPath(__DIR__);
-    require.addPath(__DIR__ + "/lib");
-    G__dagre = require('jsScripts/generateView/generate_view/dagre');
+    require.addPath(__SCRIPTS_DIR__);
+    require.addPath(__SCRIPTS_DIR__ + "/lib");
+    G__dagre = require('./generateView/generate_view/dagre');
 
     // we get an array with all the selected elements
     var allElements = $("element");			// contains all the elements in the model
