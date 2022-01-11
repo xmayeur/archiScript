@@ -13,7 +13,7 @@ from uuid import uuid4, UUID
 from collections import OrderedDict
 import logging as log
 import xmltodict
-from operator import itemgetter, attrgetter, methodcaller
+from jsonpath_ng import parse
 
 # Dictionary with all artefact identifier keys & name as value
 IDs = {}  # key = object id, value = object name
@@ -150,35 +150,46 @@ class OpenExchange:
                 p = p.property
             self.OEF['model']['properties']['property'].append(p)
 
-    def add_organizations(self, orgs=None, items=None):
+    def add_organizations(self, org_list=None):
         if 'organizations' not in self.OEF['model']:
             orgs = self.OEF['model']['organizations'] = []
-        item = items.pop(0)
-        # TODO continue here
-        # expr = parse('$["organizations"][*]["item"]..["#text"]')
-        # oo=expr.find(o)
-        # [x.value for x in oo]
+        else:
+            orgs = self.OEF['model']['organizations']
 
+        if not isinstance(org_list, list):
+            org_list = [org_list]
+        p = []
+        for o in reversed(org_list):
+            item = OrgItem(label=o, items=p, ).item
+            p = [item]
+        orgs.append({'item':item})
 
 
 class OrgItem:
-    def __init__(self, label: None, item_refs: None, parents=None):
+    def __init__(self, label=None, items=None, item_refs=None):
         self.label = label
         self.item = {}
-        self.parents = parents
         if label is not None:
             self.item['label'] = {
                 '@xml:lang': 'en',
                 '#text': self.label,  # Label NAME
             }
-        if item_refs is not None:
+        if item_refs is not None and len(item_refs) > 0:
             if not isinstance(item_refs, list):
                 item_refs = [item_refs]
+            if 'item' not in self.item:
+                self.item['item'] = []
             for i in item_refs:
                 self.item['item'].append({
                     "@identifierRef": i
                 })
-
+        if items is not None:
+            if not isinstance(items, list):
+                items = [items]
+            if 'item' not in self.item:
+                self.item['item'] = []
+            for i in items:
+                self.item['item'].append(i)
 
 class Element:
     """
@@ -327,7 +338,7 @@ class Relationship:
         if desc:
             self.relationship['documentation'] = {
                 '@xml:lang': 'en',
-                '#text': selfself.desc
+                '#text': self.desc
             }
 
         if access_type is not None:

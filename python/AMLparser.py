@@ -181,6 +181,7 @@ class AML:
                 orgs.append(name)
 
             if 'ObjDef' in grp:
+                self.model.add_organizations(orgs)
                 objects = grp['ObjDef']
                 if not isinstance(objects, list):
                     objects = [objects]
@@ -196,7 +197,7 @@ class AML:
                     e.add_property(Property('UUID', o_uuid, self.pdef))
                     e.add_property(*props)
                     self.model.add_elements(e)
-            self.parse_elements(grp)
+            self.parse_elements(grp, orgs)
         return
 
     def parse_relationships(self, groups=None):
