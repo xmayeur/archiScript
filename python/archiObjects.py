@@ -110,6 +110,7 @@ class OpenExchange:
             },
             'elements': {'element': []},  # list of elements
             'relationships': {'relationship': []},  # list of relationships
+            'organizations': {'item':[]},
             'propertyDefinitions': {'propertyDefinition': []},
             # 'views': {'diagrams': {'view': []}}  # list of diagrams
         }
@@ -150,19 +151,16 @@ class OpenExchange:
                 p = p.property
             self.OEF['model']['properties']['property'].append(p)
 
-    def add_organizations(self, org_list=None):
-        if 'organizations' not in self.OEF['model']:
-            orgs = self.OEF['model']['organizations'] = []
-        else:
-            orgs = self.OEF['model']['organizations']
-
+    def add_organizations(self, org_list=None, item_refs=None):
+        orgs = self.OEF['model']['organizations']['item']
         if not isinstance(org_list, list):
             org_list = [org_list]
+
         p = []
         for o in reversed(org_list):
-            item = OrgItem(label=o, items=p, ).item
+            item = OrgItem(label=o, items=p, item_refs=item_refs).item
             p = [item]
-        orgs.append({'item':item})
+        orgs.append(item)
 
 
 class OrgItem:

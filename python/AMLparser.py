@@ -101,7 +101,7 @@ class AML:
 
     def convert(self):
         log.info('Parsing Folders')
-        self.parse_organizations()
+        # self.parse_organizations()
         log.info('Parsing elements')
         self.parse_elements()
         log.info('Parsing relationships')
@@ -143,29 +143,10 @@ class AML:
                         o_desc = prop_val
         return o_name, props, o_desc
 
-    def parse_organizations(self, groups=None):
-        if groups is None:
-            groups = self.data['AML']
-
-        if 'Group' not in groups:
-            return
-
-        groups = groups['Group']
-        if not isinstance(groups, list):
-            groups = [groups]
-        for grp in groups:
-
-            if '@TypeNum' in grp and 'AttrDef' in grp:
-                name, props, desc = self.get_attributes(grp)
-                self.organizations.append(name)
-                # grp['AttrDef']['AttrValue']['StyledElement']['StyledElement']['PlainText']['@TextValue']
-            self.parse_organizations(grp)
-        return
-
     def parse_elements(self, groups=None, orgs=None):
         if groups is None:
             groups = self.data['AML']
-            orgs=[]
+            orgs = []
 
         if 'Group' not in groups:
             return
@@ -181,7 +162,7 @@ class AML:
                 orgs.append(name)
 
             if 'ObjDef' in grp:
-                self.model.add_organizations(orgs)
+                refs = []
                 objects = grp['ObjDef']
                 if not isinstance(objects, list):
                     objects = [objects]
@@ -197,12 +178,15 @@ class AML:
                     e.add_property(Property('UUID', o_uuid, self.pdef))
                     e.add_property(*props)
                     self.model.add_elements(e)
+                    refs.append(o_id)
+                self.model.add_organizations(orgs, refs)
             self.parse_elements(grp, orgs)
         return
 
-    def parse_relationships(self, groups=None):
+    def parse_relationships(self, groups=None, orgs=None):
         if groups is None:
             groups = self.data['AML']
+            orgs = []
 
         if 'Group' not in groups:
             return
@@ -212,7 +196,12 @@ class AML:
             groups = [groups]
 
         for grp in groups:
+            if '@TypeNum' in grp and 'AttrDef' in grp:
+                name, props, desc = self.get_attributes(grp)
+                orgs.append(name)
+
             if 'ObjDef' in grp:
+                refs = []
                 objects = grp['ObjDef']
                 if not isinstance(objects, list):
                     objects = [objects]
@@ -234,17 +223,20 @@ class AML:
                                 r = Relationship(source=o_id, target=r_target, type=r_type, uuid=r_id, desc=desc)
                                 # TODO check how to manage access & influence relation metadata
                                 self.model.add_relationships(r)
+                                refs.append(r_id)
                             else:
                                 log.warning(f"In 'parse_element', unknown relationship target {r_target} "
                                             f"for element '{o_name}' - {o_id}")
+                        self.model.add_organizations(orgs, refs)
                 return
 
-            self.parse_relationships(grp)
+            self.parse_relationships(grp, orgs)
         return
 
-    def parse_views(self, groups=None):
+    def parse_views(self, groups=None, orgs=None):
         if groups is None:
             groups = self.data['AML']
+            orgs=[]
 
         if 'Group' not in groups:
             return
@@ -254,7 +246,12 @@ class AML:
             groups = [groups]
 
         for grp in groups:
+            if '@TypeNum' in grp and 'AttrDef' in grp:
+                name, props, desc = self.get_attributes(grp)
+                orgs.append(name)
+
             if 'Model' in grp:
+                refs=[]
                 models = grp['Model']
                 if not isinstance(models, list):
                     models = [models]
@@ -269,8 +266,9 @@ class AML:
                     self.parse_labels_in_view(m, view)
                     view.sort_node()
                     self.model.add_views(view)
-
-            self.parse_views(grp)
+                    refs.append(view_id)
+                self.model.add_organizations(orgs, refs)
+            self.parse_views(grp, orgs)
         return
 
     def parse_nodes(self, grp=None, view=None):
@@ -417,7 +415,7 @@ class AML:
             objects = groups['FFTextDef']
             for o in objects:
                 o_id = o['@FFTextDef.ID']
-                o_name, _ = self.get_attributes(o, '\n')
+                o_name, _, _ = self.get_attributes(o, '\n')
                 self.labels[o_id] = o_name
             return
 
