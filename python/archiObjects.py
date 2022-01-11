@@ -150,10 +150,14 @@ class OpenExchange:
                 p = p.property
             self.OEF['model']['properties']['property'].append(p)
 
-    def add_organizations(self, orgs, *items):
+    def add_organizations(self, orgs=None, items=None):
         if 'organizations' not in self.OEF['model']:
-            o = self.OEF['model']['organizations'] = []
+            orgs = self.OEF['model']['organizations'] = []
+        item = items.pop(0)
         # TODO continue here
+        # expr = parse('$["organizations"][*]["item"]..["#text"]')
+        # oo=expr.find(o)
+        # [x.value for x in oo]
 
 
 
@@ -172,8 +176,7 @@ class OrgItem:
                 item_refs = [item_refs]
             for i in item_refs:
                 self.item['item'].append({
-                    "@identifierRef": i,
-                    "@self-closing": "true"
+                    "@identifierRef": i
                 })
 
 
