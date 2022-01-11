@@ -305,3 +305,16 @@ function readDocMetaData(file, theView){
 	
 }
 
+function getRelationship(type="", name="", source, target, create=false) {
+    let rel;
+    let rels = (type === "")? $(source).outRels() : $(source).outRels(type);
+    rels.forEach(function(r){
+        if (r.target.id === target.id && r.name === name) {
+            rel = r
+        }
+    });
+    if (rel === undefined && !!create) {
+        let rel = model.createRelationship(type, name, source, target);
+    }
+    return rel
+}

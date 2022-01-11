@@ -198,11 +198,11 @@ function ortho(o) {
         } else {
             // special handling for the last bendpoint
             let xy = setXY(tb, bp.endX, bp.endY);
+
             b.startX = (dx - xy.x) * dir + prev.startX * (1 - dir);
             b.endX = (1 - 2 * dir) * (b.startX - dx);
             b.startY = dir * prev.startY + (dy - xy.y) * (1 - dir);
             b.endY = (-1 + 2 * dir) * (b.startY - dy);
-
         }
 
         try {

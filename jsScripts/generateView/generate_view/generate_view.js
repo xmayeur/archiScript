@@ -221,12 +221,12 @@ function _generate_view(elem, nestedRelationships, graphDirection, graphAlign, h
     // we check if the corresponding view already exists
     //
     var view = G__allViews.filter(function (diagram) {
-        return diagram.name == viewName;
+        return diagram.name === viewName;
     });
 
     // If the view already exist, we backup its properties and delete it
     var view_properties = {};
-    if (view.size() != 0) {
+    if (view.size() !== 0) {
         for each(var _key
     in
         view.prop()

@@ -13,6 +13,21 @@ import logging as log
 from jsonpath_ng import parse
 from archiObjects import *
 from type_mapping import type_map
+from xml.sax.saxutils import escape
+
+
+def str2xml_escape(txt):
+    return escape(txt, entities={"'": "&apos;", '"': "&quot;", '\r': "&#13;"})
+
+
+def xml2str_escape(txt):
+    txt = txt.replace("&lt;", "<")
+    txt = txt.replace("&gt;", ">")
+    txt = txt.replace("&amp;", "&")
+    txt = txt.replace("&apos;", "'")
+    txt = txt.replace("&quot;", '"')
+    txt = txt.replace("&#13;", "\r")
+    return txt
 
 
 class AML:
@@ -70,7 +85,7 @@ class AML:
 
         """
         self.data = xmltodict.parse(open(aml_file, 'r').read())
-        self.folders = []
+        self.organizations = []
         self.name = name
         self.model = OpenExchange(self.name)
         self.pdef = PropertyDefinitions()
@@ -85,6 +100,8 @@ class AML:
         self.oef_data = None
 
     def convert(self):
+        log.info('Parsing Folders')
+        self.parse_organizations()
         log.info('Parsing elements')
         self.parse_elements()
         log.info('Parsing relationships')
@@ -100,6 +117,7 @@ class AML:
     def get_attributes(self, o, sep=' '):
         o_name = ''
         props = []
+        o_desc = None
 
         def find_text(arg):
             expr = parse('$[*]..@TextValue')
@@ -116,13 +134,16 @@ class AML:
                     o_name += sep.join([x.value for x in find_text(ad)])
                     o_name = o_name.encode('ascii', 'replace').decode()
                 else:
-                    prop_key = ad['@AttrDef.Type'][3]  # skip the 'AT_' prefix
+                    attr_type = ad['@AttrDef.Type']
+                    prop_key = attr_type
                     prop_val = sep.join([x.value for x in find_text(ad)])
-                    prop_val = prop_val.encode('ascii', 'replace').decode()
+                    prop_val = xml2str_escape(prop_val).encode('ascii', 'replace').decode()
                     props.append(Property(prop_key, prop_val, self.pdef))
-        return o_name, props
+                    if attr_type == 'AT_DESC':
+                        o_desc = prop_val
+        return o_name, props, o_desc
 
-    def parse_folders(self, groups=None):
+    def parse_organizations(self, groups=None):
         if groups is None:
             groups = self.data['AML']
 
@@ -133,25 +154,32 @@ class AML:
         if not isinstance(groups, list):
             groups = [groups]
         for grp in groups:
-            if 'AttrDef' in grp:
-                name, props = self.get_attributes(grp)
-                self.folders.append(name)
+
+            if '@TypeNum' in grp and 'AttrDef' in grp:
+                name, props, desc = self.get_attributes(grp)
+                self.organizations.append(name)
                 # grp['AttrDef']['AttrValue']['StyledElement']['StyledElement']['PlainText']['@TextValue']
-            self.parse_folders(grp)
+            self.parse_organizations(grp)
         return
 
-    def parse_elements(self, groups=None):
+    def parse_elements(self, groups=None, orgs=None):
         if groups is None:
             groups = self.data['AML']
+            orgs=[]
 
         if 'Group' not in groups:
             return
 
         groups = groups['Group']
+
         if not isinstance(groups, list):
             groups = [groups]
 
         for grp in groups:
+            if '@TypeNum' in grp and 'AttrDef' in grp:
+                name, props, desc = self.get_attributes(grp)
+                orgs.append(name)
+
             if 'ObjDef' in grp:
                 objects = grp['ObjDef']
                 if not isinstance(objects, list):
@@ -163,8 +191,8 @@ class AML:
                         log.warning("In 'parse_element', empty type found")
                     o_id = o['@ObjDef.ID']
                     o_uuid = o['GUID']
-                    o_name, props = self.get_attributes(o)
-                    e = Element(name=o_name, type=o_type, uuid=o_id)
+                    o_name, props, o_desc = self.get_attributes(o)
+                    e = Element(name=o_name, type=o_type, uuid=o_id, desc=o_desc)
                     e.add_property(Property('UUID', o_uuid, self.pdef))
                     e.add_property(*props)
                     self.model.add_elements(e)
@@ -189,7 +217,7 @@ class AML:
                     objects = [objects]
                 for o in objects:
                     o_id = o['@ObjDef.ID']
-                    o_name, props = self.get_attributes(o)
+                    o_name, props, desc = self.get_attributes(o)
 
                     if 'CxnDef' in o:
                         rels = o['CxnDef']
@@ -202,7 +230,7 @@ class AML:
                             r_target = rel['@ToObjDef.IdRef']
                             # Check if target is known
                             if r_target in IDs:
-                                r = Relationship(source=o_id, target=r_target, type=r_type, uuid=r_id)
+                                r = Relationship(source=o_id, target=r_target, type=r_type, uuid=r_id, desc=desc)
                                 # TODO check how to manage access & influence relation metadata
                                 self.model.add_relationships(r)
                             else:
@@ -232,8 +260,8 @@ class AML:
 
                 for m in models:
                     view_id = m['@Model.ID']
-                    view_name, model_props = self.get_attributes(m)
-                    view = View(name=view_name, uuid=view_id)
+                    view_name, model_props, desc = self.get_attributes(m)
+                    view = View(name=view_name, uuid=view_id, desc=desc)
                     self.parse_nodes(m, view)
                     self.parse_connections(m, view)
                     self.parse_containers(m, view)
@@ -429,6 +457,3 @@ class AML:
 
         self.parse_labels_in_view(grp)
         return
-
-
-

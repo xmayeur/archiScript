@@ -15,7 +15,6 @@ import logging as log
 import xmltodict
 from operator import itemgetter, attrgetter, methodcaller
 
-
 # Dictionary with all artefact identifier keys & name as value
 IDs = {}  # key = object id, value = object name
 
@@ -125,6 +124,7 @@ class OpenExchange:
         for e in elements:
             self.OEF['model']['elements']['element'].append(e.element)
             IDs[e.uuid] = e.name
+            # TODO Add Elem in Organizations if defined
 
     def add_relationships(self, *relationships):
         if 'relationships' not in self.OEF['model']:
@@ -150,6 +150,32 @@ class OpenExchange:
                 p = p.property
             self.OEF['model']['properties']['property'].append(p)
 
+    def add_organizations(self, orgs, *items):
+        if 'organizations' not in self.OEF['model']:
+            o = self.OEF['model']['organizations'] = []
+        # TODO continue here
+
+
+
+class OrgItem:
+    def __init__(self, label: None, item_refs: None, parents=None):
+        self.label = label
+        self.item = {}
+        self.parents = parents
+        if label is not None:
+            self.item['label'] = {
+                '@xml:lang': 'en',
+                '#text': self.label,  # Label NAME
+            }
+        if item_refs is not None:
+            if not isinstance(item_refs, list):
+                item_refs = [item_refs]
+            for i in item_refs:
+                self.item['item'].append({
+                    "@identifierRef": i,
+                    "@self-closing": "true"
+                })
+
 
 class Element:
     """
@@ -164,10 +190,13 @@ class Element:
         the element object that will be added to the model
 
     """
-    def __init__(self, name=None, type=None, uuid=None):
+
+    def __init__(self, name=None, type=None, uuid=None, desc=None, orgs=None):
         self.name = name
         self.type = type
         self.uuid = set_id(uuid)
+        self.desc = desc
+        self.orgs = orgs
         self.element = {
             '@identifier': self.uuid,  # UUID
             '@xsi:type': self.type,  # ELEMENT TYPE
@@ -177,6 +206,11 @@ class Element:
             },
             # 'properties': []  # LIST OF ELEMENT PROPERTIES
         }
+        if desc:
+            self.element['documentation'] = {
+                '@xml:lang': 'en',
+                '#text': self.desc
+            }
 
     def add_property(self, *properties):
         if 'properties' not in self.element:
@@ -255,7 +289,7 @@ class PropertyDefinitions:
 
 class Relationship:
 
-    def __init__(self, source, target, type='', uuid=None, name='', access_type=None, influcence_strength=None):
+    def __init__(self, source, target, type='', uuid=None, name='', access_type=None, influcence_strength=None, desc=None):
         self.uuid = set_id(uuid)
 
         if isinstance(source, Element):
@@ -274,6 +308,7 @@ class Relationship:
         self.type = type
 
         self.name = name
+        self.desc = desc
         self.relationship = {
             '@identifier': self.uuid,  # RELATIONSHIP UUID
             '@source': self.source,  # SOURCE UUID
@@ -285,6 +320,12 @@ class Relationship:
             },
             # 'properties': {'property':[]}
         }
+
+        if desc:
+            self.relationship['documentation'] = {
+                '@xml:lang': 'en',
+                '#text': selfself.desc
+            }
 
         if access_type is not None:
             self.relationship['@accessType'] = access_type
@@ -303,9 +344,10 @@ class Relationship:
 
 class View:
 
-    def __init__(self, name='', uuid=None):
+    def __init__(self, name='', uuid=None, desc=None):
         self.uuid = set_id(uuid)
         self.name = name
+        self.desc = desc
         self.view = {
             '@identifier': self.uuid,  # VIEW UUID
             '@xsi:type': 'Diagram',  # VIEW TYPE
@@ -316,6 +358,11 @@ class View:
             'node': [],  # LIST OF NODES
             'connection': [],  # LIST OF CONNECTIONS
         }
+        if desc:
+            self.view['documentation'] = {
+                '@xml:lang': 'en',
+                '#text': self.desc
+            }
 
     def add_node(self, *nodes):
         if 'node' not in self.view:
@@ -328,7 +375,7 @@ class View:
                 log.warning(f"In 'View.add_node', node '{n.uuid}' refers to undefined element reference '{n.ref}'")
 
     def sort_node(self):
-        self.view['node'].sort(key=lambda x: int(x['@x'])*int(x['@y']))
+        self.view['node'].sort(key=lambda x: int(x['@x']) * int(x['@y']))
 
     def add_container(self, container, label):
         if 'node' not in self.view:
@@ -488,7 +535,7 @@ class RGBA:
 
 class Font:
 
-    def __init__(self, name: str = 'Segoe UI' , size: int = 9, color: RGBA = (0,0,0,100)):
+    def __init__(self, name: str = 'Segoe UI', size: int = 9, color: RGBA = (0, 0, 0, 100)):
         self.name = name
         self.size = size
         self.color = color
@@ -526,4 +573,3 @@ class Style:
                     '@b': str(self.f.color.b)
                 }
             }
-

@@ -26,7 +26,7 @@ type_map = {
     "ST_ARCHIMATE_APPLICATION_PROCESS": "ApplicationProcess",
     "ST_ARCHIMATE_APPLICATION_EVENT": "ApplicationEvent",
     "ST_ARCHIMATE_APPLICATION_SERVICE": "ApplicationService",
-    "ST_APPL_SYS_TYPE": "ApplicationComponent", # TODO What is that?
+    "ST_APPL_SYS_TYPE": "ApplicationComponent", # Special type, from ServiceNow CMDB import
     "ST_ARCHIMATE_DATA_OBJECT": "DataObject",
 
     # Technology layer
@@ -88,8 +88,9 @@ type_map = {
 
     # Junction
 
-    "ST_ARCHIMATE_AND_JJUNCTION": "AndJunction",
+    "ST_ARCHIMATE_AND_JUNCTION": "AndJunction",
     "ST_ARCHIMATE_OR_JUNCTION": "OrJunction",
+    "ST_ARCHIMATE_JUNCTION": "AndJunction",
 
     # Relationships
 
