@@ -15,7 +15,6 @@ from uuid import uuid4, UUID
 import xmltodict
 
 
-
 log = logging.getLogger()
 log.setLevel(logging.INFO)
 
@@ -450,8 +449,10 @@ class Node:
             self.ref = ref.uuid
         elif isinstance(ref, str):
             self.ref = ref
-        else:
+        elif ref is not None:
             raise ValueError("'ref' is not an instance of 'Element' class.")
+        else:
+            self.ref = None
         self.x = int(x)
         self.y = int(y)
         self.w = int(w)

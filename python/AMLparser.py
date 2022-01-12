@@ -271,6 +271,7 @@ class AML:
                     view_name, model_props, desc = self.get_attributes(m)
                     view = View(name=view_name, uuid=view_id, desc=desc)
                     self.parse_nodes(m, view)
+                    self.parse_unions(m, view)
                     self.parse_connections(m, view)
                     self.parse_containers(m, view)
                     self.parse_labels_in_view(m, view)
@@ -325,6 +326,9 @@ class AML:
 
         self.parse_nodes(grp)
         return
+
+    def parse_union(self, grp=None, view=None):
+        pass    # TODO parse the unions and embed nodes in nodes
 
     def parse_connections(self, grp=None, view=None):
         if grp is None:
@@ -396,6 +400,8 @@ class AML:
 
                 def hex_to_rgb(value):
                     value = value.lstrip('#')
+                    if int(value) == 0:
+                        value = '000000'
                     lv = len(value)
                     return tuple(int(value[i:i + lv // 3], 16) for i in range(0, lv, lv // 3))
 
