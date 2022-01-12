@@ -4,23 +4,25 @@
 *   Date: December 2021
 *   Version 0.1
 *
-*
-*   TODO Implement folder structure
 *   TODO Implement styles
 *
 """
-import logging as log
-from jsonpath_ng import parse
+from xml.sax.saxutils import escape
 from archiObjects import *
 from type_mapping import type_map
-from xml.sax.saxutils import escape
+from jsonpath_ng import parse
+import logging
+
+
+log = logging.getLogger()
+log.setLevel(logging.INFO)
 
 
 def str2xml_escape(txt):
     return escape(txt, entities={"'": "&apos;", '"': "&quot;", '\r': "&#13;"})
 
 
-def xml2str_escape(txt):
+def xml_escape2str(txt):
     txt = txt.replace("&lt;", "<")
     txt = txt.replace("&gt;", ">")
     txt = txt.replace("&amp;", "&")
@@ -35,7 +37,8 @@ class AML:
     Class to perform the parsing of ARIS AML data and to generate OpenExchangeFile data
     """
 
-    def __init__(self, aml_file: str, name='aris_export', scale_x=0.3, scale_y=0.3, skip_bendpoint=True):
+    def __init__(self, aml_file: str, name='aris_export', scale_x=0.3, scale_y=0.3,
+                 skip_bendpoint=True, include_organization=True):
         """
         Parameters:
              aml_file : str
@@ -97,11 +100,13 @@ class AML:
         self.scaleX = float(scale_x)
         self.scaleY = float(scale_y)
         self.skip_bendpoint = skip_bendpoint
+        self.incl_org = include_organization
+        if not include_organization:
+            del self.model.OEF["model"]["organizations"]
         self.oef_data = None
 
     def convert(self):
         log.info('Parsing Folders')
-        # self.parse_organizations()
         log.info('Parsing elements')
         self.parse_elements()
         log.info('Parsing relationships')
@@ -137,7 +142,7 @@ class AML:
                     attr_type = ad['@AttrDef.Type']
                     prop_key = attr_type
                     prop_val = sep.join([x.value for x in find_text(ad)])
-                    prop_val = xml2str_escape(prop_val).encode('ascii', 'replace').decode()
+                    prop_val = xml_escape2str(prop_val).encode('ascii', 'replace').decode()
                     props.append(Property(prop_key, prop_val, self.pdef))
                     if attr_type == 'AT_DESC':
                         o_desc = prop_val
@@ -157,9 +162,10 @@ class AML:
             groups = [groups]
 
         for grp in groups:
+            oo = list(orgs)
             if '@TypeNum' in grp and 'AttrDef' in grp:
                 name, props, desc = self.get_attributes(grp)
-                orgs.append(name)
+                oo.append(name)
 
             if 'ObjDef' in grp:
                 refs = []
@@ -179,8 +185,9 @@ class AML:
                     e.add_property(*props)
                     self.model.add_elements(e)
                     refs.append(o_id)
-                self.model.add_organizations(orgs, refs)
-            self.parse_elements(grp, orgs)
+                if self.incl_org:
+                    self.model.add_organizations(oo, refs)
+            self.parse_elements(grp, oo)
         return
 
     def parse_relationships(self, groups=None, orgs=None):
@@ -196,9 +203,10 @@ class AML:
             groups = [groups]
 
         for grp in groups:
+            oo = list(orgs)
             if '@TypeNum' in grp and 'AttrDef' in grp:
                 name, props, desc = self.get_attributes(grp)
-                orgs.append(name)
+                oo.append(name)
 
             if 'ObjDef' in grp:
                 refs = []
@@ -227,16 +235,17 @@ class AML:
                             else:
                                 log.warning(f"In 'parse_element', unknown relationship target {r_target} "
                                             f"for element '{o_name}' - {o_id}")
-                        self.model.add_organizations(orgs, refs)
+                        if self.incl_org:
+                            self.model.add_organizations(oo, refs)
                 return
 
-            self.parse_relationships(grp, orgs)
+            self.parse_relationships(grp, oo)
         return
 
     def parse_views(self, groups=None, orgs=None):
         if groups is None:
             groups = self.data['AML']
-            orgs=[]
+            orgs = []
 
         if 'Group' not in groups:
             return
@@ -246,12 +255,13 @@ class AML:
             groups = [groups]
 
         for grp in groups:
+            oo = list(orgs)
             if '@TypeNum' in grp and 'AttrDef' in grp:
                 name, props, desc = self.get_attributes(grp)
-                orgs.append(name)
+                oo.append(name)
 
             if 'Model' in grp:
-                refs=[]
+                refs = []
                 models = grp['Model']
                 if not isinstance(models, list):
                     models = [models]
@@ -267,8 +277,9 @@ class AML:
                     view.sort_node()
                     self.model.add_views(view)
                     refs.append(view_id)
-                self.model.add_organizations(orgs, refs)
-            self.parse_views(grp, orgs)
+                if self.incl_org:
+                    self.model.add_organizations(oo, refs)
+            self.parse_views(grp, oo)
         return
 
     def parse_nodes(self, grp=None, view=None):

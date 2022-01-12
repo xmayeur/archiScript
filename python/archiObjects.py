@@ -9,11 +9,15 @@
 *
 *
 """
-from uuid import uuid4, UUID
+import logging
 from collections import OrderedDict
-import logging as log
+from uuid import uuid4, UUID
 import xmltodict
-from jsonpath_ng import parse
+
+
+
+log = logging.getLogger()
+log.setLevel(logging.INFO)
 
 # Dictionary with all artefact identifier keys & name as value
 IDs = {}  # key = object id, value = object name
@@ -110,7 +114,7 @@ class OpenExchange:
             },
             'elements': {'element': []},  # list of elements
             'relationships': {'relationship': []},  # list of relationships
-            'organizations': {'item':[]},
+            'organizations': {'item': []},
             'propertyDefinitions': {'propertyDefinition': []},
             # 'views': {'diagrams': {'view': []}}  # list of diagrams
         }
@@ -152,15 +156,18 @@ class OpenExchange:
             self.OEF['model']['properties']['property'].append(p)
 
     def add_organizations(self, org_list=None, item_refs=None):
+        refs = item_refs
         orgs = self.OEF['model']['organizations']['item']
         if not isinstance(org_list, list):
             org_list = [org_list]
-
         p = []
+        item = None
         for o in reversed(org_list):
-            item = OrgItem(label=o, items=p, item_refs=item_refs).item
+            item = OrgItem(label=o, items=p, item_refs=refs).item
+            refs = None
             p = [item]
-        orgs.append(item)
+        if item is not None:
+            orgs.append(item)
 
 
 class OrgItem:
@@ -188,6 +195,7 @@ class OrgItem:
                 self.item['item'] = []
             for i in items:
                 self.item['item'].append(i)
+
 
 class Element:
     """
@@ -301,7 +309,8 @@ class PropertyDefinitions:
 
 class Relationship:
 
-    def __init__(self, source, target, type='', uuid=None, name='', access_type=None, influcence_strength=None, desc=None):
+    def __init__(self, source, target, type='', uuid=None, name='', access_type=None, influcence_strength=None,
+                 desc=None):
         self.uuid = set_id(uuid)
 
         if isinstance(source, Element):
