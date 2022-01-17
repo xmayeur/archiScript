@@ -7,15 +7,16 @@
 *   TODO Implement styles
 *
 """
+
+from logger import log, logging
 from xml.sax.saxutils import escape
-from archiObjects import *
-from type_mapping import type_map
+
+import xmltodict
 from jsonpath_ng import parse
-import logging
 
-
-log = logging.getLogger()
-log.setLevel(logging.INFO)
+from archiObjects import IDs, OpenExchange, Element, Property, PropertyDefinitions, Relationship
+from archiObjects import View, Node, Connection, RGBA, Style
+from type_mapping import type_map
 
 
 def str2xml_escape(txt):
@@ -38,7 +39,7 @@ class AML:
     """
 
     def __init__(self, aml_file: str, name='aris_export', scale_x=0.3, scale_y=0.3,
-                 skip_bendpoint=True, include_organization=True):
+                 skip_bendpoint=True, include_organization=False, incl_unions=False):
         """
         Parameters:
              aml_file : str
@@ -103,6 +104,7 @@ class AML:
         self.incl_org = include_organization
         if not include_organization:
             del self.model.OEF["model"]["organizations"]
+        self.incl_union = incl_unions
         self.oef_data = None
 
     def convert(self):
@@ -129,9 +131,13 @@ class AML:
             return expr.find(arg)
 
         attribs = o['AttrDef']
+
         if not isinstance(attribs, list):
             attribs = [attribs]
+
         for attr in attribs:
+            attr = attr
+
             if not isinstance(attr, list):
                 attr = [attr]
             for ad in attr:
@@ -162,7 +168,10 @@ class AML:
             groups = [groups]
 
         for grp in groups:
-            oo = list(orgs)
+            oo = orgs
+            if not isinstance(oo, list):
+                oo = [oo]
+
             if '@TypeNum' in grp and 'AttrDef' in grp:
                 name, props, desc = self.get_attributes(grp)
                 oo.append(name)
@@ -170,8 +179,10 @@ class AML:
             if 'ObjDef' in grp:
                 refs = []
                 objects = grp['ObjDef']
+
                 if not isinstance(objects, list):
                     objects = [objects]
+
                 for o in objects:
                     o_type = type_map[o['@SymbolNum']]
                     if o_type == "":
@@ -199,11 +210,15 @@ class AML:
             return
 
         groups = groups['Group']
+
         if not isinstance(groups, list):
             groups = [groups]
 
         for grp in groups:
-            oo = list(orgs)
+            oo = orgs
+
+            if not isinstance(oo, list):
+                oo = [oo]
             if '@TypeNum' in grp and 'AttrDef' in grp:
                 name, props, desc = self.get_attributes(grp)
                 oo.append(name)
@@ -211,6 +226,7 @@ class AML:
             if 'ObjDef' in grp:
                 refs = []
                 objects = grp['ObjDef']
+
                 if not isinstance(objects, list):
                     objects = [objects]
                 for o in objects:
@@ -219,9 +235,9 @@ class AML:
 
                     if 'CxnDef' in o:
                         rels = o['CxnDef']
+
                         if not isinstance(rels, list):
                             rels = [rels]
-
                         for rel in rels:
                             r_type = type_map[rel['@CxnDef.Type']]
                             r_id = rel['@CxnDef.ID']
@@ -229,18 +245,41 @@ class AML:
                             # Check if target is known
                             if r_target in IDs:
                                 r = Relationship(source=o_id, target=r_target, type=r_type, uuid=r_id, desc=desc)
+                                # TODO re-enable this when the conversion will have first removed the un-used elements in views
+                                # r.is_ing_pattern()
                                 # TODO check how to manage access & influence relation metadata
                                 self.model.add_relationships(r)
                                 refs.append(r_id)
                             else:
-                                log.warning(f"In 'parse_element', unknown relationship target {r_target} "
-                                            f"for element '{o_name}' - {o_id}")
+                                log.info(f"In 'parse_element', unknown relationship target {r_target} "
+                                                 f"for element '{o_name}' - {o_id}")
                         if self.incl_org:
                             self.model.add_organizations(oo, refs)
                 return
 
             self.parse_relationships(grp, oo)
         return
+
+    def parse_unions(self, uu, lst=None):
+        if not self.incl_union:
+            return []
+
+        uu = uu
+        if lst is None:
+            lst = []
+        if not isinstance(uu, list):
+            uu = [uu]
+        for u in uu:
+            refs = u['@ObjOccs.IdRefs'].strip().split(' ')
+            n: Node = IDs[refs[0]]
+            for x in refs[1:]:
+                nn: Node = IDs[x]
+                n.add_node(nn)
+                lst.append(nn.uuid)
+
+            if 'Union' in u:
+                lst = self.parse_unions(u['Union'], lst)
+        return lst
 
     def parse_views(self, groups=None, orgs=None):
         if groups is None:
@@ -251,35 +290,58 @@ class AML:
             return
 
         groups = groups['Group']
+
         if not isinstance(groups, list):
             groups = [groups]
 
         for grp in groups:
-            oo = list(orgs)
+            oo = orgs
+
+            if not isinstance(oo, list):
+                oo = [oo]
             if '@TypeNum' in grp and 'AttrDef' in grp:
                 name, props, desc = self.get_attributes(grp)
                 oo.append(name)
 
+            # Parse models (views)
             if 'Model' in grp:
                 refs = []
                 models = grp['Model']
+
                 if not isinstance(models, list):
                     models = [models]
-
                 for m in models:
                     view_id = m['@Model.ID']
+                    IDs[view_id] = m
                     view_name, model_props, desc = self.get_attributes(m)
                     view = View(name=view_name, uuid=view_id, desc=desc)
+
                     self.parse_nodes(m, view)
-                    self.parse_unions(m, view)
                     self.parse_connections(m, view)
                     self.parse_containers(m, view)
                     self.parse_labels_in_view(m, view)
                     view.sort_node()
-                    self.model.add_views(view)
                     refs.append(view_id)
+
+                    lst = []
+                    # Parse Unions (node embeddings definitions)
+                    if 'Union' in m:
+                        unions = m['Union']
+                        if not isinstance(unions, list):
+                            unions = [unions]
+
+                        for u in unions:
+                            lst = self.parse_unions(u, lst)
+
+                    for i in range(len(view.view['node']) - 1, 0, -1):
+                        if view.view['node'][i]['@identifier'] in lst:
+                            view.view['node'].pop(i)
+
+                    self.model.add_views(view)
+
                 if self.incl_org:
                     self.model.add_organizations(oo, refs)
+
             self.parse_views(grp, oo)
         return
 
@@ -313,6 +375,7 @@ class AML:
                     h=int(size['@Size.dY']) * self.scaleY,
                     uuid=o_id
                 )
+                IDs[o_id] = n
                 view.add_node(n)
 
                 if o_type == 'Grouping':
@@ -320,15 +383,10 @@ class AML:
                     s = Style(fill_color=fc)
                     n.add_style(s)
 
-            # Sort nodes by area, the biggest first
-
             return
 
         self.parse_nodes(grp)
         return
-
-    def parse_union(self, grp=None, view=None):
-        pass    # TODO parse the unions and embed nodes in nodes
 
     def parse_connections(self, grp=None, view=None):
         if grp is None:
@@ -350,21 +408,42 @@ class AML:
 
                 if 'CxnOcc' in o:
                     conns = o['CxnOcc']
+
                     if not isinstance(conns, list):
                         conns = [conns]
-
                     for conn in conns:
                         c_id = conn['@CxnOcc.ID']
                         c_rel_id = conn['@CxnDef.IdRef']
                         c_target = conn['@ToObjOcc.IdRef']
-                        # if '@Visible' in conn and conn['@Visible'] == 'NO':
-                        #     continue
-                        c = Connection(ref=c_rel_id, source=o_id, target=c_target, uuid=c_id)
-                        if 'Position' in conn and not self.skip_bendpoint:
-                            bps = conn['Position']
-                            for i in range(1, len(bps) - 1):
-                                bp_x = int(bps[i]['@Pos.X'])
-                                bp_y = int(bps[i]['@Pos.Y'])
+                        if '@Embedding' in conn and conn['@Embedding'] == 'YES' and self.incl_union is True:
+
+                            # Aris uses reversed relationship when embedding objects,
+                            # This gives validation errors when importing into archi...
+                            # Swap therefore source and target if needed
+                            rel: Relationship = IDs[c_rel_id]
+                            x = rel.target
+
+                            # check if the relationship target is the related element of the visual object and swap
+                            n: Node = IDs[c_target]
+                            t: Element = IDs[n.ref]
+                            s: Element = IDs[rel.source]
+
+                            if x == t.uuid:
+                                log.warning(f"Inverting embedded nodes relationship '{rel.type}' between nodes '{s.name}' and '{t.name}'")
+                                # rel.relationship['@target'] = rel.source
+                                rel.target = rel.source
+                                # rel.relationship['@source'] = x
+                                rel.source = x
+                                self.model.replace_relationships(c_rel_id, rel.relationship)
+
+                        else:
+                            c = Connection(ref=c_rel_id, source=o_id, target=c_target, uuid=c_id)
+
+                            if 'Position' in conn and not self.skip_bendpoint:
+                                bps = conn['Position']
+                                for i in range(1, len(bps) - 1):
+                                    bp_x = int(bps[i]['@Pos.X'])
+                                    bp_y = int(bps[i]['@Pos.Y'])
 
                                 c.add_bendpoint(
                                     (bp_x * self.scaleX, bp_y * self.scaleY)
@@ -390,7 +469,8 @@ class AML:
 
         if 'GfxObj' in grp:
             objects = grp['GfxObj']
-            if not isinstance(object, list):
+
+            if not isinstance(objects, list):
                 objects = [objects]
             for o in objects:
                 if 'RoundedRectangle' not in o:
@@ -400,7 +480,7 @@ class AML:
 
                 def hex_to_rgb(value):
                     value = value.lstrip('#')
-                    if int(value) == 0:
+                    if value == '0':
                         value = '000000'
                     lv = len(value)
                     return tuple(int(value[i:i + lv // 3], 16) for i in range(0, lv, lv // 3))
@@ -448,6 +528,7 @@ class AML:
 
         if 'FFTextOcc' in grp:
             objects = grp['FFTextOcc']
+
             if not isinstance(objects, list):
                 objects = [objects]
             for o in objects:

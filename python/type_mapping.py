@@ -114,3 +114,22 @@ type_map = {
 
 accessType = ('Access', 'Read', 'Write', 'ReadWrite')
 influenceStrength = ('+', '++', '-', '--', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10')
+
+valid_ing_patterns = {
+    "Capability-Capability": ["Aggregation", "Composition"],
+    "BusinessService-Capability": ["Realization"],
+    "BusinessFunction-BusinessService": ["Realization"],
+    "BusinessService-BusinessService": ["Specialization", "Aggregation", "Composition"],
+    "BusinessActor-ApplicationCollaboration": ["Association"],
+    "BusinessActor-BusinessRole": ["Assignment"],
+    "ApplicationCollaboration-BusinessFunction": ["Serving"],
+    "ApplicationCollaboration-BusinessService": ["Serving"],
+    "ApplicationCollaboration-ApplicationFunction": ["Assignment"],
+    "ApplicationCollaboration-ApplicationInterface": ["Composition"],
+    "ApplicationCollaboration-ApplicationComponent": ["Aggregation"],
+    "ApplicationCollaboration-ApplicationCollaboration": ["Serving", "Flow"],
+    "ApplicationInterface-ApplicationFunction": ["Triggering", "Flow"],
+    "ApplicationFunction-ApplicationInterface": ["Triggering"],
+    "ApplicationFunction-DataObject": ["Access"],
+    "Node-ApplicationCollaboration": ["Realization"],
+}

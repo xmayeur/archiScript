@@ -9,17 +9,15 @@
 *
 *
 """
-import logging
+from logger import log
 from collections import OrderedDict
 from uuid import uuid4, UUID
 import xmltodict
+from type_mapping import valid_ing_patterns
 
-
-log = logging.getLogger()
-log.setLevel(logging.INFO)
 
 # Dictionary with all artefact identifier keys & name as value
-IDs = {}  # key = object id, value = object name
+IDs = {}  # key = object id, value = object
 
 
 def is_valid_uuid(uuid_to_test, version=4):
@@ -127,7 +125,7 @@ class OpenExchange:
             self.OEF['model']['elements'] = {'element': []}
         for e in elements:
             self.OEF['model']['elements']['element'].append(e.element)
-            IDs[e.uuid] = e.name
+            IDs[e.uuid] = e
             # TODO Add Elem in Organizations if defined
 
     def add_relationships(self, *relationships):
@@ -135,7 +133,11 @@ class OpenExchange:
             self.OEF['model']['relationships'] = {'relationship': []}
         for r in relationships:
             self.OEF['model']['relationships']['relationship'].append(r.relationship)
-            IDs[r.uuid] = r.name
+            IDs[r.uuid] = r
+
+    def replace_relationships(self, id, new_rel):
+        rels = self.OEF['model']['relationships']['relationship']
+        self.OEF['model']['relationships']['relationship'] = [new_rel if (x['@identifier'] == id) else x for x in rels]
 
     def add_views(self, *views):
         if 'views' not in self.OEF['model']:
@@ -289,8 +291,8 @@ class PropertyDefinitions:
     Methods:
     add : str
         add a new key to the list
-        :param  str key
-        :return str key identifier
+        :param:  str key
+        :return: str key identifier
     """
 
     def __init__(self):
@@ -313,16 +315,16 @@ class Relationship:
         self.uuid = set_id(uuid)
 
         if isinstance(source, Element):
-            self.source = source.uuid
+            self._source = source.uuid
         elif isinstance(source, str):
-            self.source = source
+            self._source = source
         else:
             raise ValueError("'source' argument is not an instance of 'Element' class.")
 
         if isinstance(target, Element):
-            self.target = target.uuid
-        elif isinstance(source, str):
-            self.target = target
+            self._target = target.uuid
+        elif isinstance(target, str):
+            self._target = target
         else:
             raise ValueError("'target' argument is not an instance of 'Element' class.")
         self.type = type
@@ -331,8 +333,8 @@ class Relationship:
         self.desc = desc
         self.relationship = {
             '@identifier': self.uuid,  # RELATIONSHIP UUID
-            '@source': self.source,  # SOURCE UUID
-            '@target': self.target,  # TARGET UUID
+            '@source': self._source,  # SOURCE UUID
+            '@target': self._target,  # TARGET UUID
             '@xsi:type': self.type,  # RELATIONSHIP TYPE
             'name': {
                 '@xml:lang': 'en',
@@ -353,6 +355,30 @@ class Relationship:
         if influcence_strength is not None:
             self.relationship['@modifier'] = influcence_strength
 
+    def set_source(self, src):
+        if isinstance(src, Element):
+            self._source = src.uuid
+        elif isinstance(src, str):
+            self._source = src
+        else:
+            raise ValueError("'source' argument is not an instance of 'Element' class.")
+        self.relationship['@source'] = self._source
+
+    def get_source(self):
+        return self._source
+
+    def set_target(self, dst):
+        if isinstance(dst, Element):
+            self._target = dst.uuid
+        elif isinstance(dst, str):
+            self._target = dst
+        else:
+            raise ValueError("'target' argument is not an instance of 'Element' class.")
+        self.relationship['@target'] = self._target
+
+    def get_target(self):
+       return self._target
+
     def add_property(self, *properties):
         if 'properties' not in self.relationship:
             self.relationship['properties'] = {'property': []}
@@ -361,6 +387,20 @@ class Relationship:
                 p = p.property
             self.relationship['properties']['property'].append(p)
 
+    def is_ing_pattern(self) -> bool:
+        src: Element = IDs[self._source]
+        dst: Element = IDs[self._target]
+        check_key = src.type + "-" + dst.type
+        if check_key in valid_ing_patterns:
+            return True
+        else:
+            log.warning(f'Relationship "{self.type}" between "{src.name}" and "{dst.name}" '
+                      f'does not conform to ING BE patterns.')
+            return False
+
+    source = property(get_source, set_source)
+    target = property(get_target, set_target)
+
 
 class View:
 
@@ -368,6 +408,7 @@ class View:
         self.uuid = set_id(uuid)
         self.name = name
         self.desc = desc
+        self.unions = []
         self.view = {
             '@identifier': self.uuid,  # VIEW UUID
             '@xsi:type': 'Diagram',  # VIEW TYPE
@@ -375,14 +416,14 @@ class View:
                 '@xml:lang': 'en',
                 '#text': self.name,  # ELEMENT NAME
             },
+            'documentation': {
+                '@xml:lang': 'en',
+                '#text': '' if (self.desc is None) else self.desc
+            },
             'node': [],  # LIST OF NODES
             'connection': [],  # LIST OF CONNECTIONS
         }
-        if desc:
-            self.view['documentation'] = {
-                '@xml:lang': 'en',
-                '#text': self.desc
-            }
+
 
     def add_node(self, *nodes):
         if 'node' not in self.view:
@@ -460,6 +501,7 @@ class Node:
         self.area = w * h
         self.style = style
         self.node = node
+        self.flags = 0
         self.node = {
             '@identifier': self.uuid,  # NODE UUID
             '@elementRef': self.ref,  # ELEMENT UUID
@@ -490,6 +532,9 @@ class Node:
     def add_style(self, style):
         if isinstance(style, Style):
             self.node['style'] = style.style
+
+    def get_related_element(self) -> Element:
+        return IDs[self.ref]
 
 
 class Connection:
