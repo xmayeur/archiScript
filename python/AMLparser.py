@@ -10,12 +10,9 @@
 
 from logger import log, logging
 from xml.sax.saxutils import escape
-
 import xmltodict
 from jsonpath_ng import parse
-
-from archiObjects import IDs, OpenExchange, Element, Property, PropertyDefinitions, Relationship
-from archiObjects import View, Node, Connection, RGBA, Style
+from archiObjects import *
 from type_mapping import type_map
 
 
@@ -108,7 +105,7 @@ class AML:
         self.oef_data = None
 
     def convert(self):
-        log.info('Parsing Folders')
+
         log.info('Parsing elements')
         self.parse_elements()
         log.info('Parsing relationships')
@@ -243,7 +240,7 @@ class AML:
                             r_id = rel['@CxnDef.ID']
                             r_target = rel['@ToObjDef.IdRef']
                             # Check if target is known
-                            if r_target in IDs:
+                            if r_target in elems_id:
                                 r = Relationship(source=o_id, target=r_target, type=r_type, uuid=r_id, desc=desc)
                                 # TODO re-enable this when the conversion will have first removed the un-used elements in views
                                 # r.is_ing_pattern()
@@ -271,9 +268,9 @@ class AML:
             uu = [uu]
         for u in uu:
             refs = u['@ObjOccs.IdRefs'].strip().split(' ')
-            n: Node = IDs[refs[0]]
+            n: Node = nodes_id[refs[0]]
             for x in refs[1:]:
-                nn: Node = IDs[x]
+                nn: Node = nodes_id[x]
                 n.add_node(nn)
                 lst.append(nn.uuid)
 
@@ -312,7 +309,7 @@ class AML:
                     models = [models]
                 for m in models:
                     view_id = m['@Model.ID']
-                    IDs[view_id] = m
+                    views_id[view_id] = m
                     view_name, model_props, desc = self.get_attributes(m)
                     view = View(name=view_name, uuid=view_id, desc=desc)
 
@@ -375,7 +372,7 @@ class AML:
                     h=int(size['@Size.dY']) * self.scaleY,
                     uuid=o_id
                 )
-                IDs[o_id] = n
+                nodes_id[o_id] = n
                 view.add_node(n)
 
                 if o_type == 'Grouping':
@@ -420,19 +417,17 @@ class AML:
                             # Aris uses reversed relationship when embedding objects,
                             # This gives validation errors when importing into archi...
                             # Swap therefore source and target if needed
-                            rel: Relationship = IDs[c_rel_id]
+                            rel: Relationship = rels_id[c_rel_id]
                             x = rel.target
 
                             # check if the relationship target is the related element of the visual object and swap
-                            n: Node = IDs[c_target]
-                            t: Element = IDs[n.ref]
-                            s: Element = IDs[rel.source]
+                            n: Node = nodes_id[c_target]
+                            t: Element = elems_id[n.ref]
+                            s: Element = elems_id[rel.source]
 
                             if x == t.uuid:
                                 log.warning(f"Inverting embedded nodes relationship '{rel.type}' between nodes '{s.name}' and '{t.name}'")
-                                # rel.relationship['@target'] = rel.source
                                 rel.target = rel.source
-                                # rel.relationship['@source'] = x
                                 rel.source = x
                                 self.model.replace_relationships(c_rel_id, rel.relationship)
 
@@ -448,7 +443,7 @@ class AML:
                                 c.add_bendpoint(
                                     (bp_x * self.scaleX, bp_y * self.scaleY)
                                 )
-                        view.add_connection(c)
+                            view.add_connection(c)
             return
 
         self.parse_connections(grp)

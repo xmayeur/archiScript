@@ -16,8 +16,13 @@ import xmltodict
 from type_mapping import valid_ing_patterns
 
 
-# Dictionary with all artefact identifier keys & name as value
-IDs = {}  # key = object id, value = object
+# Dictionary with all artefact identifier keys & objects
+elems_id = {}
+rels_id = {}
+nodes_id = {}
+conns_id = {}
+views_id = {}
+labels_id = {}
 
 
 def is_valid_uuid(uuid_to_test, version=4):
@@ -98,7 +103,7 @@ class OpenExchange:
     def __init__(self, name, uuid=None):
         self.name = name
         self.uuid = set_id(uuid)
-        self.OEF = OrderedDict()
+        # self.OEF = OrderedDict()
         self.OEF = {'model': {
             '@xmlns': 'http://www.opengroup.org/xsd/archimate/3.0/',
             '@xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
@@ -125,15 +130,14 @@ class OpenExchange:
             self.OEF['model']['elements'] = {'element': []}
         for e in elements:
             self.OEF['model']['elements']['element'].append(e.element)
-            IDs[e.uuid] = e
-            # TODO Add Elem in Organizations if defined
+            elems_id[e.uuid] = e
 
     def add_relationships(self, *relationships):
         if 'relationships' not in self.OEF['model']:
             self.OEF['model']['relationships'] = {'relationship': []}
         for r in relationships:
             self.OEF['model']['relationships']['relationship'].append(r.relationship)
-            IDs[r.uuid] = r
+            rels_id[r.uuid] = r
 
     def replace_relationships(self, id, new_rel):
         rels = self.OEF['model']['relationships']['relationship']
@@ -310,7 +314,7 @@ class PropertyDefinitions:
 
 class Relationship:
 
-    def __init__(self, source, target, type='', uuid=None, name='', access_type=None, influcence_strength=None,
+    def __init__(self, source, target, type='', uuid=None, name='', access_type=None, influence_strength=None,
                  desc=None):
         self.uuid = set_id(uuid)
 
@@ -352,8 +356,8 @@ class Relationship:
         if access_type is not None:
             self.relationship['@accessType'] = access_type
 
-        if influcence_strength is not None:
-            self.relationship['@modifier'] = influcence_strength
+        if influence_strength is not None:
+            self.relationship['@modifier'] = influence_strength
 
     def set_source(self, src):
         if isinstance(src, Element):
@@ -388,8 +392,8 @@ class Relationship:
             self.relationship['properties']['property'].append(p)
 
     def is_ing_pattern(self) -> bool:
-        src: Element = IDs[self._source]
-        dst: Element = IDs[self._target]
+        src: Element = elems_id[self._source]
+        dst: Element = elems_id[self._target]
         check_key = src.type + "-" + dst.type
         if check_key in valid_ing_patterns:
             return True
@@ -430,7 +434,7 @@ class View:
             self.view['node'] = []
         for n in nodes:
             # check whether nodes refers to a known element
-            if n.ref in IDs:
+            if n.ref in elems_id:
                 self.view['node'].append(n.node)
             else:
                 log.warning(f"In 'View.add_node', node '{n.uuid}' refers to undefined element reference '{n.ref}'")
@@ -461,13 +465,13 @@ class View:
         }
         del label_node.node['@elementRef']
         self.view['node'].append(label_node.node)
-        IDs[label_node.uuid] = label
+        labels_id[label_node.uuid] = label
 
     def add_connection(self, *connections):
         if 'connection' not in self.view:
             self.view['connection'] = []
         for c in connections:
-            if c.ref in IDs:
+            if c.ref in rels_id:
                 self.view['connection'].append(c.connection)
             else:
                 log.warning(f"In 'View.add_connection', node '{c.uuid}' refers "
@@ -534,7 +538,7 @@ class Node:
             self.node['style'] = style.style
 
     def get_related_element(self) -> Element:
-        return IDs[self.ref]
+        return elems_id[self.ref]
 
 
 class Connection:

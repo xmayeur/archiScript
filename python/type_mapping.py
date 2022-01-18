@@ -122,7 +122,7 @@ valid_ing_patterns = {
     "BusinessService-BusinessService": ["Specialization", "Aggregation", "Composition"],
     "BusinessActor-ApplicationCollaboration": ["Association"],
     "BusinessActor-BusinessRole": ["Assignment"],
-    "ApplicationCollaboration-BusinessFunction": ["Serving"],
+    "ApplicationFunction-BusinessFunction": ["Realization"],
     "ApplicationCollaboration-BusinessService": ["Serving"],
     "ApplicationCollaboration-ApplicationFunction": ["Assignment"],
     "ApplicationCollaboration-ApplicationInterface": ["Composition"],
