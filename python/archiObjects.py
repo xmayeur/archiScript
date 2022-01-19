@@ -22,6 +22,7 @@ rels_id = {}
 nodes_id = {}
 conns_id = {}
 views_id = {}
+nodes_id = {}
 labels_id = {}
 
 
@@ -130,14 +131,13 @@ class OpenExchange:
             self.OEF['model']['elements'] = {'element': []}
         for e in elements:
             self.OEF['model']['elements']['element'].append(e.element)
-            elems_id[e.uuid] = e
+
 
     def add_relationships(self, *relationships):
         if 'relationships' not in self.OEF['model']:
             self.OEF['model']['relationships'] = {'relationship': []}
         for r in relationships:
             self.OEF['model']['relationships']['relationship'].append(r.relationship)
-            rels_id[r.uuid] = r
 
     def replace_relationships(self, id, new_rel):
         rels = self.OEF['model']['relationships']['relationship']
@@ -428,16 +428,14 @@ class View:
             'connection': [],  # LIST OF CONNECTIONS
         }
 
-
     def add_node(self, *nodes):
         if 'node' not in self.view:
             self.view['node'] = []
         for n in nodes:
+            self.view['node'].append(n.node)
             # check whether nodes refers to a known element
-            if n.ref in elems_id:
-                self.view['node'].append(n.node)
-            else:
-                log.warning(f"In 'View.add_node', node '{n.uuid}' refers to undefined element reference '{n.ref}'")
+            # if not n.ref in elems_id:
+            #     log.warning(f"In 'View.add_node', node '{n.uuid}' refers to undefined element reference '{n.ref}'")
 
     def sort_node(self):
         self.view['node'].sort(key=lambda x: int(x['@x']) * int(x['@y']))
@@ -474,8 +472,13 @@ class View:
             if c.ref in rels_id:
                 self.view['connection'].append(c.connection)
             else:
+                _ns: Node = nodes_id[c.source]
+                _nt: Node = nodes_id[c.target]
+                _es: Element = elems_id[_ns.ref]
+                _et: Element = elems_id[_nt.ref]
                 log.warning(f"In 'View.add_connection', node '{c.uuid}' refers "
-                            f"to undefined relationship reference '{c.ref}'")
+                            f"to undefined relationship reference '{c.ref}' between nodes "
+                            f"'{_es.name}' and '{_et.name}' ")
 
     def add_property(self, *properties):
         if 'properties' not in self.view:

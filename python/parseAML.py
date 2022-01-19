@@ -14,6 +14,8 @@ def main():
     parser.add_argument('-O', '--orgs', required=False, action='store_true', help='Include organizations structure')
     parser.add_argument('-E', '--embed', required=False, action='store_true',
                         help="Try to embed visual nodes (experimental)")
+    parser.add_argument('-xo', '--noOptimization', required=False, action='store_true',
+                        help='Do no remove elements and relationships that are not sed in views')
     parser.add_argument('-o', '--outputfile', required=False, help="Output converted file")
     parser.add_argument('-v', '--verbose', required=False, action='store_true', help="Display DEBUG & INFO log messages")
 
@@ -35,7 +37,8 @@ def main():
 
     aris = AML(args.file, name='x', scale_x=scale_x, scale_y=scale_y, skip_bendpoint=False,
                include_organization=True if args.orgs else False,
-               incl_unions=True if args.embed else False
+               incl_unions=True if args.embed else False,
+               optimize=False if args.noOptimization else True
                )
     result = aris.convert()
 
