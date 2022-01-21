@@ -9,13 +9,30 @@
 """
 
 from xml.sax.saxutils import escape
-
 from jsonpath_ng import parse
-
 from archiObjects import *
 from type_mapping import type_map
+import ctypes
+
 
 used_elems_id = []
+
+
+def get_text_Size(text, points, font):
+    class SIZE(ctypes.Structure):
+        _fields_ = [("cx", ctypes.c_long), ("cy", ctypes.c_long)]
+
+    hdc = ctypes.windll.user32.GetDC(0)
+    hfont = ctypes.windll.gdi32.CreateFontA(points, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, font)
+    hfont_old = ctypes.windll.gdi32.SelectObject(hdc, hfont)
+
+    size = SIZE(0, 0)
+    ctypes.windll.gdi32.GetTextExtentPoint32A(hdc, text, len(text), ctypes.byref(size))
+
+    ctypes.windll.gdi32.SelectObject(hdc, hfont_old)
+    ctypes.windll.gdi32.DeleteObject(hfont)
+
+    return size.cx, size.cy
 
 
 def str2xml_escape(txt):
@@ -457,12 +474,13 @@ class AML:
                     # calculate size in function of text
                     o_name, _, _ = self.get_attributes(lbl, '\n')
                     pos = o['Position']
+                    w, h = max([get_text_Size(x, 9, "Segoe UI") for x in o_name.split('\n')])
                     n = Node(
                         ref=o['@FFTextDef.IdRef'],
                         x=max(int(pos['@Pos.X']) * self.scaleX, 0),
                         y=max(int(pos['@Pos.Y']) * self.scaleY, 0),
-                        w=13 * len(max(o_name.split('\n'))),
-                        h=30 + 13 * o_name.count('\n')
+                        w=w,    # 13 * len(max(o_name.split('\n'))),
+                        h=30+(h*1.5)*(o_name.count('\n')+1)
                     )
 
                     line_color = RGBA(0, 0, 0, 0)
