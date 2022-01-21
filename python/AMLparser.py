@@ -254,17 +254,18 @@ class AML:
                     ns.append(n)
                     # lst.append(n.uuid)
                     # for x in refs[1:]:
-                    for x in list(set(refs) - set([np])):
+                    for x in list(set(refs) - {np}):
                         nn: Node = nodes_id[x]
                         n.add_node(nn)
                         lst.append(nn.uuid)
-                    break
 
-            if 'Union' in u:
-                lst, ns = self.parse_unions(u['Union'], lst)
-                for x in ns:
-                    n.add_node(x)
-                    lst.append(x.uuid)
+                    if 'Union' in u:
+                        lst, ns = self.parse_unions(u['Union'], lst)
+                        for x in ns:
+                            n.add_node(x)
+                            lst.append(x.uuid)
+
+                    break
 
         return lst, ns
 
@@ -374,7 +375,6 @@ class AML:
 
             return
 
-
     def parse_containers(self, grp=None, view=None):
         if grp is None:
             return
@@ -422,7 +422,6 @@ class AML:
                 view.add_container(n, ' ')
                 n.add_style(s)
             return
-
 
     def parse_labels(self, groups=None):
         if groups is None:
@@ -536,7 +535,7 @@ class AML:
                             unions = [unions]
 
                         for u in unions:
-                            lst,_ = self.parse_unions(u, lst)
+                            lst, _ = self.parse_unions(u, lst)
 
                     for i in range(len(view.view['node']) - 1, 0, -1):
                         if view.view['node'][i]['@identifier'] in lst:
