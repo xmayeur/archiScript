@@ -9,12 +9,12 @@
 *
 *
 """
-from logger import log
-from collections import OrderedDict
 from uuid import uuid4, UUID
-import xmltodict
-from type_mapping import valid_ing_patterns
 
+import xmltodict
+
+from logger import log
+from type_mapping import simplified_patterns
 
 # Dictionary with all artefact identifier keys & objects
 elems_id = {}
@@ -22,7 +22,6 @@ rels_id = {}
 nodes_id = {}
 conns_id = {}
 views_id = {}
-nodes_id = {}
 labels_id = {}
 
 
@@ -102,7 +101,7 @@ class OpenExchange:
     """
 
     def __init__(self, name, uuid=None):
-        self.name = name
+        self._name = name
         self.uuid = set_id(uuid)
         # self.OEF = OrderedDict()
         self.OEF = {'model': {
@@ -113,7 +112,7 @@ class OpenExchange:
             '@identifier': self.uuid,  # UUID
             'name': {
                 '@xml:lang': 'en',
-                '#text': self.name,  # MODEL NAME
+                '#text': self._name,  # MODEL NAME
             },
             'elements': {'element': []},  # list of elements
             'relationships': {'relationship': []},  # list of relationships
@@ -131,7 +130,6 @@ class OpenExchange:
             self.OEF['model']['elements'] = {'element': []}
         for e in elements:
             self.OEF['model']['elements']['element'].append(e.element)
-
 
     def add_relationships(self, *relationships):
         if 'relationships' not in self.OEF['model']:
@@ -173,6 +171,18 @@ class OpenExchange:
             p = [item]
         if item is not None:
             orgs.append(item)
+
+    def set_name(self, s):
+        self._name = s
+        self.OEF['model']['name'] = {
+                                        '@xml:lang': 'en',
+                                        '#text': s,  # MODEL NAME
+                                    }
+
+    def get_name(self):
+        return self._name
+
+    name = property(get_name, set_name)
 
 
 class OrgItem:
@@ -381,7 +391,7 @@ class Relationship:
         self.relationship['@target'] = self._target
 
     def get_target(self):
-       return self._target
+        return self._target
 
     def add_property(self, *properties):
         if 'properties' not in self.relationship:
@@ -391,15 +401,15 @@ class Relationship:
                 p = p.property
             self.relationship['properties']['property'].append(p)
 
-    def is_ing_pattern(self) -> bool:
+    def is_simplified_pattern(self) -> bool:
         src: Element = elems_id[self._source]
         dst: Element = elems_id[self._target]
         check_key = src.type + "-" + dst.type
-        if check_key in valid_ing_patterns:
+        if check_key in simplified_patterns:
             return True
         else:
             log.warning(f'Relationship "{self.type}" between "{src.name}" and "{dst.name}" '
-                      f'does not conform to ING BE patterns.')
+                        f'does not match simplified patterns list.')
             return False
 
     source = property(get_source, set_source)

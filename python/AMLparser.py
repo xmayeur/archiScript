@@ -513,6 +513,7 @@ class AML:
                     view_id = m['@Model.ID']
                     views_id[view_id] = m
                     view_name, model_props, desc = self.get_attributes(m)
+                    self.model.name = view_name
                     view = View(name=view_name, uuid=view_id, desc=desc)
                     log.info('Parsing & adding nodes')
 
@@ -637,14 +638,14 @@ class AML:
 
                             # Check if source & target are known
                             if r_target in used_elems_id and r_id in rels_id and o_id in used_elems_id:
-                                # r.is_ing_pattern()
+                                r.is_simplified_pattern()
                                 # TODO check how to manage access & influence relation metadata
                                 self.model.add_relationships(r)
                                 refs.append(r_id)
-                            else:
-                                e: Element = elems_id[o_id]
-                                log.info(f"In 'add_relationships', invalid relationship between target {r_target} "
-                                         f"and source '{e.name}' - {o_id}")
+                            # else:
+                            #     e: Element = elems_id[o_id]
+                            #     log.info(f"In 'add_relationships', Skipping relationship between target {r_target} "
+                            #              f"and source '{e.name}' - {o_id}")
                 if self.incl_org:
                     self.model.add_organizations(oo, refs)
 

@@ -115,7 +115,7 @@ type_map = {
 accessType = ('Access', 'Read', 'Write', 'ReadWrite')
 influenceStrength = ('+', '++', '-', '--', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10')
 
-valid_ing_patterns = {
+simplified_patterns = {
     "Capability-Capability": ["Aggregation", "Composition"],
     "BusinessService-Capability": ["Realization"],
     "BusinessFunction-BusinessService": ["Realization"],
