@@ -18,7 +18,7 @@ import ctypes
 used_elems_id = []
 
 
-def get_text_Size(text, points, font):
+def get_text_size(text, points, font):
     class SIZE(ctypes.Structure):
         _fields_ = [("cx", ctypes.c_long), ("cy", ctypes.c_long)]
 
@@ -467,14 +467,13 @@ class AML:
                 objects = [objects]
 
             for o in objects:
-                pos = o['Position']
                 lbl_ref = o['@FFTextDef.IdRef']
                 if lbl_ref in labels_id:
                     lbl = labels_id[lbl_ref]
                     # calculate size in function of text
                     o_name, _, _ = self.get_attributes(lbl, '\n')
                     pos = o['Position']
-                    w, h = max([get_text_Size(x, 9, "Segoe UI") for x in o_name.split('\n')])
+                    w, h = max([get_text_size(x, 9, "Segoe UI") for x in o_name.split('\n')])
                     n = Node(
                         ref=o['@FFTextDef.IdRef'],
                         x=max(int(pos['@Pos.X']) * self.scaleX, 0),
