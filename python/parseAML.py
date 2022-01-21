@@ -38,7 +38,8 @@ def main():
     aris = AML(args.file, name='x', scale_x=scale_x, scale_y=scale_y, skip_bendpoint=False,
                include_organization=True if args.orgs else False,
                incl_unions=True if args.embed else False,
-               optimize=False if args.noOptimization else True
+               optimize=False if args.noOptimization else True,
+               correct_embedded_rels=True
                )
     result = aris.convert()
 

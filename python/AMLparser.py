@@ -238,19 +238,35 @@ class AML:
         uu = uu
         if lst is None:
             lst = []
+        ns = []
         if not isinstance(uu, list):
             uu = [uu]
         for u in uu:
             refs = u['@ObjOccs.IdRefs'].strip().split(' ')
-            n: Node = nodes_id[refs[0]]
-            for x in refs[1:]:
-                nn: Node = nodes_id[x]
-                n.add_node(nn)
-                lst.append(nn.uuid)
+            # Need to look which of the element in the refs list is the parent embedding node
+            # meaning has connection references to the others
+
+            for np in refs:
+                pp = [rels_id[y].source for y in rels_id if rels_id[y].source == elems_id[nodes_id[np].ref].uuid]
+                if elems_id[nodes_id[np].ref].uuid in pp and len(pp) == len(refs):
+                    # n: Node = nodes_id[refs[0]]
+                    n: Node = nodes_id[np]
+                    ns.append(n)
+                    # lst.append(n.uuid)
+                    # for x in refs[1:]:
+                    for x in list(set(refs) - set([np])):
+                        nn: Node = nodes_id[x]
+                        n.add_node(nn)
+                        lst.append(nn.uuid)
+                    break
 
             if 'Union' in u:
-                lst = self.parse_unions(u['Union'], lst)
-        return lst
+                lst, ns = self.parse_unions(u['Union'], lst)
+                for x in ns:
+                    n.add_node(x)
+                    lst.append(x.uuid)
+
+        return lst, ns
 
     def parse_nodes(self, grp=None, view=None):
         if grp is None:
@@ -358,9 +374,6 @@ class AML:
 
             return
 
-        # self.parse_connections(grp)
-        # print('')
-        # return
 
     def parse_containers(self, grp=None, view=None):
         if grp is None:
@@ -410,9 +423,6 @@ class AML:
                 n.add_style(s)
             return
 
-        # self.parse_containers(grp)
-        # print('')
-        # return
 
     def parse_labels(self, groups=None):
         if groups is None:
@@ -526,7 +536,7 @@ class AML:
                             unions = [unions]
 
                         for u in unions:
-                            lst = self.parse_unions(u, lst)
+                            lst,_ = self.parse_unions(u, lst)
 
                     for i in range(len(view.view['node']) - 1, 0, -1):
                         if view.view['node'][i]['@identifier'] in lst:
@@ -634,8 +644,8 @@ class AML:
                                 refs.append(r_id)
                             else:
                                 e: Element = elems_id[o_id]
-                                log.info(f"In 'parse_element', unknown relationship target {r_target} "
-                                         f"for element '{e.name}' - {o_id}")
+                                log.info(f"In 'add_relationships', invalid relationship between target {r_target} "
+                                         f"and source '{e.name}' - {o_id}")
                 if self.incl_org:
                     self.model.add_organizations(oo, refs)
 
