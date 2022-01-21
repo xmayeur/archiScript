@@ -171,24 +171,25 @@ function ortho(o) {
     o.setRelativeBendpoint(bp0, 0);
     let dir = xy.dir;
 
-    let n= bps.length;
-    if (n > 1) {
-        let t_xy = setXY(tb, bps[n-1].endX, bps[n-1].endY);
-        if (dir === t_xy.dir && n % 2 === 1) {
-            o.deleteBendpoint(n-2);
+    let idx= bps.length;
+    if (idx > 1) {
+        let t_xy = setXY(tb, bps[idx-1].endX, bps[idx-1].endY);
+        if (dir === t_xy.dir && idx % 2 === 1) {
+            o.deleteBendpoint(idx-2);
             bps = o.getRelativeBendpoints();
         }
     }
     b = {startX: 0, startY: 0, endX: 0, endY: 0};
     let prev = bp0;
+    idx = 0;
     bps.forEach(function (bp) {
-        n = bps.indexOf(bp);
-        if (n === 0) {
+
+        if (idx === 0) {
             b = bp;
         }
-        if (n !== bps.length - 1) {
+        if (idx !== bps.length - 1) {
             // all bendpoints which are the not first and the last ones
-            if (n !== 0) {
+            if (idx !== 0) {
                 b.startX = bp.startX * dir + prev.startX * (1 - dir);
                 b.endX = b.startX - dx;
                 b.startY = prev.startY * dir + bp.startY * (1 - dir);
@@ -197,17 +198,22 @@ function ortho(o) {
         } else {
             // special handling for the last bendpoint
             let xy = setXY(tb, bp.endX, bp.endY);
+
             b.startX = (dx - xy.x) * dir + prev.startX * (1 - dir);
             b.endX = (1 - 2 * dir) * (b.startX - dx);
             b.startY = dir * prev.startY + (dy - xy.y) * (1 - dir);
             b.endY = (-1 + 2 * dir) * (b.startY - dy);
-
         }
 
-        o.setRelativeBendpoint(b, n);
+        try {
+            o.setRelativeBendpoint(b, idx);
+        } catch (e) {
+            console.log(b, idx, e)
+        }
 
         dir = (++dir) % 2;
         prev = b;
+        idx++;
     });
 
 }

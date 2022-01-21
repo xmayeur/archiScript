@@ -10,13 +10,19 @@
 *
 """
 from uuid import uuid4, UUID
-from collections import OrderedDict
-import logging as log
+
 import xmltodict
 
+from logger import log
+from type_mapping import simplified_patterns
 
-# Dictionary with all artefact identifier keys & name as value
-IDs = {}  # key = object id, value = object name
+# Dictionary with all artefact identifier keys & objects
+elems_id = {}
+rels_id = {}
+nodes_id = {}
+conns_id = {}
+views_id = {}
+labels_id = {}
 
 
 def is_valid_uuid(uuid_to_test, version=4):
@@ -95,9 +101,9 @@ class OpenExchange:
     """
 
     def __init__(self, name, uuid=None):
-        self.name = name
+        self._name = name
         self.uuid = set_id(uuid)
-        self.OEF = OrderedDict()
+        # self.OEF = OrderedDict()
         self.OEF = {'model': {
             '@xmlns': 'http://www.opengroup.org/xsd/archimate/3.0/',
             '@xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
@@ -106,10 +112,11 @@ class OpenExchange:
             '@identifier': self.uuid,  # UUID
             'name': {
                 '@xml:lang': 'en',
-                '#text': self.name,  # MODEL NAME
+                '#text': self._name,  # MODEL NAME
             },
             'elements': {'element': []},  # list of elements
             'relationships': {'relationship': []},  # list of relationships
+            'organizations': {'item': []},
             'propertyDefinitions': {'propertyDefinition': []},
             # 'views': {'diagrams': {'view': []}}  # list of diagrams
         }
@@ -123,14 +130,16 @@ class OpenExchange:
             self.OEF['model']['elements'] = {'element': []}
         for e in elements:
             self.OEF['model']['elements']['element'].append(e.element)
-            IDs[e.uuid] = e.name
 
     def add_relationships(self, *relationships):
         if 'relationships' not in self.OEF['model']:
             self.OEF['model']['relationships'] = {'relationship': []}
         for r in relationships:
             self.OEF['model']['relationships']['relationship'].append(r.relationship)
-            IDs[r.uuid] = r.name
+
+    def replace_relationships(self, id, new_rel):
+        rels = self.OEF['model']['relationships']['relationship']
+        self.OEF['model']['relationships']['relationship'] = [new_rel if (x['@identifier'] == id) else x for x in rels]
 
     def add_views(self, *views):
         if 'views' not in self.OEF['model']:
@@ -149,6 +158,59 @@ class OpenExchange:
                 p = p.property
             self.OEF['model']['properties']['property'].append(p)
 
+    def add_organizations(self, org_list=None, item_refs=None):
+        refs = item_refs
+        orgs = self.OEF['model']['organizations']['item']
+        if not isinstance(org_list, list):
+            org_list = [org_list]
+        p = []
+        item = None
+        for o in reversed(org_list):
+            item = OrgItem(label=o, items=p, item_refs=refs).item
+            refs = None
+            p = [item]
+        if item is not None:
+            orgs.append(item)
+
+    def set_name(self, s):
+        self._name = s
+        self.OEF['model']['name'] = {
+                                        '@xml:lang': 'en',
+                                        '#text': s,  # MODEL NAME
+                                    }
+
+    def get_name(self):
+        return self._name
+
+    name = property(get_name, set_name)
+
+
+class OrgItem:
+    def __init__(self, label=None, items=None, item_refs=None):
+        self.label = label
+        self.item = {}
+        if label is not None:
+            self.item['label'] = {
+                '@xml:lang': 'en',
+                '#text': self.label,  # Label NAME
+            }
+        if item_refs is not None and len(item_refs) > 0:
+            if not isinstance(item_refs, list):
+                item_refs = [item_refs]
+            if 'item' not in self.item:
+                self.item['item'] = []
+            for i in item_refs:
+                self.item['item'].append({
+                    "@identifierRef": i
+                })
+        if items is not None:
+            if not isinstance(items, list):
+                items = [items]
+            if 'item' not in self.item:
+                self.item['item'] = []
+            for i in items:
+                self.item['item'].append(i)
+
 
 class Element:
     """
@@ -163,10 +225,13 @@ class Element:
         the element object that will be added to the model
 
     """
-    def __init__(self, name=None, type=None, uuid=None):
+
+    def __init__(self, name=None, type=None, uuid=None, desc=None, orgs=None):
         self.name = name
         self.type = type
         self.uuid = set_id(uuid)
+        self.desc = desc
+        self.orgs = orgs
         self.element = {
             '@identifier': self.uuid,  # UUID
             '@xsi:type': self.type,  # ELEMENT TYPE
@@ -176,6 +241,11 @@ class Element:
             },
             # 'properties': []  # LIST OF ELEMENT PROPERTIES
         }
+        if desc:
+            self.element['documentation'] = {
+                '@xml:lang': 'en',
+                '#text': self.desc
+            }
 
     def add_property(self, *properties):
         if 'properties' not in self.element:
@@ -235,8 +305,8 @@ class PropertyDefinitions:
     Methods:
     add : str
         add a new key to the list
-        :param  str key
-        :return str key identifier
+        :param:  str key
+        :return: str key identifier
     """
 
     def __init__(self):
@@ -254,29 +324,31 @@ class PropertyDefinitions:
 
 class Relationship:
 
-    def __init__(self, source, target, type='', uuid=None, name='', access_type=None, influcence_strength=None):
+    def __init__(self, source, target, type='', uuid=None, name='', access_type=None, influence_strength=None,
+                 desc=None):
         self.uuid = set_id(uuid)
 
         if isinstance(source, Element):
-            self.source = source.uuid
+            self._source = source.uuid
         elif isinstance(source, str):
-            self.source = source
+            self._source = source
         else:
             raise ValueError("'source' argument is not an instance of 'Element' class.")
 
         if isinstance(target, Element):
-            self.target = target.uuid
-        elif isinstance(source, str):
-            self.target = target
+            self._target = target.uuid
+        elif isinstance(target, str):
+            self._target = target
         else:
             raise ValueError("'target' argument is not an instance of 'Element' class.")
         self.type = type
 
         self.name = name
+        self.desc = desc
         self.relationship = {
             '@identifier': self.uuid,  # RELATIONSHIP UUID
-            '@source': self.source,  # SOURCE UUID
-            '@target': self.target,  # TARGET UUID
+            '@source': self._source,  # SOURCE UUID
+            '@target': self._target,  # TARGET UUID
             '@xsi:type': self.type,  # RELATIONSHIP TYPE
             'name': {
                 '@xml:lang': 'en',
@@ -285,11 +357,41 @@ class Relationship:
             # 'properties': {'property':[]}
         }
 
+        if desc:
+            self.relationship['documentation'] = {
+                '@xml:lang': 'en',
+                '#text': self.desc
+            }
+
         if access_type is not None:
             self.relationship['@accessType'] = access_type
 
-        if influcence_strength is not None:
-            self.relationship['@modifier'] = influcence_strength
+        if influence_strength is not None:
+            self.relationship['@modifier'] = influence_strength
+
+    def set_source(self, src):
+        if isinstance(src, Element):
+            self._source = src.uuid
+        elif isinstance(src, str):
+            self._source = src
+        else:
+            raise ValueError("'source' argument is not an instance of 'Element' class.")
+        self.relationship['@source'] = self._source
+
+    def get_source(self):
+        return self._source
+
+    def set_target(self, dst):
+        if isinstance(dst, Element):
+            self._target = dst.uuid
+        elif isinstance(dst, str):
+            self._target = dst
+        else:
+            raise ValueError("'target' argument is not an instance of 'Element' class.")
+        self.relationship['@target'] = self._target
+
+    def get_target(self):
+        return self._target
 
     def add_property(self, *properties):
         if 'properties' not in self.relationship:
@@ -299,18 +401,38 @@ class Relationship:
                 p = p.property
             self.relationship['properties']['property'].append(p)
 
+    def is_simplified_pattern(self) -> bool:
+        src: Element = elems_id[self._source]
+        dst: Element = elems_id[self._target]
+        check_key = src.type + "-" + dst.type
+        if check_key in simplified_patterns:
+            return True
+        else:
+            log.warning(f'Relationship "{self.type}" between "{src.name}" and "{dst.name}" '
+                        f'does not match simplified patterns list.')
+            return False
+
+    source = property(get_source, set_source)
+    target = property(get_target, set_target)
+
 
 class View:
 
-    def __init__(self, name='', uuid=None):
+    def __init__(self, name='', uuid=None, desc=None):
         self.uuid = set_id(uuid)
         self.name = name
+        self.desc = desc
+        self.unions = []
         self.view = {
             '@identifier': self.uuid,  # VIEW UUID
             '@xsi:type': 'Diagram',  # VIEW TYPE
             'name': {
                 '@xml:lang': 'en',
                 '#text': self.name,  # ELEMENT NAME
+            },
+            'documentation': {
+                '@xml:lang': 'en',
+                '#text': '' if (self.desc is None) else self.desc
             },
             'node': [],  # LIST OF NODES
             'connection': [],  # LIST OF CONNECTIONS
@@ -320,11 +442,13 @@ class View:
         if 'node' not in self.view:
             self.view['node'] = []
         for n in nodes:
+            self.view['node'].append(n.node)
             # check whether nodes refers to a known element
-            if n.ref in IDs:
-                self.view['node'].append(n.node)
-            else:
-                log.warning(f"In 'View.add_node', node '{n.uuid}' refers to undefined element reference '{n.ref}'")
+            # if not n.ref in elems_id:
+            #     log.warning(f"In 'View.add_node', node '{n.uuid}' refers to undefined element reference '{n.ref}'")
+
+    def sort_node(self):
+        self.view['node'].sort(key=lambda x: int(x['@x']) * int(x['@y']))
 
     def add_container(self, container, label):
         if 'node' not in self.view:
@@ -349,17 +473,22 @@ class View:
         }
         del label_node.node['@elementRef']
         self.view['node'].append(label_node.node)
-        IDs[label_node.uuid] = label
+        labels_id[label_node.uuid] = label
 
     def add_connection(self, *connections):
         if 'connection' not in self.view:
             self.view['connection'] = []
         for c in connections:
-            if c.ref in IDs:
+            if c.ref in rels_id:
                 self.view['connection'].append(c.connection)
             else:
+                _ns: Node = nodes_id[c.source]
+                _nt: Node = nodes_id[c.target]
+                _es: Element = elems_id[_ns.ref]
+                _et: Element = elems_id[_nt.ref]
                 log.warning(f"In 'View.add_connection', node '{c.uuid}' refers "
-                            f"to undefined relationship reference '{c.ref}'")
+                            f"to undefined relationship reference '{c.ref}' between nodes "
+                            f"'{_es.name}' and '{_et.name}' ")
 
     def add_property(self, *properties):
         if 'properties' not in self.view:
@@ -378,14 +507,18 @@ class Node:
             self.ref = ref.uuid
         elif isinstance(ref, str):
             self.ref = ref
-        else:
+        elif ref is not None:
             raise ValueError("'ref' is not an instance of 'Element' class.")
+        else:
+            self.ref = None
         self.x = int(x)
         self.y = int(y)
         self.w = int(w)
         self.h = int(h)
+        self.area = w * h
         self.style = style
         self.node = node
+        self.flags = 0
         self.node = {
             '@identifier': self.uuid,  # NODE UUID
             '@elementRef': self.ref,  # ELEMENT UUID
@@ -416,6 +549,9 @@ class Node:
     def add_style(self, style):
         if isinstance(style, Style):
             self.node['style'] = style.style
+
+    def get_related_element(self) -> Element:
+        return elems_id[self.ref]
 
 
 class Connection:
@@ -483,7 +619,7 @@ class RGBA:
 
 class Font:
 
-    def __init__(self, name: str = 'Segoe UI' , size: int = 9, color: RGBA = (0,0,0,100)):
+    def __init__(self, name: str = 'Segoe UI', size: int = 9, color: RGBA = (0, 0, 0, 100)):
         self.name = name
         self.size = size
         self.color = color
@@ -521,4 +657,3 @@ class Style:
                     '@b': str(self.f.color.b)
                 }
             }
-

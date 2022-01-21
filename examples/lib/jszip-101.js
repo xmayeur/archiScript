@@ -183,7 +183,7 @@ JSZip.prototype = (function () {
    * @return {Object} the new file.
    */
    var fileAdd = function (name, data, o) {
-      // be sure sub folders exist
+      // be sure sub organizations exist
       var parent = parentFolder(name);
       if (parent) {
          folderAdd.call(this, parent);
@@ -247,7 +247,7 @@ JSZip.prototype = (function () {
 
       // Does this folder already exist?
       if (!this.files[name]) {
-         // be sure sub folders exist
+         // be sure sub organizations exist
          var parent = parentFolder(name);
          if (parent) {
             folderAdd.call(this, parent);
@@ -342,7 +342,7 @@ JSZip.prototype = (function () {
       },
 
       /**
-       * Filter nested files/folders with the specified function.
+       * Filter nested files/organizations with the specified function.
        * @param {Function} search the predicate to use :
        * function (relativePath, file) {...}
        * It takes 2 arguments : the relative path and the file.
@@ -394,8 +394,8 @@ JSZip.prototype = (function () {
 
       /**
        * Add a directory to the zip file, or search.
-       * @param   {String|RegExp} arg The name of the directory to add, or a regex to search folders.
-       * @return  {JSZip} an object with the new directory as the root, or an array containing matching folders.
+       * @param   {String|RegExp} arg The name of the directory to add, or a regex to search organizations.
+       * @return  {JSZip} an object with the new directory as the root, or an array containing matching organizations.
        */
       folder : function(arg) {
          if (!arg) {
@@ -427,7 +427,7 @@ JSZip.prototype = (function () {
          name = this.root + name;
          var file = this.files[name];
          if (!file) {
-            // Look for any folders
+            // Look for any organizations
             if (name.slice(-1) != "/") {
                name += "/";
             }

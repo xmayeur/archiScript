@@ -53,10 +53,11 @@ if (!theView) {
 if (!theView) {
     theView = $(selection).filter("sketch-model").first();
 }
-var showToC = (theView.prop('noTOC'));
+
 
 // work out the view
 if (theView) {
+	var showToC = (theView.prop('noTOC'));
 	// set the export name
 	var defaultFileName = theView.name ? model.name + "-" + theView.name + ".md" : "Exported View.md"; // Default file name
 

@@ -4,7 +4,7 @@
  * This scipt is based on https://github.com/nodyn/jvm-npm which comes with the following copyright
  *
  * and has been updated by Hervé Jouin
- *    add method addPath() that allows to manually specify in which folders the libiries may be searched into.
+ *    add method addPath() that allows to manually specify in which organizations the libiries may be searched into.
  *
  * Copyright 2014-2016 Red Hat, Inc.
  *

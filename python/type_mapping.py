@@ -26,7 +26,7 @@ type_map = {
     "ST_ARCHIMATE_APPLICATION_PROCESS": "ApplicationProcess",
     "ST_ARCHIMATE_APPLICATION_EVENT": "ApplicationEvent",
     "ST_ARCHIMATE_APPLICATION_SERVICE": "ApplicationService",
-    "ST_APPL_SYS_TYPE": "ApplicationComponent", # TODO What is that?
+    "ST_APPL_SYS_TYPE": "ApplicationComponent", # Special type, from ServiceNow CMDB import
     "ST_ARCHIMATE_DATA_OBJECT": "DataObject",
 
     # Technology layer
@@ -88,8 +88,9 @@ type_map = {
 
     # Junction
 
-    "ST_ARCHIMATE_AND_JJUNCTION": "AndJunction",
+    "ST_ARCHIMATE_AND_JUNCTION": "AndJunction",
     "ST_ARCHIMATE_OR_JUNCTION": "OrJunction",
+    "ST_ARCHIMATE_JUNCTION": "AndJunction",
 
     # Relationships
 
@@ -113,3 +114,22 @@ type_map = {
 
 accessType = ('Access', 'Read', 'Write', 'ReadWrite')
 influenceStrength = ('+', '++', '-', '--', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10')
+
+simplified_patterns = {
+    "Capability-Capability": ["Aggregation", "Composition"],
+    "BusinessService-Capability": ["Realization"],
+    "BusinessFunction-BusinessService": ["Realization"],
+    "BusinessService-BusinessService": ["Specialization", "Aggregation", "Composition"],
+    "BusinessActor-ApplicationCollaboration": ["Association"],
+    "BusinessActor-BusinessRole": ["Assignment"],
+    "ApplicationFunction-BusinessFunction": ["Realization"],
+    "ApplicationCollaboration-BusinessService": ["Serving"],
+    "ApplicationCollaboration-ApplicationFunction": ["Assignment"],
+    "ApplicationCollaboration-ApplicationInterface": ["Composition"],
+    "ApplicationCollaboration-ApplicationComponent": ["Aggregation"],
+    "ApplicationCollaboration-ApplicationCollaboration": ["Serving", "Flow"],
+    "ApplicationInterface-ApplicationFunction": ["Triggering", "Flow"],
+    "ApplicationFunction-ApplicationInterface": ["Triggering"],
+    "ApplicationFunction-DataObject": ["Access"],
+    "Node-ApplicationCollaboration": ["Realization"],
+}
