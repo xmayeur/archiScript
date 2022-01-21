@@ -113,10 +113,10 @@ class AML:
         self.parse_elements()
         log.info('Parsing relationships')
         self.parse_relationships()
-        log.info('Parsing Views')
-        self.parse_views()
         log.info('Parsing Labels')
         self.parse_labels()
+        log.info('Parsing Views')
+        self.parse_views()
         log.info('Adding elements')
         self.add_elements()
         log.info('Adding relationships')
@@ -431,7 +431,6 @@ class AML:
             objects = groups['FFTextDef']
             for o in objects:
                 o_id = o['@FFTextDef.ID']
-                o_name, _, _ = self.get_attributes(o, '\n')
                 labels_id[o_id] = o
             return
 
@@ -447,21 +446,23 @@ class AML:
 
         if 'FFTextOcc' in grp:
             objects = grp['FFTextOcc']
-
             if not isinstance(objects, list):
                 objects = [objects]
+
             for o in objects:
                 pos = o['Position']
                 lbl_ref = o['@FFTextDef.IdRef']
                 if lbl_ref in labels_id:
                     lbl = labels_id[lbl_ref]
                     # calculate size in function of text
+                    o_name, _, _ = self.get_attributes(lbl, '\n')
+                    pos = o['Position']
                     n = Node(
                         ref=o['@FFTextDef.IdRef'],
                         x=max(int(pos['@Pos.X']) * self.scaleX, 0),
                         y=max(int(pos['@Pos.Y']) * self.scaleY, 0),
-                        w=13 * len(max(lbl.split('\n'))),
-                        h=30 + 13 * lbl.count('\n')
+                        w=13 * len(max(o_name.split('\n'))),
+                        h=30 + 13 * o_name.count('\n')
                     )
 
                     line_color = RGBA(0, 0, 0, 0)
@@ -469,7 +470,7 @@ class AML:
 
                     s = Style(line_color=line_color, fill_color=fc)
 
-                    view.add_label(n, lbl)
+                    view.add_label(n, o_name)
                     n.add_style(s)
             return
 
