@@ -398,7 +398,6 @@ function darken(e) {
     }
 }
 
-
 function lighten(e) {
 
     if (e.type.indexOf('relationship') >= 0) {

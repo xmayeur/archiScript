@@ -17,12 +17,12 @@ from logger import log
 from type_mapping import simplified_patterns
 
 # Dictionary with all artefact identifier keys & objects
-elems_id = {}
-rels_id = {}
-nodes_id = {}
-conns_id = {}
-views_id = {}
-labels_id = {}
+elems_list = {}
+rels_list = {}
+nodes_list = {}
+conns_list = {}
+views_list = {}
+labels_list = {}
 
 
 def is_valid_uuid(uuid_to_test, version=4):
@@ -402,8 +402,8 @@ class Relationship:
             self.relationship['properties']['property'].append(p)
 
     def is_simplified_pattern(self) -> bool:
-        src: Element = elems_id[self._source]
-        dst: Element = elems_id[self._target]
+        src: Element = elems_list[self._source]
+        dst: Element = elems_list[self._target]
         check_key = src.type + "-" + dst.type
         if check_key in simplified_patterns:
             return True
@@ -444,7 +444,7 @@ class View:
         for n in nodes:
             self.view['node'].append(n.node)
             # check whether nodes refers to a known element
-            # if not n.ref in elems_id:
+            # if not n.ref in elems_list:
             #     log.warning(f"In 'View.add_node', node '{n.uuid}' refers to undefined element reference '{n.ref}'")
 
     def sort_node(self):
@@ -473,19 +473,19 @@ class View:
         }
         del label_node.node['@elementRef']
         self.view['node'].append(label_node.node)
-        labels_id[label_node.uuid] = label
+        labels_list[label_node.uuid] = label
 
     def add_connection(self, *connections):
         if 'connection' not in self.view:
             self.view['connection'] = []
         for c in connections:
-            if c.ref in rels_id:
+            if c.ref in rels_list:
                 self.view['connection'].append(c.connection)
             else:
-                _ns: Node = nodes_id[c.source]
-                _nt: Node = nodes_id[c.target]
-                _es: Element = elems_id[_ns.ref]
-                _et: Element = elems_id[_nt.ref]
+                _ns: Node = nodes_list[c.source]
+                _nt: Node = nodes_list[c.target]
+                _es: Element = elems_list[_ns.ref]
+                _et: Element = elems_list[_nt.ref]
                 log.warning(f"In 'View.add_connection', node '{c.uuid}' refers "
                             f"to undefined relationship reference '{c.ref}' between nodes "
                             f"'{_es.name}' and '{_et.name}' ")
@@ -551,7 +551,7 @@ class Node:
             self.node['style'] = style.style
 
     def get_related_element(self) -> Element:
-        return elems_id[self.ref]
+        return elems_list[self.ref]
 
 
 class Connection:

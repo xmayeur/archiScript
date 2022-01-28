@@ -5,35 +5,41 @@
 // Version 1.0
 // Change: Initial version
 
-console.log("Start: Spread and Align horizontally");
+spreadElemVertically(selection)
 
-let minY = null;
-let minX = null;
-let maxWidth = 0;
-let maxHeight = 0;
+// ---------------------------------------------------------
+function spreadElemVertically(selection)
+{
+// console.log("Start: Spread and Align horizontally");
+
+    let minY = null;
+    let minX = null;
+    let maxWidth = 0;
+    let maxHeight = 0;
 
 // Determine the width, height,  and
-$(selection).each(function(element) {
-    minY = Math.min(element.bounds.y,minY==null?element.bounds.y:minY);
-    minX = Math.min(element.bounds.x,minX==null?element.bounds.x:minX);
-    maxWidth = Math.max(element.bounds.width,maxWidth);
-    maxHeight = Math.max(element.bounds.height,maxHeight);
-});
+    $(selection).each(function (element) {
+        minY = Math.min(element.bounds.y, minY == null ? element.bounds.y : minY);
+        minX = Math.min(element.bounds.x, minX == null ? element.bounds.x : minX);
+        maxWidth = Math.max(element.bounds.width, maxWidth);
+        maxHeight = Math.max(element.bounds.height, maxHeight);
+    });
 
 // Sort the selection so the order stays the same
-$(selection).sort(function (top,down) {
-    return top.bounds.y-down.bounds.y;
-});
+    $(selection).sort(function (top, down) {
+        return top.bounds.y - down.bounds.y;
+    });
 
 // Walk throught the sorted selection
-$(selection).each(function (element) {
+    $(selection).each(function (element) {
 
-    // Set the new bounds
-    element.bounds = {x: minX, y: minY, width: maxWidth, height: maxHeight};
+        // Set the new bounds
+        element.bounds = {x: minX, y: minY, width: maxWidth, height: maxHeight};
 
-    // Set the spacing for the next element
-    minY = minY + maxHeight + 20;
+        // Set the spacing for the next element
+        minY = minY + maxHeight + 20;
 
-});
+    });
 
-console.log("End: Spread and Align horizontally");
+    // console.log("End: Spread and Align horizontally");
+}

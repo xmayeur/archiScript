@@ -204,7 +204,7 @@ class AML:
                     e = Element(name=o_name, type=o_type, uuid=o_id, desc=o_desc)
                     e.add_property(Property('UUID', o_uuid, self.pdef))
                     e.add_property(*props)
-                    elems_id[o_id] = e
+                    elems_list[o_id] = e
 
             self.parse_elements(grp)
         return
@@ -242,7 +242,7 @@ class AML:
                             r_target = rel['@ToObjDef.IdRef']
                             # r_name, props, desc = self.get_attributes(rel)
                             r = Relationship(source=o_id, target=r_target, type=r_type, uuid=r_id)
-                            rels_id[r_id] = r
+                            rels_list[r_id] = r
 
             self.parse_relationships(grp)
 
@@ -264,15 +264,16 @@ class AML:
             # meaning has connection references to the others
 
             for np in refs:
-                pp = [rels_id[y].source for y in rels_id if rels_id[y].source == elems_id[nodes_id[np].ref].uuid]
-                if elems_id[nodes_id[np].ref].uuid in pp and len(pp) == len(refs):
-                    # n: Node = nodes_id[refs[0]]
-                    n: Node = nodes_id[np]
+                pp = [rels_list[y].source for y in rels_list
+                      if rels_list[y].source == elems_list[nodes_list[np].ref].uuid]
+                if elems_list[nodes_list[np].ref].uuid in pp and len(pp) == len(refs):
+                    # n: Node = nodes_list[refs[0]]
+                    n: Node = nodes_list[np]
                     ns.append(n)
                     # lst.append(n.uuid)
                     # for x in refs[1:]:
                     for x in list(set(refs) - {np}):
-                        nn: Node = nodes_id[x]
+                        nn: Node = nodes_list[x]
                         n.add_node(nn)
                         lst.append(nn.uuid)
 
@@ -316,7 +317,7 @@ class AML:
                     h=int(size['@Size.dY']) * self.scaleY,
                     uuid=o_id
                 )
-                nodes_id[o_id] = n
+                nodes_list[o_id] = n
                 view.add_node(n)
 
                 if o_type == 'Grouping':
@@ -359,13 +360,13 @@ class AML:
                             # Aris uses reversed relationship when embedding objects,
                             # This gives validation errors when importing into archi...
                             # Swap therefore source and target if needed
-                            rel: Relationship = rels_id[c_rel_id]
+                            rel: Relationship = rels_list[c_rel_id]
                             x = rel.target
 
                             # check if the relationship target is the related element of the visual object and swap
-                            n: Node = nodes_id[c_target]
-                            t: Element = elems_id[n.ref]
-                            s: Element = elems_id[rel.source]
+                            n: Node = nodes_list[c_target]
+                            t: Element = elems_list[n.ref]
+                            s: Element = elems_list[rel.source]
 
                             if x == t.uuid and self.correctEmbed:
                                 log.warning(f"Inverting embedded nodes relationship '{rel.type}' "
@@ -377,7 +378,7 @@ class AML:
                         else:
 
                             c = Connection(ref=c_rel_id, source=o_id, target=c_target, uuid=c_id)
-                            conns_id[c_id] = c
+                            conns_list[c_id] = c
                             if 'Position' in conn and not self.skip_bendpoint:
                                 bps = conn['Position']
 
@@ -448,7 +449,7 @@ class AML:
             objects = groups['FFTextDef']
             for o in objects:
                 o_id = o['@FFTextDef.ID']
-                labels_id[o_id] = o
+                labels_list[o_id] = o
             return
 
     def parse_labels_in_view(self, grp=None, view=None):
@@ -468,8 +469,8 @@ class AML:
 
             for o in objects:
                 lbl_ref = o['@FFTextDef.IdRef']
-                if lbl_ref in labels_id:
-                    lbl = labels_id[lbl_ref]
+                if lbl_ref in labels_list:
+                    lbl = labels_list[lbl_ref]
                     # calculate size in function of text
                     o_name, _, _ = self.get_attributes(lbl, '\n')
                     pos = o['Position']
@@ -529,7 +530,7 @@ class AML:
                     models = [models]
                 for m in models:
                     view_id = m['@Model.ID']
-                    views_id[view_id] = m
+                    views_list[view_id] = m
                     view_name, model_props, desc = self.get_attributes(m)
                     self.model.name = view_name
                     view = View(name=view_name, uuid=view_id, desc=desc)
@@ -602,9 +603,9 @@ class AML:
                 for o in objects:
                     o_id = o['@ObjDef.ID']
                     # check if element has one or more nodes in views or is already defined
-                    nn = [x for x in nodes_id if nodes_id[x].ref == o_id]
-                    if (not self.optimize or len(nn) > 0) and o_id in elems_id:
-                        self.model.add_elements(elems_id[o_id])
+                    nn = [x for x in nodes_list if nodes_list[x].ref == o_id]
+                    if (not self.optimize or len(nn) > 0) and o_id in elems_list:
+                        self.model.add_elements(elems_list[o_id])
                         refs.append(o_id)
                         used_elems_id.append(o_id)
                 if self.incl_org:
@@ -651,17 +652,17 @@ class AML:
 
                         for rel in rels:
                             r_id = rel['@CxnDef.ID']
-                            r: Relationship = rels_id[r_id]
+                            r: Relationship = rels_list[r_id]
                             r_target = r.target
 
                             # Check if source & target are known
-                            if r_target in used_elems_id and r_id in rels_id and o_id in used_elems_id:
+                            if r_target in used_elems_id and r_id in rels_list and o_id in used_elems_id:
                                 r.is_simplified_pattern()
                                 # TODO check how to manage access & influence relation metadata
                                 self.model.add_relationships(r)
                                 refs.append(r_id)
                             # else:
-                            #     e: Element = elems_id[o_id]
+                            #     e: Element = elems_list[o_id]
                             #     log.info(f"In 'add_relationships', Skipping relationship between target {r_target} "
                             #              f"and source '{e.name}' - {o_id}")
                 if self.incl_org:

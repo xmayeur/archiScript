@@ -9,14 +9,18 @@
 
 console.show();
 console.clear();
+relReverse(selection)
 
-for each (var o in $(selection).filter("relationship")) {
+function relReverse(selection) {
 
-    var view = o.view;
-    var source = o.source;
-    var target = o.target;
+    $(selection).filter("relationship").forEach(o => {
 
-    var revRel = model.createRelationship(o.type, o.name, target.concept, source.concept);
-    view.add(revRel, target, source)
+        var view = o.view;
+        var source = o.source;
+        var target = o.target;
 
+        var revRel = model.createRelationship(o.type, o.name, target.concept, source.concept);
+        view.add(revRel, target, source)
+
+    }
 }

@@ -1,54 +1,57 @@
 console.show();
 //console.clear();
 
-let incr = 25;
 
+relSShapeRightDecr(selection)
 
-$(selection).filter("relationship").forEach(function (o) {
-    let view = o.view;
-    let rel = o.concept;
-    let source = o.source;
-    let target = o.target;
-    sb = source.bounds;
-    tb = target.bounds;
+function relSShapeRightDecr(selection) {
+    let incr = 25;
+    $(selection).filter("relationship").forEach(function (o) {
+        let view = o.view;
+        let rel = o.concept;
+        let source = o.source;
+        let target = o.target;
+        sb = source.bounds;
+        tb = target.bounds;
 
-    $(source).parents().forEach(function(p){
+        $(source).parents().forEach(function (p) {
+            try {
+                sb.x += p.bounds.x;
+                sb.y += p.bounds.y;
+            } catch (e) {
+            }
+        });
+
+        $(target).parents().forEach(function (p) {
+            try {
+                tb.x += p.bounds.x;
+                tb.y += p.bounds.y;
+            } catch (e) {
+            }
+        });
+        dx = tb.x - sb.x;
+        dy = tb.y - sb.y;
+
+        let bps = o.getRelativeBendpoints()
         try {
-            sb.x += p.bounds.x;
-            sb.y += p.bounds.y;
+            o.deleteAllBendpoints()
         } catch (e) {
         }
-    });
 
-    $(target).parents().forEach(function(p){
+        bp1 = bps[0]
+        bp1.endY -= incr
+        bp1.endX += incr
+        bp2 = bps[1]
+        bp2.startY -= incr
+        bp2.startX += incr
+        // Add bendpoints at index positions
         try {
-            tb.x += p.bounds.x;
-            tb.y += p.bounds.y;
+            o.addRelativeBendpoint(bp1, 0);
+            o.addRelativeBendpoint(bp2, 1);
         } catch (e) {
+            console.log(e)
         }
+
     });
-    dx = tb.x - sb.x;
-    dy = tb.y - sb.y;
 
-    let bps = o.getRelativeBendpoints()
-    try {
-        o.deleteAllBendpoints()
-    } catch (e) {
-    }
-
-    bp1 = bps[0]
-    bp1.endY -= incr
-    bp1.endX += incr
-    bp2 = bps[1]
-    bp2.startY -= incr
-    bp2.startX += incr
-    // Add bendpoints at index positions
-    try {
-        o.addRelativeBendpoint(bp1, 0);
-        o.addRelativeBendpoint(bp2, 1);
-    } catch (e) {
-        console.log(e)
-    }
-
-});
-
+}

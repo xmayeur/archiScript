@@ -22,7 +22,7 @@ function onlyUnique(value, index, self) {
   return self.indexOf(value) === index;
 }
 
-// # letiables
+
 let dir = 0; // horizontal
 let x = 10 ;
 let y = 10 ;

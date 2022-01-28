@@ -136,7 +136,6 @@ function inclDoc(view, type) {
 	}
 }
 
-
 function nestedDocumentation(d, element) {
 
 
@@ -225,7 +224,6 @@ function nestedDocumentation(d, element) {
         }
     };
 }
-
 
 function setZorderProperty(element){
 	$(element).children().not('relationship').each(function(e){

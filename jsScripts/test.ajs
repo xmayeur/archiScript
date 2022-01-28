@@ -1,30 +1,7 @@
 console.clear()
 
-function getRelationship(type="", name="", source, target, create=false) {
-    let rel;
-    let rels = (type === "")? $(source).outRels() : $(source).outRels(type);
-    rels.forEach(function(r){
-        if (r.target.id === target.id && r.name === name) {
-            rel = r
+    $('business-object').each(function(element) {
+        if($(element).objectRefs().isEmpty()) {
+            element.delete();
         }
     });
-    if (rel === undefined && !!create) {
-        let rel = model.createRelationship(type, name, source, target);
-    }
-    return rel
-}
-
-d = $(".ART").first();
-s = $(".Danny Smalle").first();
-console.log(getRelationship("","Architect",s,d))
-
-
-/*
-var theView = $(selection).filter("archimate-diagram-model").first()
-
-if (!!theView){
-    
-
-} else {console.log('please select a view')}
-
- */

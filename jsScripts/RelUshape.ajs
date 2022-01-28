@@ -9,78 +9,82 @@
 
 // console.show()
 console.clear()
+RelUshape(selection)
 
-$(selection).filter("relationship").forEach(function (o) {
-    let view = o.view;
-    let rel = o.concept;
-    let source = o.source;
-    let target = o.target;
-    sb = source.bounds
-    tb = target.bounds
+function RelUshape(selection)
+{
+    $(selection).filter("relationship").forEach(function (o) {
+        let view = o.view;
+        let rel = o.concept;
+        let source = o.source;
+        let target = o.target;
+        sb = source.bounds
+        tb = target.bounds
 
-    // calculate the source and target element absolute (x,y) coordinate
-    $(source).parents().forEach(function (p) {
+        // calculate the source and target element absolute (x,y) coordinate
+        $(source).parents().forEach(function (p) {
+            try {
+                sb.x += p.bounds.x;
+                sb.y += p.bounds.y;
+            } catch (e) {
+            }
+        });
+
+        $(target).parents().forEach(function (p) {
+            try {
+                tb.x += p.bounds.x;
+                tb.y += p.bounds.y;
+            } catch (e) {
+            }
+        });
+
+
+        dx = tb.x - sb.x
+        dy = tb.y - sb.y
+
         try {
-            sb.x += p.bounds.x;
-            sb.y += p.bounds.y;
+            o.deleteAllBendpoints()
         } catch (e) {
         }
-    });
 
-    $(target).parents().forEach(function (p) {
+        let bp1 = {};
+        let bp2 = {};
+        if (sb.y < tb.y) {
+            bp1 = {
+                startX: 0,
+                startY: 0,
+                endX: -dx,
+                endY: tb.y + dy + tb.height
+            }
+            bp2 = {
+                startX: dx,
+                startY: tb.y + tb.height,
+                endX: 0,
+                endY: 0
+            }
+        } else {
+            bp1 = {
+                startX: 0,
+                startY: 3 * tb.height,
+                endX: -dx,
+                endY: tb.y + tb.height
+            }
+            bp2 = {
+                startX: dx,
+                startY: tb.y + tb.height - dy,
+                endX: 0,
+                endY: 3 * tb.height
+            }
+        }
+
+        // Add bendpoints at index positions
         try {
-            tb.x += p.bounds.x;
-            tb.y += p.bounds.y;
+            o.addRelativeBendpoint(bp1, 0);
+            o.addRelativeBendpoint(bp2, 1);
         } catch (e) {
+            console.log(e)
         }
+
+
     });
-
-
-    dx = tb.x - sb.x
-    dy = tb.y - sb.y
-
-    try {
-        o.deleteAllBendpoints()
-    } catch (e) {
-    }
-
-    let bp1 = {};
-    let bp2 = {};
-    if (sb.y < tb.y) {
-        bp1 = {
-            startX: 0,
-            startY: 0,
-            endX: -dx,
-            endY: tb.y + dy + tb.height
-        }
-        bp2 = {
-            startX: dx,
-            startY: tb.y + tb.height,
-            endX: 0,
-            endY: 0
-        }
-    } else {
-        bp1 = {
-            startX: 0,
-            startY: 3 * tb.height,
-            endX: -dx,
-            endY: tb.y + tb.height
-        }
-        bp2 = {
-            startX: dx,
-            startY: tb.y + tb.height - dy,
-            endX: 0,
-            endY: 3 * tb.height
-        }
-    }
-
-    // Add bendpoints at index positions
-    try {
-        o.addRelativeBendpoint(bp1, 0);
-        o.addRelativeBendpoint(bp2, 1);
-    } catch (e) {
-        console.log(e)
-    }
-
-
-});
+}

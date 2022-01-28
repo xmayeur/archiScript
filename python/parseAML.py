@@ -9,14 +9,16 @@ def main():
     """
 
     parser = argparse.ArgumentParser("Convert ARIS AML to Archimate Open Exchange File")
-    parser.add_argument('file', help="AML input file")
-    parser.add_argument('-s', '--scale', required=False, help='Diagram scale factor')
+    parser.add_argument('file',
+                        help="AML input file")
+    parser.add_argument('-s', '--scale', required=False,
+                        help='Diagram scale factor')
     parser.add_argument('-xO', '--noOrgs', required=False, action='store_true',
                         help='Exclude organizations structure')
     parser.add_argument('-xE', '--noEmbed', required=False, action='store_true',
                         help="Exclude embedding in visual nodes")
     parser.add_argument('-xo', '--noOptimization', required=False, action='store_true',
-                        help='Do no remove elements and relationships that are not sed in views')
+                        help='Do no remove elements and relationships that are not used in views')
     parser.add_argument('-xC', '--noCorrect', required=False, action='store_true',
                         help='Do no correct inverted relationships in embedded objects')
     parser.add_argument('-o', '--outputfile', required=False, help="Output converted file")
