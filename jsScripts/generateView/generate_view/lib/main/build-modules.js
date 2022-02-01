@@ -11,9 +11,9 @@ const basePath = path.join(__dirname, '..', '..');
 const distPath = path.join(basePath, 'dist');
 
 const filePairs = [
-  [path.join(distPath, 'lodash.core.js'), 'core.js'],
-  [path.join(distPath, 'lodash.core.min.js'), 'core.min.js'],
-  [path.join(distPath, 'lodash.min.js'), 'lodash.min.js']
+    [path.join(distPath, 'lodash.core.js'), 'core.js'],
+    [path.join(distPath, 'lodash.core.min.js'), 'core.min.js'],
+    [path.join(distPath, 'lodash.min.js'), 'lodash.min.js']
 ];
 
 /*----------------------------------------------------------------------------*/
@@ -25,10 +25,10 @@ const filePairs = [
  * @param {string} target The output directory path.
  */
 function build(target) {
-  const actions = _.map(filePairs, pair =>
-    file.copy(pair[0], path.join(target, pair[1])));
+    const actions = _.map(filePairs, pair =>
+        file.copy(pair[0], path.join(target, pair[1])));
 
-  async.series(actions, util.pitch);
+    async.series(actions, util.pitch);
 }
 
 build(_.last(process.argv));

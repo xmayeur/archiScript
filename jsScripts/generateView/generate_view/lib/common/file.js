@@ -19,7 +19,7 @@ const minify = require('./minify.js');
  * @returns {Function} Returns the partially applied function.
  */
 function copy(srcPath, destPath) {
-  return _.partial(fs.copy, srcPath, destPath);
+    return _.partial(fs.copy, srcPath, destPath);
 }
 
 /**
@@ -30,10 +30,10 @@ function copy(srcPath, destPath) {
  * @returns {Object} Returns the object of compiled templates.
  */
 function globTemplate(pattern) {
-  return _.transform(glob.sync(pattern), (result, filePath) => {
-    const key = path.basename(filePath, path.extname(filePath));
-    result[key] = _.template(fs.readFileSync(filePath, 'utf8'));
-  }, {});
+    return _.transform(glob.sync(pattern), (result, filePath) => {
+        const key = path.basename(filePath, path.extname(filePath));
+        result[key] = _.template(fs.readFileSync(filePath, 'utf8'));
+    }, {});
 }
 
 /**
@@ -45,7 +45,7 @@ function globTemplate(pattern) {
  * @returns {Function} Returns the partially applied function.
  */
 function min(srcPath, destPath) {
-  return _.partial(minify, srcPath, destPath);
+    return _.partial(minify, srcPath, destPath);
 }
 
 /**
@@ -58,14 +58,14 @@ function min(srcPath, destPath) {
  * @returns {Function} Returns the partially applied function.
  */
 function write(destPath, data) {
-  return _.partial(fs.writeFile, destPath, data);
+    return _.partial(fs.writeFile, destPath, data);
 }
 
 /*----------------------------------------------------------------------------*/
 
 module.exports = {
-  copy,
-  globTemplate,
-  min,
-  write
+    copy,
+    globTemplate,
+    min,
+    write
 };

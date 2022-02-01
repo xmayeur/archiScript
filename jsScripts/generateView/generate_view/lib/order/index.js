@@ -27,53 +27,53 @@ module.exports = order;
  *       algorithm.
  */
 function order(g) {
-  var maxRank = util.maxRank(g),
-      downLayerGraphs = buildLayerGraphs(g, _.range(1, maxRank + 1), "inEdges"),
-      upLayerGraphs = buildLayerGraphs(g, _.range(maxRank - 1, -1, -1), "outEdges");
+    var maxRank = util.maxRank(g),
+        downLayerGraphs = buildLayerGraphs(g, _.range(1, maxRank + 1), "inEdges"),
+        upLayerGraphs = buildLayerGraphs(g, _.range(maxRank - 1, -1, -1), "outEdges");
 
-  var layering = initOrder(g);
-  assignOrder(g, layering);
+    var layering = initOrder(g);
+    assignOrder(g, layering);
 
-  var bestCC = Number.POSITIVE_INFINITY,
-      best;
+    var bestCC = Number.POSITIVE_INFINITY,
+        best;
 
-  for (var i = 0, lastBest = 0; lastBest < 4; ++i, ++lastBest) {
-    sweepLayerGraphs(i % 2 ? downLayerGraphs : upLayerGraphs, i % 4 >= 2);
+    for (var i = 0, lastBest = 0; lastBest < 4; ++i, ++lastBest) {
+        sweepLayerGraphs(i % 2 ? downLayerGraphs : upLayerGraphs, i % 4 >= 2);
 
-    layering = util.buildLayerMatrix(g);
-    var cc = crossCount(g, layering);
-    if (cc < bestCC) {
-      lastBest = 0;
-      best = _.cloneDeep(layering);
-      bestCC = cc;
+        layering = util.buildLayerMatrix(g);
+        var cc = crossCount(g, layering);
+        if (cc < bestCC) {
+            lastBest = 0;
+            best = _.cloneDeep(layering);
+            bestCC = cc;
+        }
     }
-  }
 
-  assignOrder(g, best);
+    assignOrder(g, best);
 }
 
 function buildLayerGraphs(g, ranks, relationship) {
-  return _.map(ranks, function(rank) {
-    return buildLayerGraph(g, rank, relationship);
-  });
+    return _.map(ranks, function (rank) {
+        return buildLayerGraph(g, rank, relationship);
+    });
 }
 
 function sweepLayerGraphs(layerGraphs, biasRight) {
-  var cg = new Graph();
-  _.forEach(layerGraphs, function(lg) {
-    var root = lg.graph().root;
-    var sorted = sortSubgraph(lg, root, cg, biasRight);
-    _.forEach(sorted.vs, function(v, i) {
-      lg.node(v).order = i;
+    var cg = new Graph();
+    _.forEach(layerGraphs, function (lg) {
+        var root = lg.graph().root;
+        var sorted = sortSubgraph(lg, root, cg, biasRight);
+        _.forEach(sorted.vs, function (v, i) {
+            lg.node(v).order = i;
+        });
+        addSubgraphConstraints(lg, cg, sorted.vs);
     });
-    addSubgraphConstraints(lg, cg, sorted.vs);
-  });
 }
 
 function assignOrder(g, layering) {
-  _.forEach(layering, function(layer) {
-    _.forEach(layer, function(v, i) {
-      g.node(v).order = i;
+    _.forEach(layering, function (layer) {
+        _.forEach(layer, function (v, i) {
+            g.node(v).order = i;
+        });
     });
-  });
 }

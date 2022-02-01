@@ -15,8 +15,8 @@ var showToC = true;
 var debug = false;
 
 // requires some libraries
-load(__DIR__+"/lib/_fmt_lib_confluence.ajs")
-load(__DIR__+'/lib/_util.ajs')
+load(__DIR__ + "/lib/_fmt_lib_confluence.ajs")
+load(__DIR__ + '/lib/_util.ajs')
 
 // clear and show the console
 console.show();
@@ -46,78 +46,83 @@ if (!theView) {
 if (theView) {
 
     // define the default name for export
-	var defaultFileName = theView.name ? model.name + "-" + theView.name + ".wi" : "Exported View.wi"; // Default file name
-	// add here some code to suppress non allowed character from a normal file name
-	defaultFileName = defaultFileName.replace(/[&\/\\#,+()$~%'":*?<>{}]/g,'_');
+    var defaultFileName = theView.name ? model.name + "-" + theView.name + ".wi" : "Exported View.wi"; // Default file name
+    // add here some code to suppress non allowed character from a normal file name
+    defaultFileName = defaultFileName.replace(/[&\/\\#,+()$~%'":*?<>{}]/g, '_');
 
-    exportFile = getModelFileName(model); 
-	relativeName = exportFile.split("\\");
-    pathName = exportFile.substring(0, exportFile.length - relativeName[relativeName.length-1].length); 
-	// in case the Archimate model is under git control, the model file is actually in the .git folder that we should skip
-	var expr = /.git/
-	if (expr.test(pathName)) {
-		pathName = pathName.substring(0, pathName.length-5);
-	}
-	if (exportFile == null) {
-		exportFile = window.promptSaveFile({ title: "Export to Markdown", filterExtensions: [ "*.wi" ], fileName: defaultFileName } );
-	} else {
-		mkdir(pathName + exportFolder ); // create the export folder unless it already exists
-		exportFile = pathName + exportFolder + defaultFileName;
-	}
+    exportFile = getModelFileName(model);
+    relativeName = exportFile.split("\\");
+    pathName = exportFile.substring(0, exportFile.length - relativeName[relativeName.length - 1].length);
+    // in case the Archimate model is under git control, the model file is actually in the .git folder that we should skip
+    var expr = /.git/
+    if (expr.test(pathName)) {
+        pathName = pathName.substring(0, pathName.length - 5);
+    }
+    if (exportFile == null) {
+        exportFile = window.promptSaveFile({
+            title: "Export to Markdown",
+            filterExtensions: ["*.wi"],
+            fileName: defaultFileName
+        });
+    } else {
+        mkdir(pathName + exportFolder); // create the export folder unless it already exists
+        exportFile = pathName + exportFolder + defaultFileName;
+    }
     mkdir(pathName + exportAtt);
-	// If not yet set, add a zOrder propoerty to each element of the view, so that we can arrange the view according to the zOrder property
-	// Element are exported by  decreasing zOrder value, the highest the first
-	setZorderProperty(theView);
+    // If not yet set, add a zOrder propoerty to each element of the view, so that we can arrange the view according to the zOrder property
+    // Element are exported by  decreasing zOrder value, the highest the first
+    setZorderProperty(theView);
 
-	// set the view name as first header
-    theDocument+="h1. "+theView.name+"\n";
+    // set the view name as first header
+    theDocument += "h1. " + theView.name + "\n";
 
-	// create the table of content
-	if (showToC) {
-		toc(0,theView);
-		theDocument+="\n"+theTOC+"\n";
-	}
+    // create the table of content
+    if (showToC) {
+        toc(0, theView);
+        theDocument += "\n" + theTOC + "\n";
+    }
 
     // create the document introduction, using the documentation field of the View
     // and adding the view picture
-    theDocument+="\nh2. {color:blue}*Introduction*{color}\n";
+    theDocument += "\nh2. {color:blue}*Introduction*{color}\n";
 
-	// Note that we assume that all documentation field are written using Markdown langage as text formatting
-	theView.documentation!=""?theDocument+="\n"+MDtoWiki(theView.documentation)+"\n":true;
-	imageURL = exportFile.substring(0,exportFile.length-3)+".png";
+    // Note that we assume that all documentation field are written using Markdown langage as text formatting
+    theView.documentation != "" ? theDocument += "\n" + MDtoWiki(theView.documentation) + "\n" : true;
+    imageURL = exportFile.substring(0, exportFile.length - 3) + ".png";
     relativeURL = imageURL.split("\\");
-	theDocument+="\n!"+relativeURL[relativeURL.length-1] + "|width=1200px! \n";
+    theDocument += "\n!" + relativeURL[relativeURL.length - 1] + "|width=1200px! \n";
 
     // Insert now Notes, with no relationships
-    $(selection).find().not("element").not("relationship").each(function(c){
+    $(selection).find().not("element").not("relationship").each(function (c) {
         if (c.text) {
-            if ($(c).rels().length==0) {
-                theDocument+="\n"+escapeMD(MDtoWiki(c.text))+"\n";
+            if ($(c).rels().length == 0) {
+                theDocument += "\n" + escapeMD(MDtoWiki(c.text)) + "\n";
             }
-        };
+        }
+
     })
 
     // Insert now the documentation of each element and its children in a recursive way
     nestedDocumentation(0, theView);
 
     // Export now the final document
-    if(exportFile != null) {
+    if (exportFile != null) {
         // add a note about automatic generation
-        theDocument+="\n\n\n\n----\n _Generated from Archimate Tool: "+ new Date().toLocaleString()+"_\n";
+        theDocument += "\n\n\n\n----\n _Generated from Archimate Tool: " + new Date().toLocaleString() + "_\n";
 
         try {
             // export the text files
             $.fs.writeFile(exportFile, theDocument);
             // export the picture as a PNG file
             var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
-            $.fs.writeFile(exportFile.substring(0,exportFile.length-3) +".png", bytes, "BASE64");
+            $.fs.writeFile(exportFile.substring(0, exportFile.length - 3) + ".png", bytes, "BASE64");
             console.log("> Export done");
-        } catch(e){ console.log('Error: '+e)}
-    }
-    else {
+        } catch (e) {
+            console.log('Error: ' + e)
+        }
+    } else {
         console.log("> Export cancelled");
     }
-}
-else {
+} else {
     console.log("> Please Select a View");
 }

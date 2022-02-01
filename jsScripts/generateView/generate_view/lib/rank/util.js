@@ -3,8 +3,8 @@
 var _ = require("../lodash");
 
 module.exports = {
-  longestPath: longestPath,
-  slack: slack
+    longestPath: longestPath,
+    slack: slack
 };
 
 /*
@@ -29,29 +29,29 @@ module.exports = {
  *    1. Each node will be assign an (unnormalized) "rank" property.
  */
 function longestPath(g) {
-  var visited = {};
+    var visited = {};
 
-  function dfs(v) {
-    var label = g.node(v);
-    if (_.has(visited, v)) {
-      return label.rank;
+    function dfs(v) {
+        var label = g.node(v);
+        if (_.has(visited, v)) {
+            return label.rank;
+        }
+        visited[v] = true;
+
+        var rank = _.min(_.map(g.outEdges(v), function (e) {
+            return dfs(e.w) - g.edge(e).minlen;
+        }));
+
+        if (rank === Number.POSITIVE_INFINITY || // return value of _.map([]) for Lodash 3
+            rank === undefined || // return value of _.map([]) for Lodash 4
+            rank === null) { // return value of _.map([null])
+            rank = 0;
+        }
+
+        return (label.rank = rank);
     }
-    visited[v] = true;
 
-    var rank = _.min(_.map(g.outEdges(v), function(e) {
-      return dfs(e.w) - g.edge(e).minlen;
-    }));
-
-    if (rank === Number.POSITIVE_INFINITY || // return value of _.map([]) for Lodash 3
-        rank === undefined || // return value of _.map([]) for Lodash 4
-        rank === null) { // return value of _.map([null])
-      rank = 0;
-    }
-
-    return (label.rank = rank);
-  }
-
-  _.forEach(g.sources(), dfs);
+    _.forEach(g.sources(), dfs);
 }
 
 /*
@@ -59,5 +59,5 @@ function longestPath(g) {
  * difference between the length of the edge and its minimum length.
  */
 function slack(g, e) {
-  return g.node(e.w).rank - g.node(e.v).rank - g.edge(e).minlen;
+    return g.node(e.w).rank - g.node(e.v).rank - g.edge(e).minlen;
 }

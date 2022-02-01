@@ -13,11 +13,11 @@ const _ = require('lodash');
  * @returns {Object} Returns the new hash object.
  */
 function Hash(properties) {
-  return _.transform(properties, (result, value, key) => {
-    result[key] = (_.isPlainObject(value) && !(value instanceof Hash))
-      ? new Hash(value)
-      : value;
-  }, this);
+    return _.transform(properties, (result, value, key) => {
+        result[key] = (_.isPlainObject(value) && !(value instanceof Hash))
+            ? new Hash(value)
+            : value;
+    }, this);
 }
 
 Hash.prototype = Object.create(null);
@@ -29,12 +29,12 @@ Hash.prototype = Object.create(null);
  * @param {Object} [error] The error object.
  */
 function pitch(error) {
-  if (error != null) {
-    throw error;
-  }
+    if (error != null) {
+        throw error;
+    }
 }
 
 module.exports = {
-  Hash,
-  pitch
+    Hash,
+    pitch
 };

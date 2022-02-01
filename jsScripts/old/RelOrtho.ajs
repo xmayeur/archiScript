@@ -4,9 +4,17 @@ console.clear();
 var incrY = -10;
 var incrX = -10;
 
-for each (var e in $(selection).filter('element')) {
+for each(var e
+in
+$(selection).filter('element')
+)
+{
     console.log(e.name)
-    for each (var o in $(e).outRels()) {
+    for each(var o
+in
+    $(e).outRels()
+)
+    {
         console.log(o.source, " -> ", o.target)
         var source = o.source;
         var target = o.target;
@@ -15,7 +23,7 @@ for each (var e in $(selection).filter('element')) {
         dx = tb.x - sb.x;
         dy = tb.y - sb.y;
         var bps = o.getRelativeBendpoints()
-        for each (bp in bps) {
+        for each(bp in bps) {
             console.log("bp: ", bp)
         }
     }
@@ -23,7 +31,11 @@ for each (var e in $(selection).filter('element')) {
 }
 
 
-for each (var o in $(selection).filter("relationship")) {
+for each(var o
+in
+$(selection).filter("relationship")
+)
+{
     var view = o.view;
     var rel = o.concept;
     var source = o.source;
@@ -32,57 +44,67 @@ for each (var o in $(selection).filter("relationship")) {
     tb = target.bounds;
 
 
-   var pp = $(source).parents();
-    for each (p in pp) {
-        try  {
+    var pp = $(source).parents();
+    for each(p in pp) {
+        try {
             sb.x += p.bounds.x;
             sb.y += p.bounds.y;
-        } catch(e){}
+        } catch (e) {
+        }
     }
 
     var pp = $(target).parents();
-    for each (p in pp) {
-        try  {
+    for each(p in pp) {
+        try {
             tb.x += p.bounds.x;
             tb.y += p.bounds.y;
-        } catch(e){}
+        } catch (e) {
+        }
     }
     dx = tb.x - sb.x;
     dy = tb.y - sb.y;
 
     var bps = o.getRelativeBendpoints()
-    for each (bp in bps) {console.log('-bp', bp)}
+    for each(bp in bps) {
+        console.log('-bp', bp)
+    }
     o.deleteAllBendpoints()
 
     var n = bps.length
-    
-    if (n===2){
+
+    if (n === 2) {
         ddx = bps[1].endX - bps[1].startX
         ddy = bps[1].endY - bps[1].startY
-        console.log(Math.abs(ddx),' : ', Math.abs(ddy))
+        console.log(Math.abs(ddx), ' : ', Math.abs(ddy))
         //bps[1].endX = -bps[0].startX  - ddx - bps[1].startX
         if (Math.abs(ddx) === Math.abs(ddy)) {
             console.log('ddx > ddy')
-            bps[1].startX = -bps[0].endX 
+            bps[1].startX = -bps[0].endX
             bps[1].startY = bps[0].startY
             bps[1].endY = bps[0].endY
         } else {
             bps[1].startY = -bps[0].endY
-            bps[1].startX = bps[0].startX 
-            bps[1].endX = bps[0].endX           
-            
+            bps[1].startX = bps[0].startX
+            bps[1].endX = bps[0].endX
+
             // bps[1].endY = -bps[0].startY
         }
     }
-    
+
 
     try {
 
         var i = 0
-        for each (var bp in bps) {
+        for each(var bp
+    in
+        bps
+    )
+        {
             console.log("+bp: ", bp)
             o.addRelativeBendpoint(bp, i++)
         }
-    } catch(e) {console.log(e)}
+    } catch (e) {
+        console.log(e)
+    }
 
 }

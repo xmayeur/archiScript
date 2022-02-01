@@ -16,23 +16,29 @@ module.exports = initOrder;
  * the order of its nodes.
  */
 function initOrder(g) {
-  var visited = {},
-      simpleNodes = _.filter(g.nodes(), function(v) {
-        return !g.children(v).length;
-      }),
-      maxRank = _.max(_.map(simpleNodes, function(v) { return g.node(v).rank; })),
-      layers = _.map(_.range(maxRank + 1), function() { return []; });
+    var visited = {},
+        simpleNodes = _.filter(g.nodes(), function (v) {
+            return !g.children(v).length;
+        }),
+        maxRank = _.max(_.map(simpleNodes, function (v) {
+            return g.node(v).rank;
+        })),
+        layers = _.map(_.range(maxRank + 1), function () {
+            return [];
+        });
 
-  function dfs(v) {
-    if (_.has(visited, v)) return;
-    visited[v] = true;
-    var node = g.node(v);
-    layers[node.rank].push(v);
-    _.forEach(g.successors(v), dfs);
-  }
+    function dfs(v) {
+        if (_.has(visited, v)) return;
+        visited[v] = true;
+        var node = g.node(v);
+        layers[node.rank].push(v);
+        _.forEach(g.successors(v), dfs);
+    }
 
-  var orderedVs = _.sortBy(simpleNodes, function(v) { return g.node(v).rank; });
-  _.forEach(orderedVs, dfs);
+    var orderedVs = _.sortBy(simpleNodes, function (v) {
+        return g.node(v).rank;
+    });
+    _.forEach(orderedVs, dfs);
 
-  return layers;
+    return layers;
 }

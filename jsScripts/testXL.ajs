@@ -1,42 +1,42 @@
 // See https://github.com/SheetJS/sheetjs
 console.clear();
 
-if($.process.engine != "com.oracle.truffle.js.scriptengine.GraalJSScriptEngine") {
-  console.log("This script only works with GraalVM script engine.")
-  exit();
+if ($.process.engine != "com.oracle.truffle.js.scriptengine.GraalJSScriptEngine") {
+    console.log("This script only works with GraalVM script engine.")
+    exit();
 }
 
 var System = Java.type("java.lang.System");
-if(System.getProperties().get("polyglot.js.commonjs-require") != "true") {
-  System.getProperties().put("polyglot.js.commonjs-require", "true");
-  System.getProperties().put("polyglot.js.commonjs-require-cwd", __SCRIPTS_DIR__);
-  console.log("GraalJS Module loading was previously disabled. Restart your script");
-  exit();
+if (System.getProperties().get("polyglot.js.commonjs-require") != "true") {
+    System.getProperties().put("polyglot.js.commonjs-require", "true");
+    System.getProperties().put("polyglot.js.commonjs-require-cwd", __SCRIPTS_DIR__);
+    console.log("GraalJS Module loading was previously disabled. Restart your script");
+    exit();
 }
 
 var XLSX = require('xlsx')
 
 let filePath = __DIR__ + 'Test.xlsx';
-let wb = XLSX.read(base64encode(readFileSync(filePath)), { type: 'base64'});
+let wb = XLSX.read(base64encode(readFileSync(filePath)), {type: 'base64'});
 console.clear();
 
 // Dump file content in JSON
-wb.SheetNames.forEach(function(sheetName) {
-  var ws = wb.Sheets[sheetName];
-  console.log(sheetName);
-  var XL_row_object = XLSX.utils.sheet_to_json(ws, {range: "A1:O187"});
-  var json_object = JSON.stringify(XL_row_object);
-  console.log(json_object);
+wb.SheetNames.forEach(function (sheetName) {
+    var ws = wb.Sheets[sheetName];
+    console.log(sheetName);
+    var XL_row_object = XLSX.utils.sheet_to_json(ws, {range: "A1:O187"});
+    var json_object = JSON.stringify(XL_row_object);
+    console.log(json_object);
 })
 
 //=================================================================
 function readFileSync(path) {
-  let Files = Java.type("java.nio.file.Files");
-  let Paths = Java.type("java.nio.file.Paths");
-  return Files.readAllBytes(Paths.get(path));
+    let Files = Java.type("java.nio.file.Files");
+    let Paths = Java.type("java.nio.file.Paths");
+    return Files.readAllBytes(Paths.get(path));
 }
 
 function base64encode(byteArray) {
-  let Base64 = Java.type("java.util.Base64");
-  return Base64.getEncoder().encodeToString(byteArray);
+    let Base64 = Java.type("java.util.Base64");
+    return Base64.getEncoder().encodeToString(byteArray);
 }

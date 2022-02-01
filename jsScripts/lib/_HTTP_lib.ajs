@@ -41,10 +41,10 @@ try {
 */
 
 /**********************
-HTTP UTILITY FUNCTIONS
-***********************/
+ HTTP UTILITY FUNCTIONS
+ ***********************/
 
-var authorization=null;
+var authorization = null;
 
 function setAuth(username, password) {
     var Base64 = java.util.Base64;
@@ -54,136 +54,143 @@ function setAuth(username, password) {
     }
 
     if (authorization != null) {
-        encodedBytes = encoder.encodeToString(authorization.getBytes() );
+        encodedBytes = encoder.encodeToString(authorization.getBytes());
         authorization = "Basic " + encodedBytes;
-    } 
-    
+    }
+
     return authorization;
 }
 
 function forceUnicodeEncoding(string) {
-  return unescape(encodeURIComponent(string));
+    return unescape(encodeURIComponent(string));
 }
 
-function httpGet(theUrl){
+function httpGet(theUrl) {
     var con = new java.net.URL(theUrl).openConnection();
     con.requestMethod = "GET";
-    if (authorization != null) {con.setRequestProperty("Authorization", authorization);}
+    if (authorization != null) {
+        con.setRequestProperty("Authorization", authorization);
+    }
     return asResponse(con);
 }
 
-function httpPost(theUrl, data, contentType, method, headers){
+function httpPost(theUrl, data, contentType, method, headers) {
     contentType = contentType || "application/json";
     method = method || 'POST';
     var con = new java.net.URL(theUrl).openConnection();
 
     con.requestMethod = method;
     con.setRequestProperty("Content-Type", contentType);
-    if (authorization != null) {con.setRequestProperty("Authorization", authorization);}
+    if (authorization != null) {
+        con.setRequestProperty("Authorization", authorization);
+    }
     if (headers != undefined) {
         for (var prop in headers) {
-            con.setRequestProperty(prop ,headers[prop]);
+            con.setRequestProperty(prop, headers[prop]);
         }
     }
     // Send post request
-    con.doOutput=true;
+    con.doOutput = true;
     write(con.outputStream, data);
 
     return asResponse(con);
 }
 
-function httpSendImage(method, theUrl, files,  headers) {
+function httpSendImage(method, theUrl, files, headers) {
 
     method = method || 'POST';
 
     lineEnd = "\r\n";
     twoHyphens = "--";
     boundary = "***232404jkg4220957934FW**";
-	var	existingFileName='';
+    var existingFileName = '';
 
     maxBufferSize = 1 * 1024 * 1024;
 
     // Post Client request     
     try {
         var con = new java.net.URL(theUrl).openConnection();
-        con.doOutput=true;
-        con.doInput=true;
-        con.useCaches=false;
+        con.doOutput = true;
+        con.doInput = true;
+        con.useCaches = false;
         con.requestMethod = method;
-        
+
         con.setRequestProperty("Connection", "Keep-Alive");
-        con.setRequestProperty("Content-Type","multipart/form-data; boundary=" + boundary);
-		
-		var filesData ='';
-		if (files != undefined) {
-			for (var prop in files) {
-				if (prop === 'filename') {
-					existingFileName = files[prop];
-					fileparts = existingFileName.split("\\");
-					files[prop] = fileparts[fileparts.length-1];
-				}
-				filesData += prop + '=\"' +  files[prop] + '\"; ';
-			}
-			filesData = filesData.substring(0, filesData.length-2);
-        }	
+        con.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+
+        var filesData = '';
+        if (files != undefined) {
+            for (var prop in files) {
+                if (prop === 'filename') {
+                    existingFileName = files[prop];
+                    fileparts = existingFileName.split("\\");
+                    files[prop] = fileparts[fileparts.length - 1];
+                }
+                filesData += prop + '=\"' + files[prop] + '\"; ';
+            }
+            filesData = filesData.substring(0, filesData.length - 2);
+        }
 
         if (headers != undefined) {
             for (var prop in headers) {
-                con.setRequestProperty(prop ,headers[prop]);
+                con.setRequestProperty(prop, headers[prop]);
             }
         }
 
-        if (authorization != null) {con.setRequestProperty("Authorization", authorization);}
+        if (authorization != null) {
+            con.setRequestProperty("Authorization", authorization);
+        }
 
         var dos = new java.io.DataOutputStream(con.outputStream);
-		var buf = Java.type('byte[]');
+        var buf = Java.type('byte[]');
         dos.writeBytes(twoHyphens + boundary + lineEnd);
-        dos.writeBytes("Content-Disposition: form-data; name=\"file\"; " + filesData  + lineEnd);
-		// + "\nContent-Type: image/png; charset=Base64" 
+        dos.writeBytes("Content-Disposition: form-data; name=\"file\"; " + filesData + lineEnd);
+        // + "\nContent-Type: image/png; charset=Base64"
         dos.writeBytes(lineEnd);
 
         // write bytes into form...
-		
-		buf = readFile(existingFileName);
-		var len = buf.length;
-		// console.log('buf length: ' + buf.length);
-		for (i in buf) {
-			dos.write(buf[i].getBytes(), 0, 1);
-		}
-		// dos.writeBytes(buf);
-		
+
+        buf = readFile(existingFileName);
+        var len = buf.length;
+        // console.log('buf length: ' + buf.length);
+        for (i in buf) {
+            dos.write(buf[i].getBytes(), 0, 1);
+        }
+        // dos.writeBytes(buf);
+
         // send multipart form data necesssary after file data...
 
         dos.writeBytes(lineEnd);
         dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
-		
+
         // close streams
         dos.flush();
         dos.close();
 
         return asResponse(con);
 
-    }
-    catch(err) {
+    } catch (err) {
         console.log("Error sending file: " + err.message);
     }
 
 }
 
 
-function httpSendFile(method, theUrl, files,  headers) {
-    
+function httpSendFile(method, theUrl, files, headers) {
+
     rtn = 1; // return code - 0 if OK
-    
-	var filesData ='';
-	if (files != undefined) {
-		for (var prop in files) {
-			if (prop === 'filename') {existingFileName = files[prop];}
-			filesData += prop + '=\"' +  files[prop] + '\"; ';
-		}
-		filesData = filesData.substring(0, filesData.length-2);
-	}
-	
+
+    var filesData = '';
+    if (files != undefined) {
+        for (var prop in files) {
+            if (prop === 'filename') {
+                existingFileName = files[prop];
+            }
+            filesData += prop + '=\"' + files[prop] + '\"; ';
+        }
+        filesData = filesData.substring(0, filesData.length - 2);
+    }
+
     // fFile2Snd = new File(existingFileName);
     method = method || 'POST';
 
@@ -197,27 +204,29 @@ function httpSendFile(method, theUrl, files,  headers) {
     try {
         // fileInputStream = new FileInputStream(new File(existingFileName));
         var con = new java.net.URL(theUrl).openConnection();
-        con.doOutput=true;
-        con.doInput=true;
-        con.useCaches=false;
+        con.doOutput = true;
+        con.doInput = true;
+        con.useCaches = false;
         con.requestMethod = method;
-        
+
         con.setRequestProperty("Connection", "Keep-Alive");
-        con.setRequestProperty("Content-Type","multipart/form-data;boundary=" + boundary);
+        con.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
 
         if (headers != undefined) {
             for (var prop in headers) {
-                con.setRequestProperty(prop ,headers[prop]);
+                con.setRequestProperty(prop, headers[prop]);
             }
         }
 
-        if (authorization != null) {con.setRequestProperty("Authorization", authorization);}
+        if (authorization != null) {
+            con.setRequestProperty("Authorization", authorization);
+        }
 
         var dos = new java.io.DataOutputStream(con.outputStream);
 
         dos.writeBytes(twoHyphens + boundary + lineEnd);
-        dos.writeBytes("Content-Disposition: form-data; name=\"file\"; " + filesData  + "\nContent-Type: image/png" + lineEnd);
-		dos.writeBytes(lineEnd);
+        dos.writeBytes("Content-Disposition: form-data; name=\"file\"; " + filesData + "\nContent-Type: image/png" + lineEnd);
+        dos.writeBytes(lineEnd);
 
         rtn++;
 
@@ -239,8 +248,8 @@ function httpSendFile(method, theUrl, files,  headers) {
             bytesRead = fileInputStream.read(buffer, 0, bufferSize);
         }
 		*/
-		
-		dos.write(readFully(existingFileName));
+
+        dos.write(readFully(existingFileName));
 
         // send multipart form data necesssary after file data...
 
@@ -254,8 +263,7 @@ function httpSendFile(method, theUrl, files,  headers) {
         dos.close();
 
 
-    }
-    catch(err) {
+    } catch (err) {
         console.log("Error sending file: " + err.message);
     }
 
@@ -264,28 +272,26 @@ function httpSendFile(method, theUrl, files,  headers) {
 }
 
 
-
-
-function asResponse(con){
+function asResponse(con) {
     var d = read(con.inputStream);
 
-    return {data : d, statusCode : con.responseCode};
+    return {data: d, statusCode: con.responseCode};
 }
 
-function write(outputStream, data){
+function write(outputStream, data) {
     var wr = new java.io.DataOutputStream(outputStream);
     wr.writeBytes(data);
     wr.flush();
     wr.close();
 }
 
-function read(inputStream){
+function read(inputStream) {
     var inReader = new java.io.BufferedReader(new java.io.InputStreamReader(inputStream));
     var inputLine;
     var response = new java.lang.StringBuffer();
 
     while ((inputLine = inReader.readLine()) != null) {
-           response.append(inputLine);
+        response.append(inputLine);
     }
     inReader.close();
     return response.toString();

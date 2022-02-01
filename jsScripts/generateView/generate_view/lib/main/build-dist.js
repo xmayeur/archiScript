@@ -22,10 +22,10 @@ const distLodash = path.join(distPath, filename);
  * @param {string} target The output directory path.
  */
 function build() {
-  async.series([
-    file.copy(baseLodash, distLodash),
-    file.min(distLodash)
-  ], util.pitch);
+    async.series([
+        file.copy(baseLodash, distLodash),
+        file.min(distLodash)
+    ], util.pitch);
 }
 
 build();

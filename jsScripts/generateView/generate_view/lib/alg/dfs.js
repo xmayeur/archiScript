@@ -11,32 +11,36 @@ module.exports = dfs;
  * Order must be one of "pre" or "post".
  */
 function dfs(g, vs, order) {
-  if (!_.isArray(vs)) {
-    vs = [vs];
-  }
-
-  var navigation = (g.isDirected() ? g.successors : g.neighbors).bind(g);
-
-  var acc = [],
-      visited = {};
-  _.each(vs, function(v) {
-    if (!g.hasNode(v)) {
-      throw new Error("Graph does not have node: " + v);
+    if (!_.isArray(vs)) {
+        vs = [vs];
     }
 
-    doDfs(g, v, order === "post", visited, navigation, acc);
-  });
-  return acc;
+    var navigation = (g.isDirected() ? g.successors : g.neighbors).bind(g);
+
+    var acc = [],
+        visited = {};
+    _.each(vs, function (v) {
+        if (!g.hasNode(v)) {
+            throw new Error("Graph does not have node: " + v);
+        }
+
+        doDfs(g, v, order === "post", visited, navigation, acc);
+    });
+    return acc;
 }
 
 function doDfs(g, v, postorder, visited, navigation, acc) {
-  if (!_.has(visited, v)) {
-    visited[v] = true;
+    if (!_.has(visited, v)) {
+        visited[v] = true;
 
-    if (!postorder) { acc.push(v); }
-    _.each(navigation(v), function(w) {
-      doDfs(g, w, postorder, visited, navigation, acc);
-    });
-    if (postorder) { acc.push(v); }
-  }
+        if (!postorder) {
+            acc.push(v);
+        }
+        _.each(navigation(v), function (w) {
+            doDfs(g, w, postorder, visited, navigation, acc);
+        });
+        if (postorder) {
+            acc.push(v);
+        }
+    }
 }

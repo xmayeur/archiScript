@@ -1,7 +1,78 @@
 console.clear()
 
-    $('business-object').each(function(element) {
-        if($(element).objectRefs().isEmpty()) {
-            element.delete();
+
+// assume connections have orthogonal layout
+$(selection).forEach(o => {
+    let top = []
+    let bottom = []
+    let left = []
+    let right = []
+    let w = o.bounds.width
+    let h = o.bounds.height
+    console.log('+++ '+o.name)
+    $(o).rels().forEach(r => {
+        let bps = r.getRelativeBendpoints()
+        let lastBP = null
+        if (bps.length > 0)
+            lastBP = bps[bps.length - 1]
+
+        if (lastBP !== null) {
+            if (r.target.id === o.id) {
+                // in rels
+                if (lastBP.endX > 0) {
+                    right.push(r)
+                } else if (lastBP.endX < 0) {
+                    left.push(r)
+                } else if (lastBP.endY > 0) {
+                    bottom.push(r)
+                } else {
+                    top.push(r)
+                }
+
+            } else {
+                // out Rels
+                if (lastBP.startX > 0) {
+                    right.push(r)
+                } else if (lastBP.startX < 0)
+                    left.push(r)
+                else if (lastBP.startY > 0)
+                    bottom.push(r)
+                else top.push(r)
+            }
         }
-    });
+    })
+    let i = 1
+    let n = right.length + 1
+
+    right.forEach(x => {
+        let bps = x.getRelativeBendpoints()
+        let lastBP = null
+        if (bps.length > 0)
+            lastBP = bps[bps.length - 1]
+        if (lastBP !== null) {
+            let name = x.source.name
+            console.log(lastBP, name)
+            lastBP.endY = h/2 - (i++ * (h / n))
+            x.setRelativeBendpoint(lastBP, bps.length - 1)
+            console.log('--> ', n, h, i-1, lastBP)
+        }
+    })
+
+    i = 1
+    n = left.length + 1
+
+    left.forEach(x => {
+        let bps = x.getRelativeBendpoints()
+        let lastBP = null
+        if (bps.length > 0)
+            lastBP = bps[bps.length - 1]
+        if (lastBP !== null) {
+            let name = x.source.name
+            console.log(lastBP, name)
+            lastBP.endY = h/2 - (i++ * (h / n))
+            x.setRelativeBendpoint(lastBP, bps.length - 1)
+            console.log('--> ', n, h, i-1, lastBP)
+        }
+    })
+
+})

@@ -15,23 +15,23 @@ const pkg = require('../../package.json');
 const version = pkg.version;
 
 const config = {
-  'base': {
-    'path': path.join(basePath, 'lodash.js'),
-    'title': `<a href="https://lodash.com/">lodash</a> <span>v${ version }</span>`,
-    'toc': 'categories',
-    'url': `https://github.com/lodash/lodash/blob/${ version }/lodash.js`
-  },
-  'github': {
-    'style': 'github',
-    'sublinks': [npmLink('&#x24C3;', 'See the npm package')]
-  },
-  'site': {
-    'entryLink': '<a href="${entryHref}" class="fa fa-link"></a>',
-    'sourceLink': '[source](${sourceHref})',
-    'tocHref': '',
-    'tocLink': '',
-    'sublinks': [npmLink('npm package')]
-  }
+    'base': {
+        'path': path.join(basePath, 'lodash.js'),
+        'title': `<a href="https://lodash.com/">lodash</a> <span>v${version}</span>`,
+        'toc': 'categories',
+        'url': `https://github.com/lodash/lodash/blob/${version}/lodash.js`
+    },
+    'github': {
+        'style': 'github',
+        'sublinks': [npmLink('&#x24C3;', 'See the npm package')]
+    },
+    'site': {
+        'entryLink': '<a href="${entryHref}" class="fa fa-link"></a>',
+        'sourceLink': '[source](${sourceHref})',
+        'tocHref': '',
+        'tocLink': '',
+        'sublinks': [npmLink('npm package')]
+    }
 };
 
 /**
@@ -43,14 +43,14 @@ const config = {
  * @returns {string} Returns the composed npm link.
  */
 function npmLink(text, title) {
-  return (
-    '<% if (name == "templateSettings" || !/^(?:methods|properties|seq)$/i.test(category)) {' +
-      'print(' +
+    return (
+        '<% if (name == "templateSettings" || !/^(?:methods|properties|seq)$/i.test(category)) {' +
+        'print(' +
         '"[' + text + '](https://www.npmjs.com/package/lodash." + name.toLowerCase() + ' +
         '"' + (title == null ? '' : ' \\"' + title + '\\"') + ')"' +
-      ');' +
-    '} %>'
-  );
+        ');' +
+        '} %>'
+    );
 }
 
 /**
@@ -61,8 +61,8 @@ function npmLink(text, title) {
  * @returns {string} Returns the processed markdown.
  */
 function postprocess(markdown) {
-  // Wrap symbol property identifiers in brackets.
-  return markdown.replace(/\.(Symbol\.(?:[a-z]+[A-Z]?)+)/g, '[$1]');
+    // Wrap symbol property identifiers in brackets.
+    return markdown.replace(/\.(Symbol\.(?:[a-z]+[A-Z]?)+)/g, '[$1]');
 }
 
 /*----------------------------------------------------------------------------*/
@@ -74,10 +74,10 @@ function postprocess(markdown) {
  * @param {string} type The format type.
  */
 function build(type) {
-  const options = _.defaults({}, config.base, config[type]);
-  const markdown = docdown(options);
+    const options = _.defaults({}, config.base, config[type]);
+    const markdown = docdown(options);
 
-  fs.writeFile(readmePath, postprocess(markdown), util.pitch);
+    fs.writeFile(readmePath, postprocess(markdown), util.pitch);
 }
 
 build(_.last(process.argv));

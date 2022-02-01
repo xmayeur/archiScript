@@ -14,9 +14,9 @@ const template = file.globTemplate(path.join(templatePath, '*.jst'));
 const argNames = ['a', 'b', 'c', 'd'];
 
 const templateData = {
-  mapping,
-  toArgOrder,
-  toFuncList
+    mapping,
+    toArgOrder,
+    toFuncList
 };
 
 /**
@@ -28,11 +28,11 @@ const templateData = {
  * @returns {string} Returns the named argument string.
  */
 function toArgOrder(indexes) {
-  const reordered = [];
-  _.each(indexes, (newIndex, index) => {
-    reordered[newIndex] = argNames[index];
-  });
-  return '`(' + reordered.join(', ') + ')`';
+    const reordered = [];
+    _.each(indexes, (newIndex, index) => {
+        reordered[newIndex] = argNames[index];
+    });
+    return '`(' + reordered.join(', ') + ')`';
 }
 
 /**
@@ -43,23 +43,23 @@ function toArgOrder(indexes) {
  * @returns {string} Returns the function list string.
  */
 function toFuncList(funcNames) {
-  let chunks = _.chunk(funcNames.slice().sort(), 5);
-  let lastChunk = _.last(chunks);
-  const lastName = lastChunk ? lastChunk.pop() : undefined;
+    let chunks = _.chunk(funcNames.slice().sort(), 5);
+    let lastChunk = _.last(chunks);
+    const lastName = lastChunk ? lastChunk.pop() : undefined;
 
-  chunks = _.reject(chunks, _.isEmpty);
-  lastChunk = _.last(chunks);
+    chunks = _.reject(chunks, _.isEmpty);
+    lastChunk = _.last(chunks);
 
-  let result = '`' + _.map(chunks, chunk => chunk.join('`, `') + '`').join(',\n`');
-  if (lastName == null) {
-    return result;
-  }
-  if (_.size(chunks) > 1 || _.size(lastChunk) > 1) {
-    result += ',';
-  }
-  result += ' &';
-  result += _.size(lastChunk) < 5 ? ' ' : '\n';
-  return result + '`' + lastName + '`';
+    let result = '`' + _.map(chunks, chunk => chunk.join('`, `') + '`').join(',\n`');
+    if (lastName == null) {
+        return result;
+    }
+    if (_.size(chunks) > 1 || _.size(lastChunk) > 1) {
+        result += ',';
+    }
+    result += ' &';
+    result += _.size(lastChunk) < 5 ? ' ' : '\n';
+    return result + '`' + lastName + '`';
 }
 
 /*----------------------------------------------------------------------------*/
@@ -71,8 +71,8 @@ function toFuncList(funcNames) {
  * @param {string} target The output file path.
  */
 function build(target) {
-  target = path.resolve(target);
-  fs.writeFile(target, template.wiki(templateData), util.pitch);
+    target = path.resolve(target);
+    fs.writeFile(target, template.wiki(templateData), util.pitch);
 }
 
 build(_.last(process.argv));

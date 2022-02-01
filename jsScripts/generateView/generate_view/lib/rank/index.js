@@ -27,22 +27,29 @@ module.exports = rank;
  *       fix them up later.
  */
 function rank(g) {
-  switch(g.graph().ranker) {
-    case "network-simplex": networkSimplexRanker(g); break;
-    case "tight-tree": tightTreeRanker(g); break;
-    case "longest-path": longestPathRanker(g); break;
-    default: networkSimplexRanker(g);
-  }
+    switch (g.graph().ranker) {
+        case "network-simplex":
+            networkSimplexRanker(g);
+            break;
+        case "tight-tree":
+            tightTreeRanker(g);
+            break;
+        case "longest-path":
+            longestPathRanker(g);
+            break;
+        default:
+            networkSimplexRanker(g);
+    }
 }
 
 // A fast and simple ranker, but results are far from optimal.
 var longestPathRanker = longestPath;
 
 function tightTreeRanker(g) {
-  longestPath(g);
-  feasibleTree(g);
+    longestPath(g);
+    feasibleTree(g);
 }
 
 function networkSimplexRanker(g) {
-  networkSimplex(g);
+    networkSimplex(g);
 }

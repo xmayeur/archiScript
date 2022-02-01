@@ -34,40 +34,42 @@ module.exports = buildLayerGraph;
  *       graph is not a multi-graph.
  */
 function buildLayerGraph(g, rank, relationship) {
-  var root = createRootNode(g),
-      result = new Graph({ compound: true }).setGraph({ root: root })
-                  .setDefaultNodeLabel(function(v) { return g.node(v); });
+    var root = createRootNode(g),
+        result = new Graph({compound: true}).setGraph({root: root})
+            .setDefaultNodeLabel(function (v) {
+                return g.node(v);
+            });
 
-  _.forEach(g.nodes(), function(v) {
-    var node = g.node(v),
-        parent = g.parent(v);
+    _.forEach(g.nodes(), function (v) {
+        var node = g.node(v),
+            parent = g.parent(v);
 
-    if (node.rank === rank || node.minRank <= rank && rank <= node.maxRank) {
-      result.setNode(v);
-      result.setParent(v, parent || root);
+        if (node.rank === rank || node.minRank <= rank && rank <= node.maxRank) {
+            result.setNode(v);
+            result.setParent(v, parent || root);
 
-      // This assumes we have only short edges!
-      _.forEach(g[relationship](v), function(e) {
-        var u = e.v === v ? e.w : e.v,
-            edge = result.edge(u, v),
-            weight = !_.isUndefined(edge) ? edge.weight : 0;
-        result.setEdge(u, v, { weight: g.edge(e).weight + weight });
-      });
+            // This assumes we have only short edges!
+            _.forEach(g[relationship](v), function (e) {
+                var u = e.v === v ? e.w : e.v,
+                    edge = result.edge(u, v),
+                    weight = !_.isUndefined(edge) ? edge.weight : 0;
+                result.setEdge(u, v, {weight: g.edge(e).weight + weight});
+            });
 
-      if (_.has(node, "minRank")) {
-        result.setNode(v, {
-          borderLeft: node.borderLeft[rank],
-          borderRight: node.borderRight[rank]
-        });
-      }
-    }
-  });
+            if (_.has(node, "minRank")) {
+                result.setNode(v, {
+                    borderLeft: node.borderLeft[rank],
+                    borderRight: node.borderRight[rank]
+                });
+            }
+        }
+    });
 
-  return result;
+    return result;
 }
 
 function createRootNode(g) {
-  var v;
-  while (g.hasNode((v = _.uniqueId("_root"))));
-  return v;
+    var v;
+    while (g.hasNode((v = _.uniqueId("_root")))) ;
+    return v;
 }

@@ -13,34 +13,34 @@ const templatePath = path.join(__dirname, 'template/modules');
 const template = file.globTemplate(path.join(templatePath, '*.jst'));
 
 const aryMethods = _.union(
-  mapping.aryMethod[1],
-  mapping.aryMethod[2],
-  mapping.aryMethod[3],
-  mapping.aryMethod[4]
+    mapping.aryMethod[1],
+    mapping.aryMethod[2],
+    mapping.aryMethod[3],
+    mapping.aryMethod[4]
 );
 
 const categories = [
-  'array',
-  'collection',
-  'date',
-  'function',
-  'lang',
-  'math',
-  'number',
-  'object',
-  'seq',
-  'string',
-  'util'
+    'array',
+    'collection',
+    'date',
+    'function',
+    'lang',
+    'math',
+    'number',
+    'object',
+    'seq',
+    'string',
+    'util'
 ];
 
 const ignored = [
-  '_*.js',
-  'core.js',
-  'core.min.js',
-  'fp.js',
-  'index.js',
-  'lodash.js',
-  'lodash.min.js'
+    '_*.js',
+    'core.js',
+    'core.min.js',
+    'fp.js',
+    'index.js',
+    'lodash.js',
+    'lodash.min.js'
 ];
 
 /**
@@ -51,7 +51,7 @@ const ignored = [
  * @returns {boolean} Returns `true` if `name` is a method alias, else `false`.
  */
 function isAlias(name) {
-  return _.has(mapping.aliasToReal, name);
+    return _.has(mapping.aliasToReal, name);
 }
 
 /**
@@ -62,7 +62,7 @@ function isAlias(name) {
  * @returns {boolean} Returns `true` if `name` is a category name, else `false`.
  */
 function isCategory(name) {
-  return _.includes(categories, name);
+    return _.includes(categories, name);
 }
 
 /**
@@ -74,7 +74,7 @@ function isCategory(name) {
  *  else `false`.
  */
 function isThru(name) {
-  return !_.includes(aryMethods, name);
+    return !_.includes(aryMethods, name);
 }
 
 /**
@@ -85,21 +85,21 @@ function isThru(name) {
  * @returns {*} Returns the metadata for `func`.
  */
 function getTemplate(moduleName) {
-  const data = {
-    'name': _.get(mapping.aliasToReal, moduleName, moduleName),
-    'mapping': mapping
-  };
+    const data = {
+        'name': _.get(mapping.aliasToReal, moduleName, moduleName),
+        'mapping': mapping
+    };
 
-  if (isAlias(moduleName)) {
-    return template.alias(data);
-  }
-  if (isCategory(moduleName)) {
-    return template.category(data);
-  }
-  if (isThru(moduleName)) {
-    return template.thru(data);
-  }
-  return template.module(data);
+    if (isAlias(moduleName)) {
+        return template.alias(data);
+    }
+    if (isCategory(moduleName)) {
+        return template.category(data);
+    }
+    if (isThru(moduleName)) {
+        return template.thru(data);
+    }
+    return template.module(data);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -111,40 +111,40 @@ function getTemplate(moduleName) {
  * @param {string} target The output directory path.
  */
 function build(target) {
-  target = path.resolve(target);
+    target = path.resolve(target);
 
-  const fpPath = path.join(target, 'fp');
+    const fpPath = path.join(target, 'fp');
 
-  // Glob existing lodash module paths.
-  const modulePaths = glob.sync(path.join(target, '*.js'), {
-    'nodir': true,
-    'ignore': ignored.map(filename => {
-      return path.join(target, filename);
-    })
-  });
-
-  // Add FP alias and remapped module paths.
-  _.each([mapping.aliasToReal, mapping.remap], data => {
-    _.forOwn(data, (realName, alias) => {
-      const modulePath = path.join(target, alias + '.js');
-      if (!_.includes(modulePaths, modulePath)) {
-        modulePaths.push(modulePath);
-      }
+    // Glob existing lodash module paths.
+    const modulePaths = glob.sync(path.join(target, '*.js'), {
+        'nodir': true,
+        'ignore': ignored.map(filename => {
+            return path.join(target, filename);
+        })
     });
-  });
 
-  const actions = modulePaths.map(modulePath => {
-    const moduleName = path.basename(modulePath, '.js');
-    return file.write(path.join(fpPath, moduleName + '.js'), getTemplate(moduleName));
-  });
+    // Add FP alias and remapped module paths.
+    _.each([mapping.aliasToReal, mapping.remap], data => {
+        _.forOwn(data, (realName, alias) => {
+            const modulePath = path.join(target, alias + '.js');
+            if (!_.includes(modulePaths, modulePath)) {
+                modulePaths.push(modulePath);
+            }
+        });
+    });
 
-  actions.unshift(file.copy(path.join(__dirname, '../../fp'), fpPath));
-  actions.push(file.write(path.join(fpPath, '_falseOptions.js'), template._falseOptions()));
-  actions.push(file.write(path.join(fpPath, '_util.js'), template._util()));
-  actions.push(file.write(path.join(target, 'fp.js'), template.fp()));
-  actions.push(file.write(path.join(fpPath, 'convert.js'), template.convert()));
+    const actions = modulePaths.map(modulePath => {
+        const moduleName = path.basename(modulePath, '.js');
+        return file.write(path.join(fpPath, moduleName + '.js'), getTemplate(moduleName));
+    });
 
-  async.series(actions, util.pitch);
+    actions.unshift(file.copy(path.join(__dirname, '../../fp'), fpPath));
+    actions.push(file.write(path.join(fpPath, '_falseOptions.js'), template._falseOptions()));
+    actions.push(file.write(path.join(fpPath, '_util.js'), template._util()));
+    actions.push(file.write(path.join(target, 'fp.js'), template.fp()));
+    actions.push(file.write(path.join(fpPath, 'convert.js'), template.convert()));
+
+    async.series(actions, util.pitch);
 }
 
 build(_.last(process.argv));

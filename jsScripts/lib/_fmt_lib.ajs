@@ -1,4 +1,3 @@
-
 var debug = false;
 var tocMap = [];
 var bodyMap = [];
@@ -22,291 +21,300 @@ function getModelFileName(model) {
         return String(m.getFile());
     } catch (e) {
         console.error("Failed to get the model's filename.");
-        return "";}
+        return "";
+    }
 }
 
 function convertToText(type) {
-    var theString = type.replaceAll("-"," ").split(" ");
+    var theString = type.replaceAll("-", " ").split(" ");
     var theResult = "";
-    for (var i=0; i<theString.length; i++){
-        theResult+= theString[i][0].toUpperCase()+theString[i].substring(1,theString[i].length) + " ";
+    for (var i = 0; i < theString.length; i++) {
+        theResult += theString[i][0].toUpperCase() + theString[i].substring(1, theString[i].length) + " ";
     }
     return theResult.trim();
 }
 
-function escapeMD(theString){
-    return theString.replaceAll("<","&lt;")
-                    .replaceAll(">","&gt;");
+function escapeMD(theString) {
+    return theString.replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;");
 }
 
 function generateLink(theString) {
     var regex = /[\[\](\)\#\\\/\"]/gi;
-    return "#"+theString.toLowerCase().replace(regex,"")
-                                      .replaceAll(" ","-")
-                                      .replaceAll("\<","lt")
-                                      .replaceAll("\>","gt");
+    return "#" + theString.toLowerCase().replace(regex, "")
+        .replaceAll(" ", "-")
+        .replaceAll("\<", "lt")
+        .replaceAll("\>", "gt");
 }
 
-function toc(d, element){
-	var elements = $(element).children().not("relationship");
-	/*
-	if (!!element.prop('outline')) {
-		pSortObjects(elements, 'zOrder', 'asc');
-	} else {
-		pSortObjects(elements, 'zOrder', 'desc');
-	}
-	*/
-	pSortObjects(elements, 'zOrder', 'asc');
-	elem = distinct(elements, 'name');
+function toc(d, element) {
+    var elements = $(element).children().not("relationship");
+    /*
+    if (!!element.prop('outline')) {
+        pSortObjects(elements, 'zOrder', 'asc');
+    } else {
+        pSortObjects(elements, 'zOrder', 'desc');
+    }
+    */
+    pSortObjects(elements, 'zOrder', 'asc');
+    elem = distinct(elements, 'name');
 
-	for each (var e in elem){
+    for each(var e
+in
+    elem
+)
+    {
 
         if (e.name) {
-			e.name = e.name.trim()
-			headerDepth="";
-			for (var i=0; i<d; i++){
-				headerDepth+="  ";
-			}
-			var theHash = generateLink(e.name);
-			if (tocMap[theHash]==null) {
-				tocMap[theHash]=1;
-			}
-			else {
-				tocMap[theHash]+=1;
-			}
+            e.name = e.name.trim()
+            headerDepth = "";
+            for (var i = 0; i < d; i++) {
+                headerDepth += "  ";
+            }
+            var theHash = generateLink(e.name);
+            if (tocMap[theHash] == null) {
+                tocMap[theHash] = 1;
+            } else {
+                tocMap[theHash] += 1;
+            }
 
-			var linkNum="";
+            var linkNum = "";
 
-			if (tocMap[theHash]>1) {
-				linkNum = "-"+tocMap[theHash];
-			}
+            if (tocMap[theHash] > 1) {
+                linkNum = "-" + tocMap[theHash];
+            }
 
-			theTOC+="\n"+headerDepth +"* ["+ escapeMD(e.name)+"]("+theHash+linkNum+")";
-			if ($(e).children().not("relationship").length>0) {
-				d++;
-				toc(d, e);
-				d--;
-			}			
+            theTOC += "\n" + headerDepth + "* [" + escapeMD(e.name) + "](" + theHash + linkNum + ")";
+            if ($(e).children().not("relationship").length > 0) {
+                d++;
+                toc(d, e);
+                d--;
+            }
         }
-    };
+    }
+
 }
 
 function propertiesTable(element) {
     var theProperties = element.prop();
-    var theHeader="";
-    var theLine="";
-    var theBody="";
-    for (var i=0; i<theProperties.length;i++){
-		// if (theProperties.length >1 && theProperties[1] != "label") {
-			theHeader+="|"+theProperties[i];
-			theLine+="|---";
-			theBody+="|  "+element.prop(theProperties[i])+ "  ";
-		// }
+    var theHeader = "";
+    var theLine = "";
+    var theBody = "";
+    for (var i = 0; i < theProperties.length; i++) {
+        // if (theProperties.length >1 && theProperties[1] != "label") {
+        theHeader += "|" + theProperties[i];
+        theLine += "|---";
+        theBody += "|  " + element.prop(theProperties[i]) + "  ";
+        // }
     }
-    return "**Properties**\n\n"+theHeader+"|\n"+theLine+"|\n"+theBody+"|\n\n";
+    return "**Properties**\n\n" + theHeader + "|\n" + theLine + "|\n" + theBody + "|\n\n";
 }
 
 function documentRelationships(element) {
     var theHeader = "|From|Relationship|To|Name|Description|"
     var theLine = "|---|---|---|---|---|";
     var theBody = "";
-    $(element).outRels().each(function(r){
-        theBody+="|"+r.source.name;
-        theBody+=" |"+convertToText(r.type);
-        theBody+=" |["+ escapeMD(r.target.name)  +" ("+ convertToText(r.target.type) +")]("+generateLink(r.target.name +" ("+ convertToText(r.target.type)+")")+")";
-        theBody+="|"+r.name;
-        theBody+=" |"+r.documentation.replaceAll("\n"," ")+" |\n";
+    $(element).outRels().each(function (r) {
+        theBody += "|" + r.source.name;
+        theBody += " |" + convertToText(r.type);
+        theBody += " |[" + escapeMD(r.target.name) + " (" + convertToText(r.target.type) + ")](" + generateLink(r.target.name + " (" + convertToText(r.target.type) + ")") + ")";
+        theBody += "|" + r.name;
+        theBody += " |" + r.documentation.replaceAll("\n", " ") + " |\n";
     });
 
-    return "\n**Relationships for element " + element.name + "**\n\n---\n"+theHeader+"\n"+theLine+"\n"+theBody+"\n---\n";
+    return "\n**Relationships for element " + element.name + "**\n\n---\n" + theHeader + "\n" + theLine + "\n" + theBody + "\n---\n";
 }
 
 function inclDoc(view, type) {
-	let incl_list = view.prop("include") || '';
-	let excl_list = view.prop("exclude") || '';
-	let include_elems = incl_list.replaceAll(' ', '').split(',');
-	let exclude_elems = excl_list.replaceAll(' ', '').split(',');
+    let incl_list = view.prop("include") || '';
+    let excl_list = view.prop("exclude") || '';
+    let include_elems = incl_list.replaceAll(' ', '').split(',');
+    let exclude_elems = excl_list.replaceAll(' ', '').split(',');
 
-	if (exclude_elems.indexOf(type) > -1) {
-		return false
-	} else if (incl_list === '') {
-		return true
-	} else {
-		return (include_elems.indexOf(type) >= 0)
-	}
+    if (exclude_elems.indexOf(type) > -1) {
+        return false
+    } else if (incl_list === '') {
+        return true
+    } else {
+        return (include_elems.indexOf(type) >= 0)
+    }
 }
 
 function nestedDocumentation(d, element) {
 
 
+    var elements = $(element).children().not("relationship");
 
-	var elements = $(element).children().not("relationship");
+    /*
+    if (element.prop('outline') != null) {
+        pSortObjects(elements, 'zOrder', 'asc');
+    } else {
+        pSortObjects(elements, 'zOrder', 'desc');
+    }
+    */
+    pSortObjects(elements, 'zOrder', 'asc');
+    elem = distinct(elements, 'name');
 
-	/*
-	if (element.prop('outline') != null) {
-		pSortObjects(elements, 'zOrder', 'asc');
-	} else {
-		pSortObjects(elements, 'zOrder', 'desc');
-	}
-	*/
-	pSortObjects(elements, 'zOrder', 'asc');
-	elem = distinct(elements, 'name');
-
-	for each (var e in elem){
-    // $(element).children().not("relationship").each(function(e) {
+    for each(var e
+in
+    elem
+)
+    {
+        // $(element).children().not("relationship").each(function(e) {
 
         if (e.name) {
-			e.name = e.name.trim()
+            e.name = e.name.trim()
 
-			try {
-				if (e.documentation.length > 0
-				|| (e.prop().length > 0 & showProperty)
-				|| $(e).children().length > 0
-				|| $(e).outRels().length > 0
-				)
-				{
+            try {
+                if (e.documentation.length > 0
+                    || (e.prop().length > 0 & showProperty)
+                    || $(e).children().length > 0
+                    || $(e).outRels().length > 0
+                ) {
 
-					var headerDepth ="##";
-					for (var i=0; i<d; i++) {
-						headerDepth+="#";
-					}
+                    var headerDepth = "##";
+                    for (var i = 0; i < d; i++) {
+                        headerDepth += "#";
+                    }
 
-					var theHash = generateLink(e.name);
-					if (bodyMap[theHash]==null) {
-						bodyMap[theHash]=1;
-					}
-					else {
-						bodyMap[theHash]+=1;
-					}
+                    var theHash = generateLink(e.name);
+                    if (bodyMap[theHash] == null) {
+                        bodyMap[theHash] = 1;
+                    } else {
+                        bodyMap[theHash] += 1;
+                    }
 
-					var linkNum="";
+                    var linkNum = "";
 
-					if (bodyMap[theHash]>1) {
-						linkNum = " "+bodyMap[theHash];
-					}
+                    if (bodyMap[theHash] > 1) {
+                        linkNum = " " + bodyMap[theHash];
+                    }
 
-					if (!(e.name in elemMap)  && inclDoc(theView, e.type) ) {
+                    if (!(e.name in elemMap) && inclDoc(theView, e.type)) {
 
-						elemMap[e.name] = 1;
+                        elemMap[e.name] = 1;
 
-						if (showObjectType) {
-							theDocument+="\n"+headerDepth +" "+ escapeMD(e.name)  + "\n" //  +linkNum+"\n";
-						} else {
-							theDocument+="\n"+headerDepth +" "+ escapeMD(e.name) + "\n";
-						}
-						e.documentation ? theDocument+="\n"+escapeMD(cleanWiki(e.documentation))+"\n":true;
+                        if (showObjectType) {
+                            theDocument += "\n" + headerDepth + " " + escapeMD(e.name) + "\n" //  +linkNum+"\n";
+                        } else {
+                            theDocument += "\n" + headerDepth + " " + escapeMD(e.name) + "\n";
+                        }
+                        e.documentation ? theDocument += "\n" + escapeMD(cleanWiki(e.documentation)) + "\n" : true;
 
-						if (showProperty) {
-							e.prop().length > 0 ? theDocument+="\n"+escapeMD(propertiesTable(e)):true;
-						}
-					} else {
-						theDocument+="\n"+headerDepth +" "+ escapeMD(e.name);
-						if (inclDoc(theView, e.type)) {
-							theDocument += "\nSee [" + escapeMD(e.name) + "](" + generateLink(e.name) + ")\n";
-						}
-					}
-					$(e).rels().ends().each(function(r) {
-						if (r.text) {
-							theDocument+="\n> "+escapeMD(r.text).replaceAll("\n","\n> ")+"\n";
-						}
-					});
-					debug? console.log(e.name+":"+$(e).children().not("relationship")+":"+e):true;
-					if ($(e).children().length>0) {
-						d++;
-						nestedDocumentation(d, e);
-						d--;
-					}
-					if (inclDoc(theView, "relationship")) {
-						$(e).outRels().length > 0 ? theDocument += "\n" + escapeMD(documentRelationships(e)) : true;
-					}
-				}
-			} catch(e) {}		
+                        if (showProperty) {
+                            e.prop().length > 0 ? theDocument += "\n" + escapeMD(propertiesTable(e)) : true;
+                        }
+                    } else {
+                        theDocument += "\n" + headerDepth + " " + escapeMD(e.name);
+                        if (inclDoc(theView, e.type)) {
+                            theDocument += "\nSee [" + escapeMD(e.name) + "](" + generateLink(e.name) + ")\n";
+                        }
+                    }
+                    $(e).rels().ends().each(function (r) {
+                        if (r.text) {
+                            theDocument += "\n> " + escapeMD(r.text).replaceAll("\n", "\n> ") + "\n";
+                        }
+                    });
+                    debug ? console.log(e.name + ":" + $(e).children().not("relationship") + ":" + e) : true;
+                    if ($(e).children().length > 0) {
+                        d++;
+                        nestedDocumentation(d, e);
+                        d--;
+                    }
+                    if (inclDoc(theView, "relationship")) {
+                        $(e).outRels().length > 0 ? theDocument += "\n" + escapeMD(documentRelationships(e)) : true;
+                    }
+                }
+            } catch (e) {
+            }
         }
-    };
+    }
+
 }
 
-function setZorderProperty(element){
-	$(element).children().not('relationship').each(function(e){
-		if(!e.prop('zOrder')) {
-			e.prop('zOrder',0);
-		}
-		if (!!e.prop('outline')){
-			maxLevel = 5
-			outline = e.prop('outline')
-			outs =  outline.split('\.')
-			level = outs.length
-			zOrder = 0
-			
-			for (i=0; i<level; i++) {
-				zOrder += Math.pow(10, 2*(maxLevel-i-1)) * parseInt(outs[i])
-			}
-			e.prop('zOrder', zOrder)
-			e.prop('level', level)
-		}
-		setZorderProperty(e);
-	});
+function setZorderProperty(element) {
+    $(element).children().not('relationship').each(function (e) {
+        if (!e.prop('zOrder')) {
+            e.prop('zOrder', 0);
+        }
+        if (!!e.prop('outline')) {
+            maxLevel = 5
+            outline = e.prop('outline')
+            outs = outline.split('\.')
+            level = outs.length
+            zOrder = 0
+
+            for (i = 0; i < level; i++) {
+                zOrder += Math.pow(10, 2 * (maxLevel - i - 1)) * parseInt(outs[i])
+            }
+            e.prop('zOrder', zOrder)
+            e.prop('level', level)
+        }
+        setZorderProperty(e);
+    });
 }
 
-function setOutlineProperty(element){
-	$(element).children().not('relationship').each(function(e){
-		if(!e.prop('outline')) {
-			e.prop('outline',0);
-		}
-		setOutlineProperty(e);
-	});
+function setOutlineProperty(element) {
+    $(element).children().not('relationship').each(function (e) {
+        if (!e.prop('outline')) {
+            e.prop('outline', 0);
+        }
+        setOutlineProperty(e);
+    });
 }
 
 function setOutlineInLabel(element) {
-    $(element).children().not('relationship').each(function(e){
-        if(!!e.prop('outline')) {
-            e.labelExpression="${property:outline}. ${name}";
+    $(element).children().not('relationship').each(function (e) {
+        if (!!e.prop('outline')) {
+            e.labelExpression = "${property:outline}. ${name}";
         }
         setOutlineInLabel(e)
 
     });
 }
 
-function cleanWiki(doc){
+function cleanWiki(doc) {
     var s;
     // s = doc.replace(/\{code.*\}/gi,"")
     // find code blocks
     s = doc;
     codePat = /\{code:.*\}([\s\S]*?)\n\{code\}/;
 
-    while (null != (codeBlock=codePat.exec(s))){
-         try  {
-            if (!!codeBlock){
+    while (null != (codeBlock = codePat.exec(s))) {
+        try {
+            if (!!codeBlock) {
                 codeBlock = codeBlock[1];
                 codeBlock = '```\n' + codeBlock + '\n```\n';
                 s = s.replace(codePat, codeBlock);
             }
-         } catch(e) {}
+        } catch (e) {
+        }
     }
     return s
 }
 
-function readDocMetaData(file, theView){
-	try {
-		doc = readFile(file, 'char');
-		pat = /<meta (.*?)>/;
-		meta = pat.exec(doc);
-		if (!!meta) {
-			pat = /\s+([^>"]*?)="([^"]*?)"/g;
-			while (matches=pat.exec(meta)) {
-				theView.prop(matches[1], String(matches[2]));
-			}
-		}
-		return true
-	} catch(e) {
-		return false	
-	}
-	
+function readDocMetaData(file, theView) {
+    try {
+        doc = readFile(file, 'char');
+        pat = /<meta (.*?)>/;
+        meta = pat.exec(doc);
+        if (!!meta) {
+            pat = /\s+([^>"]*?)="([^"]*?)"/g;
+            while (matches = pat.exec(meta)) {
+                theView.prop(matches[1], String(matches[2]));
+            }
+        }
+        return true
+    } catch (e) {
+        return false
+    }
+
 }
 
-function getRelationship(type="", name="", source, target, create=false) {
+function getRelationship(type = "", name = "", source, target, create = false) {
     let rel;
-    let rels = (type === "")? $(source).outRels() : $(source).outRels(type);
-    rels.forEach(function(r){
+    let rels = (type === "") ? $(source).outRels() : $(source).outRels(type);
+    rels.forEach(function (r) {
         if (r.target.id === target.id && r.name === name) {
             rel = r
         }

@@ -14,10 +14,12 @@ $(selection).filter("archimate-diagram-model").forEach(function (v) {
         $(e).inRels().forEach(function (o) {
             ortho(o);
         });
-        $(e).children().filter('element').forEach(function(o){ orthoRel(o);});
+        $(e).children().filter('element').forEach(function (o) {
+            orthoRel(o);
+        });
     }
 
-    $(v).children().filter('element').forEach(function(e){
+    $(v).children().filter('element').forEach(function (e) {
         orthoRel(e);
     });
 });
@@ -171,11 +173,11 @@ function ortho(o) {
     o.setRelativeBendpoint(bp0, 0);
     let dir = xy.dir;
 
-    let idx= bps.length;
+    let idx = bps.length;
     if (idx > 1) {
-        let t_xy = setXY(tb, bps[idx-1].endX, bps[idx-1].endY);
+        let t_xy = setXY(tb, bps[idx - 1].endX, bps[idx - 1].endY);
         if (dir === t_xy.dir && idx % 2 === 1) {
-            o.deleteBendpoint(idx-2);
+            o.deleteBendpoint(idx - 2);
             bps = o.getRelativeBendpoints();
         }
     }

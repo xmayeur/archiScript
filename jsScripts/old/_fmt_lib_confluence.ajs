@@ -18,7 +18,6 @@ var showToC = false;
 */
 
 
-
 // this function is replaced by model.getPath() as from jArchi 0.5
 /*
 function getModelPath(model) {
@@ -147,18 +146,20 @@ function nestedDocumentation(d, element) {
     pSortObjects(elements, 'zOrder', 'desc');
     elem = distinct(elements, 'name');
 
-    for each(var e in  elem)
+    for each(var e
+in
+    elem
+)
     {
         if (e.name) {
-            
-            if (e.documentation.length > 0 
-            | (e.prop().length > 0 & showProperty)
-            | $(e).children().length > 0
-            | $(e).outRels().length > 0
-            ) 
-            {
-            
-            
+
+            if (e.documentation.length > 0
+                | (e.prop().length > 0 & showProperty)
+                | $(e).children().length > 0
+                | $(e).outRels().length > 0
+            ) {
+
+
                 // console.log('>> '+ e.name);
                 var headerDepth = 2;
                 for (var i = 0; i < d; i++) {
@@ -261,26 +262,26 @@ function MDtoWiki(doc) {
         }
     }
 
-	// find code block new pattern with file link before code
-	pat = /\[(.*)\|\s*file\:/g
-    while (null != (txt = pat.exec(s))) {	
-		filePath = txt[1].split('\.')
-		pat2 = /```([\s\S]*?)```/gmi
-		txt = pat2.exec(s)
-		if (!!txt) {
-			code = txt[1]
-			// s = s.replace(pat2, '{code:title='+filePath[0] + '|linenumbers=true|language='+ filePath[1] + '|firstline=0001|collapse=true}\n' + code + '\n{code}')
-		}	
-	}	
-	
-	// manage file://... as attachments
-	pat = /\[(.*)\|\s*file\:.*/g
-	while (null != (txt = pat.exec(s))) {
-		fileName = txt[1]
-		console.log(fileName)
-		s = s.replace(pat, '['+fileName+'^'+fileName+']')
-	}
-	
+    // find code block new pattern with file link before code
+    pat = /\[(.*)\|\s*file\:/g
+    while (null != (txt = pat.exec(s))) {
+        filePath = txt[1].split('\.')
+        pat2 = /```([\s\S]*?)```/gmi
+        txt = pat2.exec(s)
+        if (!!txt) {
+            code = txt[1]
+            // s = s.replace(pat2, '{code:title='+filePath[0] + '|linenumbers=true|language='+ filePath[1] + '|firstline=0001|collapse=true}\n' + code + '\n{code}')
+        }
+    }
+
+    // manage file://... as attachments
+    pat = /\[(.*)\|\s*file\:.*/g
+    while (null != (txt = pat.exec(s))) {
+        fileName = txt[1]
+        console.log(fileName)
+        s = s.replace(pat, '[' + fileName + '^' + fileName + ']')
+    }
+
     return s;
 
 }
