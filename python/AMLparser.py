@@ -138,6 +138,8 @@ class AML:
         self.add_elements()
         log.info('Adding relationships')
         self.add_relationships()
+        if len(self.model.OEF["model"]['relationships']['relationship']) == 0:
+            del self.model.OEF["model"]['relationships']
 
         log.info('Converting to OEF format')
         self.oef_data = xmltodict.unparse(self.model.OEF, pretty=True)
@@ -302,6 +304,8 @@ class AML:
 
         if 'ObjOcc' in grp:
             objects = grp['ObjOcc']
+            if not isinstance(objects, list):
+                objects = [objects]
             for o in objects:
                 o_type = type_map[o['@SymbolNum']]
                 o_id = o['@ObjOcc.ID']
@@ -343,6 +347,8 @@ class AML:
 
         if 'ObjOcc' in grp:
             objects = grp['ObjOcc']
+            if not isinstance(objects, list):
+                objects = [objects]
             for o in objects:
                 o_id = o['@ObjOcc.ID']
 

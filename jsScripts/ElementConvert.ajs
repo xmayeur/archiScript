@@ -29,3 +29,5 @@ function checkAndConvertRelationship(r, relaxed) {
 function concept(o) {
   return o.concept ? o.concept : o;
 }
+
+// $(selection).forEach(e=>{convert(e, 'application-component')})
