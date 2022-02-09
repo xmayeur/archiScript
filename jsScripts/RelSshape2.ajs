@@ -9,9 +9,45 @@
 
 // console.show()
 console.clear()
-RelSshape2(selection)
 
-function RelSshape2(selection) {
+// if a view is selected, check all objects
+$(selection).filter("archimate-diagram-model").forEach(function (v) {
+    function orthoRel(e) {
+        $(e).outRels().forEach(function (o) {
+            relSshape2(o);
+        });
+        $(e).inRels().forEach(function (o) {
+            relSshape2(o);
+        });
+        $(e).children().filter('element').forEach(function (o) {
+            relSshape2(o);
+        });
+    }
+
+    $(v).children().filter('element').forEach(function (e) {
+        relSshape2(e);
+    });
+});
+
+// if few objects are selected, managed them
+$(selection).filter('element').forEach(function (e) {
+
+    $(e).outRels().forEach(function (o) {
+        relSshape2(o);
+    });
+    $(e).inRels().forEach(function (o) {
+        relSshape2(o);
+    });
+});
+
+// if relationships are selected,managed them
+$(selection).filter("relationship").forEach(function (o) {
+    relSshape2(o);
+});
+
+
+
+function relSshape2(selection) {
     $(selection).filter("relationship").forEach(function (o) {
         let view = o.view;
         let rel = o.concept;

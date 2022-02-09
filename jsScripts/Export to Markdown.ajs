@@ -21,20 +21,20 @@
  */
  
 // some flags to enable/disable showing some kind of information
-var showProperty = false;
-var showObjectType = false;
+showProperty = false;
+showObjectType = false;
 
-var debug = false;
-var exportCmd = '/c start "toConfluence" /W toconfluence.exe';
-// var exportCmd = '/c start "toConfluence" /W C:\\Users\\XY56RE\\AppData\\Roaming\\toConfluence\\toconfluence.exe';
+debug = false;
+let exportCmd = '/c start "toConfluence" /W toconfluence.exe';
+// let exportCmd = '/c start "toConfluence" /W C:\\Users\\XY56RE\\AppData\\Roaming\\toConfluence\\toconfluence.exe';
 
 // require some libraries
 load(__DIR__+'/lib/_util.ajs')
 load(__DIR__+"/lib/_fmt_lib.ajs")
 
 // set the export folder - assume it exists
-var exportFolder = "md\\";
-var imageFolder =  exportFolder + '.images\\'
+let exportFolder = "md\\";
+let imageFolder =  exportFolder + '.images\\'
 
 // clear and show the console
 console.show();
@@ -42,11 +42,11 @@ console.clear()
 console.log("Export to Markdown");
 
 // set some variables
-var theDocument = "";
-var theTOC = "* [Introduction](#introduction)";
+let theDocument = "";
+let theTOC = "* [Introduction](#introduction)";
 
 // select the view to export
-var theView = $(selection).filter("archimate-diagram-model").first();
+let theView = $(selection).filter("archimate-diagram-model").first();
 if (!theView) {
     theView = $(selection).filter("canvas-model").first();
 }
@@ -57,15 +57,15 @@ if (!theView) {
 
 // work out the view
 if (theView) {
-	var showToC = (theView.prop('noTOC'));
+	let showToC = (theView.prop('noTOC'));
 	// set the export name
-	var defaultFileName = theView.name ? model.name + "-" + theView.name + ".md" : "Exported View.md"; // Default file name
+	let defaultFileName = theView.name ? model.name + "-" + theView.name + ".md" : "Exported View.md"; // Default file name
 
     exportFile = model.getPath();
 	relativeName = exportFile.split("\\");
     pathName = exportFile.substring(0, exportFile.length - relativeName[relativeName.length-1].length); 
 	// in case the Archimate model is under git control, the model file is actually in the .git folder that we should skip
-	var expr = /.git/
+	let expr = /.git/
 	if (expr.test(pathName)) {
 		pathName = pathName.substring(0, pathName.length-5);
 	}
@@ -90,7 +90,7 @@ if (theView) {
 	props = theView.prop();
 	if (!!props) {
 			theDocument += '<meta ';
-			for each ( var p in props) {
+			for each ( let p in props) {
 				theDocument += p + '="' + theView.prop(p) + '" ';
 			}
 			
@@ -134,7 +134,7 @@ if (theView) {
 
         $.fs.writeFile(exportFile, theDocument);
 
-        var bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
+        let bytes = $.model.renderViewAsBase64(theView, "PNG", {scale: 2, margin: 10});
         $.fs.writeFile(exportImage.substring(0,exportImage.length-3) +".png", bytes, "BASE64");
 		console.log(exportFile)
 
@@ -144,8 +144,8 @@ if (theView) {
 				wiki = (theView.prop('wiki') == 'orangesharing') ? ' -o ' : '';
 			}
 
-			var rt = Java.type("java.lang.Runtime").getRuntime();
-			var proc = Java.type("java.lang.Process");
+			let rt = Java.type("java.lang.Runtime").getRuntime();
+			let proc = Java.type("java.lang.Process");
 			cmd = 'cmd.exe'
 			if (!!model.prop('pageId')) {
 				console.log('pageId: ' + model.prop('pageId'))
