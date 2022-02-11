@@ -1,0 +1,3 @@
+console.clear()
+console.show()
+$(selection).forEach(x=>{console.log(x.id)})

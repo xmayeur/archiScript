@@ -20,7 +20,7 @@ $(selection).filter("archimate-diagram-model").forEach(function (v) {
         });
     }
 
-    $(v).children().filter('element').forEach(function (e) {
+    $(v).children().filter('element').forEach(function (o) {
         relLFlipShape(o);
     });
 });
@@ -50,7 +50,6 @@ function relLFlipShape(selection) {
     $(selection).filter('element').forEach(function (e) {
         console.log(e.name)
         $(e).outRels().forEach(function (o) {
-            console.log(o.source, " -> ", o.target)
             let source = o.source;
             let target = o.target;
             sb = source.bounds;
@@ -108,7 +107,6 @@ function relLFlipShape(selection) {
             bps[0].endY = -bps[0].endY;
         }
 
-        console.log("> ", bps)
         try {
             let i = 0
             bps.forEach(function (x) {

@@ -1,13 +1,19 @@
 /*
  * Delete Unused Elements & relationships
  */
- 
+console.clear()
+console.show()
+
 function deleteUnusedElements() {
-    $("concept").each(function(c) {
-        if($(c).objectRefs().isEmpty()) {
+    $("concept").each(function (c) {
+        if ($(c).objectRefs().isEmpty()) {
             c.delete();
         }
     });
+    $('folder').find('folder').forEach(f => {
+        if ($(f).find().not('folder').size() === 0)
+            f.delete()
+    })
 }
 
 
