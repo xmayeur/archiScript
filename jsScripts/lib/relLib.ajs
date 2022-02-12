@@ -1,4 +1,4 @@
-function doEachRel(sel, fct, args) {
+function doEachRel(sel, fct, args=null) {
 
 // if a view is selected, check all objects
     $(sel).filter("archimate-diagram-model").forEach(function (v) {
@@ -72,18 +72,23 @@ function isInsideObj(obj, x, y) {
     return (x > b.x && x < b.x + b.width && y > b.y && y < b.y + b.height)
 }
 
-function lRel(conn, dir = 0) {
+function isBetween(x, min, max) {
+    return (x >= min && x <= max)
+}
+
+function lRel(conn, dir = 0, weight=0.5) {
+
     conn.deleteAllBendpoints()
     let sXY = getObjXY(conn.source)
     let tXY = getObjXY(conn.target)
 
     if (dir === 0 && !isInsideObj(conn.source, tXY.x, sXY.y) && !isInsideObj(conn.target, tXY.x, sXY.y))
-        addAbsoluteBendpoint(conn, tXY.x, sXY.y)
+        addAbsoluteBendpoint(conn, tXY.x + conn.target.bounds.width*(0.5 - weight), sXY.y )
     else if (dir === 1 && !isInsideObj(conn.source, sXY.x, tXY.y) && !isInsideObj(conn.target, sXY.x, tXY.y))
-        addAbsoluteBendpoint(conn, sXY.x, tXY.y)
+        addAbsoluteBendpoint(conn, sXY.x, tXY.y+ conn.target.bounds.height*(0.5 - weight))
 }
 
-function sRel(conn, dir = 0) {
+function sRel(conn, dir = 0, weight1 = 0.5, weight2 = 0.5) {
     conn.deleteAllBendpoints()
     let sXY = getObjXY(conn.source)
     let tXY = getObjXY(conn.target)
@@ -92,13 +97,13 @@ function sRel(conn, dir = 0) {
     let bp1X, bp1Y, bp2X, bp2Y
 
     if (dir === 0) {
-        bp1X = sXY.x + dx / 2
-        bp1Y = sXY.y
+        bp1X = sXY.x + dx / 2 -  conn.source.bounds.width*(0.5 - weight2)/2
+        bp1Y = sXY.y -  conn.source.bounds.height*(0.5 - weight1)
         bp2X = bp1X
         bp2Y = tXY.y
     } else {
-        bp1X = sXY.x
-        bp1Y = sXY.y + dy / 2
+        bp1X = sXY.x -  conn.source.bounds.width*(0.5 - weight1)
+        bp1Y = sXY.y + dy / 2 -  conn.source.bounds.height*(0.5 - weight2)/2
         bp2X = tXY.x
         bp2Y = bp1Y
     }
@@ -116,21 +121,47 @@ function sRel(conn, dir = 0) {
 function getObjPos(obj1, obj2) {
     let XY1 = getObjXY(obj1)
     let XY2 = getObjXY(obj2)
+    let b1 = obj1.bounds
+    let b2 = obj2.bounds
     let dx = XY2.x - XY1.x
     let dy = XY2.y - XY1.y
     let pos
 
     angle = Math.atan2(dy, dx) * 180 / Math.PI
-    console.log(angle)
-    if (angle >= -45 && angle < 45)
-        pos = 'R'
-    else if (angle >= 45 && angle < 135)
-        pos = 'T'
-    else if (angle >= 135 || angle < -135)
-        pos = 'L'
-    else pos = 'B'
 
-    // check now if objects have some edge overlapping
+    if (!(isBetween(b2.y, b1.y, b1.y + b1.height)
+            || isBetween(b2.y + b2.height, b1.y, b1.y + b1.height))
+        && !(isBetween(b2.x, b1.x, b1.x + b1.width)
+            || isBetween(b2.x + b2.width, b1.x, b1.x + b1.width))
+    ) {
+        if (angle >= -45 && angle < 45) {
+            pos = 'R'
+
+        } else if (angle >= 45 && angle < 135) {
+            pos = 'T'
+
+        } else if (angle >= 135 || angle < -135) {
+            pos = 'L'
+
+        } else {
+            pos = 'B'
+
+        }
+    }
+
+    if ((angle > 90 || angle < -135) && (isBetween(b2.y, b1.y, b1.y + b1.height)
+        || isBetween(b2.y + b2.height, b1.y, b1.y + b1.height)))
+        pos = 'L!'
+    else if (angle > 0 && (isBetween(b2.x, b1.x, b1.x + b1.width)
+        || isBetween(b2.x + b2.width, b1.x, b1.x + b1.width)))
+        pos = 'B!'
+    else if (angle < 0 && (isBetween(b2.x, b1.x, b1.x + b1.width)
+        || isBetween(b2.x + b2.width, b1.x, b1.x + b1.width)))
+        pos = 'T!'
+    else if ((isBetween(b2.y, b1.y, b1.y + b1.height)
+        || isBetween(b2.y + b2.height, b1.y, b1.y + b1.height)))
+        pos = 'R!'
+
 
     return pos
 }
