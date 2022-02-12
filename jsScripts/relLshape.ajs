@@ -13,7 +13,7 @@ console.clear();
 
 // if a view is selected, check all objects
 $(selection).filter("archimate-diagram-model").forEach(function (v) {
-    function orthoRel(e) {
+    function _do(e) {
         $(e).outRels().forEach(function (o) {
             relLshape(o);
         });
@@ -21,12 +21,12 @@ $(selection).filter("archimate-diagram-model").forEach(function (v) {
             relLshape(o);
         });
         $(e).children().filter('element').forEach(function (o) {
-            relLshape(o);
+            _do(o);
         });
     }
 
     $(v).children().filter('element').forEach(function (o) {
-        relLshape(o);
+        _do(o);
     });
 });
 
@@ -45,8 +45,6 @@ $(selection).filter('element').forEach(function (e) {
 $(selection).filter("relationship").forEach(function (o) {
     relLshape(o);
 });
-
-
 
 function relLshape(selection) {
     $(selection).filter("relationship").forEach(function (o) {

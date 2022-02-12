@@ -1,0 +1,136 @@
+function doEachRel(sel, fct, args) {
+
+// if a view is selected, check all objects
+    $(sel).filter("archimate-diagram-model").forEach(function (v) {
+        function _do(e) {
+            $(e).outRels().forEach(function (o) {
+                fct(o, ...args);
+            });
+            $(e).inRels().forEach(function (o) {
+                fct(o, ...args);
+            });
+            $(e).children().filter('element').forEach(function (o) {
+                _do(o, ...args);
+            });
+        }
+
+        $(v).children().filter('element').forEach(function (o) {
+            _do(o, ...args);
+        });
+    });
+
+// if few objects are selected, managed them
+    $(selection).filter('element').forEach(function (e) {
+
+        $(e).outRels().forEach(function (o) {
+            fct(o, ...args);
+        });
+        $(e).inRels().forEach(function (o) {
+            fct(o, ...args);
+        });
+    });
+
+// if relationships are selected,managed them
+    $(selection).filter("relationship").forEach(function (o) {
+        fct(o, ...args);
+    });
+}
+
+function addAbsoluteBendpoint(conn, x, y) {
+    let bp = {
+        endX: x - conn.target.bounds.x - conn.target.bounds.width / 2,
+        endY: y - conn.target.bounds.y - conn.target.bounds.height / 2,
+        startX: x - conn.source.bounds.x - conn.source.bounds.width / 2,
+        startY: y - conn.source.bounds.y - conn.source.bounds.height / 2
+    }
+    conn.addRelativeBendpoint(bp, conn.getRelativeBendpoints().length)
+
+}
+
+function getAbsoluteBendpoint(conn) {
+    let abps = []
+    conn.getRelativeBendpoints().forEach(bp => {
+        let abp = {
+            x: bp.startX + conn.source.bounds.x + conn.source.bounds.width / 2,
+            y: bp.endX + conn.source.bounds.y + conn.source.bounds.height / 2
+        }
+        abps.push(abp)
+    })
+    return abps
+}
+
+function getObjXY(obj) {
+    let b = obj.bounds
+    return {
+        x: b.x + b.width / 2,
+        y: b.y + b.height / 2
+    }
+}
+
+function isInsideObj(obj, x, y) {
+    let b = obj.bounds
+    return (x > b.x && x < b.x + b.width && y > b.y && y < b.y + b.height)
+}
+
+function lRel(conn, dir = 0) {
+    conn.deleteAllBendpoints()
+    let sXY = getObjXY(conn.source)
+    let tXY = getObjXY(conn.target)
+
+    if (dir === 0 && !isInsideObj(conn.source, tXY.x, sXY.y) && !isInsideObj(conn.target, tXY.x, sXY.y))
+        addAbsoluteBendpoint(conn, tXY.x, sXY.y)
+    else if (dir === 1 && !isInsideObj(conn.source, sXY.x, tXY.y) && !isInsideObj(conn.target, sXY.x, tXY.y))
+        addAbsoluteBendpoint(conn, sXY.x, tXY.y)
+}
+
+function sRel(conn, dir = 0) {
+    conn.deleteAllBendpoints()
+    let sXY = getObjXY(conn.source)
+    let tXY = getObjXY(conn.target)
+    let dx = tXY.x - sXY.x
+    let dy = tXY.y - sXY.y
+    let bp1X, bp1Y, bp2X, bp2Y
+
+    if (dir === 0) {
+        bp1X = sXY.x + dx / 2
+        bp1Y = sXY.y
+        bp2X = bp1X
+        bp2Y = tXY.y
+    } else {
+        bp1X = sXY.x
+        bp1Y = sXY.y + dy / 2
+        bp2X = tXY.x
+        bp2Y = bp1Y
+    }
+
+    if (!isInsideObj(conn.source, bp1X, bp1Y)
+        && !isInsideObj(conn.target, bp1X, bp1Y)
+        && !isInsideObj(conn.source, bp2X, bp2Y)
+        && !isInsideObj(conn.target, bp2X, bp2Y)) {
+
+        addAbsoluteBendpoint(conn, bp1X, bp1Y)
+        addAbsoluteBendpoint(conn, bp2X, bp2Y)
+    }
+}
+
+function getObjPos(obj1, obj2) {
+    let XY1 = getObjXY(obj1)
+    let XY2 = getObjXY(obj2)
+    let dx = XY2.x - XY1.x
+    let dy = XY2.y - XY1.y
+    let pos
+
+    angle = Math.atan2(dy, dx) * 180 / Math.PI
+    console.log(angle)
+    if (angle >= -45 && angle < 45)
+        pos = 'R'
+    else if (angle >= 45 && angle < 135)
+        pos = 'T'
+    else if (angle >= 135 || angle < -135)
+        pos = 'L'
+    else pos = 'B'
+
+    // check now if objects have some edge overlapping
+
+    return pos
+}

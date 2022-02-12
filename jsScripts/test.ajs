@@ -1,3 +1,7 @@
 console.clear()
 console.show()
-$(selection).forEach(x=>{console.log(x.id)})
+load (__DIR__+'lib/relLib.ajs')
+// doEachRel(selection, sRel, [1])
+e1= $(selection).get(0)
+e2 = $(selection).get(1)
+console.log(e1.name, getObjPos(e1, e2), e2.name)

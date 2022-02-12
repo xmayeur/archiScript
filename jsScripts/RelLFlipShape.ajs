@@ -8,7 +8,7 @@ console.clear();
 
 // if a view is selected, check all objects
 $(selection).filter("archimate-diagram-model").forEach(function (v) {
-    function orthoRel(e) {
+    function _do(e) {
         $(e).outRels().forEach(function (o) {
             orelLFlipShape(o);
         });
@@ -16,12 +16,12 @@ $(selection).filter("archimate-diagram-model").forEach(function (v) {
             relLFlipShape(o);
         });
         $(e).children().filter('element').forEach(function (o) {
-            relLFlipShape(o);
+            _do(o);
         });
     }
 
     $(v).children().filter('element').forEach(function (o) {
-        relLFlipShape(o);
+        _do(o);
     });
 });
 
