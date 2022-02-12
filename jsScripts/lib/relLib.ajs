@@ -88,7 +88,7 @@ function lRel(conn, dir = 0, weight=0.5) {
         addAbsoluteBendpoint(conn, sXY.x, tXY.y+ conn.target.bounds.height*(0.5 - weight))
 }
 
-function sRel(conn, dir = 0, weight1 = 0.5, weight2 = 0.5) {
+function sRel(conn, dir = 0, weightX = 0.5, weightY = 0.5) {
     conn.deleteAllBendpoints()
     let sXY = getObjXY(conn.source)
     let tXY = getObjXY(conn.target)
@@ -97,13 +97,13 @@ function sRel(conn, dir = 0, weight1 = 0.5, weight2 = 0.5) {
     let bp1X, bp1Y, bp2X, bp2Y
 
     if (dir === 0) {
-        bp1X = sXY.x + dx / 2 -  conn.source.bounds.width*(0.5 - weight2)/2
-        bp1Y = sXY.y -  conn.source.bounds.height*(0.5 - weight1)
+        bp1X = sXY.x + dx / 2 -  conn.source.bounds.width*(0.5 - weightX)/2
+        bp1Y = sXY.y -  conn.source.bounds.height*(0.5 - weightY)
         bp2X = bp1X
         bp2Y = tXY.y
     } else {
-        bp1X = sXY.x -  conn.source.bounds.width*(0.5 - weight1)
-        bp1Y = sXY.y + dy / 2 -  conn.source.bounds.height*(0.5 - weight2)/2
+        bp1X = sXY.x -  conn.source.bounds.width*(0.5 - weightX)
+        bp1Y = sXY.y + dy / 2 -  conn.source.bounds.height*(0.5 - weightY)/2
         bp2X = tXY.x
         bp2Y = bp1Y
     }
