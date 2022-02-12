@@ -1,5 +1,6 @@
 console.clear()
 
+load(__DIR__+'lib/relLib.ajs')
 
 function dynamicSort(property) {
     var sortOrder = 1;
@@ -48,13 +49,15 @@ $(selection).forEach(o => {
                 let dy = r.source.bounds.y - oy
                 let by = y + bp.startY
                 let bx = x + bp.startX
-                if (bx > ox + ow && by > oy && by < oy + oh)
+                let pos = getBendpointPos(r.source, bx, by)
+                console.log(pos)
+                if (pos[0] === 'R')
                     right.push({order: y, dir: dir, dx: dx, dy: dy, r: r})
-                else if (bx < ox && by > oy && by < oy + oh)
+                else if (pos[0] === 'L')
                     left.push({order: y, dir: dir, dx: dx, dy: dy, r: r})
-                else if (by > oy + oh && bx > ox && bx < ox + ow)
+                else if (pos[0] === 'B')
                     bottom.push({order: x, dir: dir, dx: dx, dy: dy, r: r})
-                else if (by < oy && bx > ox && bx < ox + ow)
+                else if (pos[0] === 'T')
                     top.push({order: x, dir: dir, dx: dx, dy: dy, r: r})
 
             } else {
@@ -63,6 +66,7 @@ $(selection).forEach(o => {
                 dir = 'out'
                 bp = bps[0]
                 lbp = bps[bps.length - 1]
+                let pos = getObjPos(r.target, r.source)
 
                 let x = r.target.bounds.x + (r.target.bounds.width / 2)
                 let y = r.target.bounds.y + (r.target.bounds.height / 2)
@@ -70,13 +74,13 @@ $(selection).forEach(o => {
                 let dy = r.target.bounds.y - oy
                 let by = oy + oh/2 + bp.startY
                 let bx = ox + ow/2 + bp.startX
-                if (bx > ox + ow && by > oy && by < oy + oh)
+                if (pos.includes('R'))
                     right.push({order: y, dir: dir, dx: dx, dy: dy, r: r})
-                else if (bx < ox && by > oy && by < oy + oh)
+                else if (pos.includes('L'))
                     left.push({order: y, dir: dir, dx: dx, dy: dy, r: r})
-                else if (by > oy + oh && bx > ox && bx < ox + ow)
+                else if (pos.includes('B'))
                     bottom.push({order: x, dir: dir, dx: dx, dy: dy, r: r})
-                else if (by < oy && bx > ox && bx < ox + ow)
+                else if (pos.includes('T'))
                     top.push({order: x, dir: dir, dx: dx, dy: dy, r: r})
             }
 
@@ -161,12 +165,22 @@ $(selection).forEach(o => {
     i = 1
     n = bottom.length + 1
     bottom.sort(dynamicSort('order')).forEach(r => {
-        let x = r.r
-        let bps = x.getRelativeBendpoints()
-        let _bp = null
+        // let x = r.r
+        // let bps = x.getRelativeBendpoints()
+
+        let bps = getAbsoluteBendpoints(r.r)
+        let _bp
+        let idx
         if (bps.length > 0)
-            _bp = (r.dir === 'in') ? bps[bps.length - 1] : bps[0]
+            idx = (r.dir === 'in') ? bps.length - 1 : 0
+            _bp = bps[idx]
+        console.log(_bp.x, _bp.y)
         if (_bp !== null) {
+            let x = _bp.x // - (ow / 2) + (i++ * (ow / n))
+            let y = _bp.y
+            setAbsoluteBendpoint(r.r, x,y, idx)
+/*
+
             let sX = _bp.startX
             let sY = _bp.startY
             let eY = _bp.endY
@@ -180,6 +194,7 @@ $(selection).forEach(o => {
             }
             x.setRelativeBendpoint(_bp, bps.length - 1)
 
+*/
         }
     })
 

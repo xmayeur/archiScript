@@ -47,7 +47,17 @@ function addAbsoluteBendpoint(conn, x, y) {
 
 }
 
-function getAbsoluteBendpoint(conn) {
+function setAbsoluteBendpoint(conn, x, y, idx) {
+    let bp = {
+        endX: x - conn.target.bounds.x - conn.target.bounds.width / 2,
+        endY: y - conn.target.bounds.y - conn.target.bounds.height / 2,
+        startX: x - conn.source.bounds.x - conn.source.bounds.width / 2,
+        startY: y - conn.source.bounds.y - conn.source.bounds.height / 2
+    }
+    conn.setRelativeBendpoint(bp, idx)
+
+}
+function getAbsoluteBendpoints(conn) {
     let abps = []
     conn.getRelativeBendpoints().forEach(bp => {
         let abp = {

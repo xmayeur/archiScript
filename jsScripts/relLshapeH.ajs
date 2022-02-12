@@ -11,4 +11,4 @@ console.show();
 console.clear();
 
 load (__DIR__+'lib/relLib.ajs')
-doEachRel(selection, lRel, [0,0.5])
+doEachRel(selection, lRel, [0,0.5,0.5])
