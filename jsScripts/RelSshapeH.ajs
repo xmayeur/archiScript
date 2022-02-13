@@ -11,4 +11,5 @@
 console.clear()
 
 load (__DIR__+'lib/relLib.ajs')
-doEachRel(selection, sRel, [0,0.5, 0.5])
+const doit = doEachRel(sRel)
+doit(selection, 0,0.5, 0.5)

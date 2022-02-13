@@ -1,11 +1,11 @@
 console.clear()
 console.show()
 load (__DIR__+'lib/relLib.ajs')
-doEachRel(selection, sRel, [0,0.9,0.5])
 
-/*
 
-e1= $(selection).get(0)
-e2 = $(selection).get(1)
-console.log(e1.name, getObjPos(e1, e2), e2.name)
-*/
+let e1 = $('.S').objectRefs().first()
+let e2 = $('.T').objectRefs().first()
+// let bp = getAbsoluteBendpoints($(selection).first())[0]
+console.log(getObjPos(e1, e2))
+//console.log(e1.bounds.x, e1.bounds.y, getPointPos(e1, bp))
+

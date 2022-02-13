@@ -1,39 +1,48 @@
-function doEachRel(sel, fct, args=null) {
+// decorator function to apply a relationship-based function to each connection of a selection
+function doEachRel(fct) {
+    return function decorator() {
+        args = arguments
+        // if a view is selected, check all objects
+        sel = args[0]
+        $(sel).filter("archimate-diagram-model").forEach(function (v) {
+            function _do(e) {
+                $(e).outRels().forEach(function (o) {
+                    args[0] = o
+                    fct.apply(this, args);
+                });
+                $(e).inRels().forEach(function (o) {
+                    args[0] = o
 
-// if a view is selected, check all objects
-    $(sel).filter("archimate-diagram-model").forEach(function (v) {
-        function _do(e) {
+                    fct.apply(this, args);
+                });
+                $(e).children().filter('element').forEach(function (o) {
+                    _do(o);
+                });
+            }
+
+            $(v).children().filter('element').forEach(function (o) {
+                _do(o);
+            });
+        });
+        // if few objects are selected, managed them
+        $(sel).filter('element').forEach(function (e) {
             $(e).outRels().forEach(function (o) {
-                fct(o, ...args);
+                args[0] = o
+                fct.apply(this, args);
             });
             $(e).inRels().forEach(function (o) {
-                fct(o, ...args);
+                args[0] = o
+                fct.apply(this, args);
             });
-            $(e).children().filter('element').forEach(function (o) {
-                _do(o, ...args);
-            });
-        }
-
-        $(v).children().filter('element').forEach(function (o) {
-            _do(o, ...args);
         });
-    });
 
-// if few objects are selected, managed them
-    $(selection).filter('element').forEach(function (e) {
-
-        $(e).outRels().forEach(function (o) {
-            fct(o, ...args);
+        // if relationships are selected,managed them
+        $(sel).filter("relationship").forEach(function (o) {
+            args[0] = o
+            fct.apply(this, args);
         });
-        $(e).inRels().forEach(function (o) {
-            fct(o, ...args);
-        });
-    });
 
-// if relationships are selected,managed them
-    $(selection).filter("relationship").forEach(function (o) {
-        fct(o, ...args);
-    });
+    }
 }
 
 function addAbsoluteBendpoint(conn, x, y) {
@@ -57,13 +66,15 @@ function setAbsoluteBendpoint(conn, x, y, idx) {
     conn.setRelativeBendpoint(bp, idx)
 
 }
+
 function getAbsoluteBendpoints(conn) {
     let abps = []
     conn.getRelativeBendpoints().forEach(bp => {
         let abp = {
             x: bp.startX + conn.source.bounds.x + conn.source.bounds.width / 2,
-            y: bp.endX + conn.source.bounds.y + conn.source.bounds.height / 2
+            y: bp.startY + conn.source.bounds.y + conn.source.bounds.height / 2
         }
+        console.log(conn.source.name, bp.startX, bp.startY)
         abps.push(abp)
     })
     return abps
@@ -82,23 +93,23 @@ function isInsideObj(obj, x, y) {
     return (x > b.x && x < b.x + b.width && y > b.y && y < b.y + b.height)
 }
 
-function isBetween(x, min, max) {
-    return (x >= min && x <= max)
+function isBetween(i, min, max) {
+    return (i >= min && i <= max)
 }
 
-function lRel(conn, dir = 0, weight=0.5) {
-
+function lRel(conn, dir = 0, weight = 0.5) {
     conn.deleteAllBendpoints()
     let sXY = getObjXY(conn.source)
     let tXY = getObjXY(conn.target)
 
     if (dir === 0 && !isInsideObj(conn.source, tXY.x, sXY.y) && !isInsideObj(conn.target, tXY.x, sXY.y))
-        addAbsoluteBendpoint(conn, tXY.x + conn.target.bounds.width*(0.5 - weight), sXY.y )
+        addAbsoluteBendpoint(conn, tXY.x + conn.target.bounds.width * (0.5 - weight), sXY.y)
     else if (dir === 1 && !isInsideObj(conn.source, sXY.x, tXY.y) && !isInsideObj(conn.target, sXY.x, tXY.y))
-        addAbsoluteBendpoint(conn, sXY.x, tXY.y+ conn.target.bounds.height*(0.5 - weight))
+        addAbsoluteBendpoint(conn, sXY.x, tXY.y + conn.target.bounds.height * (0.5 - weight))
 }
 
 function sRel(conn, dir = 0, weightX = 0.5, weightY = 0.5) {
+    console.log(dir)
     conn.deleteAllBendpoints()
     let sXY = getObjXY(conn.source)
     let tXY = getObjXY(conn.target)
@@ -107,13 +118,13 @@ function sRel(conn, dir = 0, weightX = 0.5, weightY = 0.5) {
     let bp1X, bp1Y, bp2X, bp2Y
 
     if (dir === 0) {
-        bp1X = sXY.x + dx / 2 -  conn.source.bounds.width*(0.5 - weightX)/2
-        bp1Y = sXY.y -  conn.source.bounds.height*(0.5 - weightY)
+        bp1X = sXY.x + dx / 2 - conn.source.bounds.width * (0.5 - weightX) / 2
+        bp1Y = sXY.y - conn.source.bounds.height * (0.5 - weightY)
         bp2X = bp1X
         bp2Y = tXY.y
     } else {
-        bp1X = sXY.x -  conn.source.bounds.width*(0.5 - weightX)
-        bp1Y = sXY.y + dy / 2 -  conn.source.bounds.height*(0.5 - weightY)/2
+        bp1X = sXY.x - conn.source.bounds.width * (0.5 - weightX)
+        bp1Y = sXY.y + dy / 2 - conn.source.bounds.height * (0.5 - weightY) / 2
         bp2X = tXY.x
         bp2Y = bp1Y
     }
@@ -172,6 +183,46 @@ function getObjPos(obj1, obj2) {
         || isBetween(b2.y + b2.height, b1.y, b1.y + b1.height)))
         pos = 'R!'
 
+
+    return pos
+}
+
+function getPointPos(obj1, XY) {
+    let XY1 = getObjXY(obj1)
+    let b = obj1.bounds
+    let dx = XY.x - XY1.x
+    let dy = XY.y - XY1.y
+
+    let pos
+
+    angle = Math.atan2(dy, dx) * 180 / Math.PI
+    console.log(XY.x, XY.y, ' | ', b.x, b.y, ' | ', dx, dy, angle)
+
+    if (!isBetween(XY.y, b.y, b.y + b.height) && !isBetween(XY.x, b.x, b.x + b.width))
+    {
+        if (angle >= -45 && angle < 45) {
+            pos = 'R'
+
+        } else if (angle >= 45 && angle < 135) {
+            pos = 'B'
+
+        } else if (angle >= 135 || angle < -135) {
+            pos = 'L'
+
+        } else {
+            pos = 'T'
+
+        }
+    }
+
+    if ((angle > 90 || angle < -135) && isBetween(XY.y, b.y, b.y + b.height))
+        pos = 'L!'
+    else if (angle > 0 && isBetween(XY.x, b.x, b.x + b.width))
+        pos = 'B!'
+    else if (angle < 0 && isBetween(XY.x, b.x, b.x + b.width))
+        pos = 'T!'
+    else if (isBetween(XY.y, b.y, b.y + b.height))
+        pos = 'R!'
 
     return pos
 }
