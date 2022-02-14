@@ -2,7 +2,9 @@ view = $(selection).filter("archimate-diagram-model").first()
 
 $(view).forEach(v => {
     $(v).find('element').forEach(e => {
-        e.setLabelExpression((!!e.prop('label')) ? e.prop('label') : '')
+        try {
+            e.setLabelExpression((!!e.prop('label')) ? e.prop('label') : '')
+        } catch(e) {}
     })
 });
 

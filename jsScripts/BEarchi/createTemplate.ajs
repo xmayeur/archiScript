@@ -12,6 +12,7 @@ createTemplate()
 function createTemplate() {
     model.name = 'template'
     createFolderStructure()
+    mergeBusinessFolder()
     importReferenceData()
     moveBCM()
     moveEsperanto()
@@ -27,6 +28,21 @@ function createTemplate() {
     if (!!dv)
         dv.delete()
     console.log('Done')
+}
+
+function mergeBusinessFolder(){
+    let ff = $('folder.Business').children()
+    console.log(ff.length, ...ff)
+    let target = ff[0]
+    console.log('target: ', target.name)
+    for (let i = 1; i< ff.length; i++){
+        let source = ff[i]
+        $(source).children().forEach(c => {
+            console.log('moving ', c.name)
+            target.add(c)
+        })
+        source.delete()
+    }
 }
 
 function importReferenceData() {

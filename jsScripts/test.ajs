@@ -5,7 +5,13 @@ load (__DIR__+'lib/relLib.ajs')
 
 let e1 = $('.S').objectRefs().first()
 let e2 = $('.T').objectRefs().first()
+
+e1.new = function() { return this.name}
+
+console.log(e1.new())
+
 // let bp = getAbsoluteBendpoints($(selection).first())[0]
-console.log(getObjPos(e1, e2))
+// console.log(getObjPos(e1, e2))
+
 //console.log(e1.bounds.x, e1.bounds.y, getPointPos(e1, bp))
 

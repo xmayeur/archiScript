@@ -1,0 +1,134 @@
+/*
+ * New Archi Script
+ *
+ * Requires jArchi - https://www.archimatetool.com/blog/2018/07/02/jarchi/
+ *
+ * This script takes a selection of visual objects as input, filter it to keep only relationships
+ * and create L-shape ortho connector
+ */
+
+console.show();
+console.clear();
+
+
+// if a view is selected, check all objects
+$(selection).filter("archimate-diagram-model").forEach(function (v) {
+    function _do(e) {
+        $(e).outRels().forEach(function (o) {
+            relLshape(o);
+        });
+        $(e).inRels().forEach(function (o) {
+            relLshape(o);
+        });
+        $(e).children().filter('element').forEach(function (o) {
+            _do(o);
+        });
+    }
+
+    $(v).children().filter('element').forEach(function (o) {
+        _do(o);
+    });
+});
+
+// if few objects are selected, managed them
+$(selection).filter('element').forEach(function (e) {
+
+    $(e).outRels().forEach(function (o) {
+        relLshape(o);
+    });
+    $(e).inRels().forEach(function (o) {
+        relLshape(o);
+    });
+});
+
+// if relationships are selected,managed them
+$(selection).filter("relationship").forEach(function (o) {
+    relLshape(o);
+});
+
+function relLshape(selection) {
+    $(selection).filter("relationship").forEach(function (o) {
+        let view = o.view;
+        let rel = o.concept;
+        let source = o.source;
+        let target = o.target;
+        sb = source.bounds
+        tb = target.bounds
+
+        // calculate the source and target element absolute (x,y) coordinate
+        $(source).parents().forEach(function (p) {
+            try {
+                sb.x += p.bounds.x;
+                sb.y += p.bounds.y;
+            } catch (e) {
+            }
+        });
+
+        $(target).parents().forEach(function (p) {
+            try {
+                tb.x += p.bounds.x;
+                tb.y += p.bounds.y;
+            } catch (e) {
+            }
+        });
+
+        dx = tb.x - sb.x
+        dy = tb.y - sb.y
+
+        let bp1 = {};
+        let bp2 = {};
+
+        try {
+            o.deleteAllBendpoints()
+        } catch (e) {
+        }
+        // New bendpoint 1
+        // target object is left above source
+        if (tb.x + tb.width < sb.x && tb.y + tb.height < sb.y) {
+            bp1 = {
+                startX: 0,
+                startY: dy,
+                endX: -dx,
+                endY: 0
+            }
+        }
+        // target object is left below source
+        if (tb.x + tb.width < sb.x && tb.y - tb.height > sb.y) {
+
+            bp1 = {
+                startX: -dx,
+                startY: 0,
+                endX: 0,
+                endY: dy
+            }
+        }
+        // target is right above source
+        if (tb.x > sb.x + sb.width && tb.y + tb.height < sb.y) {
+
+
+            bp1 = {
+                startX: -dx,
+                startY: 0,
+                endX: 0,
+                endY: dy
+            }
+        }
+        // target is right below source
+        if (sb.x + sb.width < tb.x && tb.y - tb.height > sb.y) {
+            bp1 = {
+                startX: 0,
+                startY: dy,
+                endX: -dx,
+                endY: 0
+            }
+        }
+
+        // Add bendpoints at index positions
+        try {
+            o.addRelativeBendpoint(bp1, 0);
+        } catch (e) {
+        }
+
+
+    });
+}

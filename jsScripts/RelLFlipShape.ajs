@@ -10,7 +10,7 @@ console.clear();
 $(selection).filter("archimate-diagram-model").forEach(function (v) {
     function _do(e) {
         $(e).outRels().forEach(function (o) {
-            orelLFlipShape(o);
+            relLFlipShape(o);
         });
         $(e).inRels().forEach(function (o) {
             relLFlipShape(o);

@@ -11,5 +11,5 @@ console.show();
 console.clear();
 
 load (__DIR__+'lib/relLib.ajs')
-const lrelH = doEachRel(lRel)
-lRelH(selection, 0, 0.3)
+const lRelH = doEachRel(lRel)
+lRelH(selection, 0, 0.5)
