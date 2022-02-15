@@ -316,7 +316,7 @@ function spreadConnections(obj) {
         })
         i = 1
         bottom.sort(dynamicSort('order')).forEach(r => {
-            bp.x = bo1.x + bo1.width - i * ( bo1.width / bottom.length + 1)
+            bp.x = bo1.x  + bo1.width * (0.5 - (i / (bottom.length + 1)))
             i++
             console.log(bp.x, bp.y, bp.idx, r.r.source.name, r.r.target.name)
             setAbsoluteBendpoint(r.r, bp.x, bp.y, bp.idx)
