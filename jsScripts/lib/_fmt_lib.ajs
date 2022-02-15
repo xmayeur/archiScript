@@ -234,12 +234,13 @@ in
 
 function setZorderProperty(element) {
     $(element).children().not('relationship').each(function (e) {
-        if (!e.prop('zOrder')) {
-            e.prop('zOrder', 0);
+        let o = concept(e)
+        if (!o.prop('zOrder')) {
+            o.prop('zOrder', '0');
         }
-        if (!!e.prop('outline')) {
+        if (!!o.prop('outline')) {
             maxLevel = 5
-            outline = e.prop('outline')
+            outline = o.prop('outline')
             outs = outline.split('\.')
             level = outs.length
             zOrder = 0
@@ -247,19 +248,20 @@ function setZorderProperty(element) {
             for (i = 0; i < level; i++) {
                 zOrder += Math.pow(10, 2 * (maxLevel - i - 1)) * parseInt(outs[i])
             }
-            e.prop('zOrder', zOrder)
-            e.prop('level', level)
+            o.prop('zOrder', String(zOrder))
+            o.prop('level', String(level))
         }
-        setZorderProperty(e);
+        setZorderProperty(o);
     });
 }
 
 function setOutlineProperty(element) {
     $(element).children().not('relationship').each(function (e) {
-        if (!e.prop('outline')) {
-            e.prop('outline', 0);
+        let o = concept(e)
+        if (!o.prop('outline')) {
+            o.prop('outline', "0");
         }
-        setOutlineProperty(e);
+        setOutlineProperty(o);
     });
 }
 

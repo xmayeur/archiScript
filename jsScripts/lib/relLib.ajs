@@ -46,22 +46,72 @@ function doEachRel(fct) {
 }
 
 function addAbsoluteBendpoint(conn, x, y) {
+
+    // Set the X/Y offset of the embedding objects
+    let sx = conn.source.bounds.x + conn.source.bounds.width / 2
+    let sy = conn.source.bounds.y + conn.source.bounds.height / 2
+    let tx = conn.target.bounds.x + conn.target.bounds.width / 2
+    let ty = conn.target.bounds.y + conn.target.bounds.height / 2
+
+    $(conn.source).parents().forEach(p => {
+        try {
+            sx += p.bounds.x
+            sy += p.bounds.y
+            console.log(p.name, sx, sy, x-sx, y-sy)
+        } catch (e) {
+        }
+    })
+
+    $(conn.target).parents().forEach(p => {
+        try {
+            tx += p.bounds.x
+            ty += p.bounds.y
+            console.log(p.name, tx, ty, x-tx, y-ty)
+        } catch (e) {
+        }
+    })
+    console.log(x, y, x-sx, y-sy, x-tx, y-ty)
     let bp = {
-        endX: x - conn.target.bounds.x - conn.target.bounds.width / 2,
-        endY: y - conn.target.bounds.y - conn.target.bounds.height / 2,
-        startX: x - conn.source.bounds.x - conn.source.bounds.width / 2,
-        startY: y - conn.source.bounds.y - conn.source.bounds.height / 2
+        startX: x - sx,
+        startY: y - sy,
+        endX: x - tx,
+        endY: y - ty
     }
     conn.addRelativeBendpoint(bp, conn.getRelativeBendpoints().length)
 
 }
 
 function setAbsoluteBendpoint(conn, x, y, idx) {
+
+    // Set the X/Y offset of the embedding objects
+    let sx = conn.source.bounds.x + conn.source.bounds.width / 2
+    let sy = conn.source.bounds.y + conn.source.bounds.height / 2
+    let tx = conn.target.bounds.x + conn.target.bounds.width / 2
+    let ty = conn.target.bounds.y + conn.target.bounds.height / 2
+
+    $(conn.source).parents().forEach(p => {
+        try {
+            sx += p.bounds.x
+            sy += p.bounds.y
+            console.log(p.name, sx, sy, x-sx, y-sy)
+        } catch (e) {
+        }
+    })
+
+    $(conn.target).parents().forEach(p => {
+        try {
+            tx += p.bounds.x
+            ty += p.bounds.y
+            console.log(p.name, tx, ty, x-tx, y-ty)
+        } catch (e) {
+        }
+    })
+    console.log(x, y, x-sx, y-sy, x-tx, y-ty)
     let bp = {
-        endX: x - conn.target.bounds.x - conn.target.bounds.width / 2,
-        endY: y - conn.target.bounds.y - conn.target.bounds.height / 2,
-        startX: x - conn.source.bounds.x - conn.source.bounds.width / 2,
-        startY: y - conn.source.bounds.y - conn.source.bounds.height / 2
+        startX: x - sx,
+        startY: y - sy,
+        endX: x - tx,
+        endY: y - ty
     }
     conn.setRelativeBendpoint(bp, idx)
 
@@ -70,9 +120,20 @@ function setAbsoluteBendpoint(conn, x, y, idx) {
 function getAbsoluteBendpoints(conn) {
     let abps = []
     conn.getRelativeBendpoints().forEach(bp => {
+        let x = bp.startX + conn.source.bounds.x + conn.source.bounds.width / 2
+        let y = bp.startY + conn.source.bounds.y + conn.source.bounds.height / 2
+        // add x/y offset of the embedding objects
+        $(conn.source).parents().forEach(p => {
+            try {
+                x += p.bounds.x
+                y += p.bounds.y
+            } catch (e) {
+            }
+        })
+
         let abp = {
-            x: bp.startX + conn.source.bounds.x + conn.source.bounds.width / 2,
-            y: bp.startY + conn.source.bounds.y + conn.source.bounds.height / 2
+            x: x,
+            y: y
         }
         console.log(conn.source.name, bp.startX, bp.startY)
         abps.push(abp)
@@ -82,13 +143,27 @@ function getAbsoluteBendpoints(conn) {
 
 function getObjXY(obj) {
     let b = obj.bounds
+    let x = b.x + b.width / 2
+    let y = b.y + b.height / 2
+
+    // add x/y offset of the embedding objects
+    $(obj).parents().forEach(p => {
+        try {
+            x += p.bounds.x
+            y += p.bounds.y
+            console.log(p.name, x, y)
+        } catch (e) {
+        }
+    })
+
     return {
-        x: b.x + b.width / 2,
-        y: b.y + b.height / 2
+        x: x,
+        y: y
     }
 }
 
 function isInsideObj(obj, x, y) {
+    // TODO add embedding objets X/Y
     let b = obj.bounds
     return (x > b.x && x < b.x + b.width && y > b.y && y < b.y + b.height)
 }
@@ -198,8 +273,7 @@ function getPointPos(obj1, XY) {
     angle = Math.atan2(dy, dx) * 180 / Math.PI
     console.log(XY.x, XY.y, ' | ', b.x, b.y, ' | ', dx, dy, angle)
 
-    if (!isBetween(XY.y, b.y, b.y + b.height) && !isBetween(XY.x, b.x, b.x + b.width))
-    {
+    if (!isBetween(XY.y, b.y, b.y + b.height) && !isBetween(XY.x, b.x, b.x + b.width)) {
         if (angle >= -45 && angle < 45) {
             pos = 'R'
 

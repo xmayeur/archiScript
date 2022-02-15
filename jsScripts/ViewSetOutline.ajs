@@ -5,6 +5,6 @@
 console.clear();
 load(__DIR__+'/lib/_util.ajs')
 load(__DIR__+"/lib/_fmt_lib.ajs")
-var element = $(selection).first()
+let theView = $(selection).filter("archimate-diagram-model").first();
 // console.log(Math.pow(10, 3));
-setOutlineProperty(element)
+setOutlineProperty(theView)
