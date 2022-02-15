@@ -1,9 +1,9 @@
 // decorator function to apply a relationship-based function to each connection of a selection
 function doEachRel(fct) {
     return function decorator() {
-        args = arguments
+        let args = arguments
         // if a view is selected, check all objects
-        sel = args[0]
+        let sel = args[0]
         $(sel).filter("archimate-diagram-model").forEach(function (v) {
             function _do(e) {
                 $(e).outRels().forEach(function (o) {
@@ -47,35 +47,14 @@ function doEachRel(fct) {
 
 function addAbsoluteBendpoint(conn, x, y) {
 
-    // Set the X/Y offset of the embedding objects
-    let sx = conn.source.bounds.x + conn.source.bounds.width / 2
-    let sy = conn.source.bounds.y + conn.source.bounds.height / 2
-    let tx = conn.target.bounds.x + conn.target.bounds.width / 2
-    let ty = conn.target.bounds.y + conn.target.bounds.height / 2
+    let s = getObjXY(conn.source)
+    let t = getObjXY(conn.target)
 
-    $(conn.source).parents().forEach(p => {
-        try {
-            sx += p.bounds.x
-            sy += p.bounds.y
-            console.log(p.name, sx, sy, x-sx, y-sy)
-        } catch (e) {
-        }
-    })
-
-    $(conn.target).parents().forEach(p => {
-        try {
-            tx += p.bounds.x
-            ty += p.bounds.y
-            console.log(p.name, tx, ty, x-tx, y-ty)
-        } catch (e) {
-        }
-    })
-    console.log(x, y, x-sx, y-sy, x-tx, y-ty)
     let bp = {
-        startX: x - sx,
-        startY: y - sy,
-        endX: x - tx,
-        endY: y - ty
+        startX: x - s.x,
+        startY: y - s.y,
+        endX: x - t.x,
+        endY: y - t.y
     }
     conn.addRelativeBendpoint(bp, conn.getRelativeBendpoints().length)
 
@@ -84,36 +63,18 @@ function addAbsoluteBendpoint(conn, x, y) {
 function setAbsoluteBendpoint(conn, x, y, idx) {
 
     // Set the X/Y offset of the embedding objects
-    let sx = conn.source.bounds.x + conn.source.bounds.width / 2
-    let sy = conn.source.bounds.y + conn.source.bounds.height / 2
-    let tx = conn.target.bounds.x + conn.target.bounds.width / 2
-    let ty = conn.target.bounds.y + conn.target.bounds.height / 2
+    let s = getObjXY(conn.source)
+    let t = getObjXY(conn.target)
 
-    $(conn.source).parents().forEach(p => {
-        try {
-            sx += p.bounds.x
-            sy += p.bounds.y
-            console.log(p.name, sx, sy, x-sx, y-sy)
-        } catch (e) {
-        }
-    })
-
-    $(conn.target).parents().forEach(p => {
-        try {
-            tx += p.bounds.x
-            ty += p.bounds.y
-            console.log(p.name, tx, ty, x-tx, y-ty)
-        } catch (e) {
-        }
-    })
-    console.log(x, y, x-sx, y-sy, x-tx, y-ty)
     let bp = {
-        startX: x - sx,
-        startY: y - sy,
-        endX: x - tx,
-        endY: y - ty
+        startX: x - s.x,
+        startY: y - s.y,
+        endX: x - t.x,
+        endY: y - t.y
     }
-    conn.setRelativeBendpoint(bp, idx)
+    try {
+        conn.setRelativeBendpoint(bp, idx)
+    } catch(e){}
 
 }
 
@@ -135,7 +96,7 @@ function getAbsoluteBendpoints(conn) {
             x: x,
             y: y
         }
-        console.log(conn.source.name, bp.startX, bp.startY)
+
         abps.push(abp)
     })
     return abps
@@ -145,26 +106,26 @@ function getObjXY(obj) {
     let b = obj.bounds
     let x = b.x + b.width / 2
     let y = b.y + b.height / 2
-
-    // add x/y offset of the embedding objects
     $(obj).parents().forEach(p => {
         try {
             x += p.bounds.x
             y += p.bounds.y
-            console.log(p.name, x, y)
         } catch (e) {
         }
     })
 
     return {
         x: x,
-        y: y
+        y: y,
+        width: b.width,
+        height: b.height
+
     }
 }
 
 function isInsideObj(obj, x, y) {
     // TODO add embedding objets X/Y
-    let b = obj.bounds
+    let b = getObjXY(obj)
     return (x > b.x && x < b.x + b.width && y > b.y && y < b.y + b.height)
 }
 
@@ -215,15 +176,13 @@ function sRel(conn, dir = 0, weightX = 0.5, weightY = 0.5) {
 }
 
 function getObjPos(obj1, obj2) {
-    let XY1 = getObjXY(obj1)
-    let XY2 = getObjXY(obj2)
-    let b1 = obj1.bounds
-    let b2 = obj2.bounds
-    let dx = XY2.x - XY1.x
-    let dy = XY2.y - XY1.y
+    let b1 = ('x' in obj1)?obj1:getObjXY(obj1)
+    let b2 = ('x' in obj2)?obj2:getObjXY(obj2)
+    let dx = b2.x - b1.x
+    let dy = b2.y - b1.y
     let pos
 
-    angle = Math.atan2(dy, dx) * 180 / Math.PI
+    let angle = Math.atan2(dy, dx) * 180 / Math.PI
 
     if (!(isBetween(b2.y, b1.y, b1.y + b1.height)
             || isBetween(b2.y + b2.height, b1.y, b1.y + b1.height))
@@ -263,15 +222,12 @@ function getObjPos(obj1, obj2) {
 }
 
 function getPointPos(obj1, XY) {
-    let XY1 = getObjXY(obj1)
-    let b = obj1.bounds
-    let dx = XY.x - XY1.x
-    let dy = XY.y - XY1.y
-
+    let b = ('x' in obj1)?obj1:getObjXY(obj1)
+    let dx = XY.x - b.x
+    let dy = XY.y - b.y
     let pos
 
-    angle = Math.atan2(dy, dx) * 180 / Math.PI
-    console.log(XY.x, XY.y, ' | ', b.x, b.y, ' | ', dx, dy, angle)
+    let angle = Math.atan2(dy, dx) * 180 / Math.PI
 
     if (!isBetween(XY.y, b.y, b.y + b.height) && !isBetween(XY.x, b.x, b.x + b.width)) {
         if (angle >= -45 && angle < 45) {
@@ -299,4 +255,91 @@ function getPointPos(obj1, XY) {
         pos = 'R!'
 
     return pos
+}
+
+function spreadConnections(obj) {
+    let top = []
+    let bottom = []
+    let left = []
+    let right = []
+
+    let bo1 = getObjXY(obj)
+    $(obj).rels().forEach(r => {
+        let bp, bo2, i
+        let bps = r.getRelativeBendpoints()
+        r.deleteAllBendpoints()
+        i = 0
+        bps.forEach(_bp => {
+            r.addRelativeBendpoint(_bp, i++)
+        })
+
+        bps = getAbsoluteBendpoints(r)
+        console.log('-> ', bps.length, ...bps, '\n')
+        if (bps.length > 0) {
+            if (r.target.id === obj.id) {
+                bp = bps[bps.length - 1]
+                bp.idx = bps.length - 1
+                obj2 = r.source
+            } else {
+                bp = bps[0]
+                bp.idx = 0
+                obj2 = r.target
+            }
+
+            bo2 = getObjXY(obj2)
+            let pos = getPointPos(obj, bp)
+            console.log (bo2.x, bo2.y, pos, bp)
+            if (pos[0] === 'R')
+                right.push({order: bo2.y, bp: bp, r: r})
+            else if (pos[0] === 'L')
+                left.push({order: bo2.y, bp: bp, r: r})
+            if (pos[0] === 'T')
+                top.push({order: bo2.x, bp: bp, r: r})
+            if (pos[0] === 'B')
+                bottom.push({order: bo2.y, bp: bp, r: r})
+        }
+
+        i = 1
+        right.sort(dynamicSort('order')).forEach(r => {
+            bp.y = bo1.y + i++ * bo1.height / right.length + 1
+            setAbsoluteBendpoint(r.r, bp.x, bp.y, bp.idx)
+        })
+        i = 1
+        left.sort(dynamicSort('order')).forEach(r => {
+            bp.y = bo1.y + i++ * bo1.height / left.length + 1
+            setAbsoluteBendpoint(r.r, bp.x, bp.y, bp.idx)
+        })
+        i = 1
+        top.sort(dynamicSort('order')).forEach(r => {
+            bp.x = bo1.x + i++ * bo1.width / top.length + 1
+            setAbsoluteBendpoint(r.r, bp.x, bp.y, bp.idx)
+        })
+        i = 1
+        bottom.sort(dynamicSort('order')).forEach(r => {
+            bp.x = bo1.x + bo1.width - i * ( bo1.width / bottom.length + 1)
+            i++
+            console.log(bp.x, bp.y, bp.idx, r.r.source.name, r.r.target.name)
+            setAbsoluteBendpoint(r.r, bp.x, bp.y, bp.idx)
+        })
+
+
+    })
+
+
+
+}
+
+function dynamicSort(property) {
+    let sortOrder = 1;
+    if (property[0] === "-") {
+        sortOrder = -1;
+        property = property.substr(1);
+    }
+    return function (a, b) {
+        /* next line works with strings and numbers,
+         * and you may want to customize it to your needs
+         */
+        let  result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+        return result * sortOrder;
+    }
 }
