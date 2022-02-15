@@ -11,28 +11,30 @@ createTemplate()
 
 function createTemplate() {
     model.name = 'template'
-    createFolderStructure()
-    mergeBusinessFolder()
-    importReferenceData()
-    moveBCM()
-    moveEsperanto()
-    moveLAA()
+    // createFolderStructure()
+    // mergeBusinessFolder()
+    // importReferenceData()
+    // moveBCM()
+    // moveEsperanto()
+    // moveLAA()
     getMFApplicationIdentityCards()
-    moveRole()
-    movePeopleAndTeam()
-    moveItSolution()
-    moveItProduct()
+    // moveRole()
+    // movePeopleAndTeam()
+    // moveItSolution()
+    // moveItProduct()
 
+/*
 
     let dv = $('.Default View').first()
     if (!!dv)
         dv.delete()
     console.log('Done')
+
+*/
 }
 
 function mergeBusinessFolder(){
     let ff = $('folder.Business').children()
-    console.log(ff.length, ...ff)
     let target = ff[0]
     console.log('target: ', target.name)
     for (let i = 1; i< ff.length; i++){
