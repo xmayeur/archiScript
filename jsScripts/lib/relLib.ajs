@@ -165,7 +165,11 @@ function lRel(conn, dir = 0, weight = 0.5) {
     conn.deleteAllBendpoints()
     let sXY = getObjXY(conn.source)
     let tXY = getObjXY(conn.target)
-
+    let pos, a
+    [pos, a] = getObjPos(sXY, tXY)
+    if (pos.includes('!')) {
+        return
+    }
     if (dir === 0 && !isInsideObj(conn.source, tXY.x, sXY.y) && !isInsideObj(conn.target, tXY.x, sXY.y))
         addAbsoluteBendpoint(conn, tXY.x + conn.target.bounds.width * (0.5 - weight), sXY.y)
     else if (dir === 1 && !isInsideObj(conn.source, sXY.x, tXY.y) && !isInsideObj(conn.target, sXY.x, tXY.y))
@@ -173,10 +177,20 @@ function lRel(conn, dir = 0, weight = 0.5) {
 }
 
 function sRel(conn, dir = 0, weightX = 0.5, weightY = 0.5) {
-    console.log(dir)
+
     conn.deleteAllBendpoints()
     let sXY = getObjXY(conn.source)
     let tXY = getObjXY(conn.target)
+    let pos, a
+    [pos, a] = getObjPos(sXY, tXY)
+    if (dir === 1 && (pos === "L!" || pos === "R!")) {
+        return
+    }
+
+    if (dir === 0 && (pos === "T!" || pos === "B!")) {
+        return
+    }
+
     let dx = tXY.x - sXY.x
     let dy = tXY.y - sXY.y
     let bp1X, bp1Y, bp2X, bp2Y
@@ -246,7 +260,7 @@ function getObjPos(obj1, obj2) {
         pos = 'R!'
 
 
-    return pos
+    return [pos, angle]
 }
 
 function getPointPos(obj1, XY) {
@@ -282,7 +296,7 @@ function getPointPos(obj1, XY) {
     else if (isBetween(XY.y, b.y, b.y + b.height))
         pos = 'R!'
 
-    return pos
+    return [pos, angle]
 }
 
 function spreadConnections(obj) {
@@ -290,7 +304,7 @@ function spreadConnections(obj) {
     let bottom = []
     let left = []
     let right = []
-    let bp, bo1, bo2, obj1, obj2, i
+    let bp, bo1, bo2, obj1, obj2, i, a
 
     $(obj).rels().forEach(r => {
         let bps = r.getRelativeBendpoints()
@@ -324,16 +338,19 @@ function spreadConnections(obj) {
             bp.idx = 0
         }
 
-        let pos = getPointPos(obj, bp)
+        let [pos, a1] = getPointPos(obj1, bp)
+        let [pos2, a] = getObjPos(obj1, obj2)
 
+        if (a < 0)
+            a += 360
         if (pos[0] === 'R')
-            right.push({order: bo2.y * bo2.x, bp: bp, r: r})
+            right.push({order: a, bp: bp, r: r})
         else if (pos[0] === 'L')
-            left.push({order: bo2.y * bo2.x, bp: bp, r: r})
+            left.push({order: a, bp: bp, r: r})
         if (pos[0] === 'T')
-            top.push({order: bo2.y * bo2.x, bp: bp, r: r})
+            top.push({order: a, bp: bp, r: r})
         if (pos[0] === 'B')
-            bottom.push({order: bo2.y * bo2.x, bp: bp, r: r})
+            bottom.push({order: a, bp: bp, r: r})
 
     })
 
