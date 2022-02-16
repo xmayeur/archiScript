@@ -1,4 +1,31 @@
 // decorator function to apply a relationship-based function to each connection of a selection
+function doEachElem(fct) {
+    return function decorator() {
+        let args = arguments
+        // if a view is selected, check all objects
+        let sel = args[0]
+        $(sel).filter("archimate-diagram-model").forEach(function (v) {
+            function _do(e) {
+                args[0] = e
+                fct.apply(this, args);
+
+                $(e).children().filter('element').forEach(function (o) {
+                    _do(o);
+                });
+            }
+
+            $(v).children().filter('element').forEach(function (o) {
+                _do(o);
+            });
+        });
+        // if few objects are selected, managed them
+        $(sel).filter('element').forEach(function (e) {
+            args[0] = e
+            fct.apply(this, args);
+        });
+    }
+}
+
 function doEachRel(fct) {
     return function decorator() {
         let args = arguments
@@ -74,7 +101,8 @@ function setAbsoluteBendpoint(conn, x, y, idx) {
     }
     try {
         conn.setRelativeBendpoint(bp, idx)
-    } catch(e){}
+    } catch (e) {
+    }
 
 }
 
@@ -176,8 +204,8 @@ function sRel(conn, dir = 0, weightX = 0.5, weightY = 0.5) {
 }
 
 function getObjPos(obj1, obj2) {
-    let b1 = ('x' in obj1)?obj1:getObjXY(obj1)
-    let b2 = ('x' in obj2)?obj2:getObjXY(obj2)
+    let b1 = ('x' in obj1) ? obj1 : getObjXY(obj1)
+    let b2 = ('x' in obj2) ? obj2 : getObjXY(obj2)
     let dx = b2.x - b1.x
     let dy = b2.y - b1.y
     let pos
@@ -222,7 +250,7 @@ function getObjPos(obj1, obj2) {
 }
 
 function getPointPos(obj1, XY) {
-    let b = ('x' in obj1)?obj1:getObjXY(obj1)
+    let b = ('x' in obj1) ? obj1 : getObjXY(obj1)
     let dx = XY.x - b.x
     let dy = XY.y - b.y
     let pos
@@ -262,10 +290,9 @@ function spreadConnections(obj) {
     let bottom = []
     let left = []
     let right = []
+    let bp, bo1, bo2, obj1, obj2, i
 
-    let bo1 = getObjXY(obj)
     $(obj).rels().forEach(r => {
-        let bp, bo2, i
         let bps = r.getRelativeBendpoints()
         r.deleteAllBendpoints()
         i = 0
@@ -273,58 +300,63 @@ function spreadConnections(obj) {
             r.addRelativeBendpoint(_bp, i++)
         })
 
-        bps = getAbsoluteBendpoints(r)
-        console.log('-> ', bps.length, ...bps, '\n')
-        if (bps.length > 0) {
-            if (r.target.id === obj.id) {
-                bp = bps[bps.length - 1]
-                bp.idx = bps.length - 1
-                obj2 = r.source
-            } else {
-                bp = bps[0]
-                bp.idx = 0
-                obj2 = r.target
-            }
+        if (r.target.id === obj.id) {
+            obj2 = r.source
+            obj1 = r.target
+        } else {
+            obj1 = r.source
+            obj2 = r.target
+        }
+        bo1 = getObjXY(obj1)
+        bo2 = getObjXY(obj2)
 
-            bo2 = getObjXY(obj2)
-            let pos = getPointPos(obj, bp)
-            console.log (bo2.x, bo2.y, pos, bp)
-            if (pos[0] === 'R')
-                right.push({order: bo2.y, bp: bp, r: r})
-            else if (pos[0] === 'L')
-                left.push({order: bo2.y, bp: bp, r: r})
-            if (pos[0] === 'T')
-                top.push({order: bo2.x, bp: bp, r: r})
-            if (pos[0] === 'B')
-                bottom.push({order: bo2.y, bp: bp, r: r})
+        bps = getAbsoluteBendpoints(r)
+        if (bps.length === 0) {
+            addAbsoluteBendpoint(r, (bo2.x + bo1.x) / 2, (bo2.y + bo1.y) / 2)
+            bps = getAbsoluteBendpoints(r)
         }
 
-        i = 1
-        right.sort(dynamicSort('order')).forEach(r => {
-            bp.y = bo1.y + i++ * bo1.height / right.length + 1
-            setAbsoluteBendpoint(r.r, bp.x, bp.y, bp.idx)
-        })
-        i = 1
-        left.sort(dynamicSort('order')).forEach(r => {
-            bp.y = bo1.y + i++ * bo1.height / left.length + 1
-            setAbsoluteBendpoint(r.r, bp.x, bp.y, bp.idx)
-        })
-        i = 1
-        top.sort(dynamicSort('order')).forEach(r => {
-            bp.x = bo1.x + i++ * bo1.width / top.length + 1
-            setAbsoluteBendpoint(r.r, bp.x, bp.y, bp.idx)
-        })
-        i = 1
-        bottom.sort(dynamicSort('order')).forEach(r => {
-            bp.x = bo1.x  + bo1.width * (0.5 - (i / (bottom.length + 1)))
-            i++
-            console.log(bp.x, bp.y, bp.idx, r.r.source.name, r.r.target.name)
-            setAbsoluteBendpoint(r.r, bp.x, bp.y, bp.idx)
-        })
+        if (r.target.id === obj.id) {
+            bp = bps[bps.length - 1]
+            bp.idx = bps.length - 1
+        } else {
+            bp = bps[0]
+            bp.idx = 0
+        }
 
+        let pos = getPointPos(obj, bp)
+
+        if (pos[0] === 'R')
+            right.push({order: bo2.y * bo2.x, bp: bp, r: r})
+        else if (pos[0] === 'L')
+            left.push({order: bo2.y * bo2.x, bp: bp, r: r})
+        if (pos[0] === 'T')
+            top.push({order: bo2.y * bo2.x, bp: bp, r: r})
+        if (pos[0] === 'B')
+            bottom.push({order: bo2.y * bo2.x, bp: bp, r: r})
 
     })
 
+    i = 1
+    right.sort(dynamicSort('order')).forEach(r => {
+        r.bp.y = bo1.y - bo1.height * (0.5 - (i++ / (right.length + 1)))
+        setAbsoluteBendpoint(r.r, r.bp.x, r.bp.y, r.bp.idx)
+    })
+    i = 1
+    left.sort(dynamicSort('order')).forEach(r => {
+        r.bp.y = bo1.y - bo1.height * (0.5 - (i++ / (left.length + 1)))
+        setAbsoluteBendpoint(r.r, r.bp.x, r.bp.y, r.bp.idx)
+    })
+    i = 1
+    top.sort(dynamicSort('order')).forEach(r => {
+        r.bp.x = bo1.x - bo1.width * (0.5 - (i++ / (top.length + 1)))
+        setAbsoluteBendpoint(r.r, r.bp.x, r.bp.y, r.bp.idx)
+    })
+    i = 1
+    bottom.sort(dynamicSort('order')).forEach(r => {
+        r.bp.x = bo1.x - bo1.width * (0.5 - (i++ / (bottom.length + 1)))
+        setAbsoluteBendpoint(r.r, r.bp.x, r.bp.y, r.bp.idx)
+    })
 
 
 }
@@ -339,7 +371,7 @@ function dynamicSort(property) {
         /* next line works with strings and numbers,
          * and you may want to customize it to your needs
          */
-        let  result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+        let result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
         return result * sortOrder;
     }
 }
