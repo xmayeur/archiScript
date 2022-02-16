@@ -259,7 +259,6 @@ function getObjPos(obj1, obj2) {
         || isBetween(b2.y + b2.height, b1.y, b1.y + b1.height)))
         pos = 'R!'
 
-
     return [pos, angle]
 }
 
@@ -304,7 +303,7 @@ function spreadConnections(obj) {
     let bottom = []
     let left = []
     let right = []
-    let bp, bo1, bo2, obj1, obj2, i, a
+    let bp, bo1, bo2, obj1, obj2, i, angle
 
     $(obj).rels().forEach(r => {
         let bps = r.getRelativeBendpoints()
@@ -323,6 +322,11 @@ function spreadConnections(obj) {
         }
         bo1 = getObjXY(obj1)
         bo2 = getObjXY(obj2)
+        const [p, a] = getObjPos(obj1, obj2)
+        angle = a
+        if (angle < 0)
+            angle += 360
+        angle = (360 - angle) % 360
 
         bps = getAbsoluteBendpoints(r)
         if (bps.length === 0) {
@@ -339,19 +343,22 @@ function spreadConnections(obj) {
         }
 
         let [pos, a1] = getPointPos(obj1, bp)
-        let [pos2, a] = getObjPos(obj1, obj2)
 
-        if (a < 0)
-            a += 360
-        if (pos[0] === 'R')
-            right.push({order: a, bp: bp, r: r})
-        else if (pos[0] === 'L')
-            left.push({order: a, bp: bp, r: r})
-        if (pos[0] === 'T')
-            top.push({order: a, bp: bp, r: r})
-        if (pos[0] === 'B')
-            bottom.push({order: a, bp: bp, r: r})
-
+        if (pos[0] === 'R') {
+            angle = (angle + 180) % 360
+            right.push({order: -angle, bp: bp, r: r})
+        } else if (pos[0] === 'L') {
+            // angle = (angle + 180) % 360
+            left.push({order: angle, bp: bp, r: r})
+        }
+        if (pos[0] === 'T') {
+            top.push({order: -angle, bp: bp, r: r})
+        }
+        if (pos[0] === 'B') {
+            angle = (angle + 180) % 360
+            bottom.push({order: angle, bp: bp, r: r})
+        }
+        // console.log(obj1.name, '->', obj2.name, '\t', angle)
     })
 
     i = 1
