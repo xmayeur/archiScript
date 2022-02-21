@@ -1,4 +1,9 @@
-// decorator function to apply a relationship-based function to each connection of a selection
+/**
+ * decorator function to apply a element-based function to each connection of a selection
+ *
+ * @param {(function(): void)} fct - a jArchi function handling element
+ * @returns {(function(): void)|*}
+ */
 function doEachElem(fct) {
     return function decorator() {
         let args = arguments
@@ -8,17 +13,18 @@ function doEachElem(fct) {
             function _do(e) {
                 args[0] = e
                 fct.apply(this, args);
-
+                // recurse if the element object has children
                 $(e).children().filter('element').forEach(function (o) {
                     _do(o);
                 });
             }
 
+            // apply recursively the function for each element of the view
             $(v).children().filter('element').forEach(function (o) {
                 _do(o);
             });
         });
-        // if few objects are selected, managed them
+        // if few objects are selected, managed only them
         $(sel).filter('element').forEach(function (e) {
             args[0] = e
             fct.apply(this, args);
@@ -26,6 +32,12 @@ function doEachElem(fct) {
     }
 }
 
+/**
+ * decorator function to apply a relationship-based function to each connection of a selection
+ *
+ * @param {(function(): void)} fct - a jArchi function handling visual connection
+ * @returns {(function(): void)|*}
+ */
 function doEachRel(fct) {
     return function decorator() {
         let args = arguments
@@ -51,7 +63,7 @@ function doEachRel(fct) {
                 _do(o);
             });
         });
-        // if few objects are selected, managed them
+        // if few objects are selected, managed only their relationships
         $(sel).filter('element').forEach(function (e) {
             $(e).outRels().forEach(function (o) {
                 args[0] = o
@@ -72,6 +84,12 @@ function doEachRel(fct) {
     }
 }
 
+/**
+ * Convert add a bendpoint to a visual connection using absolute coordinates
+ * @param conn - visual connection object
+ * @param x - X-coordinate
+ * @param y - y coordinate
+ */
 function addAbsoluteBendpoint(conn, x, y) {
 
     let s = getObjXY(conn.source)
@@ -87,6 +105,14 @@ function addAbsoluteBendpoint(conn, x, y) {
 
 }
 
+/**
+ * Convert set a bendpoint at index idx to a visual connection using absolute coordinates
+ *
+ * @param conn - visual connection object
+ * @param x - X-coordinate
+ * @param y - y coordinate
+ * @param idx - bendpoint index in the collection
+ */
 function setAbsoluteBendpoint(conn, x, y, idx) {
 
     // Set the X/Y offset of the embedding objects
@@ -106,6 +132,12 @@ function setAbsoluteBendpoint(conn, x, y, idx) {
 
 }
 
+/**
+ * Get all bendpoints of the connection using absolute coordinates
+ *
+ * @param conn  -    visual conenction
+ * @returns {*[]} - an array of bendpoints
+ */
 function getAbsoluteBendpoints(conn) {
     let abps = []
     conn.getRelativeBendpoints().forEach(bp => {
@@ -130,6 +162,12 @@ function getAbsoluteBendpoints(conn) {
     return abps
 }
 
+/**
+ * get absolute XY-coordinates of a visual object
+ *
+ * @param obj
+ * @returns {{x: *, width: *, y: *, height: *}}
+ */
 function getObjXY(obj) {
     let b = obj.bounds
     let x = b.x + b.width / 2
@@ -147,35 +185,73 @@ function getObjXY(obj) {
         y: y,
         width: b.width,
         height: b.height
-
     }
 }
 
+/**
+ * Check whether a point given by its absolute coordinates is inside an object
+ *
+ * @param obj   - archi visual object
+ * @param x     - X-coordinate
+ * @param y     - Y- coordinate
+ * @returns {boolean} - true if inside
+ */
 function isInsideObj(obj, x, y) {
     // TODO add embedding objets X/Y
     let b = getObjXY(obj)
     return (x > b.x && x < b.x + b.width && y > b.y && y < b.y + b.height)
 }
 
+/**
+ * small helper to check whether a value is beween two min/max boundaries
+ *
+ * @param i
+ * @param min
+ * @param max
+ * @returns {boolean}
+ */
 function isBetween(i, min, max) {
     return (i >= min && i <= max)
 }
 
-function lRel(conn, dir = 0, weight = 0.5) {
+/**
+ * Create a L- orthogonal shape visual connection on an existing connection, resetting all bendpoints
+ *
+ * @param conn      - visual connection
+ * @param dir       - direction of the L-shape : 0 starts the connection horizontally, 1 starts vertically
+ * @param weightX   - 0->1 weight to move the connection bendpoints X-coordinate along the adjacent edges of the connected objects
+ * @param weightY   - 0->1 weight to move the connection bendpoints Y-coordinate along the adjacent edges of the connected objects
+ *
+ */
+function lRel(conn, dir = 0, weightX = 0.5, weightY = 0.5) {
     conn.deleteAllBendpoints()
     let sXY = getObjXY(conn.source)
     let tXY = getObjXY(conn.target)
+    let dx = tXY.x - sXY.x
+    let dy = tXY.y - sXY.y
     let pos, a
     [pos, a] = getObjPos(sXY, tXY)
     if (pos.includes('!')) {
         return
     }
     if (dir === 0 && !isInsideObj(conn.source, tXY.x, sXY.y) && !isInsideObj(conn.target, tXY.x, sXY.y))
-        addAbsoluteBendpoint(conn, tXY.x + conn.target.bounds.width * (0.5 - weight), sXY.y)
+        addAbsoluteBendpoint(conn,
+            tXY.x + conn.target.bounds.width * (0.5 - weightX),
+            sXY.y  + conn.source.bounds.height * (0.5 - weightY) )
     else if (dir === 1 && !isInsideObj(conn.source, sXY.x, tXY.y) && !isInsideObj(conn.target, sXY.x, tXY.y))
-        addAbsoluteBendpoint(conn, sXY.x, tXY.y + conn.target.bounds.height * (0.5 - weight))
+        addAbsoluteBendpoint(conn,
+            sXY.x - conn.source.bounds.width * (0.5 - weightX),
+            tXY.y + conn.target.bounds.height * (0.5 - weightY))
 }
 
+/**
+ * Create a S-orthogonal shape visual connection on an existing connection, resetting all bendpoints
+ *
+ * @param conn      - visual connection
+ * @param dir       - direction of the s-shape : 0 starts the connection horizontally, 1 starts vertically
+ * @param weightX   - 0->1 weight to move the connection bendpoints X-coordinate along the adjacent edges of the connected objects
+ * @param weightY   - 0->1 weight to move the connection bendpoints Y-coordinate along the adjacent edges of the connected objects
+ */
 function sRel(conn, dir = 0, weightX = 0.5, weightY = 0.5) {
 
     conn.deleteAllBendpoints()
@@ -217,6 +293,17 @@ function sRel(conn, dir = 0, weightX = 0.5, weightY = 0.5) {
     }
 }
 
+/**
+ * Get the position of object 2 with respect to object 1
+ *
+ * @param obj1  -   visual object 1
+ * @param obj2  -   visual object 2
+ * @returns {(string|number)[]} - return an array of two items
+ *                                  - the first item is a string with the relative position (T,B,L,R)
+ *                                      (Top, Bottom, Left, Right) followed by an option '!' if adjacent edges are overlapping
+ *                                  - the second is a float number indicating the angle in degrees between the center of object 1 and object 2
+ *
+ */
 function getObjPos(obj1, obj2) {
     let b1 = ('x' in obj1) ? obj1 : getObjXY(obj1)
     let b2 = ('x' in obj2) ? obj2 : getObjXY(obj2)
@@ -267,6 +354,16 @@ function getObjPos(obj1, obj2) {
     return [pos, angle]
 }
 
+/**
+ * Get the position of XY-point with respect to object 1
+ *
+ * @param obj1
+ * @param XY
+ * @returns {(string|number)[]}     - return an array of two items
+ *                                  - the first item is a string with the relative position (T,B,L,R)
+ *                                  - the second is a float number indicating the angle in degrees between the center of object 1 and XY
+ *
+ */
 function getPointPos(obj1, XY) {
     let b = ('x' in obj1) ? obj1 : getObjXY(obj1)
     let dx = XY.x - b.x
@@ -307,7 +404,12 @@ function getPointPos(obj1, XY) {
     return [pos, angle]
 }
 
-function spreadConnections(obj) {
+/**
+ * Function to equally distribute multiple connections along each edge of the selected object
+ *
+ * @param obj
+ */
+function distributeConnections(obj) {
     let top = []
     let bottom = []
     let left = []
@@ -393,6 +495,11 @@ function spreadConnections(obj) {
 
 }
 
+/**
+ * Helper function as argument of the array.sort() function to sort an array of objects by property
+ * @param property              - the property to sort on
+ * @returns {function(*, *)}    - sorting array
+ */
 function dynamicSort(property) {
     let sortOrder = 1;
     if (property[0] === "-") {
@@ -409,9 +516,17 @@ function dynamicSort(property) {
 }
 
 
+// ----------------STILL USING OLD METHODS ---------- TODO : REFACTORING ------------------------
 
-// ----------------STILL USING THE OLD METHODS ----------------------------------
-
+/**
+ * Helper function to add a bendpoint for ortho()
+ *
+ * @param s     - source object bounds
+ * @param t     - target object bounds
+ * @param dx    - actual X-distance between the two objects
+ * @param dy    - actual Y-distance between the two objects
+ * @returns {{}} - bendpoint object
+ */
 function addFirstBendpoint(s, t, dx, dy) {
 
     let sxm = s.x + s.width;
@@ -439,7 +554,14 @@ function addFirstBendpoint(s, t, dx, dy) {
     return _b;
 }
 
-
+/**
+ * Helper function for ortho()
+ *
+ * @param bnd
+ * @param x
+ * @param y
+ * @returns {{x: number, y: number, dir: number}|{x, y, dir: number}|{x: number, y, dir: number}|{x, y: number, dir: number}}
+ */
 function setXY(bnd, x, y) {
     let xa = Math.abs(x);
     let ya = Math.abs(y);
@@ -473,6 +595,11 @@ function setXY(bnd, x, y) {
 
 }
 
+/**
+ * Function to make an existing connection fully orthogonal
+ *
+ * @param o
+ */
 function ortho(o) {
     var view = o.view;
     var rel = o.concept;

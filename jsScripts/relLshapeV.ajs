@@ -12,4 +12,4 @@ console.clear();
 
 load (__DIR__+'lib/relLib.ajs')
 const lrelV = doEachRel(lRel)
-lrelV(selection, 1, 0.5)
+lrelV(selection, 1)
