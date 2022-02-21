@@ -1,5 +1,5 @@
 /**
- * decorator function to apply a element-based function to each connection of a selection
+ * decorator function to apply a element-based function to each element of a selection
  *
  * @param {(function(): void)} fct - a jArchi function handling element
  * @returns {(function(): void)|*}
