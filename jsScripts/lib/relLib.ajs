@@ -237,7 +237,7 @@ function lRel(conn, dir = 0, weightX = 0.5, weightY = 0.5) {
     if (dir === 0 && !isInsideObj(conn.source, tXY.x, sXY.y) && !isInsideObj(conn.target, tXY.x, sXY.y))
         addAbsoluteBendpoint(conn,
             tXY.x + conn.target.bounds.width * (0.5 - weightX),
-            sXY.y  + conn.source.bounds.height * (0.5 - weightY) )
+            sXY.y + conn.source.bounds.height * (0.5 - weightY))
     else if (dir === 1 && !isInsideObj(conn.source, sXY.x, tXY.y) && !isInsideObj(conn.target, sXY.x, tXY.y))
         addAbsoluteBendpoint(conn,
             sXY.x - conn.source.bounds.width * (0.5 - weightX),
@@ -312,19 +312,23 @@ function getObjPos(obj1, obj2) {
     let pos
 
     let angle = Math.atan2(dy, dx) * 180 / Math.PI
+    // normalize angle wrt obj1
+    if (angle < 0)
+        angle += 360
+    angle = (360 - angle) % 360
 
     if (!(isBetween(b2.y, b1.y, b1.y + b1.height)
             || isBetween(b2.y + b2.height, b1.y, b1.y + b1.height))
         && !(isBetween(b2.x, b1.x, b1.x + b1.width)
             || isBetween(b2.x + b2.width, b1.x, b1.x + b1.width))
     ) {
-        if (angle >= -45 && angle < 45) {
+        if (angle < 45 && angle > 315) {
             pos = 'R'
 
         } else if (angle >= 45 && angle < 135) {
             pos = 'T'
 
-        } else if (angle >= 135 || angle < -135) {
+        } else if (angle >= 135 && angle < 225) {
             pos = 'L'
 
         } else {
@@ -345,11 +349,6 @@ function getObjPos(obj1, obj2) {
     else if ((isBetween(b2.y, b1.y, b1.y + b1.height)
         || isBetween(b2.y + b2.height, b1.y, b1.y + b1.height)))
         pos = 'R!'
-
-    // normalize angle wrt obj1
-    if (angle < 0)
-        angle += 360
-    angle = (360 - angle) % 360
 
     return [pos, angle]
 }
