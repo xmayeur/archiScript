@@ -130,6 +130,8 @@ simplified_patterns = {
     "ApplicationCollaboration-ApplicationCollaboration": ["Serving", "Flow"],
     "ApplicationInterface-ApplicationFunction": ["Triggering", "Flow"],
     "ApplicationFunction-ApplicationInterface": ["Triggering"],
-    "ApplicationFunction-DataObject": ["Access"],
+    "ApplicationFunction-BusinessObject": ["Access"],
     "Node-ApplicationCollaboration": ["Realization"],
+    "BusinessObject-BusinessObject": ["Specialization"],
+    "BusinessFunction-BusinessFunction": ["Specialization"],
 }
