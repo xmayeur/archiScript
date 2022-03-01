@@ -17,6 +17,8 @@ def main():
                         help='Exclude organizations structure')
     parser.add_argument('-xE', '--noEmbed', required=False, action='store_true',
                         help="Exclude embedding in visual nodes")
+    parser.add_argument('-xV', '--noView', required=False, action='store_true',
+                        help="Exclude views and report only concepts & relationships")
     parser.add_argument('-xo', '--noOptimization', required=False, action='store_true',
                         help='Do no remove elements and relationships that are not used in views')
     parser.add_argument('-xC', '--noCorrect', required=False, action='store_true',
@@ -45,7 +47,8 @@ def main():
                include_organization=False if args.noOrgs else True,
                incl_unions=False if args.noEmbed else True,
                optimize=False if args.noOptimization else True,
-               correct_embedded_rels=False if args.noEmbed else True
+               correct_embedded_rels=False if args.noEmbed else True,
+               no_view=True if args.noView else False
                )
     result = aris.convert()
 

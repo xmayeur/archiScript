@@ -1,6 +1,9 @@
 /**
  * decorator function to apply a element-based function to each element of a selection
  *
+ * example:   const myFct = doEachElem(fct);
+ *            myFct(args);
+ *
  * @param {(function(): void)} fct - a jArchi function handling element
  * @returns {(function(): void)|*}
  */

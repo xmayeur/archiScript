@@ -56,7 +56,7 @@ class AML:
 
     def __init__(self, aml_file: str, name='aris_export', scale_x=0.3, scale_y=0.3,
                  skip_bendpoint=True, include_organization=False, incl_unions=False,
-                 optimize=True, correct_embedded_rels=False):
+                 optimize=True, correct_embedded_rels=False, no_view=False):
         """
         Parameters:
              aml_file : str
@@ -120,6 +120,7 @@ class AML:
         self.incl_org = include_organization
         self.optimize = optimize
         self.correctEmbed = correct_embedded_rels
+        self.no_view = no_view
         if not include_organization:
             del self.model.OEF["model"]["organizations"]
         self.incl_union = incl_unions
@@ -130,10 +131,13 @@ class AML:
         self.parse_elements()
         log.info('Parsing relationships')
         self.parse_relationships()
-        log.info('Parsing Labels')
-        self.parse_labels()
-        log.info('Parsing Views')
-        self.parse_views()
+
+        if not self.no_view :
+            log.info('Parsing Labels')
+            self.parse_labels()
+            log.info('Parsing Views')
+            self.parse_views()
+
         log.info('Adding elements')
         self.add_elements()
         log.info('Adding relationships')
@@ -608,12 +612,17 @@ class AML:
 
                 for o in objects:
                     o_id = o['@ObjDef.ID']
-                    # check if element has one or more nodes in views or is already defined
-                    nn = [x for x in nodes_list if nodes_list[x].ref == o_id]
-                    if (not self.optimize or len(nn) > 0) and o_id in elems_list:
+                    if self.no_view:
                         self.model.add_elements(elems_list[o_id])
                         refs.append(o_id)
                         used_elems_id.append(o_id)
+                    else:
+                        # check if element has one or more nodes in views or is already defined
+                        nn = [x for x in nodes_list if nodes_list[x].ref == o_id]
+                        if (not self.optimize or len(nn) > 0) and o_id in elems_list:
+                            self.model.add_elements(elems_list[o_id])
+                            refs.append(o_id)
+                            used_elems_id.append(o_id)
                 if self.incl_org:
                     self.model.add_organizations(oo, refs)
             self.add_elements(grp, oo)
