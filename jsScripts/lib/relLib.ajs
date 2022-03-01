@@ -516,7 +516,7 @@ function dynamicSort(property) {
 }
 
 
-// ----------------STILL USING OLD METHODS ---------- TODO : REFACTORING ------------------------
+// ----------------STILL USING RELATIVE COORDINATE METHODS ---------- TODO : REFACTORING ------------------------
 
 /**
  * Helper function to add a bendpoint for ortho()
