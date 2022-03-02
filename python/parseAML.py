@@ -21,7 +21,7 @@ def main():
                         help="Exclude views and report only concepts & relationships")
     parser.add_argument('-xo', '--noOptimization', required=False, action='store_true',
                         help='Do no remove elements and relationships that are not used in views')
-    parser.add_argument('-xC', '--noCorrect', required=False, action='store_true',
+    parser.add_argument('-C', '--correct', required=False, action='store_true',
                         help='Do no correct inverted relationships in embedded objects')
     parser.add_argument('-o', '--outputfile', required=False, help="Output converted file")
     parser.add_argument('-v', '--verbose', required=False, action='store_true',
@@ -47,7 +47,7 @@ def main():
                include_organization=False if args.noOrgs else True,
                incl_unions=False if args.noEmbed else True,
                optimize=False if args.noOptimization else True,
-               correct_embedded_rels=False if args.noEmbed else True,
+               correct_embedded_rels=True if args.correct else False,
                no_view=True if args.noView else False
                )
     result = aris.convert()

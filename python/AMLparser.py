@@ -8,12 +8,11 @@
 *
 """
 
+import ctypes
 from xml.sax.saxutils import escape
 from jsonpath_ng import parse
 from archiObjects import *
 from type_mapping import type_map
-import ctypes
-import re
 
 
 used_elems_id = []
@@ -48,6 +47,10 @@ def xml_escape2str(txt):
     txt = txt.replace("&quot;", '"')
     txt = txt.replace("&#13;", "\r")
     return txt
+
+
+def idOf(_id):
+    return 'id-' + _id.split('.')[1]
 
 
 class AML:
@@ -134,7 +137,7 @@ class AML:
         log.info('Parsing relationships')
         self.parse_relationships()
 
-        if not self.no_view :
+        if not self.no_view:
             log.info('Parsing Labels')
             self.parse_labels()
             log.info('Parsing Views')
@@ -249,11 +252,9 @@ class AML:
 
                         for rel in rels:
                             r_type = type_map[rel['@CxnDef.Type']]
-                            r_id = 'id-' + rel['@CxnDef.ID'].split('.')[1]
-                            # XMA
+                            r_id = idOf(rel['@CxnDef.ID'])
                             r_target = elems_list[rel['@ToObjDef.IdRef']].uuid
                             # r_name, props, desc = self.get_attributes(rel)
-                            # XMA
                             if r_target is not None:
                                 r = Relationship(source=o_uuid, target=r_target, type=r_type, uuid=r_id)
                                 rels_list[r_id] = r
@@ -274,6 +275,7 @@ class AML:
             uu = [uu]
         for u in uu:
             refs = u['@ObjOccs.IdRefs'].strip().split(' ')
+            refs = list(map(idOf, refs))
             # Need to look which of the element in the refs list is the parent embedding node
             # meaning has connection references to the others
 
@@ -320,9 +322,9 @@ class AML:
                 objects = [objects]
             for o in objects:
                 o_type = type_map[o['@SymbolNum']]
-                o_id = o['@ObjOcc.ID']
-                # o_uuid = o['ExternalGUID']
-                o_elem_ref = o['@ObjDef.IdRef']
+                # XMA
+                o_id = idOf(o['@ObjOcc.ID'])
+                o_elem_ref = elems_list[o['@ObjDef.IdRef']].uuid
                 pos = o['Position']
                 size = o['Size']
                 n = Node(
@@ -362,17 +364,16 @@ class AML:
             if not isinstance(objects, list):
                 objects = [objects]
             for o in objects:
-                o_id = o['@ObjOcc.ID']
-
+                o_id = idOf(o['@ObjOcc.ID'])
                 if 'CxnOcc' in o:
                     conns = o['CxnOcc']
 
                     if not isinstance(conns, list):
                         conns = [conns]
                     for conn in conns:
-                        c_id = conn['@CxnOcc.ID']
-                        c_rel_id = conn['@CxnDef.IdRef']
-                        c_target = conn['@ToObjOcc.IdRef']
+                        c_id = idOf(conn['@CxnOcc.ID'])
+                        c_rel_id = idOf(conn['@CxnDef.IdRef'])
+                        c_target = idOf(conn['@ToObjOcc.IdRef'])
                         if '@Embedding' in conn and conn['@Embedding'] == 'YES' and self.incl_union is True:
 
                             # Aris uses reversed relationship when embedding objects,
@@ -466,7 +467,7 @@ class AML:
         if 'FFTextDef' in groups:
             objects = groups['FFTextDef']
             for o in objects:
-                o_id = o['@FFTextDef.ID']
+                o_id = idOf(o['@FFTextDef.ID'])
                 labels_list[o_id] = o
             return
 
@@ -486,7 +487,7 @@ class AML:
                 objects = [objects]
 
             for o in objects:
-                lbl_ref = o['@FFTextDef.IdRef']
+                lbl_ref = idOf(o['@FFTextDef.IdRef'])
                 if lbl_ref in labels_list:
                     lbl = labels_list[lbl_ref]
                     # calculate size in function of text
@@ -494,11 +495,11 @@ class AML:
                     pos = o['Position']
                     w, h = max([get_text_size(x, 9, "Segoe UI") for x in o_name.split('\n')])
                     n = Node(
-                        ref=o['@FFTextDef.IdRef'],
+                        ref=idOf(o['@FFTextDef.IdRef']),
                         x=max(int(pos['@Pos.X']) * self.scaleX, 0),
                         y=max(int(pos['@Pos.Y']) * self.scaleY, 0),
-                        w=w,    # 13 * len(max(o_name.split('\n'))),
-                        h=30+(h*1.5)*(o_name.count('\n')+1)
+                        w=w,  # 13 * len(max(o_name.split('\n'))),
+                        h=30 + (h * 1.5) * (o_name.count('\n') + 1)
                     )
 
                     line_color = RGBA(0, 0, 0, 0)
@@ -547,7 +548,7 @@ class AML:
                 if not isinstance(models, list):
                     models = [models]
                 for m in models:
-                    view_id = m['@Model.ID']
+                    view_id = idOf(m['@Model.ID'])
                     views_list[view_id] = m
                     view_name, model_props, desc = self.get_attributes(m)
                     self.model.name = view_name
@@ -627,10 +628,10 @@ class AML:
                         used_elems_id.append(o_uuid)
                     else:
                         # check if element has one or more nodes in views or is already defined
-                        nn = [x for x in nodes_list if nodes_list[x].ref == o_id]
+                        nn = [x for x in nodes_list if nodes_list[x].ref == o_uuid]
                         if (not self.optimize or len(nn) > 0) and o_id in elems_list:
                             self.model.add_elements(elems_list[o_id])
-                            refs.append(o_id)
+                            refs.append(o_uuid)
                             used_elems_id.append(o_uuid)
                 if self.incl_org:
                     self.model.add_organizations(oo, refs)
@@ -676,7 +677,7 @@ class AML:
 
                         for rel in rels:
                             # r_id = rel['@CxnDef.ID']
-                            r_id = 'id-' + rel['@CxnDef.ID'].split('.')[1]
+                            r_id = idOf(rel['@CxnDef.ID'])
                             r: Relationship = rels_list[r_id]
                             r_target = r.target
 
