@@ -226,12 +226,13 @@ class Element:
 
     """
 
-    def __init__(self, name=None, type=None, uuid=None, desc=None, orgs=None):
+    def __init__(self, name=None, type=None, uuid=None, desc=None, orgs=None, guid=None):
         self.name = name
         self.type = type
         self.uuid = set_id(uuid)
         self.desc = desc
         self.orgs = orgs
+        self.guid = guid
         self.element = {
             '@identifier': self.uuid,  # UUID
             '@xsi:type': self.type,  # ELEMENT TYPE

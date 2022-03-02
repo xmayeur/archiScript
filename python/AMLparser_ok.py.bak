@@ -13,7 +13,6 @@ from jsonpath_ng import parse
 from archiObjects import *
 from type_mapping import type_map
 import ctypes
-import re
 
 
 used_elems_id = []
@@ -128,7 +127,6 @@ class AML:
         self.oef_data = None
 
     def convert(self):
-
         log.info('Parsing elements')
         self.parse_elements()
         log.info('Parsing relationships')
@@ -149,7 +147,6 @@ class AML:
 
         log.info('Converting to OEF format')
         self.oef_data = xmltodict.unparse(self.model.OEF, pretty=True)
-
         return self.oef_data
 
     def get_attributes(self, o, sep=' '):
@@ -208,14 +205,12 @@ class AML:
                         o_type = 'label'
                         log.warning("In 'parse_element', empty type found")
                     o_id = o['@ObjDef.ID']
-                    o_uuid = 'id-' + o['GUID']
+                    o_uuid = o['GUID']
                     o_name, props, o_desc = self.get_attributes(o)
-                    # XMA
-                    e = Element(name=o_name, type=o_type, uuid=o_uuid, desc=o_desc)
+                    e = Element(name=o_name, type=o_type, uuid=o_id, desc=o_desc)
                     e.add_property(Property('UUID', o_uuid, self.pdef))
                     e.add_property(*props)
                     elems_list[o_id] = e
-                    elems_list[o_uuid] = e
 
             self.parse_elements(grp)
         return
@@ -240,7 +235,7 @@ class AML:
 
                 for o in objects:
                     o_id = o['@ObjDef.ID']
-                    o_uuid = "id-" + o['GUID']
+
                     if 'CxnDef' in o:
                         rels = o['CxnDef']
 
@@ -249,14 +244,11 @@ class AML:
 
                         for rel in rels:
                             r_type = type_map[rel['@CxnDef.Type']]
-                            r_id = 'id-' + rel['@CxnDef.ID'].split('.')[1]
-                            # XMA
-                            r_target = elems_list[rel['@ToObjDef.IdRef']].uuid
+                            r_id = rel['@CxnDef.ID']
+                            r_target = rel['@ToObjDef.IdRef']
                             # r_name, props, desc = self.get_attributes(rel)
-                            # XMA
-                            if r_target is not None:
-                                r = Relationship(source=o_uuid, target=r_target, type=r_type, uuid=r_id)
-                                rels_list[r_id] = r
+                            r = Relationship(source=o_id, target=r_target, type=r_type, uuid=r_id)
+                            rels_list[r_id] = r
 
             self.parse_relationships(grp)
 
@@ -620,18 +612,17 @@ class AML:
 
                 for o in objects:
                     o_id = o['@ObjDef.ID']
-                    o_uuid = 'id-' + o['GUID']
                     if self.no_view:
                         self.model.add_elements(elems_list[o_id])
                         refs.append(o_id)
-                        used_elems_id.append(o_uuid)
+                        used_elems_id.append(o_id)
                     else:
                         # check if element has one or more nodes in views or is already defined
                         nn = [x for x in nodes_list if nodes_list[x].ref == o_id]
                         if (not self.optimize or len(nn) > 0) and o_id in elems_list:
                             self.model.add_elements(elems_list[o_id])
                             refs.append(o_id)
-                            used_elems_id.append(o_uuid)
+                            used_elems_id.append(o_id)
                 if self.incl_org:
                     self.model.add_organizations(oo, refs)
             self.add_elements(grp, oo)
@@ -667,7 +658,7 @@ class AML:
 
                 for o in objects:
                     o_id = o['@ObjDef.ID']
-                    o_uuid = 'id-' + o['GUID']
+
                     if 'CxnDef' in o:
                         rels = o['CxnDef']
 
@@ -675,13 +666,12 @@ class AML:
                             rels = [rels]
 
                         for rel in rels:
-                            # r_id = rel['@CxnDef.ID']
-                            r_id = 'id-' + rel['@CxnDef.ID'].split('.')[1]
+                            r_id = rel['@CxnDef.ID']
                             r: Relationship = rels_list[r_id]
                             r_target = r.target
 
                             # Check if source & target are known
-                            if r_target in used_elems_id and r_id in rels_list and o_uuid in used_elems_id:
+                            if r_target in used_elems_id and r_id in rels_list and o_id in used_elems_id:
                                 r.is_simplified_pattern()
                                 # TODO check how to manage access & influence relation metadata
                                 self.model.add_relationships(r)
@@ -695,20 +685,3 @@ class AML:
 
             self.add_relationships(grp)
         return
-
-    # def convert_elem_id(self):
-    #     elems = self.model.OEF["model"]['elements']['element']
-    #     for e in elems:
-    #         id = e['@identifier']
-    #         guid = e['properties']['property'][0]['value']['#text']
-    #         e['@identifier'] = "id-" + guid
-    #         e['properties']['property'][0]['value']['#text'] = id+'|'+guid
-    #
-    # def convert_other_id(self, data):
-    #     # find t and replace ObjDef references
-    #     pat = re.compile(r'identifier="(ObjDef\..*?)"')
-    #     for id in re.findall(pat, data):
-    #         new_id = elems_list[id].guid
-    #         data = re.sub(id, new_id, data)
-    #
-    #     return data
