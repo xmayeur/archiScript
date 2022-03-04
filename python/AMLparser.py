@@ -252,7 +252,7 @@ class AML:
 
                         for rel in rels:
                             r_type = type_map[rel['@CxnDef.Type']]
-                            r_id = idOf(rel['@CxnDef.ID'])
+                            r_id = rel['@CxnDef.ID']
                             r_target = elems_list[rel['@ToObjDef.IdRef']].uuid
                             # r_name, props, desc = self.get_attributes(rel)
                             if r_target is not None:
@@ -372,7 +372,7 @@ class AML:
                         conns = [conns]
                     for conn in conns:
                         c_id = idOf(conn['@CxnOcc.ID'])
-                        c_rel_id = idOf(conn['@CxnDef.IdRef'])
+                        c_rel_id = conn['@CxnDef.IdRef']
                         c_target = idOf(conn['@ToObjOcc.IdRef'])
                         if '@Embedding' in conn and conn['@Embedding'] == 'YES' and self.incl_union is True:
 
@@ -676,8 +676,8 @@ class AML:
                             rels = [rels]
 
                         for rel in rels:
-                            # r_id = rel['@CxnDef.ID']
-                            r_id = idOf(rel['@CxnDef.ID'])
+                            r_id = rel['@CxnDef.ID']
+                            # r_id = idOf(rel['@CxnDef.ID'])
                             r: Relationship = rels_list[r_id]
                             r_target = r.target
 

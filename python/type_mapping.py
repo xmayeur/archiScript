@@ -121,6 +121,7 @@ simplified_patterns = {
     "BusinessFunction-BusinessService": ["Realization"],
     "BusinessService-BusinessService": ["Specialization", "Aggregation", "Composition"],
     "BusinessActor-ApplicationCollaboration": ["Association"],
+    "BusinessActor-ApplicationComponent": ["Association"],
     "BusinessActor-BusinessRole": ["Assignment"],
     "ApplicationFunction-BusinessFunction": ["Realization"],
     "ApplicationCollaboration-BusinessService": ["Serving"],

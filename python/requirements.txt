@@ -1,2 +1,4 @@
 xmltodict
 jsonpath-ng
+requests
+zipfile

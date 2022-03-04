@@ -1,4 +1,8 @@
 import argparse
+import os
+import zipfile
+from getpass import getuser, getpass
+import requests
 from AMLparser import AML
 from logger import logging, log
 
@@ -42,6 +46,22 @@ def main():
     else:
         scale_x = 0.3
         scale_y = 0.4
+
+    if 'http' in args.file:
+        tmpdir = os.environ['TMP']
+        TMPFILE = os.path.join(tmpdir, '$parseAML.zip')
+        cacerts = os.path.join(os.environ['USERPROFILE'],'.ssh','certs.pem')
+        PROXY_URL = 'giba-proxy.wps.ing.net:8080'
+        user = getuser()
+        pwd = getpass('Enter password for user ' + user + ": ")
+        auth = (user, pwd)
+        # proxy = {'proxy_url': PROXY_URL, 'proxy_user': user, 'proxy_pwd': pwd}
+        r = requests.get(args.file, verify=cacerts,  auth=auth)  # proxies=proxy,
+        open(TMPFILE, 'wb').write(r.content)
+
+        with zipfile.ZipFile(TMPFILE, "r") as zip_ref:
+            zip_ref.extractall(tmpdir)
+            args.file = os.path.join(tmpdir, "ARISAMLExport.xml")
 
     aris = AML(args.file, name='arisExport', scale_x=scale_x, scale_y=scale_y, skip_bendpoint=False,
                include_organization=False if args.noOrgs else True,
