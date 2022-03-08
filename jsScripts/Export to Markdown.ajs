@@ -46,7 +46,7 @@ let theDocument = "";
 let theTOC = "* [Introduction](#introduction)";
 
 // select the view to export
-let theView = $(selection).filter("archimate-diagram-model").first();
+	let theView = $(selection).filter("archimate-diagram-model").first();
 if (!theView) {
     theView = $(selection).filter("canvas-model").first();
 }
