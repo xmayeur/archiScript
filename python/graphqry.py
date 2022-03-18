@@ -19,6 +19,7 @@ URL = r'bolt://localhost:7687'  # 7687' # 11001'
 
 i = 1
 
+
 class Graphdb(object):
 
     def __init__(self, uri=None, auth=None, database='neo4j'):
@@ -162,8 +163,8 @@ def add_edge(row, props):
 
 def main():
     global i
-    # print('Clean DB')
-    # ret = db.clean()
+    print('Clean DB')
+    ret = db.clean()
     elems = pd.read_csv(join(DIR, ELEM), delimiter=';', quotechar='"', engine='python', encoding='Latin1').fillna('')
     props = pd.read_csv(join(DIR, PROP), delimiter=';', quotechar='"', engine='python', encoding='Latin1').fillna('')
     rels = pd.read_csv(join(DIR, REL), delimiter=';', quotechar='"', engine='python', encoding='Latin1').fillna('')
