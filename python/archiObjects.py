@@ -6,7 +6,7 @@
 * Version 0.1
 *
 * TODO verify if Elements or Relationships Type are compliant
-*
+* TODO Add enumeration for Archimate types
 *
 """
 from uuid import uuid4, UUID
