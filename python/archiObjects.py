@@ -181,6 +181,15 @@ class OpenExchange:
         for e in elements:
             self.elements.append(e)
 
+    def find_element(self, name=None, type=None):
+        if name and not type:
+            return [e for e in self.elements if e.name == name]
+        elif type and not name:
+            return [e for e in self.elements if e.type == type]
+        else:
+            return [e for e in self.elements if e.name == name and e.type == type]
+
+
     def add_relationships(self, *relationships):
         for r in relationships:
             self.relationships.append(r)
