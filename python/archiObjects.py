@@ -118,6 +118,7 @@ class OpenExchange:
                 '@xml:lang': 'en',
                 '#text': self._name,  # MODEL NAME
             },
+            'properties': {'property': []},
             'elements': {'element': []},  # list of elements
             'relationships': {'relationship': []},  # list of relationships
             'organizations': {'item': []},
@@ -130,7 +131,9 @@ class OpenExchange:
         # Add Model properties
         pdefs = PropertyDefinitions()
         self.add_property_def(pdefs)
-        if len(self.properties) > 0:
+        if len(self.properties) == 0:
+            del self.OEF['model']['properties']
+        else:
             if 'properties' not in self.OEF['model']:
                 self.OEF['model']['properties'] = {'property': []}
             for key, value in self.properties.items():
@@ -167,6 +170,10 @@ class OpenExchange:
         else:
             # TODO
             pass
+
+        # Add Views
+        # TODO
+        pass
 
         return xmltodict.unparse(self.OEF, pretty=True)
 
