@@ -103,11 +103,7 @@ class OpenExchange:
     def __init__(self, name, uuid=None):
         self._name = name
         self.uuid = set_id(uuid)
-        self.elements = []
-        self.relationships = []
-        self.views = []
-        self.organizations = []
-        self.properties = {}
+        # self.OEF = OrderedDict()
         self.OEF = {'model': {
             '@xmlns': 'http://www.opengroup.org/xsd/archimate/3.0/',
             '@xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
@@ -134,14 +130,12 @@ class OpenExchange:
             self.OEF['model']['elements'] = {'element': []}
         for e in elements:
             self.OEF['model']['elements']['element'].append(e.element)
-            self.elements.append(e)
 
     def add_relationships(self, *relationships):
         if 'relationships' not in self.OEF['model']:
             self.OEF['model']['relationships'] = {'relationship': []}
         for r in relationships:
             self.OEF['model']['relationships']['relationship'].append(r.relationship)
-            self.relationships.append(r)
 
     def replace_relationships(self, id, new_rel):
         rels = self.OEF['model']['relationships']['relationship']
@@ -152,7 +146,6 @@ class OpenExchange:
             self.OEF['model']['views'] = {'diagrams': {'view': []}}
         for v in views:
             self.OEF['model']['views']['diagrams']['view'].append(v.view)
-            self.views.append(v)
 
     def add_property_def(self, propdef):
         self.OEF['model']['propertyDefinitions'] = {'propertyDefinition': propdef.propertyDefinitions}
@@ -162,7 +155,6 @@ class OpenExchange:
             self.OEF['model']['properties'] = {'property': []}
         for p in properties:
             if isinstance(p, Property):
-                self.properties[p.key] = p.value
                 p = p.property
             self.OEF['model']['properties']['property'].append(p)
 
@@ -183,9 +175,9 @@ class OpenExchange:
     def set_name(self, s):
         self._name = s
         self.OEF['model']['name'] = {
-            '@xml:lang': 'en',
-            '#text': s,  # MODEL NAME
-        }
+                                        '@xml:lang': 'en',
+                                        '#text': s,  # MODEL NAME
+                                    }
 
     def get_name(self):
         return self._name
@@ -284,7 +276,6 @@ class Property:
     """
 
     def __init__(self, key: str, value: str, propdef):
-        self.key = key
         self.value = value
         if not isinstance(propdef, PropertyDefinitions):
             raise ValueError('"propdef" is not a PropertyDefinitions class.')
@@ -352,6 +343,7 @@ class Relationship:
         else:
             raise ValueError("'target' argument is not an instance of 'Element' class.")
         self.type = type
+
         self.name = name
         self.desc = desc
         self.relationship = {
@@ -365,8 +357,7 @@ class Relationship:
             },
             # 'properties': {'property':[]}
         }
-        self.access_type = access_type
-        self.influence_strength = influence_strength
+
         if desc:
             self.relationship['documentation'] = {
                 '@xml:lang': 'en',
@@ -375,6 +366,7 @@ class Relationship:
 
         if access_type is not None:
             self.relationship['@accessType'] = access_type
+
         if influence_strength is not None:
             self.relationship['@modifier'] = influence_strength
 
@@ -432,9 +424,6 @@ class View:
         self.name = name
         self.desc = desc
         self.unions = []
-        self.nodes = []
-        self.connections = []
-        self.properties = {}
         self.view = {
             '@identifier': self.uuid,  # VIEW UUID
             '@xsi:type': 'Diagram',  # VIEW TYPE
@@ -454,7 +443,6 @@ class View:
         if 'node' not in self.view:
             self.view['node'] = []
         for n in nodes:
-            self.nodes.append(n)
             self.view['node'].append(n.node)
             # check whether nodes refers to a known element
             # if not n.ref in elems_list:
@@ -474,7 +462,6 @@ class View:
         }
         del container.node['@elementRef']
         self.view['node'].append(container.node)
-        self.nodes.append(container)
 
     def add_label(self, label_node, label):
         if 'node' not in self.view:
@@ -487,7 +474,6 @@ class View:
         }
         del label_node.node['@elementRef']
         self.view['node'].append(label_node.node)
-        self.nodes.append(label_node)
         labels_list[label_node.uuid] = label
 
     def add_connection(self, *connections):
@@ -496,7 +482,6 @@ class View:
         for c in connections:
             if c.ref in rels_list:
                 self.view['connection'].append(c.connection)
-                self.connections.append(c)
             else:
                 _ns: Node = nodes_list[c.source]
                 _nt: Node = nodes_list[c.target]
@@ -511,9 +496,8 @@ class View:
             self.view['properties'] = {'property': []}
         for p in properties:
             if isinstance(p, Property):
-                self.properties[p.key] = p.value
                 p = p.property
-                self.view['properties']['property'].append(p)
+            self.view['properties']['property'].append(p)
 
 
 class Node:
@@ -536,10 +520,6 @@ class Node:
         self.style = style
         self.node = node
         self.flags = 0
-        self.nodes = []
-        self.connections = []
-        if self.node:
-            self.nodes.append(self.node)
         self.node = {
             '@identifier': self.uuid,  # NODE UUID
             '@elementRef': self.ref,  # ELEMENT UUID
@@ -560,14 +540,12 @@ class Node:
             self.node['node'] = []
         for n in nodes:
             self.node['node'].append(n.node)
-            self.nodes.append(n)
 
     def add_connection(self, *connections):
         if 'connection' not in self.node:
             self.node['connection'] = []
         for c in connections:
             self.node['connection'].append(c.connection)
-            self.connections.append(c)
 
     def add_style(self, style):
         if isinstance(style, Style):
@@ -603,9 +581,7 @@ class Connection:
             raise ValueError("'target' is not an instance of 'Node' class.")
 
         self.style = style
-        self.bendpoints = [bendpoint]
         self.bendpoint = bendpoint
-
         self.connection = {
             '@identifier': self.uuid,  # CONNECTION UUID
             '@relationshipRef': self.ref,  # RELATIONSHIP UUID
@@ -623,30 +599,10 @@ class Connection:
         if 'bendpoint' not in self.connection:
             self.connection['bendpoint'] = []
         for bp in bendpoints:
-            self.bendpoints.append(bp)
             self.connection['bendpoint'].append({
                 '@x': str(int(bp[0])),
                 '@y': str(int(bp[1]))
             })
-
-    def set_bendpoint(self, bp, index):
-        n = len(self.bendpoints)
-        if index < n:
-            self.bendpoints[index] = bp
-            self.connection['bendpoint'][index] = {
-                '@x': str(int(bp[0])),
-                '@y': str(int(bp[1]))
-            }
-
-    def get_bendpoint(self, index):
-        n = len(self.bendpoints)
-        if index < n:
-            return self.bendpoints[index]
-        else:
-            return None
-
-    def get_all_benpoints(self):
-        return self.bendpoints
 
     def add_style(self, style):
         if isinstance(style, Style):
