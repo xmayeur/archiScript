@@ -253,9 +253,10 @@ function lRel(conn, dir = 0, weightX = 0.5, weightY = 0.5) {
  * @param conn      - visual connection
  * @param dir       - direction of the s-shape : 0 starts the connection horizontally, 1 starts vertically
  * @param weightX   - 0->1 weight to move the connection bendpoints X-coordinate along the adjacent edges of the connected objects
- * @param weightY   - 0->1 weight to move the connection bendpoints Y-coordinate along the adjacent edges of the connected objects
+ * @param weightY   - 0->1 weight to move the connection bendpoints Y-coordinate along the adjacent edges of the source objects
+ * @param weight2   - 0->1 weight to move the connection bendpoints X-or Y-coordinate along the adjacent edges of the target objects
  */
-function sRel(conn, dir = 0, weightX = 0.5, weightY = 0.5) {
+function sRel(conn, dir = 0, weightX = 0.5, weightY = 0.5, weight2 = 0.5) {
 
     conn.deleteAllBendpoints()
     let sXY = getObjXY(conn.source)
@@ -275,14 +276,14 @@ function sRel(conn, dir = 0, weightX = 0.5, weightY = 0.5) {
     let bp1X, bp1Y, bp2X, bp2Y
 
     if (dir === 0) {
-        bp1X = sXY.x + dx / 2 - conn.source.bounds.width * (0.5 - weightX) / 2
+        bp1X = sXY.x + dx * weightX
         bp1Y = sXY.y - conn.source.bounds.height * (0.5 - weightY)
         bp2X = bp1X
-        bp2Y = tXY.y
+        bp2Y = tXY.y - conn.target.bounds.height * (0.5 - weight2)
     } else {
         bp1X = sXY.x - conn.source.bounds.width * (0.5 - weightX)
         bp1Y = sXY.y + dy / 2 - conn.source.bounds.height * (0.5 - weightY) / 2
-        bp2X = tXY.x
+        bp2X = tXY.x - conn.target.bounds.width * (0.5 - weight2)
         bp2Y = bp1Y
     }
 
@@ -307,7 +308,7 @@ function sRel(conn, dir = 0, weightX = 0.5, weightY = 0.5) {
  *                                  - the second is a float number indicating the angle in degrees between the center of object 1 and object 2
  *
  */
-function getObjPos(obj1, obj2) {
+function _getObjPos(obj1, obj2) {
     let b1 = ('x' in obj1) ? obj1 : getObjXY(obj1)
     let b2 = ('x' in obj2) ? obj2 : getObjXY(obj2)
     let dx = b2.x - b1.x
@@ -327,10 +328,8 @@ function getObjPos(obj1, obj2) {
     ) {
         if (angle < 45 && angle > 315) {
             pos = 'R'
-
         } else if (angle >= 45 && angle < 135) {
             pos = 'T'
-
         } else if (angle >= 135 && angle < 225) {
             pos = 'L'
 
@@ -356,6 +355,64 @@ function getObjPos(obj1, obj2) {
     return [pos, angle]
 }
 
+
+/**
+ * Get the position of object 2 with respect to object 1
+ *
+ * @param obj1  -   visual object 1
+ * @param obj2  -   visual object 2
+ * @returns {(string|number)[]} - return an array of two items
+ *                                  - the first item is a string with the relative position (T,B,L,R)
+ *                                      (Top, Bottom, Left, Right) followed by an option '!' if adjacent edges are overlapping
+ *                                  - the second is a float number indicating the angle in degrees between the center of object 1 and object 2
+ *
+ */
+function getObjPos(obj1, obj2) {
+    let b1 = ('x' in obj1) ? obj1 : getObjXY(obj1)
+    let b2 = ('x' in obj2) ? obj2 : getObjXY(obj2)
+    let dx = b2.x - b1.x
+    let dy = b2.y - b1.y
+    let pos
+    let dist = {dx: dx, dy: dy, gapX: 0, gapY: 0}
+
+    let angle = Math.atan2(dy, dx) * 180 / Math.PI
+    // normalize angle wrt obj1
+    if (angle < 0)
+        angle += 360
+    angle = (360 - angle) % 360
+
+    if (angle < 45 || angle > 315) {
+        pos = 'R'
+    } else if (angle >= 45 && angle < 135) {
+        pos = 'T'
+    } else if (angle >= 135 && angle < 225) {
+        pos = 'L'
+    } else {
+        pos = 'B'
+    }
+
+    if (b2.x - b2.width / 2 > b1.x + b1.width / 2 && b2.x + b2.width / 2 > b1.x + b1.width / 2)
+        dist.gapX = b2.x - b2.width / 2 - b1.x - b1.width / 2
+    else if (b2.x - b2.width / 2 < b1.x - b1.width / 2 && b2.x + b2.width / 2 < b1.x - b1.width / 2)
+        dist.gapX = b2.x + b2.width - b1.x + b1.width / 2
+
+    if (b2.y - b2.height / 2 < b1.y - b1.height / 2 && b2.y + b2.height / 2 < b1.y - b1.height / 2)
+        dist.gapY = b2.y + b2.height / 2 - b1.y + b1.height / 2
+    else if (b2.y - b2.height / 2 > b1.y + b1.height / 2 && b2.y + b2.height / 2 > b1.y + b1.height / 2)
+        dist.gapY = b2.y - b2.height - b1.y - b1.height / 2
+
+    if (dist.gapX === 0 && dist.gapY < 0)
+        pos = "T!"
+    else if (dist.gapX === 0 && dist.gapY > 0)
+        pos = "B!"
+    else if (dist.gapX < 0 && dist.gapY === 0)
+        pos = "L!"
+    else if (dist.gapX > 0 && dist.gapY === 0)
+        pos = "R!"
+
+    return [pos, angle, dist]
+}
+
 /**
  * Get the position of XY-point with respect to object 1
  *
@@ -373,35 +430,32 @@ function getPointPos(obj1, XY) {
     let pos
 
     let angle = Math.atan2(dy, dx) * 180 / Math.PI
+    // normalize angle wrt obj1
+    if (angle < 0)
+        angle += 360
+    angle = (360 - angle) % 360
 
     if (!isBetween(XY.y, b.y, b.y + b.height) && !isBetween(XY.x, b.x, b.x + b.width)) {
-        if (angle >= -45 && angle < 45) {
+        if (angle >= 135 && angle < 225) {
             pos = 'R'
-
-        } else if (angle >= 45 && angle < 135) {
+        } else if (angle >= 225 && angle < 315) {
             pos = 'B'
-
-        } else if (angle >= 135 || angle < -135) {
+        } else if (angle >= 315 || angle < 45) {
             pos = 'L'
-
         } else {
             pos = 'T'
-
         }
     }
 
-    if ((angle > 90 || angle < -135) && isBetween(XY.y, b.y, b.y + b.height))
+    if ((angle > 270 || angle < 90) && isBetween(XY.y, b.y, b.y + b.height))
         pos = 'L!'
-    else if (angle > 0 && isBetween(XY.x, b.x, b.x + b.width))
+    else if (angle > 180 && isBetween(XY.x, b.x, b.x + b.width))
         pos = 'B!'
-    else if (angle < 0 && isBetween(XY.x, b.x, b.x + b.width))
+    else if (angle < 180 && isBetween(XY.x, b.x, b.x + b.width))
         pos = 'T!'
     else if (isBetween(XY.y, b.y, b.y + b.height))
         pos = 'R!'
 
-    if (angle < 0)
-        angle += 360
-    angle = (360 - angle) % 360
 
     return [pos, angle]
 }
@@ -435,13 +489,30 @@ function distributeConnections(obj) {
         }
         bo1 = getObjXY(obj1)
         bo2 = getObjXY(obj2)
-        const [p, a] = getObjPos(obj1, obj2)
+        const [p, a, dist] = getObjPos(obj1, obj2)
         angle = a
 
         bps = getAbsoluteBendpoints(r)
+
         if (bps.length === 0) {
-            let _x = (bo2.x + bo1.x) / 2
-            let _y = (bo2.y + bo1.y) / 2
+
+            let _x, _y
+            if (p === 'L!') {
+                _x = bo1.x + bo1.width / 2 - dist.gapX / 2
+                _y = (bo1.y + bo2.y)/2
+            } else if (p === 'R!') {
+                _x = bo2.x - bo2.width / 2 - dist.gapX / 2
+                _y = (bo1.y + bo2.y)/2
+            } else if (p === 'B!') {
+                _y = bo2.y - bo2.height / 2 - dist.gapY / 2
+                _x = (bo1.x + bo2.x)/2
+            } else if (p === 'T!') {
+                _y = bo1.y + bo1.width / 2 - dist.gapY / 2
+                _x = (bo1.x + bo2.x)/2
+            } else {
+                _x = (bo2.x + bo1.x) / 2
+                _y = (bo2.y + bo1.y) / 2
+            }
             addAbsoluteBendpoint(r, _x, _y)
             bps = getAbsoluteBendpoints(r)
         }
@@ -454,20 +525,21 @@ function distributeConnections(obj) {
             bp.idx = 0
         }
 
-        let [pos, a1] = getPointPos(obj1, bp)
+        let [pos, a1] = getPointPos(bo1, bp)
 
         if (pos[0] === 'R') {
             angle = (angle + 180) % 360
             right.push({order: -angle, bp: bp, r: r})
-        } else if (pos[0] === 'L') {
-            // angle = (angle + 180) % 360
-            left.push({order: angle, bp: bp, r: r})
+        }
+        if (pos[0] === 'L') {
+            angle = (angle + 180) % 360
+            left.push({order: -angle, bp: bp, r: r})
         }
         if (pos[0] === 'T') {
             top.push({order: -angle, bp: bp, r: r})
         }
         if (pos[0] === 'B') {
-            angle = (angle + 180) % 360
+            // angle = (angle + 180) % 360
             bottom.push({order: angle, bp: bp, r: r})
         }
         // console.log(obj1.name, '->', obj2.name, '\t', angle)
