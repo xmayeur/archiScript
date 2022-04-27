@@ -408,7 +408,7 @@ function getObjPos(obj1, obj2) {
         pos = "L!"
     else if (dist.gapX > 0 && dist.gapY === 0)
         pos = "R!"
-    console.log('getObjPos', pos, angle, dist)
+    // console.log('getObjPos', pos, angle, dist)
     return [pos, angle, dist]
 }
 
