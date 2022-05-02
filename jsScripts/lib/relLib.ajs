@@ -233,9 +233,7 @@ function lRel(conn, dir = 0, weightX = 0.5, weightY = 0.5) {
 
     let pos, a
     [pos, a] = getObjPos(sXY, tXY)
-    if (pos.includes('!')) {
-        return
-    }
+
     if (dir === 0 && !isInsideObj(conn.source, tXY.x, sXY.y) && !isInsideObj(conn.target, tXY.x, sXY.y))
         addAbsoluteBendpoint(conn,
             tXY.x + conn.target.bounds.width * (0.5 - weightX),
@@ -262,13 +260,6 @@ function sRel(conn, dir = 0, weightX = 0.5, weightY = 0.5, weight2 = 0.5) {
     let tXY = getObjXY(conn.target)
     let pos, a
     [pos, a] = getObjPos(sXY, tXY)
-    if (dir === 1 && (pos === "L!" || pos === "R!")) {
-        return
-    }
-
-    if (dir === 0 && (pos === "T!" || pos === "B!")) {
-        return
-    }
 
     let dx = tXY.x - sXY.x
     let dy = tXY.y - sXY.y
@@ -553,7 +544,6 @@ function distributeConnections(obj) {
     right.sort(dynamicSort('order')).forEach(r => {
         r.bp.y = bo1.y - bo1.height * (0.5 - (i++ / (right.length + 1)))
         setAbsoluteBendpoint(r.r, r.bp.x, r.bp.y, r.bp.idx)
-        console.log('new BP', r.bp)
     })
     i = 1
     left.sort(dynamicSort('order')).forEach(r => {

@@ -57,22 +57,15 @@ for f in files:
             row += 1
 
     if row > 2:
-        af_name = xl.worksheet.cell_range.CellRange("F3:F" + str(row), title=ws.title)
-        af_range = xl.workbook.defined_name.DefinedName('AF', attr_text=af_name)
-        wb.defined_names.append(af_range)
-        af_dv = DataValidation(type="list", formula1='=AF', allow_blank=False)
-
-        bo_name = xl.worksheet.cell_range.CellRange("I3:I" + str(row), title=ws.title)
-        bo_range = xl.workbook.defined_name.DefinedName('BO', attr_text=bo_name)
-        wb.defined_names.append(bo_range)
-        bo_dv = DataValidation(type="list", formula1='=BO', allow_blank=False)
+        af_dv = DataValidation(type="list", formula1='='+"Functional!$F$3:$F$" + str(row), allow_blank=False)
+        bo_dv = DataValidation(type="list", formula1='='+"Functional!$I$3:$I$" + str(row), allow_blank=False)
 
         ws2 = wb['Interactions']
         ws2.add_data_validation(af_dv)
-        af_dv.add("A3:A459")
+        af_dv.add("$A$3:$A$459")
 
         ws2.add_data_validation(bo_dv)
-        bo_dv.add("B3:B459")
+        bo_dv.add("$B$3:$B$459")
 
     wb.save(xl_out)
 
