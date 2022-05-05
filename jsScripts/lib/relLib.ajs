@@ -386,10 +386,11 @@ function getObjPos(obj1, obj2) {
     else if (b2.x - b2.width / 2 < b1.x - b1.width / 2 && b2.x + b2.width / 2 < b1.x - b1.width / 2)
         dist.gapX = b2.x + b2.width - b1.x + b1.width / 2
 
-    if (b2.y - b2.height / 2 < b1.y - b1.height / 2 && b2.y + b2.height / 2 < b1.y - b1.height / 2)
+    if (b2.y - b2.height / 2 > b1.y + b1.height / 2 && b2.y + b2.height / 2 > b1.y + b1.height / 2)
+        dist.gapY = b2.y - b2.height/2 - b1.y - b1.height / 2
+    else if (b2.y - b2.height / 2 < b1.y - b1.height / 2 && b2.y + b2.height / 2 < b1.y - b1.height / 2)
         dist.gapY = b2.y + b2.height / 2 - b1.y + b1.height / 2
-    else if (b2.y - b2.height / 2 > b1.y + b1.height / 2 && b2.y + b2.height / 2 > b1.y + b1.height / 2)
-        dist.gapY = b2.y - b2.height - b1.y - b1.height / 2
+
 
     if (dist.gapX === 0 && dist.gapY < 0)
         pos = "T!"
@@ -399,7 +400,7 @@ function getObjPos(obj1, obj2) {
         pos = "L!"
     else if (dist.gapX > 0 && dist.gapY === 0)
         pos = "R!"
-    // console.log('getObjPos', pos, angle, dist)
+    // console.log('getObjPos', b1, b2, pos, angle, dist)
     return [pos, angle, dist]
 }
 
@@ -417,7 +418,7 @@ function getPointPos(obj1, XY) {
     let b = ('x' in obj1) ? obj1 : getObjXY(obj1)
     let dx = XY.x - b.x
     let dy = XY.y - b.y
-    let pos
+    let pos = '*'
 
     let angle = Math.atan2(dy, dx) * 180 / Math.PI
     // normalize angle wrt obj1
@@ -425,7 +426,7 @@ function getPointPos(obj1, XY) {
         angle += 360
     angle = (360 - angle) % 360
 
-    if (!isBetween(XY.y, b.y, b.y + b.height) && !isBetween(XY.x, b.x, b.x + b.width)) {
+    if (!isBetween(XY.y, b.y-b.height/2, b.y + b.height/2) && !isBetween(XY.x, b.x-b.width/2, b.x + b.width/2)) {
         if (angle >= 135 && angle < 225) {
             pos = 'R'
         } else if (angle >= 225 && angle < 315) {
@@ -445,7 +446,6 @@ function getPointPos(obj1, XY) {
         pos = 'T!'
     else if (isBetween(XY.y, b.y, b.y + b.height))
         pos = 'R!'
-
     return [pos, angle]
 }
 
@@ -490,16 +490,16 @@ function distributeConnections(obj) {
 
                 let _x, _y
                 if (p === 'L!') {
-                    _x = bo1.x + bo1.width / 2 + dist.gapX / 2
+                    _x = bo1.x - bo1.width / 2 + dist.gapX / 2
                     _y = (bo1.y + bo2.y) / 2
                 } else if (p === 'R!') {
                     _x = bo1.x + bo1.width / 2 + dist.gapX / 2
                     _y = (bo1.y + bo2.y) / 2
                 } else if (p === 'B!') {
-                    _y = bo2.y - bo2.height / 2 - dist.gapY / 2
+                    _y = bo1.y + bo1.height / 2 + dist.gapY / 2
                     _x = (bo1.x + bo2.x) / 2
                 } else if (p === 'T!') {
-                    _y = bo1.y + bo1.height / 2 + dist.gapY / 2
+                    _y = bo2.y + bo2.height / 2 - dist.gapY / 2
                     _x = (bo1.x + bo2.x) / 2
                 } else {
                     _x = (bo2.x + bo1.x) / 2
@@ -507,7 +507,7 @@ function distributeConnections(obj) {
                 }
                 addAbsoluteBendpoint(r, _x, _y)
                 bps = getAbsoluteBendpoints(r)
-                // console.log('mid point', p, a, dist, bo1, bo2, _x, _y)
+                // console.log('mid point', p, a, dist, obj1.name, bo1, obj2.name, bo2, _x, _y)
             }
 
             if (r.target.id === obj.id) {
