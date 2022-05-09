@@ -1,0 +1,8 @@
+console.clear()
+console.show()
+load (__DIR__+'lib/relLib.ajs')
+load(__DIR__+'_relFindPath.ajs')
+
+console.log($(selection))
+p=getObjXY($(selection).first())
+console.log(p)

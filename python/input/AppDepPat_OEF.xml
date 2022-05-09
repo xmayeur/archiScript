@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model xmlns="http://www.opengroup.org/xsd/archimate/3.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengroup.org/xsd/archimate/3.0/ http://www.opengroup.org/xsd/archimate/3.1/archimate3_Diagram.xsd" identifier="id-a49654eb918549ea85a33d76dbff0012">
+	<name xml:lang="en">x</name>
+	<elements>
+		<element identifier="ObjDef.-62MvLsqitAo-p-L" xsi:type="BusinessActor">
+			<name xml:lang="en">Team Gryffindor</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">dc5695da-51c2-11ec-19b2-0050568bdf9a</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.4bgrxRFAN7u-p-L" xsi:type="BusinessRole">
+			<name xml:lang="en">Squad</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">dc5695d8-51c2-11ec-19b2-0050568bdf9a</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-7kXxVWMfVi5-p-L" xsi:type="BusinessRole">
+			<name xml:lang="en">Process Operators</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">dc5695ef-51c2-11ec-19b2-0050568bdf9a</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-3ht3vIMOI1h-p-L" xsi:type="BusinessActor">
+			<name xml:lang="en">Harry Potter</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">dc5695d2-51c2-11ec-19b2-0050568bdf9a</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.4NheoKUx2oz-p-L" xsi:type="Capability">
+			<name xml:lang="en">Capability</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">dc5695ea-51c2-11ec-19b2-0050568bdf9a</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-1iVczi-BkEG-p-L" xsi:type="BusinessService">
+			<name xml:lang="en">Business service</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">dc5695e7-51c2-11ec-19b2-0050568bdf9a</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.1YCsNhemo-C-p-L" xsi:type="ApplicationInterface">
+			<name xml:lang="en">Application interface</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">dc5695e4-51c2-11ec-19b2-0050568bdf9a</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.3UwlRQVZQHZ-p-L" xsi:type="ApplicationCollaboration">
+			<name xml:lang="en">&lt;&lt;IT Solution&gt;&gt; Business Application Z</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">dc5695f9-51c2-11ec-19b2-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">S0001</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-4yNGyDgkw8N-p-L" xsi:type="ApplicationCollaboration">
+			<name xml:lang="en">&lt;&lt;IT Solution&gt;&gt; Business Application Y</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">dc5695f6-51c2-11ec-19b2-0050568bdf9a</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.6wv3OsWwXn7-p-L" xsi:type="BusinessRole">
+			<name xml:lang="en">Asset Owner</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">dc5695d4-51c2-11ec-19b2-0050568bdf9a</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-2quGZNJ5KP6-p-L" xsi:type="ApplicationCollaboration">
+			<name xml:lang="en">&lt;&lt;IT Solution&gt;&gt; Business Application X</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">dc5695d0-51c2-11ec-19b2-0050568bdf9a</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-1elL14Za7s8-p-L" xsi:type="BusinessRole">
+			<name xml:lang="en">Consuming Party</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">dc5695ed-51c2-11ec-19b2-0050568bdf9a</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.7KvTiFFiToK-p-L" xsi:type="BusinessActor">
+			<name xml:lang="en">Team Slytherin</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">dc5695f1-51c2-11ec-19b2-0050568bdf9a</value>
+				</property>
+			</properties>
+		</element>
+	</elements>
+	<relationships>
+		<relationship identifier="CxnDef.6RoMduhbldr-q-L" source="ObjDef.-62MvLsqitAo-p-L" target="ObjDef.4bgrxRFAN7u-p-L" xsi:type="Assignment">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-5mhjdicsc8E-q-L" source="ObjDef.4bgrxRFAN7u-p-L" target="ObjDef.-2quGZNJ5KP6-p-L" xsi:type="Association">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.5hheGaiKh-e-q-L" source="ObjDef.-7kXxVWMfVi5-p-L" target="ObjDef.-1iVczi-BkEG-p-L" xsi:type="Assignment">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-71TCYDOb3Bj-q-L" source="ObjDef.-3ht3vIMOI1h-p-L" target="ObjDef.6wv3OsWwXn7-p-L" xsi:type="Assignment">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.d4ouK-2S2G-q-L" source="ObjDef.-1iVczi-BkEG-p-L" target="ObjDef.4NheoKUx2oz-p-L" xsi:type="Realization">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.5pXd5kzSoD8-q-L" source="ObjDef.1YCsNhemo-C-p-L" target="ObjDef.-4yNGyDgkw8N-p-L" xsi:type="Serving">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-3YjXLSUO51b-q-L" source="ObjDef.3UwlRQVZQHZ-p-L" target="ObjDef.-2quGZNJ5KP6-p-L" xsi:type="Serving">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-45sOldMSuPR-q-L" source="ObjDef.6wv3OsWwXn7-p-L" target="ObjDef.-2quGZNJ5KP6-p-L" xsi:type="Association">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.7psFI0Eu0LM-q-L" source="ObjDef.-2quGZNJ5KP6-p-L" target="ObjDef.-1iVczi-BkEG-p-L" xsi:type="Serving">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-7UYWEADtuCv-q-L" source="ObjDef.-2quGZNJ5KP6-p-L" target="ObjDef.1YCsNhemo-C-p-L" xsi:type="Composition">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.11N_FdUpqn_-q-L" source="ObjDef.-1elL14Za7s8-p-L" target="ObjDef.-1iVczi-BkEG-p-L" xsi:type="Assignment">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.7Vt8oIoy5pl-q-L" source="ObjDef.7KvTiFFiToK-p-L" target="ObjDef.-7kXxVWMfVi5-p-L" xsi:type="Assignment">
+			<name xml:lang="en"></name>
+		</relationship>
+	</relationships>
+	<organizations>
+		<item>
+			<label xml:lang="en">99. Incubator</label>
+			<item>
+				<label xml:lang="en">XY56RE</label>
+				<item identifierRef="ObjDef.-62MvLsqitAo-p-L"></item>
+				<item identifierRef="ObjDef.4bgrxRFAN7u-p-L"></item>
+				<item identifierRef="ObjDef.-7kXxVWMfVi5-p-L"></item>
+				<item identifierRef="ObjDef.-3ht3vIMOI1h-p-L"></item>
+				<item identifierRef="ObjDef.4NheoKUx2oz-p-L"></item>
+				<item identifierRef="ObjDef.-1iVczi-BkEG-p-L"></item>
+				<item identifierRef="ObjDef.1YCsNhemo-C-p-L"></item>
+				<item identifierRef="ObjDef.3UwlRQVZQHZ-p-L"></item>
+				<item identifierRef="ObjDef.-4yNGyDgkw8N-p-L"></item>
+				<item identifierRef="ObjDef.6wv3OsWwXn7-p-L"></item>
+				<item identifierRef="ObjDef.-2quGZNJ5KP6-p-L"></item>
+				<item identifierRef="ObjDef.-1elL14Za7s8-p-L"></item>
+				<item identifierRef="ObjDef.7KvTiFFiToK-p-L"></item>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">99. Incubator</label>
+			<item>
+				<label xml:lang="en">XY56RE</label>
+				<item identifierRef="CxnDef.6RoMduhbldr-q-L"></item>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">99. Incubator</label>
+			<item>
+				<label xml:lang="en">XY56RE</label>
+				<item identifierRef="CxnDef.6RoMduhbldr-q-L"></item>
+				<item identifierRef="CxnDef.-5mhjdicsc8E-q-L"></item>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">99. Incubator</label>
+			<item>
+				<label xml:lang="en">XY56RE</label>
+				<item identifierRef="CxnDef.6RoMduhbldr-q-L"></item>
+				<item identifierRef="CxnDef.-5mhjdicsc8E-q-L"></item>
+				<item identifierRef="CxnDef.5hheGaiKh-e-q-L"></item>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">99. Incubator</label>
+			<item>
+				<label xml:lang="en">XY56RE</label>
+				<item identifierRef="CxnDef.6RoMduhbldr-q-L"></item>
+				<item identifierRef="CxnDef.-5mhjdicsc8E-q-L"></item>
+				<item identifierRef="CxnDef.5hheGaiKh-e-q-L"></item>
+				<item identifierRef="CxnDef.-71TCYDOb3Bj-q-L"></item>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">99. Incubator</label>
+			<item>
+				<label xml:lang="en">XY56RE</label>
+				<item identifierRef="CxnDef.6RoMduhbldr-q-L"></item>
+				<item identifierRef="CxnDef.-5mhjdicsc8E-q-L"></item>
+				<item identifierRef="CxnDef.5hheGaiKh-e-q-L"></item>
+				<item identifierRef="CxnDef.-71TCYDOb3Bj-q-L"></item>
+				<item identifierRef="CxnDef.d4ouK-2S2G-q-L"></item>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">99. Incubator</label>
+			<item>
+				<label xml:lang="en">XY56RE</label>
+				<item identifierRef="CxnDef.6RoMduhbldr-q-L"></item>
+				<item identifierRef="CxnDef.-5mhjdicsc8E-q-L"></item>
+				<item identifierRef="CxnDef.5hheGaiKh-e-q-L"></item>
+				<item identifierRef="CxnDef.-71TCYDOb3Bj-q-L"></item>
+				<item identifierRef="CxnDef.d4ouK-2S2G-q-L"></item>
+				<item identifierRef="CxnDef.5pXd5kzSoD8-q-L"></item>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">99. Incubator</label>
+			<item>
+				<label xml:lang="en">XY56RE</label>
+				<item identifierRef="CxnDef.6RoMduhbldr-q-L"></item>
+				<item identifierRef="CxnDef.-5mhjdicsc8E-q-L"></item>
+				<item identifierRef="CxnDef.5hheGaiKh-e-q-L"></item>
+				<item identifierRef="CxnDef.-71TCYDOb3Bj-q-L"></item>
+				<item identifierRef="CxnDef.d4ouK-2S2G-q-L"></item>
+				<item identifierRef="CxnDef.5pXd5kzSoD8-q-L"></item>
+				<item identifierRef="CxnDef.-3YjXLSUO51b-q-L"></item>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">99. Incubator</label>
+			<item>
+				<label xml:lang="en">XY56RE</label>
+				<item identifierRef="CxnDef.6RoMduhbldr-q-L"></item>
+				<item identifierRef="CxnDef.-5mhjdicsc8E-q-L"></item>
+				<item identifierRef="CxnDef.5hheGaiKh-e-q-L"></item>
+				<item identifierRef="CxnDef.-71TCYDOb3Bj-q-L"></item>
+				<item identifierRef="CxnDef.d4ouK-2S2G-q-L"></item>
+				<item identifierRef="CxnDef.5pXd5kzSoD8-q-L"></item>
+				<item identifierRef="CxnDef.-3YjXLSUO51b-q-L"></item>
+				<item identifierRef="CxnDef.-45sOldMSuPR-q-L"></item>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">99. Incubator</label>
+			<item>
+				<label xml:lang="en">XY56RE</label>
+				<item identifierRef="CxnDef.6RoMduhbldr-q-L"></item>
+				<item identifierRef="CxnDef.-5mhjdicsc8E-q-L"></item>
+				<item identifierRef="CxnDef.5hheGaiKh-e-q-L"></item>
+				<item identifierRef="CxnDef.-71TCYDOb3Bj-q-L"></item>
+				<item identifierRef="CxnDef.d4ouK-2S2G-q-L"></item>
+				<item identifierRef="CxnDef.5pXd5kzSoD8-q-L"></item>
+				<item identifierRef="CxnDef.-3YjXLSUO51b-q-L"></item>
+				<item identifierRef="CxnDef.-45sOldMSuPR-q-L"></item>
+				<item identifierRef="CxnDef.7psFI0Eu0LM-q-L"></item>
+				<item identifierRef="CxnDef.-7UYWEADtuCv-q-L"></item>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">99. Incubator</label>
+			<item>
+				<label xml:lang="en">XY56RE</label>
+				<item identifierRef="CxnDef.6RoMduhbldr-q-L"></item>
+				<item identifierRef="CxnDef.-5mhjdicsc8E-q-L"></item>
+				<item identifierRef="CxnDef.5hheGaiKh-e-q-L"></item>
+				<item identifierRef="CxnDef.-71TCYDOb3Bj-q-L"></item>
+				<item identifierRef="CxnDef.d4ouK-2S2G-q-L"></item>
+				<item identifierRef="CxnDef.5pXd5kzSoD8-q-L"></item>
+				<item identifierRef="CxnDef.-3YjXLSUO51b-q-L"></item>
+				<item identifierRef="CxnDef.-45sOldMSuPR-q-L"></item>
+				<item identifierRef="CxnDef.7psFI0Eu0LM-q-L"></item>
+				<item identifierRef="CxnDef.-7UYWEADtuCv-q-L"></item>
+				<item identifierRef="CxnDef.11N_FdUpqn_-q-L"></item>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">99. Incubator</label>
+			<item>
+				<label xml:lang="en">XY56RE</label>
+				<item identifierRef="CxnDef.6RoMduhbldr-q-L"></item>
+				<item identifierRef="CxnDef.-5mhjdicsc8E-q-L"></item>
+				<item identifierRef="CxnDef.5hheGaiKh-e-q-L"></item>
+				<item identifierRef="CxnDef.-71TCYDOb3Bj-q-L"></item>
+				<item identifierRef="CxnDef.d4ouK-2S2G-q-L"></item>
+				<item identifierRef="CxnDef.5pXd5kzSoD8-q-L"></item>
+				<item identifierRef="CxnDef.-3YjXLSUO51b-q-L"></item>
+				<item identifierRef="CxnDef.-45sOldMSuPR-q-L"></item>
+				<item identifierRef="CxnDef.7psFI0Eu0LM-q-L"></item>
+				<item identifierRef="CxnDef.-7UYWEADtuCv-q-L"></item>
+				<item identifierRef="CxnDef.11N_FdUpqn_-q-L"></item>
+				<item identifierRef="CxnDef.7Vt8oIoy5pl-q-L"></item>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">99. Incubator</label>
+			<item>
+				<label xml:lang="en">XY56RE</label>
+				<item identifierRef="Model.-3U3gD8amtWe-u-L"></item>
+			</item>
+		</item>
+	</organizations>
+	<propertyDefinitions>
+		<propertyDefinition identifier="propid_1" type="string">
+			<name>UUID</name>
+		</propertyDefinition>
+		<propertyDefinition identifier="propid_2" type="string">
+			<name>AT_ID</name>
+		</propertyDefinition>
+	</propertyDefinitions>
+	<views>
+		<diagrams>
+			<view identifier="Model.-3U3gD8amtWe-u-L" xsi:type="Diagram">
+				<name xml:lang="en">Business Application Dependency Pattern</name>
+				<documentation xml:lang="en"></documentation>
+				<node identifier="id-af1da46b2ebb44e6981b5784a8147e48" xsi:type="Container" x="5" y="302" w="799" h="236">
+					<label xml:lang="en"> </label>
+					<style>
+						<fillColor r="0" g="0" b="0" a="0"></fillColor>
+						<lineColor r="181" g="249" b="247" a="100"></lineColor>
+					</style>
+				</node>
+				<node identifier="ObjOcc.-3U3gD8amtWe-u-L-1OHO1bUXX16-x-L-33-c" elementRef="ObjDef.7KvTiFFiToK-p-L" xsi:type="Element" x="22" y="230" w="135" h="60"></node>
+				<node identifier="ObjOcc.-3U3gD8amtWe-u-L-2Iqb35ukVZR-x-L-33-c" elementRef="ObjDef.-3ht3vIMOI1h-p-L" xsi:type="Element" x="22" y="330" w="135" h="60"></node>
+				<node identifier="ObjOcc.-3U3gD8amtWe-u-L-3GTna1bglUx-x-L-33-c" elementRef="ObjDef.-62MvLsqitAo-p-L" xsi:type="Element" x="22" y="430" w="135" h="60"></node>
+				<node identifier="ObjOcc.-3U3gD8amtWe-u-L--37RRd8s4-YH-x-L-33-c" elementRef="ObjDef.4NheoKUx2oz-p-L" xsi:type="Element" x="442" y="30" w="135" h="60"></node>
+				<node identifier="ObjOcc.-3U3gD8amtWe-u-L--3d1kO4I5l36-x-L-33-c" elementRef="ObjDef.-1elL14Za7s8-p-L" xsi:type="Element" x="217" y="130" w="135" h="60"></node>
+				<node identifier="ObjOcc.-3U3gD8amtWe-u-L-7v1s1q947cq-x-L-33-c" elementRef="ObjDef.-7kXxVWMfVi5-p-L" xsi:type="Element" x="217" y="230" w="135" h="60"></node>
+				<node identifier="ObjOcc.-3U3gD8amtWe-u-L--3SL-_Yw21GX-x-L-33-c" elementRef="ObjDef.6wv3OsWwXn7-p-L" xsi:type="Element" x="217" y="330" w="135" h="60"></node>
+				<node identifier="ObjOcc.-3U3gD8amtWe-u-L--5g6rsnLxbtF-x-L-33-c" elementRef="ObjDef.-1iVczi-BkEG-p-L" xsi:type="Element" x="442" y="170" w="135" h="60"></node>
+				<node identifier="ObjOcc.-3U3gD8amtWe-u-L-5NNyp3c48bm-x-L-33-c" elementRef="ObjDef.4bgrxRFAN7u-p-L" xsi:type="Element" x="217" y="430" w="135" h="60"></node>
+				<node identifier="ObjOcc.-3U3gD8amtWe-u-L--7p9JP2J8HGb-x-L-33-c" elementRef="ObjDef.-2quGZNJ5KP6-p-L" xsi:type="Element" x="442" y="330" w="135" h="60"></node>
+				<node identifier="ObjOcc.-3U3gD8amtWe-u-L--4NQRt7lswgN-x-L-33-c" elementRef="ObjDef.1YCsNhemo-C-p-L" xsi:type="Element" x="637" y="330" w="135" h="60"></node>
+				<node identifier="ObjOcc.-3U3gD8amtWe-u-L-2L6sUnHDPaA-x-L-33-c" elementRef="ObjDef.-4yNGyDgkw8N-p-L" xsi:type="Element" x="952" y="330" w="135" h="60"></node>
+				<node identifier="ObjOcc.-3U3gD8amtWe-u-L-51Jf_OFxe6L-x-L-33-c" elementRef="ObjDef.3UwlRQVZQHZ-p-L" xsi:type="Element" x="952" y="490" w="135" h="60"></node>
+				<connection identifier="CxnOcc.-3U3gD8amtWe-u-L--3A-6-Ny5J0e-y-L-34-c" relationshipRef="CxnDef.11N_FdUpqn_-q-L" xsi:type="Relationship" source="ObjOcc.-3U3gD8amtWe-u-L--3d1kO4I5l36-x-L-33-c" target="ObjOcc.-3U3gD8amtWe-u-L--5g6rsnLxbtF-x-L-33-c">
+					<bendpoint x="397" y="160"></bendpoint>
+					<bendpoint x="397" y="180"></bendpoint>
+				</connection>
+				<connection identifier="CxnOcc.-3U3gD8amtWe-u-L--NiyZNCIBZ-y-L-34-c" relationshipRef="CxnDef.-7UYWEADtuCv-q-L" xsi:type="Relationship" source="ObjOcc.-3U3gD8amtWe-u-L--7p9JP2J8HGb-x-L-33-c" target="ObjOcc.-3U3gD8amtWe-u-L--4NQRt7lswgN-x-L-33-c"></connection>
+				<connection identifier="CxnOcc.-3U3gD8amtWe-u-L--4_laKWl0i6p-y-L-34-c" relationshipRef="CxnDef.7psFI0Eu0LM-q-L" xsi:type="Relationship" source="ObjOcc.-3U3gD8amtWe-u-L--7p9JP2J8HGb-x-L-33-c" target="ObjOcc.-3U3gD8amtWe-u-L--5g6rsnLxbtF-x-L-33-c"></connection>
+				<connection identifier="CxnOcc.-3U3gD8amtWe-u-L-2h5mEPLhoDt-y-L-34-c" relationshipRef="CxnDef.d4ouK-2S2G-q-L" xsi:type="Relationship" source="ObjOcc.-3U3gD8amtWe-u-L--5g6rsnLxbtF-x-L-33-c" target="ObjOcc.-3U3gD8amtWe-u-L--37RRd8s4-YH-x-L-33-c"></connection>
+				<connection identifier="CxnOcc.-3U3gD8amtWe-u-L-6ZIbXIfHAK0-y-L-34-c" relationshipRef="CxnDef.-45sOldMSuPR-q-L" xsi:type="Relationship" source="ObjOcc.-3U3gD8amtWe-u-L--3SL-_Yw21GX-x-L-33-c" target="ObjOcc.-3U3gD8amtWe-u-L--7p9JP2J8HGb-x-L-33-c"></connection>
+				<connection identifier="CxnOcc.-3U3gD8amtWe-u-L--4lEMcEkAScs-y-L-34-c" relationshipRef="CxnDef.-3YjXLSUO51b-q-L" xsi:type="Relationship" source="ObjOcc.-3U3gD8amtWe-u-L-51Jf_OFxe6L-x-L-33-c" target="ObjOcc.-3U3gD8amtWe-u-L--7p9JP2J8HGb-x-L-33-c">
+					<bendpoint x="540" y="520"></bendpoint>
+				</connection>
+				<connection identifier="CxnOcc.-3U3gD8amtWe-u-L--1I5mmCwUD3J-y-L-34-c" relationshipRef="CxnDef.-5mhjdicsc8E-q-L" xsi:type="Relationship" source="ObjOcc.-3U3gD8amtWe-u-L-5NNyp3c48bm-x-L-33-c" target="ObjOcc.-3U3gD8amtWe-u-L--7p9JP2J8HGb-x-L-33-c">
+					<bendpoint x="480" y="460"></bendpoint>
+				</connection>
+				<connection identifier="CxnOcc.-3U3gD8amtWe-u-L-fGoWViOksO-y-L-34-c" relationshipRef="CxnDef.7Vt8oIoy5pl-q-L" xsi:type="Relationship" source="ObjOcc.-3U3gD8amtWe-u-L-1OHO1bUXX16-x-L-33-c" target="ObjOcc.-3U3gD8amtWe-u-L-7v1s1q947cq-x-L-33-c"></connection>
+				<connection identifier="CxnOcc.-3U3gD8amtWe-u-L-4lXxH_yC1-9-y-L-34-c" relationshipRef="CxnDef.-71TCYDOb3Bj-q-L" xsi:type="Relationship" source="ObjOcc.-3U3gD8amtWe-u-L-2Iqb35ukVZR-x-L-33-c" target="ObjOcc.-3U3gD8amtWe-u-L--3SL-_Yw21GX-x-L-33-c"></connection>
+				<connection identifier="CxnOcc.-3U3gD8amtWe-u-L--s0et2LKwbx-y-L-34-c" relationshipRef="CxnDef.5pXd5kzSoD8-q-L" xsi:type="Relationship" source="ObjOcc.-3U3gD8amtWe-u-L--4NQRt7lswgN-x-L-33-c" target="ObjOcc.-3U3gD8amtWe-u-L-2L6sUnHDPaA-x-L-33-c"></connection>
+				<connection identifier="CxnOcc.-3U3gD8amtWe-u-L--2OY-O5vSF7m-y-L-34-c" relationshipRef="CxnDef.6RoMduhbldr-q-L" xsi:type="Relationship" source="ObjOcc.-3U3gD8amtWe-u-L-3GTna1bglUx-x-L-33-c" target="ObjOcc.-3U3gD8amtWe-u-L-5NNyp3c48bm-x-L-33-c"></connection>
+				<connection identifier="CxnOcc.-3U3gD8amtWe-u-L--52UGZ9KZCBn-y-L-34-c" relationshipRef="CxnDef.5hheGaiKh-e-q-L" xsi:type="Relationship" source="ObjOcc.-3U3gD8amtWe-u-L-7v1s1q947cq-x-L-33-c" target="ObjOcc.-3U3gD8amtWe-u-L--5g6rsnLxbtF-x-L-33-c">
+					<bendpoint x="397" y="260"></bendpoint>
+					<bendpoint x="397" y="220"></bendpoint>
+				</connection>
+			</view>
+		</diagrams>
+	</views>
+</model>

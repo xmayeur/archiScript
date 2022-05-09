@@ -1,0 +1,295 @@
+console.clear()
+console.show()
+load(__SCRIPTS_DIR__ + 'lib/relLib.ajs')
+let maze
+let x, y
+let grid = 10
+let gap = 20 / grid
+let start = []
+let end = []
+const rnd = Math.round
+
+mazeSolver(selection)
+
+function mazeSolver(selection) {
+    let rel = $(selection).filter('relationship').first()
+    if (!rel)
+        return null
+    let obj1 = rel.source
+    let obj2 = rel.target
+    let b1 = smallBounds(obj1)
+    let b2 = smallBounds(obj2)
+    let view = obj1.view
+    // console.log(view.name)
+    // create the "maze"
+    createMaze(view)
+
+    let [pos, angle] = getObjPos(obj1, obj2)
+    pos = pos.substr(0, 1)
+    // console.log(pos, angle)
+    try {
+        if (pos === 'T') {
+            x = b1.x
+            y = rnd(b1.y - b1.height / 2 - gap)
+            maze[y][x] = 'S'
+            start = [y - 1, x]
+            x = b2.x
+            y = rnd(b2.y + b2.height / 2 + gap)
+            end = [y + 1, x]
+            maze [y][x] = 'E'
+        } else if (pos === 'B') {
+            y = rnd(gap + b1.y + b1.height / 2)
+            x = b1.x
+            start = [y + 1, x]
+            maze[y][x] = 'S'
+            y = rnd(b2.y - b1.height / 2 - gap)
+            x = b2.x
+            end = [y - 1, x]
+            maze [y][x] = 'E'
+        } else if (pos === 'L') {
+            y = b1.y
+            x = rnd(b1.x - b1.width / 2 - gap)
+            start = [y, x - 1]
+            maze[y][x] = 'S'
+            y = b2.y
+            x = rnd(gap + b2.x + b2.width / 2)
+            end = [y, x + 1]
+            maze [y][x] = 'E'
+        } else if (pos === 'R') {
+            y = b1.y
+            x = rnd(gap + b1.x + b1.width / 2)
+            start = [y, x + 1]
+            maze[y][x] = 'S'
+            y = b2.y
+            x = rnd(b2.x - b2.width / 2 - gap)
+            end = [y, x - 1]
+            maze [y][x] = 'E'
+        }
+    } catch (e) {
+        console.log('Error setting start/end point at', pos, b1, b2, x, y)
+        return
+    }
+    // console.log(displayMaze(maze, ' '))
+
+    s = [...start]
+    e = [...end]
+
+    fillMaze(maze, start);
+
+    let bps = followSolution(maze, end);
+    if (bps.length > 0) {
+        bps.push({
+            x: grid * rnd(s[1]),
+            y: grid * rnd(s[0])
+        })
+
+        bps = bps.reverse()
+
+        bps.push({
+            x: grid * rnd(e[1]),
+            y: grid * rnd(e[0])
+        })
+
+        // console.log(displayMaze(maze, '\t'))
+        let idx = 0
+        // console.log(pos, angle)
+        rel.deleteAllBendpoints()
+        bps.forEach(bp => {
+            // console.log('bp ', bp)
+            addAbsoluteBendpoint(rel, bp.x, bp.y, idx++)
+        })
+    } else {
+        console.log('No path found!')
+    }
+}
+
+// create a 'maze' grid filled by view's elements
+function createMaze(view) {
+    if (!!view) {
+        let minX = 0
+        let minY = 0
+        let maxX = 0
+        let maxY = 0
+        let elems = $(view).find().not('diagram-model-group').not('relationship').not('grouping')
+
+        elems.forEach(e => {
+            try {
+                let b = smallBounds(e)
+                maxX = Math.max(maxX, b.x + b.width)
+                maxY = Math.max(maxY, b.y + b.height)
+            } catch (e) {
+            }
+        })
+        minX = rnd(minX)
+        minY = rnd(minY)
+        maxX = rnd(maxX) + 2 * gap
+        maxY = rnd(maxY) + 2 * gap
+        // console.log('maze bounds', minX, minY, maxX, maxY)
+
+        maze = []
+        for (y = 0; y < maxY + 10; y++) {
+            maze.push([])
+            for (x = 0; x < maxX + 10; x++) {
+                maze[y].push(' ')
+            }
+        }
+        elems.forEach(e => {
+
+            try {
+                b = smallBounds(e)
+                // console.log(e.name, b.x, b.width, b.y, b.height)
+                for (y = b.y - b.height / 2 - gap; y < b.y + b.height / 2 + gap; y++) {
+                    for (x = b.x - b.width / 2 - gap; x < b.x + b.width / 2 + gap; x++) {
+                        maze[rnd(y)][rnd(x)] = 'X'
+                    }
+                }
+            } catch (exc) {
+                console.log('error on ', e.name, e.type, String(exc))
+            }
+        })
+
+    } else {
+        console.log('Please select a view!')
+    }
+}
+
+// fill the maze with distance from start to any cell
+function fillMaze(maze, start) {
+
+    maze[start[0]][start[1]] = '1';
+    let height = maze.length;
+    let width = maze[0].length;
+
+    let queue = start;
+
+    while (queue.length !== 0) {
+
+        let y = queue.shift();
+        let x = queue.shift();
+        let cur_val = rnd(maze[y][x]);
+
+        // check each of the neighbours
+        for (let ny = -1; ny <= 1; ny++) {
+            for (let nx = -1; nx <= 1; nx++) {
+                if (Math.abs(ny) === Math.abs(nx) || y + ny < 0 || y + ny >= height || x + nx < 0 || x + nx >= width)
+                    continue;
+
+                if (maze[y + ny][x + nx] === ' ') {
+                    try {
+                        maze[y + ny][x + nx] = (cur_val + 1).toString();
+                    } catch (e) {
+                        console.log('fillMaze - Error at ', x + nx, y + ny, cur_val + 1)
+                        return
+                    }
+                    queue.push(y + ny);
+                    queue.push(x + nx);
+                }
+
+            }
+        }
+
+
+    }
+
+}
+
+// find the path from start to end
+function followSolution(maze, end) {
+
+    let height = maze.length;
+    let width = maze[0].length;
+    let prev2 = [0, 0]
+    let prev = [1, 1]
+    let bps = []
+    let cur_step = rnd(maze[end[0]][end[1]]);
+    // console.log(cur_step)
+
+    maze[end[0]][end[1]] = 'o';
+
+    while (cur_step > 1) {
+        y = end[0];
+        x = end[1];
+        // console.log(end);
+        // console.log(cur_step);
+        let get_out = 0;
+
+        // check each of the neighbours (up down left right)
+        for (let ny = -1; ny <= 1; ny++) { // If checking all neighbours this could be max(y-1,0):min(y+1,height)
+            for (let nx = -1; nx <= 1; nx++) {
+                if (Math.abs(ny) === Math.abs(nx) || y + ny < 0 || y + ny >= height || x + nx < 0 || x + nx >= width)
+                    continue;
+
+                if (maze[y + ny][x + nx] === (cur_step - 1).toString()) {
+                    end = [y + ny, x + nx];
+                    cur_step = rnd(maze[end[0]][end[1]]);
+                    maze[y + ny][x + nx] = 'o';
+                    // console.log(y + ny, x + nx)
+                    if (
+                        (prev2[0] === prev[0] && (y + ny) !== prev[0])
+                        ||
+                        (prev2[1] === prev[1] && (x + nx) !== prev[1])
+                    ) {
+                        // bps.push({y:grid*(y + ny), x:grid*(x + nx)})
+                        bps.push({x: grid * prev[1], y: grid * prev[0]})
+                        //console.log('BP: ', grid * prev[1], grid * prev[0])
+                    }
+                    prev2 = prev
+                    prev = [y + ny, x + nx]
+                    get_out = 1;
+                    break;
+                }
+
+            }
+            if (get_out === 1)
+                break;
+
+        }
+
+    }
+    return bps
+}
+
+// find start and end points in the maze
+function findStartEnd(maze, val) {
+
+    let height = maze.length;
+    let width = maze[0].length;
+
+    // find start
+    for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+            if (maze[y][x] === val) {
+                // check the four directions
+                for (let ny = -1; ny <= 1; ny++) {
+                    for (let nx = -1; nx <= 1; nx++) {
+                        if (Math.abs(ny) === Math.abs(nx) || y + ny < 0 || y + ny >= height || x + nx < 0 || x + nx >= width)
+                            continue;
+
+                        if (maze[y + ny][x + nx] === ' ')
+                            return [y + ny, x + nx];
+
+                    }
+                }
+            }
+        }
+    }
+}
+
+function displayMaze(maze, space = ' ') {
+    let text = [];
+    for (let y = 0; y < maze.length; y++)
+        text.push(maze[y].join(space) + '\n');
+    return text.join('');
+}
+
+function smallBounds(e) {
+    // console.log(e.name, e.type)
+    let b = getObjXY(e)
+    // console.log(b)
+    return {
+        x: rnd(b.x / grid),
+        y: rnd(b.y / grid),
+        width: rnd(b.width / grid),
+        height: rnd(b.height / grid)
+    }
+}

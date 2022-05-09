@@ -1,0 +1,15 @@
+console.clear()
+console.show
+
+if ( model == null || model.id == null )
+	fatal("You must select a model or some Archimate elements.");
+load(__SCRIPTS_DIR__ + 'lib/lib.ajs')
+
+$('element').forEach( e => {
+        embedProperties(e);
+});
+
+$('relationship').forEach( e => {
+        embedProperties(e);
+});
+console.log('Done')

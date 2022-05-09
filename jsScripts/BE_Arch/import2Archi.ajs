@@ -1,0 +1,19 @@
+console.clear()
+
+try {
+    load(__SCRIPTS_DIR__ + 'lib/lib.ajs');
+    log('lib loaded')
+    log('createBusAppFunctionalViews loading', null, '\n___________________________\n')
+    load(__DIR__ + 'BE_Arch/createBusAppFunctionalViews.ajs');
+    log('createBusAppGovernanceViews loading')
+    load(__DIR__ + 'BE_Arch/createBusAppGovernanceViews.ajs')
+    $('element').forEach(e=>{embedProperties(e)})
+    log('modelCleansing loading')
+    load(__DIR__ + 'BE_Arch/modelCleansing.ajs')
+} catch(e){
+    log('ERROR: '+String(e))
+}
+
+
+// load(__DIR__+'removeFolderPath.ajs')
+

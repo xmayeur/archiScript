@@ -1,0 +1,2698 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model xmlns="http://www.opengroup.org/xsd/archimate/3.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengroup.org/xsd/archimate/3.0/ http://www.opengroup.org/xsd/archimate/3.1/archimate3_Diagram.xsd" identifier="id-511cdda402b446ee8582a4f5f278f7d1">
+	<name xml:lang="en">Data Management On A Page</name>
+	<elements>
+		<element identifier="ObjDef.-4onGQzLwIqY-p-L" xsi:type="BusinessService">
+			<name xml:lang="en">Case Dossier Management</name>
+			<documentation xml:lang="en">Managing all features concerning content within a case dossier. A case dossier facilitates a running business process with content.</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">6e3251fd-1cd7-11eb-05d0-0050568b5c9f</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Managing all features concerning content within a case dossier. A case dossier facilitates a running business process with content.</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.wtYUp91oc4-p-L" xsi:type="BusinessService">
+			<name xml:lang="en">Digital Safe</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">6e3251ff-1cd7-11eb-05d0-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.53Yndg5wcZf-p-L" xsi:type="BusinessService">
+			<name xml:lang="en">e-Signing</name>
+			<documentation xml:lang="en">Registration of a formal approval of a customer on a document</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">6e325201-1cd7-11eb-05d0-0050568b5c9f</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Registration of a formal approval of a customer on a document</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.4D-S83CiRG7-p-L" xsi:type="ApplicationFunction">
+			<name xml:lang="en">Dossier management (application function)</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">bdb4d710-a33d-11eb-05d0-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-6qq7xc82aME-p-L" xsi:type="Capability">
+			<name xml:lang="en">Payroll administration</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">34b22ac0-0a38-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-3_IPAXli-fc-p-L" xsi:type="Capability">
+			<name xml:lang="en">Fraud response</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">895e9496-0a3a-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.2Hx8A9_zIx5-p-L" xsi:type="Capability">
+			<name xml:lang="en">Prevention &amp; protection at work</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">34b22acf-0a38-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-21IOmGDhhmo-p-L" xsi:type="Capability">
+			<name xml:lang="en">Real Estate</name>
+			<documentation xml:lang="en">Ability to manage, develop and adapt the properties (land and buildings) of ING, in accordance with the operational needs.</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">34b22ad5-0a38-11eb-4ee3-0050568b5c9f</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to manage, develop and adapt the properties (land and buildings) of ING, in accordance with the operational needs.</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.2Mw5mKemGwp-p-L" xsi:type="Capability">
+			<name xml:lang="en">Content Delivery</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">cd675cb5-0a40-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.2Moc_e1dnzb-p-L" xsi:type="Capability">
+			<name xml:lang="en">Isolation</name>
+			<documentation xml:lang="en">Ability to separate workloads (Development, Test, Acceptance and Production environments) and data</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">a6f52f04-4bb6-11ec-19af-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to separate workloads (Development, Test, Acceptance and Production environments) and data</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.4uN6sYYbkF6-p-L" xsi:type="Capability">
+			<name xml:lang="en">Operating model performance benchmarking</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">66e8dc14-0a45-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-GecYqlIEXw-p-L" xsi:type="Capability">
+			<name xml:lang="en">Talent recruitment &amp; Sourcing</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">34b22ab1-0a38-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-3FzYJUAK_Iw-p-L" xsi:type="Capability">
+			<name xml:lang="en">Facility Management</name>
+			<documentation xml:lang="en">Ability to operate the buildings of ING and the cash services</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">c8830444-200b-11ea-26bc-0050568bd295</value>
+				</property>
+				<property propertyDefinitionRef="propid_4">
+					<value xml:lang="en">11.4</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to operate the buildings of ING and the cash services</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-o2Q79SHuDL-p-L" xsi:type="Capability">
+			<name xml:lang="en">Workload Forecast</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">cd675cc4-0a40-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-4lh2y2N9DO4-p-L" xsi:type="Capability">
+			<name xml:lang="en">Application Delivery</name>
+			<documentation xml:lang="en">TO BE DEFINED</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">8c25fe30-4c44-11ec-288a-0050568b5c9f</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">TO BE DEFINED</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-2axeLpfek4j-p-L" xsi:type="Capability">
+			<name xml:lang="en">Public Relationship Management</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">14feadaa-200d-11ea-26bc-0050568bd295</value>
+				</property>
+				<property propertyDefinitionRef="propid_4">
+					<value xml:lang="en">11.19.4</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-zor_7G4bP7-p-L" xsi:type="Capability">
+			<name xml:lang="en">Knowledge Management &amp; Collaboration</name>
+			<documentation xml:lang="en">Ability to increase the knowledge availability in general, covering but not limited to architecture models, operational procedures, best practice identification, learnings, decision management</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">f6d5cd19-200a-11ea-26bc-0050568bd295</value>
+				</property>
+				<property propertyDefinitionRef="propid_4">
+					<value xml:lang="en">11.14</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to increase the knowledge availability in general, covering but not limited to architecture models, operational procedures, best practice identification, learnings, decision management</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.1tG3MGz4lCm-p-L" xsi:type="Capability">
+			<name xml:lang="en">Reference &amp; Master Data Management</name>
+			<documentation xml:lang="en">Ability to maintain, publish and distribute Value Ranges, Master Data (on Organisation, Products and Customers), Market Data and other static data elements.</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">ed51b5a9-0a3d-11eb-4ee3-0050568b5c9f</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to maintain, publish and distribute Value Ranges, Master Data (on Organisation, Products and Customers), Market Data and other static data elements.</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-6AJoeB7sRMY-p-L" xsi:type="Capability">
+			<name xml:lang="en">Bank Inbox Management</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">cd675cc1-0a40-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-6FPSKaFHTma-p-L" xsi:type="Capability">
+			<name xml:lang="en">Customer journey exploration</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">ed51b5bb-0a3d-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.2DlasOKEQRX-p-L" xsi:type="Capability">
+			<name xml:lang="en">Contract Management</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">895e9472-0a3a-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-6jAC3h8QAIn-p-L" xsi:type="Capability">
+			<name xml:lang="en">Video Processing</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">cd675cac-0a40-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-50GczXcDY3M-p-L" xsi:type="Capability">
+			<name xml:lang="en">Legal</name>
+			<documentation xml:lang="en">Ability to provide assistance to the organization on the laws which ING is subject to.</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">c883043b-200b-11ea-26bc-0050568bd295</value>
+				</property>
+				<property propertyDefinitionRef="propid_4">
+					<value xml:lang="en">11.6</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to provide assistance to the organization on the laws which ING is subject to.</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-7EseE_k-H2i-p-L" xsi:type="Capability">
+			<name xml:lang="en">Artificial Intelligence</name>
+			<documentation xml:lang="en">Ability to increase the business performance through learning algorithms rather than through development of hardcoded rule based applications, allowing for continuous improvement and adaptability of the outcome</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">f6d5cd0d-200a-11ea-26bc-0050568bd295</value>
+				</property>
+				<property propertyDefinitionRef="propid_4">
+					<value xml:lang="en">11.15</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to increase the business performance through learning algorithms rather than through development of hardcoded rule based applications, allowing for continuous improvement and adaptability of the outcome</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.2D8f_Cg9yUK-p-L" xsi:type="Capability">
+			<name xml:lang="en">Vendor Management</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">895e9475-0a3a-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.5bIRC60pX8l-p-L" xsi:type="Capability">
+			<name xml:lang="en">Operating model documentation</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">06b71a1a-5a62-11eb-05d0-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.2t8ZmdTjRvS-p-L" xsi:type="Capability">
+			<name xml:lang="en">Vendor Relationship Management</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">a753adb0-9ecf-11eb-05d0-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.6AHCu8E5YV3-p-L" xsi:type="Capability">
+			<name xml:lang="en">Insight integration</name>
+			<documentation xml:lang="en">Ability to integrate facts, prepared by other capabilities to construct meaningful information, to the requirements of the requestors to enable decision making. Objective To transform and combine data that is created in various parts of the organisation into insights that suit the requirements of the stakeholders used so they can take decisions Examples Combining party information with RWA Customer Profitability Cost Income Ratio Consolidation from entities to group Loan to deposit ratio Stakeholder list Regulator, authorities, asset owners of tools and applications and other stakeholders that use the data.</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">e1049452-7ce9-11eb-32fd-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to integrate facts, prepared by other capabilities to construct meaningful information, to the requirements of the requestors to enable decision making. Objective To transform and combine data that is created in various parts of the organisation into insights that suit the requirements of the stakeholders used so they can take decisions Examples Combining party information with RWA Customer Profitability Cost Income Ratio Consolidation from entities to group Loan to deposit ratio Stakeholder list Regulator, authorities, asset owners of tools and applications and other stakeholders that use the data.</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.2mwdnXA30X5-p-L" xsi:type="Capability">
+			<name xml:lang="en">Datastore</name>
+			<documentation xml:lang="en">Ability to persist data, also called data-at rest, including databases (SQL, NoSQL &amp; others), storage, file systems and data migration</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">a6f52efe-4bb6-11ec-19af-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to persist data, also called data-at rest, including databases (SQL, NoSQL &amp; others), storage, file systems and data migration</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-1Jh2KTUJwCI-p-L" xsi:type="Capability">
+			<name xml:lang="en">Hosting &amp; Computation</name>
+			<documentation xml:lang="en">Ability to run IT solutions / products and to process data, including application servers, virtualization and operating systems</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">a6f52efb-4bb6-11ec-19af-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to run IT solutions / products and to process data, including application servers, virtualization and operating systems</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.1r12HtD8H9T-p-L" xsi:type="Capability">
+			<name xml:lang="en">Fraud prevention</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">895e9490-0a3a-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-3_wceSqwO7o-p-L" xsi:type="Capability">
+			<name xml:lang="en">Operating model performance measure</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">cd675ccd-0a40-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-2YoslL0poJF-p-L" xsi:type="Capability">
+			<name xml:lang="en">Information Security</name>
+			<documentation xml:lang="en">Ability to defending information from unauthorised access, use, disclosure, disruption, modification, inspection, recording or destruction</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">42f4c750-4bb3-11ec-19af-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to defending information from unauthorised access, use, disclosure, disruption, modification, inspection, recording or destruction</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.5uDrvpyStZD-p-L" xsi:type="Capability">
+			<name xml:lang="en">Anti Fraud Management</name>
+			<documentation xml:lang="en">Ability to predict, prevent, detect and manage the damages of the fraud for the customers</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">4d9f8d91-0875-11eb-3501-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to predict, prevent, detect and manage the damages of the fraud for the customers</value>
+				</property>
+				<property propertyDefinitionRef="propid_4">
+					<value xml:lang="en">11.8</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.4QnT_S38oSv-p-L" xsi:type="Capability">
+			<name xml:lang="en">IT Network</name>
+			<documentation xml:lang="en">Ability to connect IT solutions / products including connectivity, routing and time synchronisation</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">a6f52f01-4bb6-11ec-19af-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to connect IT solutions / products including connectivity, routing and time synchronisation</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-4tnfzoGyxKx-p-L" xsi:type="Capability">
+			<name xml:lang="en">Funding &amp; Liquidity management</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">d8ff346a-0a2a-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-FwE1XCkG2--p-L" xsi:type="Capability">
+			<name xml:lang="en">Cognitive Automation</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">cd675caf-0a40-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.36FlXb8aFSw-p-L" xsi:type="Capability">
+			<name xml:lang="en">Capacity planning</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">34b22ac3-0a38-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-3UAlseCGybd-p-L" xsi:type="Capability">
+			<name xml:lang="en">Operating model performance reporting</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">66e8dc11-0a45-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-7xNo3fl2t0-p-L" xsi:type="Capability">
+			<name xml:lang="en">IT Infrastructure</name>
+			<documentation xml:lang="en">Ability to operate the IT systems required to transport data, constituted of hardware systems, software and networks forming the core technical foundation of the IT landscape</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">42f4c753-4bb3-11ec-19af-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to operate the IT systems required to transport data, constituted of hardware systems, software and networks forming the core technical foundation of the IT landscape</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.1yoKMXqeW9r-p-L" xsi:type="Capability">
+			<name xml:lang="en">Content Capture</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">cd675cb2-0a40-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-2zXRx3LCC1D-p-L" xsi:type="Capability">
+			<name xml:lang="en">Endpoint Security</name>
+			<documentation xml:lang="en">Ability to protect points of access to IT solutions / products and data</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">a6f52ee6-4bb6-11ec-19af-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to protect points of access to IT solutions / products and data</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.3P5hXEHMXi3-p-L" xsi:type="Capability">
+			<name xml:lang="en">Government Relationship Management</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">14feada7-200d-11ea-26bc-0050568bd295</value>
+				</property>
+				<property propertyDefinitionRef="propid_4">
+					<value xml:lang="en">11.19.3</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-47Q6xHlGH37-p-L" xsi:type="Capability">
+			<name xml:lang="en">IT Communication</name>
+			<documentation xml:lang="en">Ability to facilitate communication between computers and/or applications running on them, covering service mesh, streams, events, messaging and bulk transfer</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">a6f52ef8-4bb6-11ec-19af-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to facilitate communication between computers and/or applications running on them, covering service mesh, streams, events, messaging and bulk transfer</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.5bJvoKuBadR-p-L" xsi:type="Capability">
+			<name xml:lang="en">Regulatory Relationship Management</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">14feada1-200d-11ea-26bc-0050568bd295</value>
+				</property>
+				<property propertyDefinitionRef="propid_4">
+					<value xml:lang="en">11.19.1</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-1SjQrkfe-Lg-p-L" xsi:type="Capability">
+			<name xml:lang="en">Fraud prediction</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">895e948d-0a3a-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-24Npl5leVV-p-L" xsi:type="Capability">
+			<name xml:lang="en">Security &amp; Safety</name>
+			<documentation xml:lang="en">Ability to ensure the physical and personal security as well as prevention and protection in the workplace.</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">c8830441-200b-11ea-26bc-0050568bd295</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to ensure the physical and personal security as well as prevention and protection in the workplace.</value>
+				</property>
+				<property propertyDefinitionRef="propid_4">
+					<value xml:lang="en">11.3</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.19liVJCV8FT-p-L" xsi:type="Capability">
+			<name xml:lang="en">Nostro management</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">d8ff3455-0a2a-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.uyAFNumpNc-p-L" xsi:type="Capability">
+			<name xml:lang="en">Device Handling</name>
+			<documentation xml:lang="en">Ability to manage computing and non-computing devices from onboarding to offboarding</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">a6f52ef5-4bb6-11ec-19af-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to manage computing and non-computing devices from onboarding to offboarding</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.2VyHkVC4w5Y-p-L" xsi:type="Capability">
+			<name xml:lang="en">Treasury</name>
+			<documentation xml:lang="en">Ability to manage the ING balance sheet, Net Interest Margin (NIM) and its funding and liquidity while meeting current and forthcoming regulatory constraints</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">aa435230-48c4-11ea-52e2-0050568b46e0</value>
+				</property>
+				<property propertyDefinitionRef="propid_4">
+					<value xml:lang="en">11.1</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to manage the ING balance sheet, Net Interest Margin (NIM) and its funding and liquidity while meeting current and forthcoming regulatory constraints</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-2rihj2y2TAP-p-L" xsi:type="Capability">
+			<name xml:lang="en">Stakeholder Management</name>
+			<documentation xml:lang="en">Ability to manage the communication, the requests and complaints with/from the stakeholders of ING, such as , management, employees, end users, clients, regulators, shareholder or the society</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">4d9f8d9d-0875-11eb-3501-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_4">
+					<value xml:lang="en">11.19</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to manage the communication, the requests and complaints with/from the stakeholders of ING, such as , management, employees, end users, clients, regulators, shareholder or the society</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-6Ax6fzNP7Mi-p-L" xsi:type="Capability">
+			<name xml:lang="en">Product approval</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">d8ff3458-0a2a-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-oEi9AwqFh2-p-L" xsi:type="Capability">
+			<name xml:lang="en">Data Exchange</name>
+			<documentation xml:lang="en">Ability to allow data that is recorded in one area to be distributed to another so that it can be used for purposes of enrichments, reporting and/or modelling.</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">5b1c0de0-3eb5-11eb-32fd-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to allow data that is recorded in one area to be distributed to another so that it can be used for purposes of enrichments, reporting and/or modelling.</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.3BUwu_gM2VR-p-L" xsi:type="Capability">
+			<name xml:lang="en">Balance sheet management</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">d8ff3461-0a2a-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.2JiVYX-dTyg-p-L" xsi:type="Capability">
+			<name xml:lang="en">Legal Advice</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">895e9481-0a3a-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.23l5F4rMOkz-p-L" xsi:type="Capability">
+			<name xml:lang="en">Network Security</name>
+			<documentation xml:lang="en">Ability to protect the communications by exchange of data occurring through technical networks and connections across IT devices, infrastructure and IT solutions / products, to avoid any uncontrolled access to data</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">a6f52ee3-4bb6-11ec-19af-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to protect the communications by exchange of data occurring through technical networks and connections across IT devices, infrastructure and IT solutions / products, to avoid any uncontrolled access to data</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.4eHKpidP3dH-p-L" xsi:type="Capability">
+			<name xml:lang="en">Advanced Analytics</name>
+			<documentation xml:lang="en">Ability to explore data to get a specific insight into the behavior of the customer, customer journeys, product usage or any specified purpose through the management of the models and related algorithms and capture of the underlying data</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">f6d5cd0a-200a-11ea-26bc-0050568bd295</value>
+				</property>
+				<property propertyDefinitionRef="propid_4">
+					<value xml:lang="en">11.13</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to explore data to get a specific insight into the behavior of the customer, customer journeys, product usage or any specified purpose through the management of the models and related algorithms and capture of the underlying data</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.3pvgxEJQOMI-p-L" xsi:type="Capability">
+			<name xml:lang="en">Threat Management</name>
+			<documentation xml:lang="en">Ability to provide continuous detection and response to security threats targeting ING</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">97a1b7b0-5444-11ec-19b6-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to provide continuous detection and response to security threats targeting ING</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-4Nl3rkYZRzv-p-L" xsi:type="Capability">
+			<name xml:lang="en">Text Processing</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">cd675ca3-0a40-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.4ANgVTCoFJs-p-L" xsi:type="Capability">
+			<name xml:lang="en">Category Management</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">34b22ade-0a38-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.3kcovZVe3b--p-L" xsi:type="Capability">
+			<name xml:lang="en">Account Payable</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">895e9478-0a3a-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.7hq3GbQ1PDX-p-L" xsi:type="Capability">
+			<name xml:lang="en">Physical &amp; Personal Security</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">34b22acc-0a38-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.3-vPQ0MdIye-p-L" xsi:type="Capability">
+			<name xml:lang="en">Speech Processing</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">cd675ca6-0a40-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-3FsqxqK_4DJ-p-L" xsi:type="Capability">
+			<name xml:lang="en">Employee Development &amp; Training</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">34b22aba-0a38-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-5jrsfMPM23s-p-L" xsi:type="Capability">
+			<name xml:lang="en">Candidate assessment &amp; Selection</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">d8ff3470-0a2a-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.1NCWZPE6xhU-p-L" xsi:type="Capability">
+			<name xml:lang="en">Foundation Management</name>
+			<documentation xml:lang="en">Ability to operate all activities required to support the core processes (excluding first line of defense) and to offer the techniques that can be mobilized to increase the efficiency of the operations</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">326860c6-07d2-11eb-4ee3-0050568b5c9f</value>
+				</property>
+				<property propertyDefinitionRef="propid_4">
+					<value xml:lang="en">11</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to operate all activities required to support the core processes (excluding first line of defense) and to offer the techniques that can be mobilized to increase the efficiency of the operations</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.2qs7kwjMLEa-p-L" xsi:type="Capability">
+			<name xml:lang="en">Worker Identity &amp; Access management</name>
+			<documentation xml:lang="en">Ability to manage the roles, identities and related access rights to IT solutions / products and data, including issuance of security certificates by ING, assigned to workers and IT resources, such as employees, consultants, non personal accounts, robotic accounts and IT solutions / products</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">a6f52eec-4bb6-11ec-19af-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to manage the roles, identities and related access rights to IT solutions / products and data, including issuance of security certificates by ING, assigned to workers and IT resources, such as employees, consultants, non personal accounts, robotic accounts and IT solutions / products</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.Itx-eExgOZ-p-L" xsi:type="Capability">
+			<name xml:lang="en">Facility services</name>
+			<documentation xml:lang="en">Ability to operate a location or a building according to its operational intended purpose and to support the employees in their daily activity.</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">34b22adb-0a38-11eb-4ee3-0050568b5c9f</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to operate a location or a building according to its operational intended purpose and to support the employees in their daily activity.</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-6JpTpbd5XS8-p-L" xsi:type="Capability">
+			<name xml:lang="en">Balance sheet management advice</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">d8ff3464-0a2a-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.nJ5uE9oQto-p-L" xsi:type="Capability">
+			<name xml:lang="en">Image Processing</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">cd675ca9-0a40-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-31iEwNZNmT--p-L" xsi:type="Capability">
+			<name xml:lang="en">Data Security and Protection</name>
+			<documentation xml:lang="en">Ability to provide insight into how data is captured in systems and is processed between systems, resulting in an end to end flow on meta data level in order to support information management, compliance (BCBS239) and audit.</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">ed51b5af-0a3d-11eb-4ee3-0050568b5c9f</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to provide insight into how data is captured in systems and is processed between systems, resulting in an end to end flow on meta data level in order to support information management, compliance (BCBS239) and audit.</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.7yKxYBWhZjJ-p-L" xsi:type="Capability">
+			<name xml:lang="en">Compensation &amp; benefits</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">34b22abd-0a38-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-4svzao3PaRo-p-L" xsi:type="Capability">
+			<name xml:lang="en">Content Sharing</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">cd675cb8-0a40-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-5Agpn7EEDJG-p-L" xsi:type="Capability">
+			<name xml:lang="en">Robotic process automation</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">895e948a-0a3a-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.1zJbdqEk6xc-p-L" xsi:type="Capability">
+			<name xml:lang="en">Fraud detection</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">895e9493-0a3a-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-2tvPFin8YTY-p-L" xsi:type="Capability">
+			<name xml:lang="en">Fraud recovery</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">895e9499-0a3a-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-5X1hj1rcZcf-p-L" xsi:type="Capability">
+			<name xml:lang="en">Data Requirements and Demand Management </name>
+			<documentation xml:lang="en">Ability to obtain data requirements from stakeholders and translate that into a data demand towards data owners, data users and distributors.</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">ed51b5a6-0a3d-11eb-4ee3-0050568b5c9f</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to obtain data requirements from stakeholders and translate that into a data demand towards data owners, data users and distributors.</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-64f1FG0EclA-p-L" xsi:type="Capability">
+			<name xml:lang="en">Data exploration</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">ed51b5b5-0a3d-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-3la_4qQPGkj-p-L" xsi:type="Capability">
+			<name xml:lang="en">Data sensing &amp; capture</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">ed51b5b2-0a3d-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-4Pg1Xycrza5-p-L" xsi:type="Capability">
+			<name xml:lang="en">Operating Model Management</name>
+			<documentation xml:lang="en">Ability to raise the operational performance through reporting, monitoring and analysis</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">f6d5cd1f-200a-11ea-26bc-0050568bd295</value>
+				</property>
+				<property propertyDefinitionRef="propid_4">
+					<value xml:lang="en">11.18</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to raise the operational performance through reporting, monitoring and analysis</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-3qFZDf6RNfC-p-L" xsi:type="Capability">
+			<name xml:lang="en">Data Security</name>
+			<documentation xml:lang="en">Ability to protect information under digital or physical form through different techniques such as cryptography</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">a6f52ee9-4bb6-11ec-19af-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to protect information under digital or physical form through different techniques such as cryptography</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-6AHqlCrMoCK-p-L" xsi:type="Capability">
+			<name xml:lang="en">Print Management</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">cd675cbe-0a40-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.7HxJRlqJlEG-p-L" xsi:type="Capability">
+			<name xml:lang="en">Workforce support</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">34b22ac6-0a38-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-PDi3_4zcki-p-L" xsi:type="Capability">
+			<name xml:lang="en">Legal Services</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">895e947e-0a3a-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.7jBcic6nj33-p-L" xsi:type="Capability">
+			<name xml:lang="en">Professional Services</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">895e947b-0a3a-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-4UY6PjUew0E-p-L" xsi:type="Capability">
+			<name xml:lang="en">Content Storage</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">cd675cbb-0a40-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-2zGo-CnIqpS-p-L" xsi:type="Capability">
+			<name xml:lang="en">Procurement</name>
+			<documentation xml:lang="en">Ability to contract with external vendors for the provision of equipment and services</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">c8830447-200b-11ea-26bc-0050568bd295</value>
+				</property>
+				<property propertyDefinitionRef="propid_4">
+					<value xml:lang="en">11.5</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to contract with external vendors for the provision of equipment and services</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.1jcl9uB5BWK-p-L" xsi:type="Capability">
+			<name xml:lang="en">Funds transfer pricing</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">d8ff345e-0a2a-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-hpWSXvPJ7A-p-L" xsi:type="Capability">
+			<name xml:lang="en">Employment Offers &amp; Contract</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">34b22ab4-0a38-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-15QWl74lTZY-p-L" xsi:type="Capability">
+			<name xml:lang="en">Vulnerability Management</name>
+			<documentation xml:lang="en">Ability to identify, classify, remediate, and mitigate vulnerabilities across software and infrastructure</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">97a1b7b3-5444-11ec-19b6-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to identify, classify, remediate, and mitigate vulnerabilities across software and infrastructure</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.DanW7ZPItQ-p-L" xsi:type="Capability">
+			<name xml:lang="en">RFX Management</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">34b22ae1-0a38-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-1TOvq7ra5tX-p-L" xsi:type="Capability">
+			<name xml:lang="en">External stakeholder management</name>
+			<documentation xml:lang="en">Ability to manage the communication, the requests and complaints with/from the external stakeholders of ING, such as regulators, shareholder or the society and to connect to and agree with those stakeholders on requirements, methodology, content, timing and technical aspects.  Objective To make sure all requirements are clear and agreed upon. Examples Meetings, Requirement Management sheets Stakeholderlist</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">8db7c2b0-210b-11ec-3ec5-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to manage the communication, the requests and complaints with/from the external stakeholders of ING, such as regulators, shareholder or the society and to connect to and agree with those stakeholders on requirements, methodology, content, timing and technical aspects.  Objective To make sure all requirements are clear and agreed upon. Examples Meetings, Requirement Management sheets Stakeholderlist</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-7wLdZYDHquG-p-L" xsi:type="Capability">
+			<name xml:lang="en">Workforce Planning</name>
+			<documentation xml:lang="en">Ability to continuously adapt the workforce availability to the workload</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">c8830423-200b-11ea-26bc-0050568bd295</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to continuously adapt the workforce availability to the workload</value>
+				</property>
+				<property propertyDefinitionRef="propid_4">
+					<value xml:lang="en">11.17</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.7tFinW5qPN8-p-L" xsi:type="Capability">
+			<name xml:lang="en">Building maintenance</name>
+			<documentation xml:lang="en">Ability to keep all the systems running in the ING buildings under working conditions, as specified.  </documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">34b22ad2-0a38-11eb-4ee3-0050568b5c9f</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to keep all the systems running in the ING buildings under working conditions, as specified.  </value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-3aBfiHEbfVA-p-L" xsi:type="Capability">
+			<name xml:lang="en">Environment &amp; Sustainability</name>
+			<documentation xml:lang="en">Ability to reduce the carbon footprint, to develop responsible interaction with the environment, to avoid depletion or degradation of natural resources and to promote long-term environmental quality</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">f6d5cd1c-200a-11ea-26bc-0050568bd295</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to reduce the carbon footprint, to develop responsible interaction with the environment, to avoid depletion or degradation of natural resources and to promote long-term environmental quality</value>
+				</property>
+				<property propertyDefinitionRef="propid_4">
+					<value xml:lang="en">11.11</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.1DDk-VuGQ0k-p-L" xsi:type="Capability">
+			<name xml:lang="en">Redeployment &amp; Retirement</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">34b22ac9-0a38-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.3_AgRSLFvJK-p-L" xsi:type="Capability">
+			<name xml:lang="en">Privacy and Data Protection Management</name>
+			<documentation xml:lang="en">Ability to control access to business/personal information and data assets. Its scope includes both physical and logical security measures required to meet regulatory, corporate confidentiality and business process requirements.</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">6cfc0300-1780-11eb-4ee3-0050568b5c9f</value>
+				</property>
+				<property propertyDefinitionRef="propid_4">
+					<value xml:lang="en">9.4.3</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to control access to business/personal information and data assets. Its scope includes both physical and logical security measures required to meet regulatory, corporate confidentiality and business process requirements.</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.mtzwwe6hR7-p-L" xsi:type="Capability">
+			<name xml:lang="en">Employee Performance Management</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">34b22ab7-0a38-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.5bFjA_6w-bX-p-L" xsi:type="Capability">
+			<name xml:lang="en">Data Lineage</name>
+			<documentation xml:lang="en">Ability to provide insight into how data is captured in systems and is processed between systems, resulting in an end to end flow on meta data level in order to support information management, compliance (BCBS239) and audit (completeness of e.g. aggregated reports and models).</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">5b1c0de3-3eb5-11eb-32fd-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to provide insight into how data is captured in systems and is processed between systems, resulting in an end to end flow on meta data level in order to support information management, compliance (BCBS239) and audit (completeness of e.g. aggregated reports and models).</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-1u1TAhZ3z5L-p-L" xsi:type="Capability">
+			<name xml:lang="en">Business process documentation</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">895e9484-0a3a-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-4K2pT9yzJFz-p-L" xsi:type="Capability">
+			<name xml:lang="en">Cash management</name>
+			<documentation xml:lang="en">Ability to transport, protect and manage the values of the branches, covering the cash in the ATMs, the foreign currencies and the cash in the branches.</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">34b22ad8-0a38-11eb-4ee3-0050568b5c9f</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to transport, protect and manage the values of the branches, covering the cash in the ATMs, the foreign currencies and the cash in the branches.</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-6KBoedMdzKP-p-L" xsi:type="Capability">
+			<name xml:lang="en">Model Management</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">ed51b5b8-0a3d-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-3tIG8NHIY8c-p-L" xsi:type="Capability">
+			<name xml:lang="en">Partner Relationship Management</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">14feadad-200d-11ea-26bc-0050568bd295</value>
+				</property>
+				<property propertyDefinitionRef="propid_4">
+					<value xml:lang="en">11.19.5</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-6zqFjvzKhhR-p-L" xsi:type="Capability">
+			<name xml:lang="en">Operation Schedule Management</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">cd675cca-0a40-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.4frdxhWbZpv-p-L" xsi:type="Capability">
+			<name xml:lang="en">Sustainability</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">ed51b5a3-0a3d-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.6BwAsJ2IbN0-p-L" xsi:type="Capability">
+			<name xml:lang="en">Human Resources</name>
+			<documentation xml:lang="en">Ability to recruit, administer, develop and forecast the capacity of the staff of ING</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">c883043e-200b-11ea-26bc-0050568bd295</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to recruit, administer, develop and forecast the capacity of the staff of ING</value>
+				</property>
+				<property propertyDefinitionRef="propid_4">
+					<value xml:lang="en">11.2</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-5PH5YYob1jN-p-L" xsi:type="Capability">
+			<name xml:lang="en">Market risk transfer / centralized risk mitigation</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">d8ff345b-0a2a-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-4KFrzKbzP_X-p-L" xsi:type="Capability">
+			<name xml:lang="en">Insight disclosure</name>
+			<documentation xml:lang="en">The ability to disclose insights in a static (document / templates)  or dynamic way (dashboards/video). Objective Disclose the required insight in the requested format. Examples The preparation of the reports for submission/ filing to external stakeholders. It includes integrating all components of the internal and external reports such as Management Summary in the Annual report and the press release info</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">e1049462-7ce9-11eb-32fd-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">The ability to disclose insights in a static (document / templates)  or dynamic way (dashboards/video). Objective Disclose the required insight in the requested format. Examples The preparation of the reports for submission/ filing to external stakeholders. It includes integrating all components of the internal and external reports such as Management Summary in the Annual report and the press release info</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.2yxYAyh5XhX-p-L" xsi:type="Capability">
+			<name xml:lang="en">Investor Relationship Management</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">14feada4-200d-11ea-26bc-0050568bd295</value>
+				</property>
+				<property propertyDefinitionRef="propid_4">
+					<value xml:lang="en">11.19.2</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-6-BqPr4s_YN-p-L" xsi:type="Capability">
+			<name xml:lang="en">Authority relationship  management</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">66e8dc2c-0a45-11eb-4ee3-0050568b5c9f</value>
+				</property>
+				<property propertyDefinitionRef="propid_4">
+					<value xml:lang="en">11.19.6</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-2QiT2_FDI00-p-L" xsi:type="Capability">
+			<name xml:lang="en">Content Management</name>
+			<documentation xml:lang="en">Ability to manage the inbound and outbound digital and physical communication flow, related to the execution of the requests submitted by the customers, to commercial communication and to campaigns</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">f6d5cd10-200a-11ea-26bc-0050568bd295</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to manage the inbound and outbound digital and physical communication flow, related to the execution of the requests submitted by the customers, to commercial communication and to campaigns</value>
+				</property>
+				<property propertyDefinitionRef="propid_4">
+					<value xml:lang="en">11.16</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-3Lozrh_PNqx-p-L" xsi:type="Capability">
+			<name xml:lang="en">Trade &amp; Hedge lifecycle management</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">d8ff346d-0a2a-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-1HYtnENV4Bc-p-L" xsi:type="Capability">
+			<name xml:lang="en">Resource Matching</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">cd675cc7-0a40-11eb-4ee3-0050568b5c9f</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.6Tp3puKkEYz-p-L" xsi:type="Capability">
+			<name xml:lang="en">Data Quality Management</name>
+			<documentation xml:lang="en">Ability to ensure the quality of data along 7 axis (DAMA and BCBS239): Timeliness, Completeness, Validity, Accuracy, Uniqueness, Consistency, Adaptability</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">ed51b5ac-0a3d-11eb-4ee3-0050568b5c9f</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to ensure the quality of data along 7 axis (DAMA and BCBS239): Timeliness, Completeness, Validity, Accuracy, Uniqueness, Consistency, Adaptability</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-2pQHwYlmemt-p-L" xsi:type="Capability">
+			<name xml:lang="en">Data Management</name>
+			<documentation xml:lang="en">Ability to govern all the data created, modified, deleted, archived, stored and used at ING in terms of definition, ethics, quality, and fit for consumption</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">f6d5cd07-200a-11ea-26bc-0050568bd295</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to govern all the data created, modified, deleted, archived, stored and used at ING in terms of definition, ethics, quality, and fit for consumption</value>
+				</property>
+				<property propertyDefinitionRef="propid_4">
+					<value xml:lang="en">11.12</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.3GWa6OW3yU--p-L" xsi:type="Capability">
+			<name xml:lang="en">Vertical Data Lineage</name>
+			<documentation xml:lang="en">Ability to provide insight into how data is translated from (external) data requirements to physical data models resulting in an end to end flow on meta data level from conceptual specification to physical realisation in systems.</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">6d478e59-3eb9-11eb-32fd-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to provide insight into how data is translated from (external) data requirements to physical data models resulting in an end to end flow on meta data level from conceptual specification to physical realisation in systems.</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-5BvHkjMJbMn-p-L" xsi:type="Capability">
+			<name xml:lang="en">Data Exchange Orchestration</name>
+			<documentation xml:lang="en">Ability to plan for the exchange of data according to data delivery agreements, to monitor the actual deliveries and to act upon deviations.</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">a171f751-3eb7-11eb-32fd-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to plan for the exchange of data according to data delivery agreements, to monitor the actual deliveries and to act upon deviations.</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-26mq0yq3fd--p-L" xsi:type="Capability">
+			<name xml:lang="en">DQ Issue Management</name>
+			<documentation xml:lang="en">Ability to assess identified issues (finding from DQ monitoring), analyse root causes, decide on mitigating solutions, monitor implementation actions.</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">a171f75b-3eb7-11eb-32fd-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to assess identified issues (finding from DQ monitoring), analyse root causes, decide on mitigating solutions, monitor implementation actions.</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.4npKc0vbtH2-p-L" xsi:type="Capability">
+			<name xml:lang="en">Design DQ Rules, Checks and Dashboards</name>
+			<documentation xml:lang="en">Ability to design (logical) DQ Rules based on DQ requirement, translate into (physical) DQ checks and into DQ Dashboards for various stages of processing</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">6d478e52-3eb9-11eb-32fd-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to design (logical) DQ Rules based on DQ requirement, translate into (physical) DQ checks and into DQ Dashboards for various stages of processing</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-2A_9uLsCsi-p-L" xsi:type="Capability">
+			<name xml:lang="en">DQ Monitoring</name>
+			<documentation xml:lang="en">Ability to perform checks on data and create a view on overall quality: completeness, timeliness, correctness, etc (DQ breaks) and applied defaulting.</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">a171f758-3eb7-11eb-32fd-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to perform checks on data and create a view on overall quality: completeness, timeliness, correctness, etc (DQ breaks) and applied defaulting.</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-1970KyNBywl-p-L" xsi:type="Capability">
+			<name xml:lang="en">Market Data Management</name>
+			<documentation xml:lang="en">Ability to acquire and maintain Market Data on (rates, curves, etc) according to (changing) requirements and publish to relevant stakeholders (and tools)</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">a171f745-3eb7-11eb-32fd-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to acquire and maintain Market Data on (rates, curves, etc) according to (changing) requirements and publish to relevant stakeholders (and tools)</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-66u_bgvVFuB-p-L" xsi:type="Capability">
+			<name xml:lang="en">Master Data Management</name>
+			<documentation xml:lang="en">Ability to define master data hierarchies, update according to (changing) requirements and publish to relevant stakeholders (distribute to tools).</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">a171f742-3eb7-11eb-32fd-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to define master data hierarchies, update according to (changing) requirements and publish to relevant stakeholders (distribute to tools).</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.4wxzmvf9CXa-p-L" xsi:type="Capability">
+			<name xml:lang="en">Business Term Definition</name>
+			<documentation xml:lang="en">Ability to define, publish and distribute Business Terms that together make up the ING glossary, reflecting derived and granular/atomic data concepts.</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">a171f739-3eb7-11eb-32fd-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to define, publish and distribute Business Terms that together make up the ING glossary, reflecting derived and granular/atomic data concepts.</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-45aS2QUTJKq-p-L" xsi:type="Capability">
+			<name xml:lang="en">Maintain DQ Framework</name>
+			<documentation xml:lang="en">Ability to maintain a framework that describes the process of DQ monitoring and issue management based on DQ requirements.</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">a171f755-3eb7-11eb-32fd-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to maintain a framework that describes the process of DQ monitoring and issue management based on DQ requirements.</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.6ZqLDBS9Pbz-p-L" xsi:type="Capability">
+			<name xml:lang="en">DQ Requirements Management</name>
+			<documentation xml:lang="en">Ability to obtain and document requirements on data quality and provide traceability to the DQ rules that monitor these</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">a171f761-3eb7-11eb-32fd-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to obtain and document requirements on data quality and provide traceability to the DQ rules that monitor these</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-6A65EWES-AN-p-L" xsi:type="Capability">
+			<name xml:lang="en">Data Delivery Agreements Management</name>
+			<documentation xml:lang="en">Ability to make arrangement for the delivery of data, based on data demand and available data exchange channels.</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">a171f74e-3eb7-11eb-32fd-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to make arrangement for the delivery of data, based on data demand and available data exchange channels.</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-42L3f7fuht6-p-L" xsi:type="Capability">
+			<name xml:lang="en">Data Requirements Acquisition</name>
+			<documentation xml:lang="en">Ability to connect to internal and external stakeholders and obtain the requirements on data according to definitions of and intended usage by stakeholders.</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">a171f736-3eb7-11eb-32fd-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to connect to internal and external stakeholders and obtain the requirements on data according to definitions of and intended usage by stakeholders.</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.4MWccFfNRQf-p-L" xsi:type="Capability">
+			<name xml:lang="en">Value Ranges Management</name>
+			<documentation xml:lang="en">Ability to define list of values for Business Terms, update according to (changing) requirements and publish to relevant stakeholders (distribute to tools)</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">a171f73f-3eb7-11eb-32fd-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to define list of values for Business Terms, update according to (changing) requirements and publish to relevant stakeholders (distribute to tools)</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-2pj991gPTpu-p-L" xsi:type="Capability">
+			<name xml:lang="en">Data Demand Management</name>
+			<documentation xml:lang="en">Ability to combine requirements for granular and derived ING business terms in to an overall plan for the delivery and consumption of data.</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">a171f73c-3eb7-11eb-32fd-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to combine requirements for granular and derived ING business terms in to an overall plan for the delivery and consumption of data.</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.5u59RRu8hbG-p-L" xsi:type="Capability">
+			<name xml:lang="en">Data Relationship Management</name>
+			<documentation xml:lang="en">Ability to define relations between data elements (e.g. mappings) according to (changing) requirements and publish to relevant stakeholders (and tools).</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">a171f748-3eb7-11eb-32fd-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to define relations between data elements (e.g. mappings) according to (changing) requirements and publish to relevant stakeholders (and tools).</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.7oSGXYSroLY-p-L" xsi:type="Capability">
+			<name xml:lang="en">Horizontal Data Lineage</name>
+			<documentation xml:lang="en">Ability to provide insight into how data is recorded in and exchanged between systems  resulting in an end to end flow on meta data level from initial recording to the ultimate usage of (derived) data. . </documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">6d478e56-3eb9-11eb-32fd-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to provide insight into how data is recorded in and exchanged between systems  resulting in an end to end flow on meta data level from initial recording to the ultimate usage of (derived) data. . </value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-62Xjn4XZYEZ-p-L" xsi:type="Capability">
+			<name xml:lang="en">Data Exchange Channel Management</name>
+			<documentation xml:lang="en">Ability to define, put in place and maintain data exchange channels that can be used for data distribution.</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">a171f74b-3eb7-11eb-32fd-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to define, put in place and maintain data exchange channels that can be used for data distribution.</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.1ENs8jIyRyY-p-L" xsi:type="Capability">
+			<name xml:lang="en">Data Access Security</name>
+			<documentation xml:lang="en">Ability to put data in context (organisational and or operational) so as to grant access to data</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">6d478e5d-3eb9-11eb-32fd-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to put data in context (organisational and or operational) so as to grant access to data</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.3KwVV5j9u2D-p-L" xsi:type="Capability">
+			<name xml:lang="en">DQ Improvement Plans</name>
+			<documentation xml:lang="en">Ability to use insights in identified DQ Issues and their planned remediation to create plans for structural improvement of quality of reports and models.</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">a171f75e-3eb7-11eb-32fd-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to use insights in identified DQ Issues and their planned remediation to create plans for structural improvement of quality of reports and models.</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-MjgW2di45p-p-L" xsi:type="Capability">
+			<name xml:lang="en">Internal Stakeholder Management</name>
+			<documentation xml:lang="en">Ability to manage the communication, the requests and complaints with/from the internal stakeholders of ING, such as MBB, Board, Management, End users etc.</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">f5e97da0-4f75-11eb-05d0-0050568b5c9f</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to manage the communication, the requests and complaints with/from the internal stakeholders of ING, such as MBB, Board, Management, End users etc.</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-56g7V6-UF00-p-L" xsi:type="ApplicationComponent">
+			<name xml:lang="en">gSecureDocumentsPROXY</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">807553a5-7db4-11eb-586f-0050568bd295</value>
+				</property>
+				<property propertyDefinitionRef="propid_6">
+					<value xml:lang="en">id-d65d8390-d987-4807-8e46-418db4482d1c</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-4pmRV7vsNeo-p-L" xsi:type="Capability">
+			<name xml:lang="en">Reporting</name>
+			<documentation xml:lang="en">Ability to disclose and distribute digestible insights (created by domain specific capabilities) to decisionmakers and requestors conform their requirements.  Objective To inform internal and external stakeholders, compliant with their requirements, about status and performance of ING or elements thereof. Examples The preparation of the reports for submission/ filing to external stakeholders. It includes integrating all components of the internal and external reports such as Management Summary in the Annual report and the press release info Stakeholders Executive Board, Executive Board, Audit Committee, Internal auditors, Other internal stakeholders, Regulators, Supervisors, Tax authorities, Statistic Agencies, Shareholders, Other external stakeholders</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">9ac62a93-2055-11ec-3ec5-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to disclose and distribute digestible insights (created by domain specific capabilities) to decisionmakers and requestors conform their requirements.  Objective To inform internal and external stakeholders, compliant with their requirements, about status and performance of ING or elements thereof. Examples The preparation of the reports for submission/ filing to external stakeholders. It includes integrating all components of the internal and external reports such as Management Summary in the Annual report and the press release info Stakeholders Executive Board, Executive Board, Audit Committee, Internal auditors, Other internal stakeholders, Regulators, Supervisors, Tax authorities, Statistic Agencies, Shareholders, Other external stakeholders</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-2bd7xCxLQGc-p-L" xsi:type="Capability">
+			<name xml:lang="en">Distribution</name>
+			<documentation xml:lang="en">The ability to distribute a report to internal and external requestors conform their requirements Objective To deliver data and reports to to internal and external stakeholders conform their requirements. This enables the stakeholder to  gain knowledge based on the insights. Examples Mail, Reporting Portal Stakeholders Executive Board, Executive Board, Audit Committee, Internal auditors, Other internal stakeholders, Regulators, Supervisors, Tax authorities, Statistic Agencies, Shareholders, Other external stakeholders</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">1f671560-2073-11ec-3ec5-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">The ability to distribute a report to internal and external requestors conform their requirements Objective To deliver data and reports to to internal and external stakeholders conform their requirements. This enables the stakeholder to  gain knowledge based on the insights. Examples Mail, Reporting Portal Stakeholders Executive Board, Executive Board, Audit Committee, Internal auditors, Other internal stakeholders, Regulators, Supervisors, Tax authorities, Statistic Agencies, Shareholders, Other external stakeholders</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.-3NX1UsNtQRC-p-L" xsi:type="Capability">
+			<name xml:lang="en">Operational Data Sign off</name>
+			<documentation xml:lang="en">Ability to have responsible business management that act as the data owner to  confirm  that data recorded and submitted  is  correct and complete by signing off on the reported figures. Objective: Ensure reliability of data in systems</documentation>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">1f67156f-2073-11ec-3ec5-0050568bdf9a</value>
+				</property>
+				<property propertyDefinitionRef="propid_2">
+					<value xml:lang="en">Ability to have responsible business management that act as the data owner to  confirm  that data recorded and submitted  is  correct and complete by signing off on the reported figures. Objective: Ensure reliability of data in systems</value>
+				</property>
+			</properties>
+		</element>
+	</elements>
+	<relationships>
+		<relationship identifier="CxnDef.-6CbQ1rXCI2Q-q-L" source="ObjDef.-4onGQzLwIqY-p-L" target="ObjDef.-4svzao3PaRo-p-L" xsi:type="Realization">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-4yE3zySX0SD-q-L" source="ObjDef.wtYUp91oc4-p-L" target="ObjDef.-4svzao3PaRo-p-L" xsi:type="Realization">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.2FNVoN7mWtX-q-L" source="ObjDef.53Yndg5wcZf-p-L" target="ObjDef.-4svzao3PaRo-p-L" xsi:type="Realization">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.6eabKDk86ER-q-L" source="ObjDef.4D-S83CiRG7-p-L" target="ObjDef.-4onGQzLwIqY-p-L" xsi:type="Realization">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-159HDNLdmIV-q-L" source="ObjDef.-21IOmGDhhmo-p-L" target="ObjDef.-3FzYJUAK_Iw-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-1-Gey8LnmXC-q-L" source="ObjDef.-4K2pT9yzJFz-p-L" target="ObjDef.-3FzYJUAK_Iw-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-bc0U0vuYxm-q-L" source="ObjDef.7tFinW5qPN8-p-L" target="ObjDef.-3FzYJUAK_Iw-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.7RDhPo93NtC-q-L" source="ObjDef.Itx-eExgOZ-p-L" target="ObjDef.-3FzYJUAK_Iw-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.5E_p6yLrkXl-q-L" source="ObjDef.4MWccFfNRQf-p-L" target="ObjDef.1tG3MGz4lCm-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-3dBwHhz5Kcv-q-L" source="ObjDef.5u59RRu8hbG-p-L" target="ObjDef.1tG3MGz4lCm-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-5Zlrb9182LP-q-L" source="ObjDef.-1970KyNBywl-p-L" target="ObjDef.1tG3MGz4lCm-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.qhLVnJAhw6-q-L" source="ObjDef.-66u_bgvVFuB-p-L" target="ObjDef.1tG3MGz4lCm-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.28Sp5S4EBXO-q-L" source="ObjDef.-PDi3_4zcki-p-L" target="ObjDef.-50GczXcDY3M-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.75Tj_XkNQkh-q-L" source="ObjDef.2JiVYX-dTyg-p-L" target="ObjDef.-50GczXcDY3M-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.1AHOPyoqbGa-q-L" source="ObjDef.3_AgRSLFvJK-p-L" target="ObjDef.-50GczXcDY3M-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-4akBflTHqK8-q-L" source="ObjDef.-4Nl3rkYZRzv-p-L" target="ObjDef.-7EseE_k-H2i-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.7apVMybfW7K-q-L" source="ObjDef.nJ5uE9oQto-p-L" target="ObjDef.-7EseE_k-H2i-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-5a4boFOpkSv-q-L" source="ObjDef.3-vPQ0MdIye-p-L" target="ObjDef.-7EseE_k-H2i-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-60W_BDIjPDi-q-L" source="ObjDef.-FwE1XCkG2--p-L" target="ObjDef.-7EseE_k-H2i-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-6X7TFueukCt-q-L" source="ObjDef.-6jAC3h8QAIn-p-L" target="ObjDef.-7EseE_k-H2i-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.dnfRbBfh-7-q-L" source="ObjDef.-3qFZDf6RNfC-p-L" target="ObjDef.-2YoslL0poJF-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-1A5PVI6DK7A-q-L" source="ObjDef.-2zXRx3LCC1D-p-L" target="ObjDef.-2YoslL0poJF-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-6qygdF0SqGJ-q-L" source="ObjDef.2qs7kwjMLEa-p-L" target="ObjDef.-2YoslL0poJF-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-KrG4ibJv-6-q-L" source="ObjDef.-15QWl74lTZY-p-L" target="ObjDef.-2YoslL0poJF-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-5jaHNAv5cf3-q-L" source="ObjDef.3pvgxEJQOMI-p-L" target="ObjDef.-2YoslL0poJF-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.rnS8wJ9sZL-q-L" source="ObjDef.23l5F4rMOkz-p-L" target="ObjDef.-2YoslL0poJF-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-ytOEHhAUp3-q-L" source="ObjDef.-3_IPAXli-fc-p-L" target="ObjDef.5uDrvpyStZD-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-6O8CUj-gnqi-q-L" source="ObjDef.1zJbdqEk6xc-p-L" target="ObjDef.5uDrvpyStZD-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-3_Zlcnw4bqo-q-L" source="ObjDef.-2tvPFin8YTY-p-L" target="ObjDef.5uDrvpyStZD-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-3kVzx0CooWa-q-L" source="ObjDef.-1SjQrkfe-Lg-p-L" target="ObjDef.5uDrvpyStZD-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.4UTPyf83rdf-q-L" source="ObjDef.1r12HtD8H9T-p-L" target="ObjDef.5uDrvpyStZD-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.38OE8ZNKF6t-q-L" source="ObjDef.-47Q6xHlGH37-p-L" target="ObjDef.-7xNo3fl2t0-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.70MQhXON_bO-q-L" source="ObjDef.-1Jh2KTUJwCI-p-L" target="ObjDef.-7xNo3fl2t0-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-5Zl_JMhSGEA-q-L" source="ObjDef.uyAFNumpNc-p-L" target="ObjDef.-7xNo3fl2t0-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.1ffCNyhN0ZU-q-L" source="ObjDef.2mwdnXA30X5-p-L" target="ObjDef.-7xNo3fl2t0-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.2Nf5e-8oQsj-q-L" source="ObjDef.4QnT_S38oSv-p-L" target="ObjDef.-7xNo3fl2t0-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-5ds6YjfO1Pi-q-L" source="ObjDef.2Moc_e1dnzb-p-L" target="ObjDef.-7xNo3fl2t0-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.nlQszFPzQt-q-L" source="ObjDef.2Hx8A9_zIx5-p-L" target="ObjDef.-24Npl5leVV-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.13dthe9_H03-q-L" source="ObjDef.7hq3GbQ1PDX-p-L" target="ObjDef.-24Npl5leVV-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.sKVYMf2H5z-q-L" source="ObjDef.1jcl9uB5BWK-p-L" target="ObjDef.2VyHkVC4w5Y-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-2N8tYw5r0Ja-q-L" source="ObjDef.-5PH5YYob1jN-p-L" target="ObjDef.2VyHkVC4w5Y-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.6ervvk7DHo--q-L" source="ObjDef.-4tnfzoGyxKx-p-L" target="ObjDef.2VyHkVC4w5Y-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-17VvtLHgxrx-q-L" source="ObjDef.19liVJCV8FT-p-L" target="ObjDef.2VyHkVC4w5Y-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.2bHDgs5jIHA-q-L" source="ObjDef.-6Ax6fzNP7Mi-p-L" target="ObjDef.2VyHkVC4w5Y-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.62Sf9Zifc2--q-L" source="ObjDef.-3Lozrh_PNqx-p-L" target="ObjDef.2VyHkVC4w5Y-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.48KBT3FmE-k-q-L" source="ObjDef.-6JpTpbd5XS8-p-L" target="ObjDef.2VyHkVC4w5Y-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-5FeDoDUEQU6-q-L" source="ObjDef.3BUwu_gM2VR-p-L" target="ObjDef.2VyHkVC4w5Y-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.2Gsu3QVURNL-q-L" source="ObjDef.-1TOvq7ra5tX-p-L" target="ObjDef.-2rihj2y2TAP-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-2uxmzu4RqnM-q-L" source="ObjDef.-MjgW2di45p-p-L" target="ObjDef.-2rihj2y2TAP-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-2kr0gNfmI0C-q-L" source="ObjDef.5bJvoKuBadR-p-L" target="ObjDef.-2rihj2y2TAP-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.1Fr2Hk-rjDR-q-L" source="ObjDef.3P5hXEHMXi3-p-L" target="ObjDef.-2rihj2y2TAP-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.6a3lc-o_5FJ-q-L" source="ObjDef.-2axeLpfek4j-p-L" target="ObjDef.-2rihj2y2TAP-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-3PsQlcLRnrI-q-L" source="ObjDef.2yxYAyh5XhX-p-L" target="ObjDef.-2rihj2y2TAP-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.pmTO4i9ho2-q-L" source="ObjDef.-6-BqPr4s_YN-p-L" target="ObjDef.-2rihj2y2TAP-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-4IOOR9goxTX-q-L" source="ObjDef.-3tIG8NHIY8c-p-L" target="ObjDef.-2rihj2y2TAP-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-28cXmjNfK_S-q-L" source="ObjDef.-62Xjn4XZYEZ-p-L" target="ObjDef.-oEi9AwqFh2-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-1Smm2OV6m_r-q-L" source="ObjDef.-5BvHkjMJbMn-p-L" target="ObjDef.-oEi9AwqFh2-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.332MhVfQa91-q-L" source="ObjDef.-6A65EWES-AN-p-L" target="ObjDef.-oEi9AwqFh2-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.2q4axvwf6S1-q-L" source="ObjDef.-6FPSKaFHTma-p-L" target="ObjDef.4eHKpidP3dH-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-3p-V6AOMq4u-q-L" source="ObjDef.-6KBoedMdzKP-p-L" target="ObjDef.4eHKpidP3dH-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-6IrD_B5ucn8-q-L" source="ObjDef.-64f1FG0EclA-p-L" target="ObjDef.4eHKpidP3dH-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.B4K5QAuj9C-q-L" source="ObjDef.-3la_4qQPGkj-p-L" target="ObjDef.4eHKpidP3dH-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.ALVeJhnMqC-q-L" source="ObjDef.-4Pg1Xycrza5-p-L" target="ObjDef.1NCWZPE6xhU-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-3KWOq7I76kG-q-L" source="ObjDef.-3FzYJUAK_Iw-p-L" target="ObjDef.1NCWZPE6xhU-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.6YrOiBhV4dU-q-L" source="ObjDef.1NCWZPE6xhU-p-L" target="ObjDef.-2YoslL0poJF-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-3BdcwHXgsGH-q-L" source="ObjDef.-7EseE_k-H2i-p-L" target="ObjDef.1NCWZPE6xhU-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-720U7786_Dr-q-L" source="ObjDef.-3aBfiHEbfVA-p-L" target="ObjDef.1NCWZPE6xhU-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-3O60H7u2ANh-q-L" source="ObjDef.2VyHkVC4w5Y-p-L" target="ObjDef.1NCWZPE6xhU-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-6zgh5djU0_6-q-L" source="ObjDef.-24Npl5leVV-p-L" target="ObjDef.1NCWZPE6xhU-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-6OYReCBGmEs-q-L" source="ObjDef.5uDrvpyStZD-p-L" target="ObjDef.1NCWZPE6xhU-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-3yC4ragzTWQ-q-L" source="ObjDef.-zor_7G4bP7-p-L" target="ObjDef.1NCWZPE6xhU-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-5G0JTWHDUQn-q-L" source="ObjDef.-4lh2y2N9DO4-p-L" target="ObjDef.1NCWZPE6xhU-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-3YEq_6qpr2u-q-L" source="ObjDef.-2pQHwYlmemt-p-L" target="ObjDef.1NCWZPE6xhU-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-2nebWxhCgZb-q-L" source="ObjDef.-2zGo-CnIqpS-p-L" target="ObjDef.1NCWZPE6xhU-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.1jX5aWZzSE3-q-L" source="ObjDef.6BwAsJ2IbN0-p-L" target="ObjDef.1NCWZPE6xhU-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-5OBxHdJiDbJ-q-L" source="ObjDef.-2QiT2_FDI00-p-L" target="ObjDef.1NCWZPE6xhU-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.qGzhMC-Urb-q-L" source="ObjDef.1NCWZPE6xhU-p-L" target="ObjDef.2Mw5mKemGwp-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.4fxlQWEpdc1-q-L" source="ObjDef.4eHKpidP3dH-p-L" target="ObjDef.1NCWZPE6xhU-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.7LTOW74d9sG-q-L" source="ObjDef.1NCWZPE6xhU-p-L" target="ObjDef.-7xNo3fl2t0-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-21yw_CBveW0-q-L" source="ObjDef.-4pmRV7vsNeo-p-L" target="ObjDef.1NCWZPE6xhU-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.2U7PKnXYqaX-q-L" source="ObjDef.-7wLdZYDHquG-p-L" target="ObjDef.1NCWZPE6xhU-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.1aeW3E1J-bi-q-L" source="ObjDef.-50GczXcDY3M-p-L" target="ObjDef.1NCWZPE6xhU-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-1beiMbNZzHw-q-L" source="ObjDef.-2rihj2y2TAP-p-L" target="ObjDef.1NCWZPE6xhU-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.3durxVvkbj4-q-L" source="ObjDef.1ENs8jIyRyY-p-L" target="ObjDef.-31iEwNZNmT--p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.4_FHlKAjxqO-q-L" source="ObjDef.4wxzmvf9CXa-p-L" target="ObjDef.-5X1hj1rcZcf-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-7P2h_Vimnwj-q-L" source="ObjDef.-42L3f7fuht6-p-L" target="ObjDef.-5X1hj1rcZcf-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-43heABwWVd3-q-L" source="ObjDef.-2pj991gPTpu-p-L" target="ObjDef.-5X1hj1rcZcf-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.kMb8kYTzA1-q-L" source="ObjDef.4uN6sYYbkF6-p-L" target="ObjDef.-4Pg1Xycrza5-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-27FZc9wVRIp-q-L" source="ObjDef.5bIRC60pX8l-p-L" target="ObjDef.-4Pg1Xycrza5-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-4j9bUajoPCT-q-L" source="ObjDef.-3UAlseCGybd-p-L" target="ObjDef.-4Pg1Xycrza5-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-5wI_HWGEQta-q-L" source="ObjDef.-1u1TAhZ3z5L-p-L" target="ObjDef.-4Pg1Xycrza5-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.g9Hss2uax6-q-L" source="ObjDef.-5Agpn7EEDJG-p-L" target="ObjDef.-4Pg1Xycrza5-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-5_HgFr78h2Z-q-L" source="ObjDef.-3_wceSqwO7o-p-L" target="ObjDef.-4Pg1Xycrza5-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.29s2Zb8_im9-q-L" source="ObjDef.7jBcic6nj33-p-L" target="ObjDef.-2zGo-CnIqpS-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-6UvtzwT8pb_-q-L" source="ObjDef.4ANgVTCoFJs-p-L" target="ObjDef.-2zGo-CnIqpS-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-7wMTawLtcUf-q-L" source="ObjDef.DanW7ZPItQ-p-L" target="ObjDef.-2zGo-CnIqpS-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-iiJSfZnXYK-q-L" source="ObjDef.3kcovZVe3b--p-L" target="ObjDef.-2zGo-CnIqpS-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-5AF7O_gd_8f-q-L" source="ObjDef.2D8f_Cg9yUK-p-L" target="ObjDef.-2zGo-CnIqpS-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.4nHZBH8_ntp-q-L" source="ObjDef.2DlasOKEQRX-p-L" target="ObjDef.-2zGo-CnIqpS-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.k8yLjQphQ8-q-L" source="ObjDef.2t8ZmdTjRvS-p-L" target="ObjDef.-2zGo-CnIqpS-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-7KijBgAAsML-q-L" source="ObjDef.-6zqFjvzKhhR-p-L" target="ObjDef.-7wLdZYDHquG-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-7-fZfsJpIoQ-q-L" source="ObjDef.-1HYtnENV4Bc-p-L" target="ObjDef.-7wLdZYDHquG-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.4qLTsAg1aue-q-L" source="ObjDef.-o2Q79SHuDL-p-L" target="ObjDef.-7wLdZYDHquG-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-4moDTXekvO2-q-L" source="ObjDef.4frdxhWbZpv-p-L" target="ObjDef.-3aBfiHEbfVA-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-5Q9fq4BZeYx-q-L" source="ObjDef.3GWa6OW3yU--p-L" target="ObjDef.5bFjA_6w-bX-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.3LghoyCJxYv-q-L" source="ObjDef.7oSGXYSroLY-p-L" target="ObjDef.5bFjA_6w-bX-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.7skzZAyJukA-q-L" source="ObjDef.-5jrsfMPM23s-p-L" target="ObjDef.6BwAsJ2IbN0-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.2-xJkEzJzg1-q-L" source="ObjDef.mtzwwe6hR7-p-L" target="ObjDef.6BwAsJ2IbN0-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.4izPpEIG-Jj-q-L" source="ObjDef.-6qq7xc82aME-p-L" target="ObjDef.6BwAsJ2IbN0-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.NzQXEmj6jW-q-L" source="ObjDef.-GecYqlIEXw-p-L" target="ObjDef.6BwAsJ2IbN0-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-5RZ3ulYqYaZ-q-L" source="ObjDef.36FlXb8aFSw-p-L" target="ObjDef.6BwAsJ2IbN0-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.5kaJ7iZDKHI-q-L" source="ObjDef.7yKxYBWhZjJ-p-L" target="ObjDef.6BwAsJ2IbN0-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.7wZw6y7LmcV-q-L" source="ObjDef.7HxJRlqJlEG-p-L" target="ObjDef.6BwAsJ2IbN0-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-5-4uHdUspzg-q-L" source="ObjDef.1DDk-VuGQ0k-p-L" target="ObjDef.6BwAsJ2IbN0-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-6Y5tAK4j70Q-q-L" source="ObjDef.-3FsqxqK_4DJ-p-L" target="ObjDef.6BwAsJ2IbN0-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.14vXnhSMl9R-q-L" source="ObjDef.-hpWSXvPJ7A-p-L" target="ObjDef.6BwAsJ2IbN0-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.2dBwIYKRAjy-q-L" source="ObjDef.-6AHqlCrMoCK-p-L" target="ObjDef.-2QiT2_FDI00-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.7fomTzXS3pR-q-L" source="ObjDef.1yoKMXqeW9r-p-L" target="ObjDef.-2QiT2_FDI00-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.5NJfXbz77IN-q-L" source="ObjDef.-4svzao3PaRo-p-L" target="ObjDef.-2QiT2_FDI00-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.coUGbyFCUe-q-L" source="ObjDef.-4UY6PjUew0E-p-L" target="ObjDef.-2QiT2_FDI00-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-4XRzmY8VAM8-q-L" source="ObjDef.2Mw5mKemGwp-p-L" target="ObjDef.-2QiT2_FDI00-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.2zrL6TGmIER-q-L" source="ObjDef.-6AJoeB7sRMY-p-L" target="ObjDef.-2QiT2_FDI00-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.7M19MRihDbs-q-L" source="ObjDef.-2A_9uLsCsi-p-L" target="ObjDef.6Tp3puKkEYz-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.7CbU2SJ-AxJ-q-L" source="ObjDef.-26mq0yq3fd--p-L" target="ObjDef.6Tp3puKkEYz-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.6i1txhEARcx-q-L" source="ObjDef.3KwVV5j9u2D-p-L" target="ObjDef.6Tp3puKkEYz-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.3ELck63fcAi-q-L" source="ObjDef.6ZqLDBS9Pbz-p-L" target="ObjDef.6Tp3puKkEYz-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.7JQeV8lotsw-q-L" source="ObjDef.4npKc0vbtH2-p-L" target="ObjDef.6Tp3puKkEYz-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.7z8fzWHdK2R-q-L" source="ObjDef.-45aS2QUTJKq-p-L" target="ObjDef.6Tp3puKkEYz-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-3ntcEk7GiYI-q-L" source="ObjDef.1tG3MGz4lCm-p-L" target="ObjDef.-2pQHwYlmemt-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.tsQQGnAyFd-q-L" source="ObjDef.6Tp3puKkEYz-p-L" target="ObjDef.-2pQHwYlmemt-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.6HK-usv0lyS-q-L" source="ObjDef.-5X1hj1rcZcf-p-L" target="ObjDef.-2pQHwYlmemt-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.bNzVh-hfhJ-q-L" source="ObjDef.5bFjA_6w-bX-p-L" target="ObjDef.-2pQHwYlmemt-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-5iHxN9a_QLs-q-L" source="ObjDef.-oEi9AwqFh2-p-L" target="ObjDef.-2pQHwYlmemt-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.255JbwWwHhY-q-L" source="ObjDef.-3NX1UsNtQRC-p-L" target="ObjDef.-2pQHwYlmemt-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.4QMBeU5D_yQ-q-L" source="ObjDef.-31iEwNZNmT--p-L" target="ObjDef.-2pQHwYlmemt-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.6EpyQD54Pk9-q-L" source="ObjDef.-56g7V6-UF00-p-L" target="ObjDef.4D-S83CiRG7-p-L" xsi:type="Assignment">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.6zvkvblE9XG-q-L" source="ObjDef.6AHCu8E5YV3-p-L" target="ObjDef.-4pmRV7vsNeo-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-2pQ7NqcRaRa-q-L" source="ObjDef.-2bd7xCxLQGc-p-L" target="ObjDef.-4pmRV7vsNeo-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+		<relationship identifier="CxnDef.-61D70JtzEP3-q-L" source="ObjDef.-4KFrzKbzP_X-p-L" target="ObjDef.-4pmRV7vsNeo-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+	</relationships>
+	<organizations>
+		<item>
+			<label xml:lang="en">05. Market Leaders (BE, NL, LU)</label>
+			<item>
+				<label xml:lang="en">01. Capability Realisation</label>
+				<item identifierRef="Model.4IROy9nwDcV-u-L"></item>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">01. Capability Models</label>
+			<item>
+				<label xml:lang="en">01. Business Capability Map</label>
+				<item identifierRef="Model.79zl7pM1VPX-u-L"></item>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">01. Capability Models</label>
+			<item>
+				<label xml:lang="en">02. On-a-Pages</label>
+				<item identifierRef="Model.6q1OeE6WvSd-u-L"></item>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">15. Turkey</label>
+			<item>
+				<label xml:lang="en">01. Capability Realization</label>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">05. Market Leaders (BE, NL, LU)</label>
+			<item>
+				<label xml:lang="en">02. IT Architecture</label>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">05. Market Leaders (BE, NL, LU)</label>
+			<item>
+				<label xml:lang="en">01. Capability Realisation</label>
+				<item identifierRef="ObjDef.-4onGQzLwIqY-p-L"></item>
+				<item identifierRef="ObjDef.wtYUp91oc4-p-L"></item>
+				<item identifierRef="ObjDef.53Yndg5wcZf-p-L"></item>
+				<item identifierRef="ObjDef.4D-S83CiRG7-p-L"></item>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">01. Capability Models</label>
+			<item>
+				<label xml:lang="en">01. Business Capability Map</label>
+				<item identifierRef="ObjDef.-6qq7xc82aME-p-L"></item>
+				<item identifierRef="ObjDef.-3_IPAXli-fc-p-L"></item>
+				<item identifierRef="ObjDef.2Hx8A9_zIx5-p-L"></item>
+				<item identifierRef="ObjDef.-21IOmGDhhmo-p-L"></item>
+				<item identifierRef="ObjDef.2Mw5mKemGwp-p-L"></item>
+				<item identifierRef="ObjDef.2Moc_e1dnzb-p-L"></item>
+				<item identifierRef="ObjDef.4uN6sYYbkF6-p-L"></item>
+				<item identifierRef="ObjDef.-GecYqlIEXw-p-L"></item>
+				<item identifierRef="ObjDef.-3FzYJUAK_Iw-p-L"></item>
+				<item identifierRef="ObjDef.-o2Q79SHuDL-p-L"></item>
+				<item identifierRef="ObjDef.-4lh2y2N9DO4-p-L"></item>
+				<item identifierRef="ObjDef.-2axeLpfek4j-p-L"></item>
+				<item identifierRef="ObjDef.-zor_7G4bP7-p-L"></item>
+				<item identifierRef="ObjDef.1tG3MGz4lCm-p-L"></item>
+				<item identifierRef="ObjDef.-6AJoeB7sRMY-p-L"></item>
+				<item identifierRef="ObjDef.-6FPSKaFHTma-p-L"></item>
+				<item identifierRef="ObjDef.2DlasOKEQRX-p-L"></item>
+				<item identifierRef="ObjDef.-6jAC3h8QAIn-p-L"></item>
+				<item identifierRef="ObjDef.-50GczXcDY3M-p-L"></item>
+				<item identifierRef="ObjDef.-7EseE_k-H2i-p-L"></item>
+				<item identifierRef="ObjDef.2D8f_Cg9yUK-p-L"></item>
+				<item identifierRef="ObjDef.5bIRC60pX8l-p-L"></item>
+				<item identifierRef="ObjDef.2t8ZmdTjRvS-p-L"></item>
+				<item identifierRef="ObjDef.6AHCu8E5YV3-p-L"></item>
+				<item identifierRef="ObjDef.2mwdnXA30X5-p-L"></item>
+				<item identifierRef="ObjDef.-1Jh2KTUJwCI-p-L"></item>
+				<item identifierRef="ObjDef.1r12HtD8H9T-p-L"></item>
+				<item identifierRef="ObjDef.-3_wceSqwO7o-p-L"></item>
+				<item identifierRef="ObjDef.-2YoslL0poJF-p-L"></item>
+				<item identifierRef="ObjDef.5uDrvpyStZD-p-L"></item>
+				<item identifierRef="ObjDef.4QnT_S38oSv-p-L"></item>
+				<item identifierRef="ObjDef.-4tnfzoGyxKx-p-L"></item>
+				<item identifierRef="ObjDef.-FwE1XCkG2--p-L"></item>
+				<item identifierRef="ObjDef.36FlXb8aFSw-p-L"></item>
+				<item identifierRef="ObjDef.-3UAlseCGybd-p-L"></item>
+				<item identifierRef="ObjDef.-7xNo3fl2t0-p-L"></item>
+				<item identifierRef="ObjDef.1yoKMXqeW9r-p-L"></item>
+				<item identifierRef="ObjDef.-2zXRx3LCC1D-p-L"></item>
+				<item identifierRef="ObjDef.3P5hXEHMXi3-p-L"></item>
+				<item identifierRef="ObjDef.-47Q6xHlGH37-p-L"></item>
+				<item identifierRef="ObjDef.5bJvoKuBadR-p-L"></item>
+				<item identifierRef="ObjDef.-1SjQrkfe-Lg-p-L"></item>
+				<item identifierRef="ObjDef.-24Npl5leVV-p-L"></item>
+				<item identifierRef="ObjDef.19liVJCV8FT-p-L"></item>
+				<item identifierRef="ObjDef.uyAFNumpNc-p-L"></item>
+				<item identifierRef="ObjDef.2VyHkVC4w5Y-p-L"></item>
+				<item identifierRef="ObjDef.-2rihj2y2TAP-p-L"></item>
+				<item identifierRef="ObjDef.-6Ax6fzNP7Mi-p-L"></item>
+				<item identifierRef="ObjDef.-oEi9AwqFh2-p-L"></item>
+				<item identifierRef="ObjDef.3BUwu_gM2VR-p-L"></item>
+				<item identifierRef="ObjDef.2JiVYX-dTyg-p-L"></item>
+				<item identifierRef="ObjDef.23l5F4rMOkz-p-L"></item>
+				<item identifierRef="ObjDef.4eHKpidP3dH-p-L"></item>
+				<item identifierRef="ObjDef.3pvgxEJQOMI-p-L"></item>
+				<item identifierRef="ObjDef.-4Nl3rkYZRzv-p-L"></item>
+				<item identifierRef="ObjDef.4ANgVTCoFJs-p-L"></item>
+				<item identifierRef="ObjDef.3kcovZVe3b--p-L"></item>
+				<item identifierRef="ObjDef.7hq3GbQ1PDX-p-L"></item>
+				<item identifierRef="ObjDef.3-vPQ0MdIye-p-L"></item>
+				<item identifierRef="ObjDef.-3FsqxqK_4DJ-p-L"></item>
+				<item identifierRef="ObjDef.-5jrsfMPM23s-p-L"></item>
+				<item identifierRef="ObjDef.1NCWZPE6xhU-p-L"></item>
+				<item identifierRef="ObjDef.2qs7kwjMLEa-p-L"></item>
+				<item identifierRef="ObjDef.Itx-eExgOZ-p-L"></item>
+				<item identifierRef="ObjDef.-6JpTpbd5XS8-p-L"></item>
+				<item identifierRef="ObjDef.nJ5uE9oQto-p-L"></item>
+				<item identifierRef="ObjDef.-31iEwNZNmT--p-L"></item>
+				<item identifierRef="ObjDef.7yKxYBWhZjJ-p-L"></item>
+				<item identifierRef="ObjDef.-4svzao3PaRo-p-L"></item>
+				<item identifierRef="ObjDef.-5Agpn7EEDJG-p-L"></item>
+				<item identifierRef="ObjDef.1zJbdqEk6xc-p-L"></item>
+				<item identifierRef="ObjDef.-2tvPFin8YTY-p-L"></item>
+				<item identifierRef="ObjDef.-5X1hj1rcZcf-p-L"></item>
+				<item identifierRef="ObjDef.-64f1FG0EclA-p-L"></item>
+				<item identifierRef="ObjDef.-3la_4qQPGkj-p-L"></item>
+				<item identifierRef="ObjDef.-4Pg1Xycrza5-p-L"></item>
+				<item identifierRef="ObjDef.-3qFZDf6RNfC-p-L"></item>
+				<item identifierRef="ObjDef.-6AHqlCrMoCK-p-L"></item>
+				<item identifierRef="ObjDef.7HxJRlqJlEG-p-L"></item>
+				<item identifierRef="ObjDef.-PDi3_4zcki-p-L"></item>
+				<item identifierRef="ObjDef.7jBcic6nj33-p-L"></item>
+				<item identifierRef="ObjDef.-4UY6PjUew0E-p-L"></item>
+				<item identifierRef="ObjDef.-2zGo-CnIqpS-p-L"></item>
+				<item identifierRef="ObjDef.1jcl9uB5BWK-p-L"></item>
+				<item identifierRef="ObjDef.-hpWSXvPJ7A-p-L"></item>
+				<item identifierRef="ObjDef.-15QWl74lTZY-p-L"></item>
+				<item identifierRef="ObjDef.DanW7ZPItQ-p-L"></item>
+				<item identifierRef="ObjDef.-1TOvq7ra5tX-p-L"></item>
+				<item identifierRef="ObjDef.-7wLdZYDHquG-p-L"></item>
+				<item identifierRef="ObjDef.7tFinW5qPN8-p-L"></item>
+				<item identifierRef="ObjDef.-3aBfiHEbfVA-p-L"></item>
+				<item identifierRef="ObjDef.1DDk-VuGQ0k-p-L"></item>
+				<item identifierRef="ObjDef.3_AgRSLFvJK-p-L"></item>
+				<item identifierRef="ObjDef.mtzwwe6hR7-p-L"></item>
+				<item identifierRef="ObjDef.5bFjA_6w-bX-p-L"></item>
+				<item identifierRef="ObjDef.-1u1TAhZ3z5L-p-L"></item>
+				<item identifierRef="ObjDef.-4K2pT9yzJFz-p-L"></item>
+				<item identifierRef="ObjDef.-6KBoedMdzKP-p-L"></item>
+				<item identifierRef="ObjDef.-3tIG8NHIY8c-p-L"></item>
+				<item identifierRef="ObjDef.-6zqFjvzKhhR-p-L"></item>
+				<item identifierRef="ObjDef.4frdxhWbZpv-p-L"></item>
+				<item identifierRef="ObjDef.6BwAsJ2IbN0-p-L"></item>
+				<item identifierRef="ObjDef.-5PH5YYob1jN-p-L"></item>
+				<item identifierRef="ObjDef.-4KFrzKbzP_X-p-L"></item>
+				<item identifierRef="ObjDef.2yxYAyh5XhX-p-L"></item>
+				<item identifierRef="ObjDef.-6-BqPr4s_YN-p-L"></item>
+				<item identifierRef="ObjDef.-2QiT2_FDI00-p-L"></item>
+				<item identifierRef="ObjDef.-3Lozrh_PNqx-p-L"></item>
+				<item identifierRef="ObjDef.-1HYtnENV4Bc-p-L"></item>
+				<item identifierRef="ObjDef.6Tp3puKkEYz-p-L"></item>
+				<item identifierRef="ObjDef.-2pQHwYlmemt-p-L"></item>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">01. Capability Models</label>
+			<item>
+				<label xml:lang="en">02. On-a-Pages</label>
+				<item identifierRef="ObjDef.3GWa6OW3yU--p-L"></item>
+				<item identifierRef="ObjDef.-5BvHkjMJbMn-p-L"></item>
+				<item identifierRef="ObjDef.-26mq0yq3fd--p-L"></item>
+				<item identifierRef="ObjDef.4npKc0vbtH2-p-L"></item>
+				<item identifierRef="ObjDef.-2A_9uLsCsi-p-L"></item>
+				<item identifierRef="ObjDef.-1970KyNBywl-p-L"></item>
+				<item identifierRef="ObjDef.-66u_bgvVFuB-p-L"></item>
+				<item identifierRef="ObjDef.4wxzmvf9CXa-p-L"></item>
+				<item identifierRef="ObjDef.-45aS2QUTJKq-p-L"></item>
+				<item identifierRef="ObjDef.6ZqLDBS9Pbz-p-L"></item>
+				<item identifierRef="ObjDef.-6A65EWES-AN-p-L"></item>
+				<item identifierRef="ObjDef.-42L3f7fuht6-p-L"></item>
+				<item identifierRef="ObjDef.4MWccFfNRQf-p-L"></item>
+				<item identifierRef="ObjDef.-2pj991gPTpu-p-L"></item>
+				<item identifierRef="ObjDef.5u59RRu8hbG-p-L"></item>
+				<item identifierRef="ObjDef.7oSGXYSroLY-p-L"></item>
+				<item identifierRef="ObjDef.-62Xjn4XZYEZ-p-L"></item>
+				<item identifierRef="ObjDef.1ENs8jIyRyY-p-L"></item>
+				<item identifierRef="ObjDef.3KwVV5j9u2D-p-L"></item>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">99. Incubator</label>
+			<item>
+				<label xml:lang="en">vv91ow (Eddy van Asselt)</label>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">99. Incubator</label>
+			<item>
+				<label xml:lang="en">vv91ow (Eddy van Asselt)</label>
+				<item>
+					<label xml:lang="en">Capability Models</label>
+					<item identifierRef="ObjDef.-MjgW2di45p-p-L"></item>
+				</item>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">99. Incubator</label>
+			<item>
+				<label xml:lang="en">vv91ow (Eddy van Asselt)</label>
+				<item>
+					<label xml:lang="en">Value Streams</label>
+				</item>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">99. Incubator</label>
+			<item>
+				<label xml:lang="en">vv91ow (Eddy van Asselt)</label>
+				<item>
+					<label xml:lang="en">Motivation Layer</label>
+				</item>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">99. Incubator</label>
+			<item>
+				<label xml:lang="en">vv91ow (Eddy van Asselt)</label>
+				<item>
+					<label xml:lang="en">Value Stream Capability Decompositions</label>
+				</item>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">99. Incubator</label>
+			<item>
+				<label xml:lang="en">jl22ly (Doutsje Hilverda)</label>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">99. Incubator</label>
+			<item>
+				<label xml:lang="en">XY56RE</label>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">99. Incubator</label>
+			<item>
+				<label xml:lang="en">hq14id</label>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">99. Incubator</label>
+			<item>
+				<label xml:lang="en">sj46ma (Alice van Duijnen)</label>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">99. Incubator</label>
+			<item>
+				<label xml:lang="en">dl26wl (Marnix Theijssen)</label>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">04. Wholesale Banking</label>
+			<item>
+				<label xml:lang="en">01. Capability Realization</label>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">90. IT Architecture</label>
+			<item>
+				<label xml:lang="en">Document &amp; Content Management</label>
+				<item>
+					<label xml:lang="en">BE</label>
+					<item identifierRef="ObjDef.-56g7V6-UF00-p-L"></item>
+				</item>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">Central Libraries</label>
+			<item>
+				<label xml:lang="en">IT Systems</label>
+				<item>
+					<label xml:lang="en">Global IT Systems</label>
+					<item>
+						<label xml:lang="en">Entry models</label>
+					</item>
+				</item>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">Central Libraries</label>
+			<item>
+				<label xml:lang="en">IT Systems</label>
+				<item>
+					<label xml:lang="en">Global IT Systems</label>
+					<item>
+						<label xml:lang="en">Retired IT Systems</label>
+					</item>
+				</item>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">02. Value Stream Models</label>
+			<item>
+				<label xml:lang="en">02. Value Stream Capability Decomposition</label>
+				<item identifierRef="ObjDef.-4pmRV7vsNeo-p-L"></item>
+				<item identifierRef="ObjDef.-2bd7xCxLQGc-p-L"></item>
+				<item identifierRef="ObjDef.-3NX1UsNtQRC-p-L"></item>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">02. Value Stream Models</label>
+			<item>
+				<label xml:lang="en">01. Value Streams Repository</label>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">07. Spain, Portugal</label>
+			<item>
+				<label xml:lang="en">03. IT Architecture</label>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">07. Spain, Portugal</label>
+			<item>
+				<label xml:lang="en">02. Logical Domain Landscape</label>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">07. Spain, Portugal</label>
+			<item>
+				<label xml:lang="en">01. Capability Realization</label>
+			</item>
+		</item>
+		<item>
+			<label xml:lang="en">98. ING ArchiMate Standard</label>
+		</item>
+		<item>
+			<label xml:lang="en">01. Capability Realization</label>
+		</item>
+		<item>
+			<label xml:lang="en">02. IT Architecture</label>
+		</item>
+		<item>
+			<label xml:lang="en">01. Capability Realisation</label>
+			<item identifierRef="CxnDef.-6CbQ1rXCI2Q-q-L"></item>
+			<item identifierRef="CxnDef.-4yE3zySX0SD-q-L"></item>
+			<item identifierRef="CxnDef.2FNVoN7mWtX-q-L"></item>
+			<item identifierRef="CxnDef.6eabKDk86ER-q-L"></item>
+		</item>
+		<item>
+			<label xml:lang="en">01. Business Capability Map</label>
+			<item identifierRef="CxnDef.-159HDNLdmIV-q-L"></item>
+			<item identifierRef="CxnDef.-1-Gey8LnmXC-q-L"></item>
+			<item identifierRef="CxnDef.-bc0U0vuYxm-q-L"></item>
+			<item identifierRef="CxnDef.7RDhPo93NtC-q-L"></item>
+			<item identifierRef="CxnDef.5E_p6yLrkXl-q-L"></item>
+			<item identifierRef="CxnDef.-3dBwHhz5Kcv-q-L"></item>
+			<item identifierRef="CxnDef.-5Zlrb9182LP-q-L"></item>
+			<item identifierRef="CxnDef.qhLVnJAhw6-q-L"></item>
+			<item identifierRef="CxnDef.28Sp5S4EBXO-q-L"></item>
+			<item identifierRef="CxnDef.75Tj_XkNQkh-q-L"></item>
+			<item identifierRef="CxnDef.1AHOPyoqbGa-q-L"></item>
+			<item identifierRef="CxnDef.-4akBflTHqK8-q-L"></item>
+			<item identifierRef="CxnDef.7apVMybfW7K-q-L"></item>
+			<item identifierRef="CxnDef.-5a4boFOpkSv-q-L"></item>
+			<item identifierRef="CxnDef.-60W_BDIjPDi-q-L"></item>
+			<item identifierRef="CxnDef.-6X7TFueukCt-q-L"></item>
+			<item identifierRef="CxnDef.dnfRbBfh-7-q-L"></item>
+			<item identifierRef="CxnDef.-1A5PVI6DK7A-q-L"></item>
+			<item identifierRef="CxnDef.-6qygdF0SqGJ-q-L"></item>
+			<item identifierRef="CxnDef.-KrG4ibJv-6-q-L"></item>
+			<item identifierRef="CxnDef.-5jaHNAv5cf3-q-L"></item>
+			<item identifierRef="CxnDef.rnS8wJ9sZL-q-L"></item>
+			<item identifierRef="CxnDef.-ytOEHhAUp3-q-L"></item>
+			<item identifierRef="CxnDef.-6O8CUj-gnqi-q-L"></item>
+			<item identifierRef="CxnDef.-3_Zlcnw4bqo-q-L"></item>
+			<item identifierRef="CxnDef.-3kVzx0CooWa-q-L"></item>
+			<item identifierRef="CxnDef.4UTPyf83rdf-q-L"></item>
+			<item identifierRef="CxnDef.38OE8ZNKF6t-q-L"></item>
+			<item identifierRef="CxnDef.70MQhXON_bO-q-L"></item>
+			<item identifierRef="CxnDef.-5Zl_JMhSGEA-q-L"></item>
+			<item identifierRef="CxnDef.1ffCNyhN0ZU-q-L"></item>
+			<item identifierRef="CxnDef.2Nf5e-8oQsj-q-L"></item>
+			<item identifierRef="CxnDef.-5ds6YjfO1Pi-q-L"></item>
+			<item identifierRef="CxnDef.nlQszFPzQt-q-L"></item>
+			<item identifierRef="CxnDef.13dthe9_H03-q-L"></item>
+			<item identifierRef="CxnDef.sKVYMf2H5z-q-L"></item>
+			<item identifierRef="CxnDef.-2N8tYw5r0Ja-q-L"></item>
+			<item identifierRef="CxnDef.6ervvk7DHo--q-L"></item>
+			<item identifierRef="CxnDef.-17VvtLHgxrx-q-L"></item>
+			<item identifierRef="CxnDef.2bHDgs5jIHA-q-L"></item>
+			<item identifierRef="CxnDef.62Sf9Zifc2--q-L"></item>
+			<item identifierRef="CxnDef.48KBT3FmE-k-q-L"></item>
+			<item identifierRef="CxnDef.-5FeDoDUEQU6-q-L"></item>
+			<item identifierRef="CxnDef.2Gsu3QVURNL-q-L"></item>
+			<item identifierRef="CxnDef.-2uxmzu4RqnM-q-L"></item>
+			<item identifierRef="CxnDef.-2kr0gNfmI0C-q-L"></item>
+			<item identifierRef="CxnDef.1Fr2Hk-rjDR-q-L"></item>
+			<item identifierRef="CxnDef.6a3lc-o_5FJ-q-L"></item>
+			<item identifierRef="CxnDef.-3PsQlcLRnrI-q-L"></item>
+			<item identifierRef="CxnDef.pmTO4i9ho2-q-L"></item>
+			<item identifierRef="CxnDef.-4IOOR9goxTX-q-L"></item>
+			<item identifierRef="CxnDef.-28cXmjNfK_S-q-L"></item>
+			<item identifierRef="CxnDef.-1Smm2OV6m_r-q-L"></item>
+			<item identifierRef="CxnDef.332MhVfQa91-q-L"></item>
+			<item identifierRef="CxnDef.2q4axvwf6S1-q-L"></item>
+			<item identifierRef="CxnDef.-3p-V6AOMq4u-q-L"></item>
+			<item identifierRef="CxnDef.-6IrD_B5ucn8-q-L"></item>
+			<item identifierRef="CxnDef.B4K5QAuj9C-q-L"></item>
+			<item identifierRef="CxnDef.ALVeJhnMqC-q-L"></item>
+			<item identifierRef="CxnDef.-3KWOq7I76kG-q-L"></item>
+			<item identifierRef="CxnDef.6YrOiBhV4dU-q-L"></item>
+			<item identifierRef="CxnDef.-3BdcwHXgsGH-q-L"></item>
+			<item identifierRef="CxnDef.-720U7786_Dr-q-L"></item>
+			<item identifierRef="CxnDef.-3O60H7u2ANh-q-L"></item>
+			<item identifierRef="CxnDef.-6zgh5djU0_6-q-L"></item>
+			<item identifierRef="CxnDef.-6OYReCBGmEs-q-L"></item>
+			<item identifierRef="CxnDef.-3yC4ragzTWQ-q-L"></item>
+			<item identifierRef="CxnDef.-5G0JTWHDUQn-q-L"></item>
+			<item identifierRef="CxnDef.-3YEq_6qpr2u-q-L"></item>
+			<item identifierRef="CxnDef.-2nebWxhCgZb-q-L"></item>
+			<item identifierRef="CxnDef.1jX5aWZzSE3-q-L"></item>
+			<item identifierRef="CxnDef.-5OBxHdJiDbJ-q-L"></item>
+			<item identifierRef="CxnDef.qGzhMC-Urb-q-L"></item>
+			<item identifierRef="CxnDef.4fxlQWEpdc1-q-L"></item>
+			<item identifierRef="CxnDef.7LTOW74d9sG-q-L"></item>
+			<item identifierRef="CxnDef.-21yw_CBveW0-q-L"></item>
+			<item identifierRef="CxnDef.2U7PKnXYqaX-q-L"></item>
+			<item identifierRef="CxnDef.1aeW3E1J-bi-q-L"></item>
+			<item identifierRef="CxnDef.-1beiMbNZzHw-q-L"></item>
+			<item identifierRef="CxnDef.3durxVvkbj4-q-L"></item>
+			<item identifierRef="CxnDef.4_FHlKAjxqO-q-L"></item>
+			<item identifierRef="CxnDef.-7P2h_Vimnwj-q-L"></item>
+			<item identifierRef="CxnDef.-43heABwWVd3-q-L"></item>
+			<item identifierRef="CxnDef.kMb8kYTzA1-q-L"></item>
+			<item identifierRef="CxnDef.-27FZc9wVRIp-q-L"></item>
+			<item identifierRef="CxnDef.-4j9bUajoPCT-q-L"></item>
+			<item identifierRef="CxnDef.-5wI_HWGEQta-q-L"></item>
+			<item identifierRef="CxnDef.g9Hss2uax6-q-L"></item>
+			<item identifierRef="CxnDef.-5_HgFr78h2Z-q-L"></item>
+			<item identifierRef="CxnDef.29s2Zb8_im9-q-L"></item>
+			<item identifierRef="CxnDef.-6UvtzwT8pb_-q-L"></item>
+			<item identifierRef="CxnDef.-7wMTawLtcUf-q-L"></item>
+			<item identifierRef="CxnDef.-iiJSfZnXYK-q-L"></item>
+			<item identifierRef="CxnDef.-5AF7O_gd_8f-q-L"></item>
+			<item identifierRef="CxnDef.4nHZBH8_ntp-q-L"></item>
+			<item identifierRef="CxnDef.k8yLjQphQ8-q-L"></item>
+			<item identifierRef="CxnDef.-7KijBgAAsML-q-L"></item>
+			<item identifierRef="CxnDef.-7-fZfsJpIoQ-q-L"></item>
+			<item identifierRef="CxnDef.4qLTsAg1aue-q-L"></item>
+			<item identifierRef="CxnDef.-4moDTXekvO2-q-L"></item>
+			<item identifierRef="CxnDef.-5Q9fq4BZeYx-q-L"></item>
+			<item identifierRef="CxnDef.3LghoyCJxYv-q-L"></item>
+			<item identifierRef="CxnDef.7skzZAyJukA-q-L"></item>
+			<item identifierRef="CxnDef.2-xJkEzJzg1-q-L"></item>
+			<item identifierRef="CxnDef.4izPpEIG-Jj-q-L"></item>
+			<item identifierRef="CxnDef.NzQXEmj6jW-q-L"></item>
+			<item identifierRef="CxnDef.-5RZ3ulYqYaZ-q-L"></item>
+			<item identifierRef="CxnDef.5kaJ7iZDKHI-q-L"></item>
+			<item identifierRef="CxnDef.7wZw6y7LmcV-q-L"></item>
+			<item identifierRef="CxnDef.-5-4uHdUspzg-q-L"></item>
+			<item identifierRef="CxnDef.-6Y5tAK4j70Q-q-L"></item>
+			<item identifierRef="CxnDef.14vXnhSMl9R-q-L"></item>
+			<item identifierRef="CxnDef.2dBwIYKRAjy-q-L"></item>
+			<item identifierRef="CxnDef.7fomTzXS3pR-q-L"></item>
+			<item identifierRef="CxnDef.5NJfXbz77IN-q-L"></item>
+			<item identifierRef="CxnDef.coUGbyFCUe-q-L"></item>
+			<item identifierRef="CxnDef.-4XRzmY8VAM8-q-L"></item>
+			<item identifierRef="CxnDef.2zrL6TGmIER-q-L"></item>
+			<item identifierRef="CxnDef.7M19MRihDbs-q-L"></item>
+			<item identifierRef="CxnDef.7CbU2SJ-AxJ-q-L"></item>
+			<item identifierRef="CxnDef.6i1txhEARcx-q-L"></item>
+			<item identifierRef="CxnDef.3ELck63fcAi-q-L"></item>
+			<item identifierRef="CxnDef.7JQeV8lotsw-q-L"></item>
+			<item identifierRef="CxnDef.7z8fzWHdK2R-q-L"></item>
+			<item identifierRef="CxnDef.-3ntcEk7GiYI-q-L"></item>
+			<item identifierRef="CxnDef.tsQQGnAyFd-q-L"></item>
+			<item identifierRef="CxnDef.6HK-usv0lyS-q-L"></item>
+			<item identifierRef="CxnDef.bNzVh-hfhJ-q-L"></item>
+			<item identifierRef="CxnDef.-5iHxN9a_QLs-q-L"></item>
+			<item identifierRef="CxnDef.255JbwWwHhY-q-L"></item>
+			<item identifierRef="CxnDef.4QMBeU5D_yQ-q-L"></item>
+		</item>
+		<item>
+			<label xml:lang="en">02. On-a-Pages</label>
+		</item>
+		<item>
+			<label xml:lang="en">vv91ow (Eddy van Asselt)</label>
+		</item>
+		<item>
+			<label xml:lang="en">Capability Models</label>
+		</item>
+		<item>
+			<label xml:lang="en">Value Streams</label>
+		</item>
+		<item>
+			<label xml:lang="en">Motivation Layer</label>
+		</item>
+		<item>
+			<label xml:lang="en">Value Stream Capability Decompositions</label>
+		</item>
+		<item>
+			<label xml:lang="en">jl22ly (Doutsje Hilverda)</label>
+		</item>
+		<item>
+			<label xml:lang="en">XY56RE</label>
+		</item>
+		<item>
+			<label xml:lang="en">hq14id</label>
+		</item>
+		<item>
+			<label xml:lang="en">sj46ma (Alice van Duijnen)</label>
+		</item>
+		<item>
+			<label xml:lang="en">dl26wl (Marnix Theijssen)</label>
+		</item>
+		<item>
+			<label xml:lang="en">01. Capability Realization</label>
+		</item>
+		<item>
+			<label xml:lang="en">BE</label>
+			<item identifierRef="CxnDef.6EpyQD54Pk9-q-L"></item>
+		</item>
+		<item>
+			<label xml:lang="en">Entry models</label>
+		</item>
+		<item>
+			<label xml:lang="en">Retired IT Systems</label>
+		</item>
+		<item>
+			<label xml:lang="en">02. Value Stream Capability Decomposition</label>
+			<item identifierRef="CxnDef.6zvkvblE9XG-q-L"></item>
+			<item identifierRef="CxnDef.-2pQ7NqcRaRa-q-L"></item>
+			<item identifierRef="CxnDef.-61D70JtzEP3-q-L"></item>
+		</item>
+		<item>
+			<label xml:lang="en">01. Value Streams Repository</label>
+		</item>
+		<item>
+			<label xml:lang="en">03. IT Architecture</label>
+		</item>
+		<item>
+			<label xml:lang="en">02. Logical Domain Landscape</label>
+		</item>
+		<item>
+			<label xml:lang="en">01. Capability Realization</label>
+		</item>
+		<item>
+			<label xml:lang="en">98. ING ArchiMate Standard</label>
+		</item>
+	</organizations>
+	<propertyDefinitions>
+		<propertyDefinition identifier="propid_1" type="string">
+			<name>UUID</name>
+		</propertyDefinition>
+		<propertyDefinition identifier="propid_2" type="string">
+			<name>AT_DESC</name>
+		</propertyDefinition>
+		<propertyDefinition identifier="propid_3" type="string">
+			<name>AT_PERS_RESP</name>
+		</propertyDefinition>
+		<propertyDefinition identifier="propid_4" type="string">
+			<name>d7f4c491-b203-11ea-06c4-0050568bc76d</name>
+		</propertyDefinition>
+		<propertyDefinition identifier="propid_5" type="string">
+			<name>AT_ID</name>
+		</propertyDefinition>
+		<propertyDefinition identifier="propid_6" type="string">
+			<name>AT_EXTERNAL_ID</name>
+		</propertyDefinition>
+		<propertyDefinition identifier="propid_7" type="string">
+			<name>2c766cb1-b5a5-11e8-4f71-0050568bc76d</name>
+		</propertyDefinition>
+		<propertyDefinition identifier="propid_8" type="string">
+			<name>01edc0b1-b5a5-11e8-4f71-0050568bc76d</name>
+		</propertyDefinition>
+		<propertyDefinition identifier="propid_9" type="string">
+			<name>3c981031-b5a5-11e8-4f71-0050568bc76d</name>
+		</propertyDefinition>
+		<propertyDefinition identifier="propid_10" type="string">
+			<name>d6506bb1-d6a6-11e8-4f71-0050568bc76d</name>
+		</propertyDefinition>
+		<propertyDefinition identifier="propid_11" type="string">
+			<name>47d5b7e0-b5a5-11e8-4f71-0050568bc76d</name>
+		</propertyDefinition>
+		<propertyDefinition identifier="propid_12" type="string">
+			<name>1ac94731-b5a5-11e8-4f71-0050568bc76d</name>
+		</propertyDefinition>
+		<propertyDefinition identifier="propid_13" type="string">
+			<name>d1525ce1-b5a4-11e8-4f71-0050568bc76d</name>
+		</propertyDefinition>
+		<propertyDefinition identifier="propid_14" type="string">
+			<name>979f4ca1-cb03-11e8-4f71-0050568bc76d</name>
+		</propertyDefinition>
+		<propertyDefinition identifier="propid_15" type="string">
+			<name>108827f1-b5a5-11e8-4f71-0050568bc76d</name>
+		</propertyDefinition>
+		<propertyDefinition identifier="propid_16" type="string">
+			<name>688b48b1-b5a5-11e8-4f71-0050568bc76d</name>
+		</propertyDefinition>
+		<propertyDefinition identifier="propid_17" type="string">
+			<name>AT_EXT_1</name>
+		</propertyDefinition>
+		<propertyDefinition identifier="propid_18" type="string">
+			<name>4e6b6731-5078-11e9-4cd6-0050568bc76d</name>
+		</propertyDefinition>
+		<propertyDefinition identifier="propid_19" type="string">
+			<name>AT_TITL1</name>
+		</propertyDefinition>
+		<propertyDefinition identifier="propid_20" type="string">
+			<name>e07e55c1-b5a4-11e8-4f71-0050568bc76d</name>
+		</propertyDefinition>
+		<propertyDefinition identifier="propid_21" type="string">
+			<name>c6659451-b5a4-11e8-4f71-0050568bc76d</name>
+		</propertyDefinition>
+		<propertyDefinition identifier="propid_22" type="string">
+			<name>5b4cc7f1-b5a5-11e8-4f71-0050568bc76d</name>
+		</propertyDefinition>
+		<propertyDefinition identifier="propid_23" type="string">
+			<name>eb6506d0-2ab3-11e9-4cd6-0050568bc76d</name>
+		</propertyDefinition>
+		<propertyDefinition identifier="propid_24" type="string">
+			<name>860c33d0-2ab3-11e9-4cd6-0050568bc76d</name>
+		</propertyDefinition>
+		<propertyDefinition identifier="propid_25" type="string">
+			<name>AT_IS_LIBRARY_GROUP</name>
+		</propertyDefinition>
+	</propertyDefinitions>
+	<views>
+		<diagrams>
+			<view identifier="Model.4IROy9nwDcV-u-L" xsi:type="Diagram">
+				<name xml:lang="en">Capability Content Sharing Realization</name>
+				<documentation xml:lang="en"></documentation>
+				<node identifier="ObjOcc.4IROy9nwDcV-u-L-4havUnKOuNz-x-L-33-c" elementRef="ObjDef.1NCWZPE6xhU-p-L" xsi:type="Element" x="277" y="130" w="315" h="220"></node>
+				<node identifier="ObjOcc.4IROy9nwDcV-u-L-Z-R3Utpl9R-x-L-33-c" elementRef="ObjDef.-2QiT2_FDI00-p-L" xsi:type="Element" x="322" y="190" w="225" h="140"></node>
+				<node identifier="ObjOcc.4IROy9nwDcV-u-L-376LAobGHB3-x-L-33-c" elementRef="ObjDef.-4svzao3PaRo-p-L" xsi:type="Element" x="397" y="250" w="135" h="60"></node>
+				<node identifier="ObjOcc.4IROy9nwDcV-u-L-5feofQW1Wob-x-L-33-c" elementRef="ObjDef.-4onGQzLwIqY-p-L" xsi:type="Element" x="502" y="390" w="135" h="60"></node>
+				<node identifier="ObjOcc.4IROy9nwDcV-u-L-Mm8jqj6dCP-x-L-33-c" elementRef="ObjDef.wtYUp91oc4-p-L" xsi:type="Element" x="502" y="490" w="135" h="60"></node>
+				<node identifier="ObjOcc.4IROy9nwDcV-u-L-ZPsAfTrSxM-x-L-33-c" elementRef="ObjDef.4D-S83CiRG7-p-L" xsi:type="Element" x="712" y="390" w="135" h="60"></node>
+				<node identifier="ObjOcc.4IROy9nwDcV-u-L--xYGHvDQLQ0-x-L-33-c" elementRef="ObjDef.53Yndg5wcZf-p-L" xsi:type="Element" x="502" y="590" w="135" h="60"></node>
+				<node identifier="ObjOcc.4IROy9nwDcV-u-L--7KaKsYN-BLM-x-L-33-c" elementRef="ObjDef.-56g7V6-UF00-p-L" xsi:type="Element" x="922" y="390" w="195" h="60"></node>
+				<connection identifier="CxnOcc.4IROy9nwDcV-u-L--6Z0Ma7aiWke-y-L-34-c" relationshipRef="CxnDef.-4yE3zySX0SD-q-L" xsi:type="Relationship" source="ObjOcc.4IROy9nwDcV-u-L-Mm8jqj6dCP-x-L-33-c" target="ObjOcc.4IROy9nwDcV-u-L-376LAobGHB3-x-L-33-c">
+					<bendpoint x="450" y="520"></bendpoint>
+				</connection>
+				<connection identifier="CxnOcc.4IROy9nwDcV-u-L--6NMl2idqRwD-y-L-34-c" relationshipRef="CxnDef.2FNVoN7mWtX-q-L" xsi:type="Relationship" source="ObjOcc.4IROy9nwDcV-u-L--xYGHvDQLQ0-x-L-33-c" target="ObjOcc.4IROy9nwDcV-u-L-376LAobGHB3-x-L-33-c">
+					<bendpoint x="450" y="620"></bendpoint>
+				</connection>
+				<connection identifier="CxnOcc.4IROy9nwDcV-u-L--3CF-BDCy0Vi-y-L-34-c" relationshipRef="CxnDef.6EpyQD54Pk9-q-L" xsi:type="Relationship" source="ObjOcc.4IROy9nwDcV-u-L--7KaKsYN-BLM-x-L-33-c" target="ObjOcc.4IROy9nwDcV-u-L-ZPsAfTrSxM-x-L-33-c"></connection>
+				<connection identifier="CxnOcc.4IROy9nwDcV-u-L--2ib2mQ7f_TT-y-L-34-c" relationshipRef="CxnDef.6eabKDk86ER-q-L" xsi:type="Relationship" source="ObjOcc.4IROy9nwDcV-u-L-ZPsAfTrSxM-x-L-33-c" target="ObjOcc.4IROy9nwDcV-u-L-5feofQW1Wob-x-L-33-c"></connection>
+				<connection identifier="CxnOcc.4IROy9nwDcV-u-L-jWkxncCva_-y-L-34-c" relationshipRef="CxnDef.-6CbQ1rXCI2Q-q-L" xsi:type="Relationship" source="ObjOcc.4IROy9nwDcV-u-L-5feofQW1Wob-x-L-33-c" target="ObjOcc.4IROy9nwDcV-u-L-376LAobGHB3-x-L-33-c">
+					<bendpoint x="450" y="420"></bendpoint>
+				</connection>
+			</view>
+			<view identifier="Model.79zl7pM1VPX-u-L" xsi:type="Diagram">
+				<name xml:lang="en">Level 3 Capabilities - Foundation Management</name>
+				<documentation xml:lang="en"></documentation>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-oyLRQI92aB-x-L-33-c" elementRef="ObjDef.1NCWZPE6xhU-p-L" xsi:type="Element" x="37" y="30" w="1365" h="3660"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-7llacBEtNPg-x-L-33-c" elementRef="ObjDef.2VyHkVC4w5Y-p-L" xsi:type="Element" x="93" y="84" w="1279" h="232"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--5xnZHg-deWJ-x-L-33-c" elementRef="ObjDef.19liVJCV8FT-p-L" xsi:type="Element" x="187" y="150" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-4tc2yaRRHGd-x-L-33-c" elementRef="ObjDef.6BwAsJ2IbN0-p-L" xsi:type="Element" x="93" y="356" w="1279" h="208"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-3Rl5zdayEoP-x-L-33-c" elementRef="ObjDef.-6JpTpbd5XS8-p-L" xsi:type="Element" x="187" y="225" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--3twyFj4KSPL-x-L-33-c" elementRef="ObjDef.-5jrsfMPM23s-p-L" xsi:type="Element" x="142" y="396" w="165" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-3mawj-yRL2Z-x-L-33-c" elementRef="ObjDef.-3FzYJUAK_Iw-p-L" xsi:type="Element" x="94" y="604" w="651" h="128"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--51mtVknh4Hn-x-L-33-c" elementRef="ObjDef.7yKxYBWhZjJ-p-L" xsi:type="Element" x="142" y="471" w="165" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--ee0S4mfZK_-x-L-33-c" elementRef="ObjDef.-6Ax6fzNP7Mi-p-L" xsi:type="Element" x="472" y="150" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-ELLzC9aO6o-x-L-33-c" elementRef="ObjDef.-2zGo-CnIqpS-p-L" xsi:type="Element" x="93" y="772" w="1279" h="128"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-7rR5Yga6SOB-x-L-33-c" elementRef="ObjDef.-50GczXcDY3M-p-L" xsi:type="Element" x="93" y="940" w="1279" h="128"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--7qSe5tJ2RLi-x-L-33-c" elementRef="ObjDef.7tFinW5qPN8-p-L" xsi:type="Element" x="142" y="638" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-BqI6ZrzMIv-x-L-33-c" elementRef="ObjDef.-2YoslL0poJF-p-L" xsi:type="Element" x="93" y="1108" w="1279" h="133"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-15h21EgY6b1-x-L-33-c" elementRef="ObjDef.-4tnfzoGyxKx-p-L" xsi:type="Element" x="472" y="225" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-4htFBUStyi0-x-L-33-c" elementRef="ObjDef.4ANgVTCoFJs-p-L" xsi:type="Element" x="142" y="805" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--4Q5VK5fBT5X-x-L-33-c" elementRef="ObjDef.-7xNo3fl2t0-p-L" xsi:type="Element" x="93" y="1281" w="1277" h="156"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-6zEtPxtTTuI-x-L-33-c" elementRef="ObjDef.-5PH5YYob1jN-p-L" xsi:type="Element" x="822" y="150" w="154" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-X_fStvHPTw-x-L-33-c" elementRef="ObjDef.-4lh2y2N9DO4-p-L" xsi:type="Element" x="90" y="1480" w="1277" h="163"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-4smrnfir18K-x-L-33-c" elementRef="ObjDef.-PDi3_4zcki-p-L" xsi:type="Element" x="142" y="974" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-5H19IKZbybV-x-L-33-c" elementRef="ObjDef.-2pQHwYlmemt-p-L" xsi:type="Element" x="89" y="1684" w="1279" h="152"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--4Q_lw9Z0Z6p-x-L-33-c" elementRef="ObjDef.-GecYqlIEXw-p-L" xsi:type="Element" x="382" y="396" w="165" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-3dYzwVJHoyN-x-L-33-c" elementRef="ObjDef.23l5F4rMOkz-p-L" xsi:type="Element" x="142" y="1144" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--7b5TMVqTLQ-x-L-33-c" elementRef="ObjDef.4eHKpidP3dH-p-L" xsi:type="Element" x="89" y="1876" w="1279" h="142"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-6Ti8ICr4Jyy-x-L-33-c" elementRef="ObjDef.1jcl9uB5BWK-p-L" xsi:type="Element" x="1159" y="150" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-3PyFAsXNecC-x-L-33-c" elementRef="ObjDef.-6qq7xc82aME-p-L" xsi:type="Element" x="382" y="471" w="165" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--b-LBCxbc9m-x-L-33-c" elementRef="ObjDef.-3Lozrh_PNqx-p-L" xsi:type="Element" x="822" y="225" w="154" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-6cH-CZ2uOSw-x-L-33-c" elementRef="ObjDef.-7EseE_k-H2i-p-L" xsi:type="Element" x="90" y="2058" w="1279" h="150"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-PqxuobwK2X-x-L-33-c" elementRef="ObjDef.-4K2pT9yzJFz-p-L" xsi:type="Element" x="293" y="638" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--28BjHQyXOEm-x-L-33-c" elementRef="ObjDef.uyAFNumpNc-p-L" xsi:type="Element" x="142" y="1330" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-U6IuH0wdxC-x-L-33-c" elementRef="ObjDef.5uDrvpyStZD-p-L" xsi:type="Element" x="92" y="2243" w="1277" h="143"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-22Ouvt-xp71-x-L-33-c" elementRef="ObjDef.-2QiT2_FDI00-p-L" xsi:type="Element" x="92" y="2430" w="1279" h="153"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--7azegxkOAi5-x-L-33-c" elementRef="ObjDef.-zor_7G4bP7-p-L" xsi:type="Element" x="91" y="2620" w="1280" h="116"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--1hyCfJAOOqs-x-L-33-c" elementRef="ObjDef.-5X1hj1rcZcf-p-L" xsi:type="Element" x="139" y="1737" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--3WkksqET-SF-x-L-33-c" elementRef="ObjDef.-7wLdZYDHquG-p-L" xsi:type="Element" x="88" y="2772" w="1283" h="153"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--4mrtH-4PRQM-x-L-33-c" elementRef="ObjDef.DanW7ZPItQ-p-L" xsi:type="Element" x="307" y="806" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-1VyTDjejQyz-x-L-33-c" elementRef="ObjDef.-hpWSXvPJ7A-p-L" xsi:type="Element" x="651" y="396" w="167" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--5tKefZG5_f--x-L-33-c" elementRef="ObjDef.-4Pg1Xycrza5-p-L" xsi:type="Element" x="88" y="2960" w="1283" h="159"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-7gdQ3FQenYF-x-L-33-c" elementRef="ObjDef.3BUwu_gM2VR-p-L" xsi:type="Element" x="1159" y="225" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-2pFsjDZ3yrK-x-L-33-c" elementRef="ObjDef.-21IOmGDhhmo-p-L" xsi:type="Element" x="444" y="638" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-22HSZ1F4RzO-x-L-33-c" elementRef="ObjDef.-4pmRV7vsNeo-p-L" xsi:type="Element" x="91" y="3154" w="1280" h="146"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--4fphJv2qFRQ-x-L-33-c" elementRef="ObjDef.-2rihj2y2TAP-p-L" xsi:type="Element" x="90" y="3340" w="1281" h="134"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--3ohBrN4S5he-x-L-33-c" elementRef="ObjDef.36FlXb8aFSw-p-L" xsi:type="Element" x="651" y="471" w="167" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-PlU5qR9gEy-x-L-33-c" elementRef="ObjDef.-3aBfiHEbfVA-p-L" xsi:type="Element" x="90" y="3510" w="1281" h="128"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--4HTOsoMd0oE-x-L-33-c" elementRef="ObjDef.-3la_4qQPGkj-p-L" xsi:type="Element" x="176" y="1917" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-6esPttwX5dV-x-L-33-c" elementRef="ObjDef.1yoKMXqeW9r-p-L" xsi:type="Element" x="142" y="2502" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--7Gkov08gtBj-x-L-33-c" elementRef="ObjDef.-4Nl3rkYZRzv-p-L" xsi:type="Element" x="177" y="2123" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--RZJoEddhbm-x-L-33-c" elementRef="ObjDef.mtzwwe6hR7-p-L" xsi:type="Element" x="954" y="396" w="163" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-4pSr7i93XqI-x-L-33-c" elementRef="ObjDef.Itx-eExgOZ-p-L" xsi:type="Element" x="596" y="638" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-3QJCzcHcjzc-x-L-33-c" elementRef="ObjDef.2DlasOKEQRX-p-L" xsi:type="Element" x="482" y="807" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-1jTZhlbIXQy-x-L-33-c" elementRef="ObjDef.-1SjQrkfe-Lg-p-L" xsi:type="Element" x="178" y="2305" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-4EMemyDVmS--x-L-33-c" elementRef="ObjDef.-2zXRx3LCC1D-p-L" xsi:type="Element" x="367" y="1144" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-S_IbIHdkrq-x-L-33-c" elementRef="ObjDef.-1u1TAhZ3z5L-p-L" xsi:type="Element" x="148" y="3009" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-7D4Y5HCpmdf-x-L-33-c" elementRef="ObjDef.7HxJRlqJlEG-p-L" xsi:type="Element" x="954" y="471" w="163" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--51CDi1Yv0_2-x-L-33-c" elementRef="ObjDef.5bJvoKuBadR-p-L" xsi:type="Element" x="135" y="3378" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--6TceIWnhXFe-x-L-33-c" elementRef="ObjDef.-3FsqxqK_4DJ-p-L" xsi:type="Element" x="1177" y="396" w="165" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-qic9SXo2z6-x-L-33-c" elementRef="ObjDef.-24Npl5leVV-p-L" xsi:type="Element" x="788" y="604" w="583" h="128"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--2jY3TpBr1Df-x-L-33-c" elementRef="ObjDef.-47Q6xHlGH37-p-L" xsi:type="Element" x="367" y="1330" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-6SzdxUVEyfr-x-L-33-c" elementRef="ObjDef.2D8f_Cg9yUK-p-L" xsi:type="Element" x="639" y="806" w="160" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--6IB6OxtVDag-x-L-33-c" elementRef="ObjDef.7hq3GbQ1PDX-p-L" xsi:type="Element" x="848" y="638" w="192" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-6doK-85ri0u-x-L-33-c" elementRef="ObjDef.1DDk-VuGQ0k-p-L" xsi:type="Element" x="1177" y="471" w="165" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--5hGnVEC7NjS-x-L-33-c" elementRef="ObjDef.1tG3MGz4lCm-p-L" xsi:type="Element" x="330" y="1737" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--TnKyajYZr3-x-L-33-c" elementRef="ObjDef.2t8ZmdTjRvS-p-L" xsi:type="Element" x="822" y="807" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--2VQx7Ac6ORm-x-L-33-c" elementRef="ObjDef.2JiVYX-dTyg-p-L" xsi:type="Element" x="683" y="974" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--11PZ3T09kvP-x-L-33-c" elementRef="ObjDef.-3qFZDf6RNfC-p-L" xsi:type="Element" x="588" y="1144" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-4H_MtsHVcxz-x-L-33-c" elementRef="ObjDef.2Hx8A9_zIx5-p-L" xsi:type="Element" x="1147" y="638" w="195" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--3mCIChwXVxa-x-L-33-c" elementRef="ObjDef.-o2Q79SHuDL-p-L" xsi:type="Element" x="263" y="2823" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-6F7mVALZlAB-x-L-33-c" elementRef="ObjDef.-1Jh2KTUJwCI-p-L" xsi:type="Element" x="588" y="1330" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-1Ac3u8XaeVX-x-L-33-c" elementRef="ObjDef.3kcovZVe3b--p-L" xsi:type="Element" x="1007" y="810" w="145" h="55"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--7s46PWLm8cC-x-L-33-c" elementRef="ObjDef.3-vPQ0MdIye-p-L" xsi:type="Element" x="405" y="2123" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--3jw38RS3z7N-x-L-33-c" elementRef="ObjDef.2Mw5mKemGwp-p-L" xsi:type="Element" x="347" y="2502" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-yIXe3FKUjV-x-L-33-c" elementRef="ObjDef.2qs7kwjMLEa-p-L" xsi:type="Element" x="794" y="1144" w="147" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-3qx4VJUtE_U-x-L-33-c" elementRef="ObjDef.1r12HtD8H9T-p-L" xsi:type="Element" x="405" y="2305" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-5jvhaVjbUFb-x-L-33-c" elementRef="ObjDef.-oEi9AwqFh2-p-L" xsi:type="Element" x="544" y="1737" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-Zfqoh50mZ6-x-L-33-c" elementRef="ObjDef.5bIRC60pX8l-p-L" xsi:type="Element" x="318" y="3009" w="125" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--3uYnmNmC2bB-x-L-33-c" elementRef="ObjDef.2yxYAyh5XhX-p-L" xsi:type="Element" x="285" y="3378" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-Ht0Nxf75yq-x-L-33-c" elementRef="ObjDef.7jBcic6nj33-p-L" xsi:type="Element" x="1207" y="805" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--7EUPQr7-d0c-x-L-33-c" elementRef="ObjDef.-64f1FG0EclA-p-L" xsi:type="Element" x="511" y="1917" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-7ozGDxnMv7V-x-L-33-c" elementRef="ObjDef.2mwdnXA30X5-p-L" xsi:type="Element" x="800" y="1330" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--58g5bSds8pW-x-L-33-c" elementRef="ObjDef.3_AgRSLFvJK-p-L" xsi:type="Element" x="1102" y="974" w="249" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--2Lu_2Qd7F38-x-L-33-c" elementRef="ObjDef.6AHCu8E5YV3-p-L" xsi:type="Element" x="350" y="3219" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-7pzqoGySjc8-x-L-33-c" elementRef="ObjDef.3pvgxEJQOMI-p-L" xsi:type="Element" x="997" y="1144" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-6mL40XBHWXn-x-L-33-c" elementRef="ObjDef.6Tp3puKkEYz-p-L" xsi:type="Element" x="754" y="1737" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-5D-zaMkGD-f-x-L-33-c" elementRef="ObjDef.4QnT_S38oSv-p-L" xsi:type="Element" x="997" y="1330" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-4JBiS-nqW83-x-L-33-c" elementRef="ObjDef.-15QWl74lTZY-p-L" xsi:type="Element" x="1207" y="1144" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-7Ri3svi0oMa-x-L-33-c" elementRef="ObjDef.-4svzao3PaRo-p-L" xsi:type="Element" x="557" y="2502" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--5VzonammE_p-x-L-33-c" elementRef="ObjDef.-FwE1XCkG2--p-L" xsi:type="Element" x="677" y="2123" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--F8NNYunH8Z-x-L-33-c" elementRef="ObjDef.3P5hXEHMXi3-p-L" xsi:type="Element" x="436" y="3378" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--5dD9v1bOtqF-x-L-33-c" elementRef="ObjDef.-5Agpn7EEDJG-p-L" xsi:type="Element" x="505" y="3010" w="127" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--4BulNFSkiCy-x-L-33-c" elementRef="ObjDef.1zJbdqEk6xc-p-L" xsi:type="Element" x="697" y="2305" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--6KzisGhgLRV-x-L-33-c" elementRef="ObjDef.2Moc_e1dnzb-p-L" xsi:type="Element" x="1207" y="1335" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-3hLuGSykBJ9-x-L-33-c" elementRef="ObjDef.-6KBoedMdzKP-p-L" xsi:type="Element" x="841" y="1917" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-2LrvGMKf-1y-x-L-33-c" elementRef="ObjDef.5bFjA_6w-bX-p-L" xsi:type="Element" x="971" y="1737" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--3bEoeIUmDVK-x-L-33-c" elementRef="ObjDef.-1HYtnENV4Bc-p-L" xsi:type="Element" x="663" y="2823" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-6CuddwOOpTV-x-L-33-c" elementRef="ObjDef.-4UY6PjUew0E-p-L" xsi:type="Element" x="752" y="2502" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-6GrKzRWdbGH-x-L-33-c" elementRef="ObjDef.-2axeLpfek4j-p-L" xsi:type="Element" x="585" y="3378" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--_gZSlC3qwI-x-L-33-c" elementRef="ObjDef.nJ5uE9oQto-p-L" xsi:type="Element" x="932" y="2123" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-5FdgeBP4wzb-x-L-33-c" elementRef="ObjDef.-3_wceSqwO7o-p-L" xsi:type="Element" x="689" y="3009" w="165" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-xTvuwEowFY-x-L-33-c" elementRef="ObjDef.-3NX1UsNtQRC-p-L" xsi:type="Element" x="1206" y="1737" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-4dviPFu-aTj-x-L-33-c" elementRef="ObjDef.-3_IPAXli-fc-p-L" xsi:type="Element" x="932" y="2305" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-5-rZVPSh-Xq-x-L-33-c" elementRef="ObjDef.-4KFrzKbzP_X-p-L" xsi:type="Element" x="695" y="3219" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-4SsM806dUIl-x-L-33-c" elementRef="ObjDef.-6FPSKaFHTma-p-L" xsi:type="Element" x="1186" y="1917" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-DZsJ3VooV2-x-L-33-c" elementRef="ObjDef.-6AJoeB7sRMY-p-L" xsi:type="Element" x="947" y="2502" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-1zOrPuhkXnG-x-L-33-c" elementRef="ObjDef.4frdxhWbZpv-p-L" xsi:type="Element" x="684" y="3560" w="115" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--2gId5RrzHxm-x-L-33-c" elementRef="ObjDef.-3tIG8NHIY8c-p-L" xsi:type="Element" x="733" y="3378" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-6cYubW2TCGp-x-L-33-c" elementRef="ObjDef.-6jAC3h8QAIn-p-L" xsi:type="Element" x="1187" y="2123" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-3KGjJLB5Pik-x-L-33-c" elementRef="ObjDef.-2tvPFin8YTY-p-L" xsi:type="Element" x="1186" y="2305" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-3CldMgBX6Fs-x-L-33-c" elementRef="ObjDef.4uN6sYYbkF6-p-L" xsi:type="Element" x="915" y="3010" w="165" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-53zgKdCPE9a-x-L-33-c" elementRef="ObjDef.-6AHqlCrMoCK-p-L" xsi:type="Element" x="1152" y="2502" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-5wqeoeFEScY-x-L-33-c" elementRef="ObjDef.-1TOvq7ra5tX-p-L" xsi:type="Element" x="886" y="3378" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--3SFcIfazBQk-x-L-33-c" elementRef="ObjDef.-6zqFjvzKhhR-p-L" xsi:type="Element" x="1073" y="2823" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--4mVZIRmWSH9-x-L-33-c" elementRef="ObjDef.-2bd7xCxLQGc-p-L" xsi:type="Element" x="1049" y="3219" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-6r0Ij-2ZYkh-x-L-33-c" elementRef="ObjDef.-3UAlseCGybd-p-L" xsi:type="Element" x="1158" y="3010" w="185" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L-5mYtj_8RY3--x-L-33-c" elementRef="ObjDef.-6-BqPr4s_YN-p-L" xsi:type="Element" x="1035" y="3378" w="135" h="60"></node>
+				<node identifier="ObjOcc.79zl7pM1VPX-u-L--4SQnsTYoWBe-x-L-33-c" elementRef="ObjDef.-MjgW2di45p-p-L" xsi:type="Element" x="1200" y="3378" w="135" h="60"></node>
+			</view>
+			<view identifier="Model.6q1OeE6WvSd-u-L" xsi:type="Diagram">
+				<name xml:lang="en">Data Management On A Page</name>
+				<documentation xml:lang="en"></documentation>
+				<node identifier="ObjOcc.6q1OeE6WvSd-u-L--2nSBBjZ5L5W-x-L-33-c" elementRef="ObjDef.-2pQHwYlmemt-p-L" xsi:type="Element" x="262" y="250" w="1335" h="660"></node>
+				<node identifier="ObjOcc.6q1OeE6WvSd-u-L-6iL2gytC4uF-x-L-33-c" elementRef="ObjDef.-5X1hj1rcZcf-p-L" xsi:type="Element" x="307" y="310" w="230" h="540"></node>
+				<node identifier="ObjOcc.6q1OeE6WvSd-u-L--1lmIZmGzW8_-x-L-33-c" elementRef="ObjDef.-42L3f7fuht6-p-L" xsi:type="Element" x="367" y="370" w="135" h="60"></node>
+				<node identifier="ObjOcc.6q1OeE6WvSd-u-L-6_Rijri5Yz8-x-L-33-c" elementRef="ObjDef.4wxzmvf9CXa-p-L" xsi:type="Element" x="367" y="450" w="135" h="60"></node>
+				<node identifier="ObjOcc.6q1OeE6WvSd-u-L-4iEyy2knP55-x-L-33-c" elementRef="ObjDef.1tG3MGz4lCm-p-L" xsi:type="Element" x="568" y="310" w="225" h="540"></node>
+				<node identifier="ObjOcc.6q1OeE6WvSd-u-L--5vh8GWtzaLM-x-L-33-c" elementRef="ObjDef.-2pj991gPTpu-p-L" xsi:type="Element" x="367" y="530" w="135" h="60"></node>
+				<node identifier="ObjOcc.6q1OeE6WvSd-u-L--2p9HeGue3bt-x-L-33-c" elementRef="ObjDef.4MWccFfNRQf-p-L" xsi:type="Element" x="628" y="370" w="135" h="60"></node>
+				<node identifier="ObjOcc.6q1OeE6WvSd-u-L-1iFoUga7L4U-x-L-33-c" elementRef="ObjDef.-oEi9AwqFh2-p-L" xsi:type="Element" x="817" y="310" w="225" h="540"></node>
+				<node identifier="ObjOcc.6q1OeE6WvSd-u-L--6UvkpLloyCy-x-L-33-c" elementRef="ObjDef.-66u_bgvVFuB-p-L" xsi:type="Element" x="628" y="450" w="135" h="60"></node>
+				<node identifier="ObjOcc.6q1OeE6WvSd-u-L-4hXgidsqx-b-x-L-33-c" elementRef="ObjDef.-62Xjn4XZYEZ-p-L" xsi:type="Element" x="877" y="370" w="135" h="60"></node>
+				<node identifier="ObjOcc.6q1OeE6WvSd-u-L-daLVxeZbPh-x-L-33-c" elementRef="ObjDef.-1970KyNBywl-p-L" xsi:type="Element" x="628" y="530" w="135" h="60"></node>
+				<node identifier="ObjOcc.6q1OeE6WvSd-u-L--5sJv4B1uHil-x-L-33-c" elementRef="ObjDef.6Tp3puKkEYz-p-L" xsi:type="Element" x="1078" y="310" w="213" h="540"></node>
+				<node identifier="ObjOcc.6q1OeE6WvSd-u-L-57-QxJAsSUE-x-L-33-c" elementRef="ObjDef.5u59RRu8hbG-p-L" xsi:type="Element" x="628" y="610" w="135" h="60"></node>
+				<node identifier="ObjOcc.6q1OeE6WvSd-u-L--6liWdNgcRmF-x-L-33-c" elementRef="ObjDef.-6A65EWES-AN-p-L" xsi:type="Element" x="877" y="450" w="135" h="60"></node>
+				<node identifier="ObjOcc.6q1OeE6WvSd-u-L--5BocMYIdmhp-x-L-33-c" elementRef="ObjDef.5bFjA_6w-bX-p-L" xsi:type="Element" x="1321" y="310" w="236" h="220"></node>
+				<node identifier="ObjOcc.6q1OeE6WvSd-u-L-5Cy9ns_yJIK-x-L-33-c" elementRef="ObjDef.-45aS2QUTJKq-p-L" xsi:type="Element" x="1138" y="370" w="135" h="60"></node>
+				<node identifier="ObjOcc.6q1OeE6WvSd-u-L-53LedeI2uU--x-L-33-c" elementRef="ObjDef.-5BvHkjMJbMn-p-L" xsi:type="Element" x="877" y="530" w="135" h="60"></node>
+				<node identifier="ObjOcc.6q1OeE6WvSd-u-L--5xpWOlEMrPA-x-L-33-c" elementRef="ObjDef.7oSGXYSroLY-p-L" xsi:type="Element" x="1372" y="370" w="135" h="60"></node>
+				<node identifier="ObjOcc.6q1OeE6WvSd-u-L-2YaYJLqKPYV-x-L-33-c" elementRef="ObjDef.-2A_9uLsCsi-p-L" xsi:type="Element" x="1138" y="450" w="135" h="60"></node>
+				<node identifier="ObjOcc.6q1OeE6WvSd-u-L-3nK_YDw_gp8-x-L-33-c" elementRef="ObjDef.-26mq0yq3fd--p-L" xsi:type="Element" x="1138" y="530" w="135" h="60"></node>
+				<node identifier="ObjOcc.6q1OeE6WvSd-u-L-47xsi_pQkNa-x-L-33-c" elementRef="ObjDef.3GWa6OW3yU--p-L" xsi:type="Element" x="1372" y="450" w="135" h="60"></node>
+				<node identifier="ObjOcc.6q1OeE6WvSd-u-L--2FBrLT2hNbR-x-L-33-c" elementRef="ObjDef.3KwVV5j9u2D-p-L" xsi:type="Element" x="1138" y="610" w="135" h="60"></node>
+				<node identifier="ObjOcc.6q1OeE6WvSd-u-L-7M4WuyGucXV-x-L-33-c" elementRef="ObjDef.-31iEwNZNmT--p-L" xsi:type="Element" x="1321" y="570" w="236" h="280"></node>
+				<node identifier="ObjOcc.6q1OeE6WvSd-u-L-1QoTluKhKVr-x-L-33-c" elementRef="ObjDef.6ZqLDBS9Pbz-p-L" xsi:type="Element" x="1138" y="690" w="135" h="60"></node>
+				<node identifier="ObjOcc.6q1OeE6WvSd-u-L--3dNRJk-wxWk-x-L-33-c" elementRef="ObjDef.1ENs8jIyRyY-p-L" xsi:type="Element" x="1372" y="610" w="135" h="60"></node>
+				<node identifier="ObjOcc.6q1OeE6WvSd-u-L--6yY0w7XlDJs-x-L-33-c" elementRef="ObjDef.4npKc0vbtH2-p-L" xsi:type="Element" x="1138" y="770" w="135" h="60"></node>
+			</view>
+		</diagrams>
+	</views>
+</model>

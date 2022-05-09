@@ -1,0 +1,638 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE AML SYSTEM "ARIS-Export.dtd" [
+	<!ENTITY LocaleId.USen "1033">
+	<!ENTITY Codepage.USen "1252">
+]>
+
+<!-- exported with version 10.0.14.1.1570872 -->
+<AML>
+	<Header-Info
+		CreateTime="09:11:40.421"
+		CreateDate="01-20-2022"
+		DatabaseName="Architecture models_Development"
+		UserName="arisservice"
+		ArisExeVersion="100"
+	/>
+	<Language LocaleId="&LocaleId.USen;" Codepage="&Codepage.USen;">
+		<LogFont
+			FaceName="Arial"
+			Height="-13"
+			Width="0"
+			Escapement="0"
+			Orientation="0"
+			Weight="400"
+			Italic="NO"
+			Underline="NO"
+			StrikeOut="NO"
+			CharSet="0"
+			OutPrecision="0"
+			ClipPrecision="0"
+			Quality="0"
+			PitchAndFamily="0"
+			Color="0"/>
+	</Language>
+	<FontStyleSheet FontSS.ID="FontSS.5585z6byesu-c-L">
+		<FontNode LocaleId="&LocaleId.USen;"
+			FaceName="Arial"
+			Height="-13"
+			Width="0"
+			Escapement="0"
+			Orientation="0"
+			Weight="400"
+			Italic="NO"
+			Underline="NO"
+			StrikeOut="NO"
+			CharSet="0"
+			OutPrecision="0"
+			ClipPrecision="2"
+			Quality="1"
+			PitchAndFamily="3"
+			Color="0"/>
+	</FontStyleSheet>
+	<FontStyleSheet FontSS.ID="FontSS.-5bVg0UWFy7P-c-L">
+		<AttrDef AttrDef.Type="AT_NAME">
+			<AttrValue LocaleId="&LocaleId.USen;">
+				<StyledElement>
+					<Paragraph Alignment="UNDEFINED" Indent="0"/>
+						<StyledElement>
+							<PlainText TextValue="Standard"/>
+						</StyledElement>
+				</StyledElement>
+			</AttrValue>
+		</AttrDef>
+		<FontNode LocaleId="&LocaleId.USen;"
+			FaceName="Arial"
+			Height="-10"
+			Width="0"
+			Escapement="0"
+			Orientation="0"
+			Weight="400"
+			Italic="NO"
+			Underline="NO"
+			StrikeOut="NO"
+			CharSet="0"
+			OutPrecision="0"
+			ClipPrecision="0"
+			Quality="0"
+			PitchAndFamily="0"
+			Color="0"/>
+	</FontStyleSheet>
+	<Group Group.ID="Group.Root">
+		<Group Group.ID="Group.3hV9e-T59t6-k-L"
+			TypeNum="OT_GROUP"
+			LastUpdated="07:12:06.000;09/03/2020"
+			CompositePosition="0"
+			CompositeType="1"
+		Creator="dl26wl"
+		CreationTimeStamp="07:28:11.000;08/21/2020"
+		LastModifier="dl26wl"
+		LastModificationTimeStamp="07:12:06.000;09/03/2020"
+>
+			<GUID>de2463e5-e37f-11ea-4ee3-0050568b5c9f</GUID>
+			<AttrDef AttrDef.Type="AT_NAME">
+				<AttrValue LocaleId="&LocaleId.USen;">
+					<StyledElement>
+						<Paragraph Alignment="UNDEFINED" Indent="0"/>
+							<StyledElement>
+								<PlainText TextValue="99. Incubator"/>
+							</StyledElement>
+					</StyledElement>
+				</AttrValue>
+			</AttrDef>
+			<Group Group.ID="Group.29uv6QyLlF2-k-L"
+				TypeNum="OT_GROUP"
+				LastUpdated="16:01:19.000;01/29/2021"
+				CompositePosition="0"
+				CompositeType="1"
+			Creator="xy56re"
+			CreationTimeStamp="16:01:03.000;01/29/2021"
+			LastModifier="xy56re"
+			LastModificationTimeStamp="16:01:19.000;01/29/2021"
+>
+				<GUID>303aef12-624b-11eb-05d0-0050568b5c9f</GUID>
+				<AttrDef AttrDef.Type="AT_NAME">
+					<AttrValue LocaleId="&LocaleId.USen;">
+						<StyledElement>
+							<Paragraph Alignment="UNDEFINED" Indent="0"/>
+								<StyledElement>
+									<PlainText TextValue="XY56RE"/>
+								</StyledElement>
+						</StyledElement>
+					</AttrValue>
+				</AttrDef>
+				<ObjDef ObjDef.ID="ObjDef.-2IwsXTi0BNg-p-L"
+					TypeNum="OT_DP_FUNC_TYPE"
+					ToCxnDefs.IdRefs=" CxnDef.XtvKA5wkUn-q-L"
+					SymbolNum="ST_ARCHIMATE_APPLICATION_FUNCTION"
+					LastUpdated="08:11:10.000;01/20/2022"
+					CompositePosition="0"
+					CompositeType="1"
+				Creator="xy56re"
+				CreationTimeStamp="08:11:10.000;01/20/2022"
+				LastModifier="xy56re"
+				LastModificationTimeStamp="08:11:10.000;01/20/2022"
+>
+					<GUID>d22ead99-79c7-11ec-2891-0050568b5c9f</GUID>
+					<AttrDef AttrDef.Type="AT_NAME">
+						<AttrValue LocaleId="&LocaleId.USen;">
+							<StyledElement>
+								<Paragraph Alignment="UNDEFINED" Indent="0"/>
+									<StyledElement>
+										<PlainText TextValue="AF 1.2"/>
+									</StyledElement>
+							</StyledElement>
+						</AttrValue>
+					</AttrDef>
+					<CxnDef CxnDef.ID="CxnDef.-1e8a13-4OMk-q-L"
+						CxnDef.Type="CT_ARCHIMATE_EXCHNG_INFO"
+						ToObjDef.IdRef="ObjDef.2f6L_psumtV-p-L"
+						SourceOrderNum="0"
+						TargetOrderNum="0"
+					Creator="xy56re"
+					CreationTimeStamp="08:11:10.000;01/20/2022"
+					LastModifier="xy56re"
+					LastModificationTimeStamp="08:11:10.000;01/20/2022"
+>
+					</CxnDef>
+				</ObjDef>
+				<ObjDef ObjDef.ID="ObjDef.-16XyE2Va6cC-p-L"
+					TypeNum="OT_APPL_SYS_TYPE"
+					SymbolNum="ST_ARCHIMATE_APPLICATION_COMPONENT"
+					LastUpdated="08:11:10.000;01/20/2022"
+					CompositePosition="0"
+					CompositeType="1"
+				Creator="xy56re"
+				CreationTimeStamp="08:11:10.000;01/20/2022"
+				LastModifier="xy56re"
+				LastModificationTimeStamp="08:11:10.000;01/20/2022"
+>
+					<GUID>d22ead9f-79c7-11ec-2891-0050568b5c9f</GUID>
+					<AttrDef AttrDef.Type="AT_NAME">
+						<AttrValue LocaleId="&LocaleId.USen;">
+							<StyledElement>
+								<Paragraph Alignment="UNDEFINED" Indent="0"/>
+									<StyledElement>
+										<PlainText TextValue="Comp 1.2"/>
+									</StyledElement>
+							</StyledElement>
+						</AttrValue>
+					</AttrDef>
+					<CxnDef CxnDef.ID="CxnDef.XtvKA5wkUn-q-L"
+						CxnDef.Type="CT_ARCHIMATE_REALIZES"
+						ToObjDef.IdRef="ObjDef.-2IwsXTi0BNg-p-L"
+						SourceOrderNum="0"
+						TargetOrderNum="0"
+					Creator="xy56re"
+					CreationTimeStamp="08:11:10.000;01/20/2022"
+					LastModifier="xy56re"
+					LastModificationTimeStamp="08:11:10.000;01/20/2022"
+>
+					</CxnDef>
+					<CxnDef CxnDef.ID="CxnDef.-4bEuZRMv1Lv-q-L"
+						CxnDef.Type="CT_ARCHIMATE_AGGREGATES"
+						ToObjDef.IdRef="ObjDef.2f6L_psumtV-p-L"
+						SourceOrderNum="0"
+						TargetOrderNum="0"
+					Creator="xy56re"
+					CreationTimeStamp="08:11:10.000;01/20/2022"
+					LastModifier="xy56re"
+					LastModificationTimeStamp="08:11:10.000;01/20/2022"
+>
+					</CxnDef>
+				</ObjDef>
+				<ObjDef ObjDef.ID="ObjDef.-vMHQJ_rIfL-p-L"
+					TypeNum="OT_ENT_TYPE"
+					ToCxnDefs.IdRefs="CxnDef.-1D7_heI2Jal-q-L"
+					SymbolNum="ST_ARCHIMATE_DATA_OBJECT"
+					LastUpdated="08:11:10.000;01/20/2022"
+					CompositePosition="0"
+					CompositeType="1"
+				Creator="xy56re"
+				CreationTimeStamp="08:11:10.000;01/20/2022"
+				LastModifier="xy56re"
+				LastModificationTimeStamp="08:11:10.000;01/20/2022"
+>
+					<GUID>d22ead9c-79c7-11ec-2891-0050568b5c9f</GUID>
+					<AttrDef AttrDef.Type="AT_NAME">
+						<AttrValue LocaleId="&LocaleId.USen;">
+							<StyledElement>
+								<Paragraph Alignment="UNDEFINED" Indent="0"/>
+									<StyledElement>
+										<PlainText TextValue="Data object"/>
+									</StyledElement>
+							</StyledElement>
+						</AttrValue>
+					</AttrDef>
+				</ObjDef>
+				<ObjDef ObjDef.ID="ObjDef.1Ijx83d-C5b-p-L"
+					TypeNum="OT_APPL_SYS_TYPE"
+					SymbolNum="ST_ARCHIMATE_APPLICATION_COMPONENT"
+					LastUpdated="14:53:19.000;01/14/2022"
+					CompositePosition="0"
+					CompositeType="1"
+				Creator="xy56re"
+				CreationTimeStamp="14:53:19.000;01/14/2022"
+				LastModifier="xy56re"
+				LastModificationTimeStamp="14:53:19.000;01/14/2022"
+>
+					<GUID>aa5ac2e2-7549-11ec-2890-0050568b5c9f</GUID>
+					<AttrDef AttrDef.Type="AT_NAME">
+						<AttrValue LocaleId="&LocaleId.USen;">
+							<StyledElement>
+								<Paragraph Alignment="UNDEFINED" Indent="0"/>
+									<StyledElement>
+										<PlainText TextValue="Application component"/>
+									</StyledElement>
+							</StyledElement>
+						</AttrValue>
+					</AttrDef>
+					<CxnDef CxnDef.ID="CxnDef.pPHXPjI2Kf-q-L"
+						CxnDef.Type="CT_ARCHIMATE_AGGREGATES"
+						ToObjDef.IdRef="ObjDef.2f6L_psumtV-p-L"
+						SourceOrderNum="0"
+						TargetOrderNum="0"
+					Creator="xy56re"
+					CreationTimeStamp="14:53:19.000;01/14/2022"
+					LastModifier="xy56re"
+					LastModificationTimeStamp="14:53:19.000;01/14/2022"
+>
+					</CxnDef>
+				</ObjDef>
+				<ObjDef ObjDef.ID="ObjDef.-329GnE-L_Ra-p-L"
+					TypeNum="OT_APPL_SYS_TYPE"
+					SymbolNum="ST_ARCHIMATE_APPLICATION_COMPONENT"
+					LastUpdated="08:11:10.000;01/20/2022"
+					CompositePosition="0"
+					CompositeType="1"
+				Creator="xy56re"
+				CreationTimeStamp="08:11:10.000;01/20/2022"
+				LastModifier="xy56re"
+				LastModificationTimeStamp="08:11:10.000;01/20/2022"
+>
+					<GUID>d22ead90-79c7-11ec-2891-0050568b5c9f</GUID>
+					<AttrDef AttrDef.Type="AT_NAME">
+						<AttrValue LocaleId="&LocaleId.USen;">
+							<StyledElement>
+								<Paragraph Alignment="UNDEFINED" Indent="0"/>
+									<StyledElement>
+										<PlainText TextValue="Comp 1.1"/>
+									</StyledElement>
+							</StyledElement>
+						</AttrValue>
+					</AttrDef>
+					<CxnDef CxnDef.ID="CxnDef.-1D7_heI2Jal-q-L"
+						CxnDef.Type="CT_ARCHIMATE_ACCESSES"
+						ToObjDef.IdRef="ObjDef.-vMHQJ_rIfL-p-L"
+						SourceOrderNum="0"
+						TargetOrderNum="0"
+					Creator="xy56re"
+					CreationTimeStamp="08:11:10.000;01/20/2022"
+					LastModifier="xy56re"
+					LastModificationTimeStamp="08:11:10.000;01/20/2022"
+>
+					</CxnDef>
+					<CxnDef CxnDef.ID="CxnDef.-6JLW66l40-m-q-L"
+						CxnDef.Type="CT_ARCHIMATE_AGGREGATES"
+						ToObjDef.IdRef="ObjDef.2f6L_psumtV-p-L"
+						SourceOrderNum="0"
+						TargetOrderNum="0"
+					Creator="xy56re"
+					CreationTimeStamp="08:11:10.000;01/20/2022"
+					LastModifier="xy56re"
+					LastModificationTimeStamp="08:11:10.000;01/20/2022"
+>
+					</CxnDef>
+					<CxnDef CxnDef.ID="CxnDef.-3qb4ek6W83U-q-L"
+						CxnDef.Type="CT_ARCHIMATE_REALIZES"
+						ToObjDef.IdRef="ObjDef.-3QJJzmiZBIN-p-L"
+						SourceOrderNum="0"
+						TargetOrderNum="0"
+					Creator="xy56re"
+					CreationTimeStamp="08:11:10.000;01/20/2022"
+					LastModifier="xy56re"
+					LastModificationTimeStamp="08:11:10.000;01/20/2022"
+>
+					</CxnDef>
+				</ObjDef>
+				<ObjDef ObjDef.ID="ObjDef.-3QJJzmiZBIN-p-L"
+					TypeNum="OT_DP_FUNC_TYPE"
+					ToCxnDefs.IdRefs=" CxnDef.-3qb4ek6W83U-q-L"
+					SymbolNum="ST_ARCHIMATE_APPLICATION_FUNCTION"
+					LastUpdated="08:11:10.000;01/20/2022"
+					CompositePosition="0"
+					CompositeType="1"
+				Creator="xy56re"
+				CreationTimeStamp="08:11:10.000;01/20/2022"
+				LastModifier="xy56re"
+				LastModificationTimeStamp="08:11:10.000;01/20/2022"
+>
+					<GUID>d22ead93-79c7-11ec-2891-0050568b5c9f</GUID>
+					<AttrDef AttrDef.Type="AT_NAME">
+						<AttrValue LocaleId="&LocaleId.USen;">
+							<StyledElement>
+								<Paragraph Alignment="UNDEFINED" Indent="0"/>
+									<StyledElement>
+										<PlainText TextValue="AF 1.1"/>
+									</StyledElement>
+							</StyledElement>
+						</AttrValue>
+					</AttrDef>
+					<CxnDef CxnDef.ID="CxnDef.-23G9Slodari-q-L"
+						CxnDef.Type="CT_ARCHIMATE_SERVES"
+						ToObjDef.IdRef="ObjDef.2f6L_psumtV-p-L"
+						SourceOrderNum="0"
+						TargetOrderNum="0"
+					Creator="xy56re"
+					CreationTimeStamp="08:11:10.000;01/20/2022"
+					LastModifier="xy56re"
+					LastModificationTimeStamp="08:11:10.000;01/20/2022"
+>
+					</CxnDef>
+				</ObjDef>
+				<ObjDef ObjDef.ID="ObjDef.2f6L_psumtV-p-L"
+					TypeNum="OT_APPLICATION_COLLABORATION"
+					ToCxnDefs.IdRefs="CxnDef.-1e8a13-4OMk-q-L CxnDef.-23G9Slodari-q-L CxnDef.-6JLW66l40-m-q-L CxnDef.pPHXPjI2Kf-q-L CxnDef.-4bEuZRMv1Lv-q-L"
+					SymbolNum="ST_ARCHIMATE_APPLICATION_COLLABORATION"
+					LastUpdated="08:11:10.000;01/20/2022"
+					CompositePosition="0"
+					CompositeType="1"
+				Creator="xy56re"
+				CreationTimeStamp="14:53:19.000;01/14/2022"
+				LastModifier="xy56re"
+				LastModificationTimeStamp="08:11:10.000;01/20/2022"
+>
+					<GUID>aa5ac2e0-7549-11ec-2890-0050568b5c9f</GUID>
+					<AttrDef AttrDef.Type="AT_NAME">
+						<AttrValue LocaleId="&LocaleId.USen;">
+							<StyledElement>
+								<Paragraph Alignment="UNDEFINED" Indent="0"/>
+									<StyledElement>
+										<PlainText TextValue="App 1"/>
+									</StyledElement>
+							</StyledElement>
+						</AttrValue>
+					</AttrDef>
+				</ObjDef>
+				<Model Model.ID="Model.-5fATZTn0_yk-u-L"
+					Model.Type="MT_ARCHIMATE_3"				Creator="xy56re"
+				CreationTimeStamp="14:52:52.000;01/14/2022"
+				LastModifier="xy56re"
+				LastModificationTimeStamp="08:11:10.000;01/20/2022"
+>
+					<Flag>1004c0</Flag>
+					<GUID>a63cfd45-7549-11ec-2890-0050568b5c9f</GUID>
+					<TemplateGUID>cec7c140-3a03-11e7-08f1-005056887284</TemplateGUID>
+					<Lane Lane.ID="Lane.-5fATZTn0_yk-u-L--5p4svpa73Qn-E-L-40-c"
+Lane.Type="LT_DEFAULT"
+						Orientation="VERTICAL"
+						StartBorder="0"
+						EndBorder="50000">
+						<AttrDef AttrDef.Type="AT_NAME">
+							<AttrValue LocaleId="&LocaleId.USen;">
+								<StyledElement>
+									<Paragraph Alignment="UNDEFINED" Indent="0"/>
+										<StyledElement>
+											<PlainText TextValue="."/>
+										</StyledElement>
+								</StyledElement>
+							</AttrValue>
+						</AttrDef>
+					</Lane>
+					<Lane Lane.ID="Lane.-5fATZTn0_yk-u-L--1fpNTagbgbs-E-L-40-c"
+Lane.Type="LT_DEFAULT"
+						Orientation="HORIZONTAL"
+						StartBorder="0"
+						EndBorder="50000">
+						<AttrDef AttrDef.Type="AT_NAME">
+							<AttrValue LocaleId="&LocaleId.USen;">
+								<StyledElement>
+									<Paragraph Alignment="UNDEFINED" Indent="0"/>
+										<StyledElement>
+											<PlainText TextValue="."/>
+										</StyledElement>
+								</StyledElement>
+							</AttrValue>
+						</AttrDef>
+					</Lane>
+					<AttrDef AttrDef.Type="AT_NAME">
+						<AttrValue LocaleId="&LocaleId.USen;">
+							<StyledElement>
+								<Paragraph Alignment="UNDEFINED" Indent="0"/>
+									<StyledElement>
+										<PlainText TextValue="test2"/>
+									</StyledElement>
+							</StyledElement>
+						</AttrValue>
+					</AttrDef>
+					<ObjOcc ObjOcc.ID="ObjOcc.-5fATZTn0_yk-u-L--6Tg-l1bbOsY-x-L-33-c"
+						ObjDef.IdRef="ObjDef.-3QJJzmiZBIN-p-L"
+						ToCxnOccs.IdRefs=" CxnOcc.-5fATZTn0_yk-u-L--2io9x1vU-9m-y-L-34-c"
+						SymbolNum="ST_ARCHIMATE_APPLICATION_FUNCTION"
+						Flags="0"
+>
+						<Position Pos.X="1175" Pos.Y="175"/>
+						<Size Size.dX="450" Size.dY="150"/>
+						<ExternalGUID>d22ead94-79c7-11ec-2891-0050568b5c9f</ExternalGUID>
+
+						<CxnOcc CxnOcc.ID="CxnOcc.-5fATZTn0_yk-u-L--2io9x1vU-9m-y-L-34-c"
+							CxnDef.IdRef="CxnDef.-23G9Slodari-q-L"
+							ToObjOcc.IdRef="ObjOcc.-5fATZTn0_yk-u-L--343UjZTucwU-x-L-33-c"
+							Visible="NO"
+							Embedding="YES"
+>
+							<Position Pos.X="1625" Pos.Y="675"/>
+							<Position Pos.X="1725" Pos.Y="675"/>
+							<Position Pos.X="1725" Pos.Y="725"/>
+							<Position Pos.X="1825" Pos.Y="725"/>
+						</CxnOcc>
+						<AttrOcc AttrTypeNum="AT_NAME"
+							Port="CENTER"
+							OrderNum="0"
+							SymbolFlag="TEXT"
+							FontSS.IdRef="FontSS.-5bVg0UWFy7P-c-L"
+							OffsetX="0"
+							OffsetY="0"
+							Rotation="0"
+>
+							<Size Size.dX="0" Size.dY="0"/>
+						</AttrOcc>
+					</ObjOcc>
+					<ObjOcc ObjOcc.ID="ObjOcc.-5fATZTn0_yk-u-L--1SUwYuvKv73-x-L-33-c"
+						ObjDef.IdRef="ObjDef.-329GnE-L_Ra-p-L"
+						ToCxnOccs.IdRefs="CxnOcc.-5fATZTn0_yk-u-L-3WoCOf9Fsc--y-L-34-c CxnOcc.-5fATZTn0_yk-u-L-49vQ5pPmRIR-y-L-34-c CxnOcc.-5fATZTn0_yk-u-L--3ByyQVO_Nmr-y-L-34-c"
+						SymbolNum="ST_ARCHIMATE_APPLICATION_COMPONENT"
+						Flags="16"
+>
+						<Position Pos.X="225" Pos.Y="175"/>
+						<Size Size.dX="650" Size.dY="350"/>
+						<ExternalGUID>d22ead91-79c7-11ec-2891-0050568b5c9f</ExternalGUID>
+
+						<CxnOcc CxnOcc.ID="CxnOcc.-5fATZTn0_yk-u-L-3WoCOf9Fsc--y-L-34-c"
+							CxnDef.IdRef="CxnDef.-6JLW66l40-m-q-L"
+							ToObjOcc.IdRef="ObjOcc.-5fATZTn0_yk-u-L--343UjZTucwU-x-L-33-c"
+							Visible="NO"
+							Embedding="YES"
+>
+							<Position Pos.X="775" Pos.Y="725"/>
+							<Position Pos.X="862" Pos.Y="725"/>
+							<Position Pos.X="862" Pos.Y="950"/>
+							<Position Pos.X="950" Pos.Y="950"/>
+						</CxnOcc>
+						<CxnOcc CxnOcc.ID="CxnOcc.-5fATZTn0_yk-u-L-49vQ5pPmRIR-y-L-34-c"
+							CxnDef.IdRef="CxnDef.-3qb4ek6W83U-q-L"
+							ToObjOcc.IdRef="ObjOcc.-5fATZTn0_yk-u-L--6Tg-l1bbOsY-x-L-33-c"
+>
+							<Position Pos.X="875" Pos.Y="250"/>
+							<Position Pos.X="1175" Pos.Y="250"/>
+						</CxnOcc>
+						<CxnOcc CxnOcc.ID="CxnOcc.-5fATZTn0_yk-u-L--3ByyQVO_Nmr-y-L-34-c"
+							CxnDef.IdRef="CxnDef.-1D7_heI2Jal-q-L"
+							ToObjOcc.IdRef="ObjOcc.-5fATZTn0_yk-u-L--1QSe4CPI4N--x-L-33-c"
+							Visible="NO"
+							Embedding="YES"
+>
+							<Position Pos.X="550" Pos.Y="725"/>
+							<Position Pos.X="550" Pos.Y="650"/>
+							<Position Pos.X="600" Pos.Y="650"/>
+							<Position Pos.X="600" Pos.Y="575"/>
+						</CxnOcc>
+						<AttrOcc AttrTypeNum="AT_NAME"
+							Port="PORT_FREE"
+							OrderNum="0"
+							SymbolFlag="TEXT"
+							FontSS.IdRef="FontSS.-5bVg0UWFy7P-c-L"
+							OffsetX="101"
+							OffsetY="-100"
+							Rotation="0"
+>
+							<Size Size.dX="0" Size.dY="0"/>
+						</AttrOcc>
+					</ObjOcc>
+					<ObjOcc ObjOcc.ID="ObjOcc.-5fATZTn0_yk-u-L-3j1oDRUJCg7-x-L-33-c"
+						ObjDef.IdRef="ObjDef.-2IwsXTi0BNg-p-L"
+						ToCxnOccs.IdRefs=" CxnOcc.-5fATZTn0_yk-u-L--2uwkInLuU1P-y-L-34-c"
+						SymbolNum="ST_ARCHIMATE_APPLICATION_FUNCTION"
+						Flags="0"
+>
+						<Position Pos.X="1175" Pos.Y="625"/>
+						<Size Size.dX="450" Size.dY="150"/>
+						<ExternalGUID>d22ead9a-79c7-11ec-2891-0050568b5c9f</ExternalGUID>
+
+						<CxnOcc CxnOcc.ID="CxnOcc.-5fATZTn0_yk-u-L--2uwkInLuU1P-y-L-34-c"
+							CxnDef.IdRef="CxnDef.-1e8a13-4OMk-q-L"
+							ToObjOcc.IdRef="ObjOcc.-5fATZTn0_yk-u-L--343UjZTucwU-x-L-33-c"
+							Visible="NO"
+							Embedding="YES"
+>
+							<Position Pos.X="1400" Pos.Y="625"/>
+							<Position Pos.X="1175" Pos.Y="625"/>
+							<Position Pos.X="1175" Pos.Y="950"/>
+							<Position Pos.X="950" Pos.Y="950"/>
+						</CxnOcc>
+						<AttrOcc AttrTypeNum="AT_NAME"
+							Port="CENTER"
+							OrderNum="0"
+							SymbolFlag="TEXT"
+							FontSS.IdRef="FontSS.-5bVg0UWFy7P-c-L"
+							OffsetX="0"
+							OffsetY="0"
+							Rotation="0"
+>
+							<Size Size.dX="0" Size.dY="0"/>
+						</AttrOcc>
+					</ObjOcc>
+					<ObjOcc ObjOcc.ID="ObjOcc.-5fATZTn0_yk-u-L--6KYlDrFn3sq-x-L-33-c"
+						ObjDef.IdRef="ObjDef.-16XyE2Va6cC-p-L"
+						ToCxnOccs.IdRefs="CxnOcc.-5fATZTn0_yk-u-L-7Oc3AVlDHVE-y-L-34-c CxnOcc.-5fATZTn0_yk-u-L--5bcFZJ0Q2G5-y-L-34-c"
+						SymbolNum="ST_ARCHIMATE_APPLICATION_COMPONENT"
+						Flags="0"
+>
+						<Position Pos.X="225" Pos.Y="625"/>
+						<Size Size.dX="450" Size.dY="150"/>
+						<ExternalGUID>d22eada0-79c7-11ec-2891-0050568b5c9f</ExternalGUID>
+
+						<CxnOcc CxnOcc.ID="CxnOcc.-5fATZTn0_yk-u-L-7Oc3AVlDHVE-y-L-34-c"
+							CxnDef.IdRef="CxnDef.-4bEuZRMv1Lv-q-L"
+							ToObjOcc.IdRef="ObjOcc.-5fATZTn0_yk-u-L--343UjZTucwU-x-L-33-c"
+							Visible="NO"
+							Embedding="YES"
+>
+							<Position Pos.X="450" Pos.Y="775"/>
+							<Position Pos.X="700" Pos.Y="775"/>
+							<Position Pos.X="700" Pos.Y="950"/>
+							<Position Pos.X="950" Pos.Y="950"/>
+						</CxnOcc>
+						<CxnOcc CxnOcc.ID="CxnOcc.-5fATZTn0_yk-u-L--5bcFZJ0Q2G5-y-L-34-c"
+							CxnDef.IdRef="CxnDef.XtvKA5wkUn-q-L"
+							ToObjOcc.IdRef="ObjOcc.-5fATZTn0_yk-u-L-3j1oDRUJCg7-x-L-33-c"
+>
+							<Position Pos.X="675" Pos.Y="700"/>
+							<Position Pos.X="1175" Pos.Y="700"/>
+						</CxnOcc>
+						<AttrOcc AttrTypeNum="AT_NAME"
+							Port="CENTER"
+							OrderNum="0"
+							SymbolFlag="TEXT"
+							FontSS.IdRef="FontSS.-5bVg0UWFy7P-c-L"
+							OffsetX="0"
+							OffsetY="0"
+							Rotation="0"
+>
+							<Size Size.dX="0" Size.dY="0"/>
+						</AttrOcc>
+					</ObjOcc>
+					<ObjOcc ObjOcc.ID="ObjOcc.-5fATZTn0_yk-u-L--343UjZTucwU-x-L-33-c"
+						ObjDef.IdRef="ObjDef.2f6L_psumtV-p-L"
+						SymbolNum="ST_ARCHIMATE_APPLICATION_COLLABORATION"
+						Flags="16"
+>
+						<Position Pos.X="75" Pos.Y="0"/>
+						<Size Size.dX="1750" Size.dY="950"/>
+						<ExternalGUID>aa5ac2e1-7549-11ec-2890-0050568b5c9f</ExternalGUID>
+
+						<AttrOcc AttrTypeNum="AT_NAME"
+							Port="PORT_FREE"
+							OrderNum="0"
+							SymbolFlag="TEXT"
+							FontSS.IdRef="FontSS.-5bVg0UWFy7P-c-L"
+							OffsetX="51"
+							OffsetY="-375"
+							Rotation="0"
+>
+							<Size Size.dX="0" Size.dY="0"/>
+						</AttrOcc>
+					</ObjOcc>
+					<ObjOcc ObjOcc.ID="ObjOcc.-5fATZTn0_yk-u-L--1QSe4CPI4N--x-L-33-c"
+						ObjDef.IdRef="ObjDef.-vMHQJ_rIfL-p-L"
+						SymbolNum="ST_ARCHIMATE_DATA_OBJECT"
+						Flags="0"
+>
+						<Position Pos.X="375" Pos.Y="300"/>
+						<Size Size.dX="450" Size.dY="150"/>
+						<ExternalGUID>d22ead9d-79c7-11ec-2891-0050568b5c9f</ExternalGUID>
+
+						<AttrOcc AttrTypeNum="AT_NAME"
+							Port="CENTER"
+							OrderNum="0"
+							SymbolFlag="TEXT"
+							FontSS.IdRef="FontSS.-5bVg0UWFy7P-c-L"
+							OffsetX="0"
+							OffsetY="0"
+							Rotation="0"
+>
+							<Size Size.dX="0" Size.dY="0"/>
+						</AttrOcc>
+					</ObjOcc>
+					<Union
+						ObjOccs.IdRefs="ObjOcc.-5fATZTn0_yk-u-L--6Tg-l1bbOsY-x-L-33-c ObjOcc.-5fATZTn0_yk-u-L-3j1oDRUJCg7-x-L-33-c ObjOcc.-5fATZTn0_yk-u-L--6KYlDrFn3sq-x-L-33-c ObjOcc.-5fATZTn0_yk-u-L--343UjZTucwU-x-L-33-c "
+						Flags="1" >
+						<Union
+							ObjOccs.IdRefs="ObjOcc.-5fATZTn0_yk-u-L--1QSe4CPI4N--x-L-33-c ObjOcc.-5fATZTn0_yk-u-L--1SUwYuvKv73-x-L-33-c "
+							Flags="1" >
+						</Union>
+					</Union>
+				</Model>
+			</Group>
+		</Group>
+	</Group>
+</AML>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model xmlns="http://www.opengroup.org/xsd/archimate/3.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengroup.org/xsd/archimate/3.0/ http://www.opengroup.org/xsd/archimate/3.1/archimate3_Diagram.xsd" identifier="id-36269653f91142d8ad26230c0f8e0cbe">
+	<name xml:lang="en">MyModel</name>
+	<elements>
+		<element identifier="id-88e6c8b77b9c4797a85009112c15daff" xsi:type="ApplicationCollaboration">
+			<name xml:lang="en">Business Application</name>
+		</element>
+		<properties>
+			<property propertyDefinitionRef="propid_1">
+				<value xml:lang="en">1234-4569789</value>
+			</property>
+		</properties>
+	</elements>
+	<relationships>
+	</relationships>
+	<organizations>
+	</organizations>
+	<propertyDefinitions>
+		<propertyDefinition identifier="propid_1" type="string">
+			<name>GUID</name>
+		</propertyDefinition>
+	</propertyDefinitions>
+	<properties>
+	</properties>
+	<views>
+		<diagrams>
+		</diagrams>
+	</views>
+</model>

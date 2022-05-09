@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model xmlns="http://www.opengroup.org/xsd/archimate/3.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengroup.org/xsd/archimate/3.0/ http://www.opengroup.org/xsd/archimate/3.1/archimate3_Diagram.xsd" identifier="id-9b411411d057451688bb845406d77617">
+  <name xml:lang="en">(new model)</name>
+  <elements>
+    <element identifier="id-4da7287dd6534218a08479100ae98be1" xsi:type="BusinessObject">
+      <name xml:lang="en">Business Object</name>
+    </element>
+    <element identifier="id-1fab55a867ea4ca094859138b6e09c23" xsi:type="DataObject">
+      <name xml:lang="en">Data Object</name>
+    </element>
+  </elements>
+  <relationships>
+    <relationship identifier="id-6a38389e365342cf9b8cc4838efeb780" source="id-1fab55a867ea4ca094859138b6e09c23" target="id-4da7287dd6534218a08479100ae98be1" xsi:type="Realization" />
+  </relationships>
+  <organizations>
+    <item>
+      <label xml:lang="en">Business</label>
+      <item identifierRef="id-4da7287dd6534218a08479100ae98be1" />
+    </item>
+    <item>
+      <label xml:lang="en">Application</label>
+      <item identifierRef="id-1fab55a867ea4ca094859138b6e09c23" />
+    </item>
+    <item>
+      <label xml:lang="en">Relations</label>
+      <item identifierRef="id-6a38389e365342cf9b8cc4838efeb780" />
+    </item>
+    <item>
+      <label xml:lang="en">Views</label>
+      <item identifierRef="id-46d72dc03db842e38a42af5b16f98d3e" />
+    </item>
+  </organizations>
+  <views>
+    <diagrams>
+      <view identifier="id-46d72dc03db842e38a42af5b16f98d3e" xsi:type="Diagram">
+        <name xml:lang="en">Default View</name>
+        <node identifier="id-e200c40056554aedb5636e9a9635c642" elementRef="id-4da7287dd6534218a08479100ae98be1" xsi:type="Element" x="144" y="72" w="180" h="112">
+          <style>
+            <fillColor r="255" g="255" b="181" a="100" />
+            <lineColor r="92" g="92" b="92" a="100" />
+            <font name="Segoe UI" size="9">
+              <color r="0" g="0" b="0" />
+            </font>
+          </style>
+          <node identifier="id-3a49378cdd1542bdaa29a6153a0251c2" elementRef="id-1fab55a867ea4ca094859138b6e09c23" xsi:type="Element" x="180" y="108" w="120" h="55">
+            <style>
+              <fillColor r="181" g="255" b="255" a="100" />
+              <lineColor r="92" g="92" b="92" a="100" />
+              <font name="Segoe UI" size="9">
+                <color r="0" g="0" b="0" />
+              </font>
+            </style>
+          </node>
+        </node>
+      </view>
+    </diagrams>
+  </views>
+</model>

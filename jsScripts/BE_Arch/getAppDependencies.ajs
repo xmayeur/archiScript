@@ -1,0 +1,26 @@
+console.clear()
+console.show()
+load(__SCRIPTS_DIR__ + 'lib/lib.ajs')
+load(__SCRIPTS_DIR__ + 'libJs/papaparse.min.js')
+
+let filePath = 'C:\\Users\\XY56RE\\PycharmProjects\\p13596-architecture-model\\input files\\appDependencies.csv'
+
+let data = Papa.parse(readFileByte(filePath, 'char'), {
+    header: true,
+    skipEmptyLines: true,
+    delimiter: ';'
+}).data
+
+data.forEach(d => {
+    // filter app with DTAP kind of suffixes (A), [A] _A ACC _[A] _(D) etc.
+    if (!(/[\s_-]+[(\[]*([DTAI]|ACC|DEV|TEST|TST|PRD)[)\]]*$/i.test(d['App2']))) {
+        d.App2 = d.App2.replace(/[\s_-]+[(\[]*(P|PRD|PROD)[)\]]*$/i, '')
+        app1 = $('.' + d.App1).first()
+        app2 = $('.' + d.App2).first()
+        if (!!app1 && !!app2) {
+            r = getOrCreateRelationship("association-relationship", "has dependency", app1, app2, true)
+            console.log(app1, app2)
+        }
+    }
+})
+console.log('Done.')

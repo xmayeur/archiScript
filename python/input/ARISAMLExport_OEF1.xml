@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model xmlns="http://www.opengroup.org/xsd/archimate/3.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengroup.org/xsd/archimate/3.0/ http://www.opengroup.org/xsd/archimate/3.1/archimate3_Diagram.xsd" identifier="id-6128833a78ad4201b4e2e1efeda8f4a2">
+	<name xml:lang="en">x</name>
+	<elements>
+		<element identifier="ObjDef.5aZ-v6X3wQu-p-L" xsi:type="ApplicationComponent">
+			<name xml:lang="en">Application component</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">0ba03262-744b-11ec-19b9-0050568bdf9a</value>
+				</property>
+			</properties>
+		</element>
+		<element identifier="ObjDef.7NbRc54WpcH-p-L" xsi:type="ApplicationCollaboration">
+			<name xml:lang="en">Application collaboration</name>
+			<properties>
+				<property propertyDefinitionRef="propid_1">
+					<value xml:lang="en">0ba03260-744b-11ec-19b9-0050568bdf9a</value>
+				</property>
+			</properties>
+		</element>
+	</elements>
+	<relationships>
+		<relationship identifier="CxnDef.68omPnTF4KS-q-L" source="ObjDef.5aZ-v6X3wQu-p-L" target="ObjDef.7NbRc54WpcH-p-L" xsi:type="Aggregation">
+			<name xml:lang="en"></name>
+		</relationship>
+	</relationships>
+	<propertyDefinitions>
+		<propertyDefinition identifier="propid_1" type="string">
+			<name>UUID</name>
+		</propertyDefinition>
+	</propertyDefinitions>
+	<views>
+		<diagrams>
+			<view identifier="Model.-7noaonFuxrM-u-L" xsi:type="Diagram">
+				<name xml:lang="en">test2</name>
+				<documentation xml:lang="en"></documentation>
+				<node identifier="ObjOcc.-7noaonFuxrM-u-L-2R-axdmDGEV-x-L-33-c" elementRef="ObjDef.7NbRc54WpcH-p-L" xsi:type="Element" x="502" y="170" w="345" h="540"></node>
+				<node identifier="ObjOcc.-7noaonFuxrM-u-L-RxUJC0g-6i-x-L-33-c" elementRef="ObjDef.5aZ-v6X3wQu-p-L" xsi:type="Element" x="622" y="410" w="135" h="60"></node>
+				<connection identifier="CxnOcc.-7noaonFuxrM-u-L-3H8zvHDYyAv-y-L-34-c" relationshipRef="CxnDef.68omPnTF4KS-q-L" xsi:type="Relationship" source="ObjOcc.-7noaonFuxrM-u-L-RxUJC0g-6i-x-L-33-c" target="ObjOcc.-7noaonFuxrM-u-L-2R-axdmDGEV-x-L-33-c"></connection>
+			</view>
+		</diagrams>
+	</views>
+</model>

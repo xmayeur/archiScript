@@ -1,0 +1,452 @@
+console.clear()
+console.show()
+if (model == null || model.id == null)
+    fatal("You must select a model or some Archimate elements.");
+
+debug = false
+
+function createBusAppInterfaceView() {
+    // library loading for creation of views by scripting
+    load(__SCRIPTS_DIR__ + 'lib/lib.ajs');
+    // library loading for relationship bend points management
+    load(__SCRIPTS_DIR__ + 'lib/relLib.ajs');
+    // javascript library for Excel workbook parsing
+    load(__SCRIPTS_DIR__ + 'libJs/sheetjs.js')
+    log('*** createBusAppInterfaceView')
+
+    // Variables initialization
+    // Objects <name>, <element>, <relation>, <node>, <connection>
+    let tag, filePath
+    let XLpath = './mfAppFiles/Application Functional Information/'
+    let XLtrailer = ' - BE Mainframe Application Functional Information.xlsx'
+    let view                                        // the Application Interaction view
+    let baName, ba, baNode           // business application (IT Solution)
+
+    let ba2, ba2Node      // connected business application (IT Solution)
+    let afName, af, afRel, afNode           // Application Function
+    let af2Name, af2, af2Node      // connected Application Function
+
+    // Application Interface
+    let af2afRel                          // relationships between connected business application, app function & bus object
+    let af2afConn
+    let dir                                         // flow direction
+
+    // get file path from batch arguments
+    let argList = $.process.argv
+    for (let i = 0; i < argList.length; i++) {
+        if (argList[i] === '-tag') {
+            tag = argList[i + 1]
+            filePath = XLpath + tag + XLtrailer
+        } else if (argList[i] === '-f') {
+            filePath = argList[i + 1]
+            // tag = filePath.substr(0, 3)
+            tag = filePath.match(/(.*)\s+-\s+.*/)[1]
+        }
+    }
+
+    if (!filePath) {
+        logFile = __DIR__ + '../../test/log.log'
+        debug = true
+        deb('*** TEST ***')
+        tag = 'TEST'
+        XLpath = __DIR__+'/../../test/'
+        filePath = XLpath + tag + XLtrailer
+        tag = "KIC"
+    }
+
+    if (!!tag)
+        model.name = tag
+
+    // IN XL file
+
+    // we need the following columns:
+    //  This Application Function
+    //  Business Object
+    //  Direction
+    //  Operation
+    //  Other Application Function
+    //  LAA Group
+    //  Connected IT Solution(s)
+
+    let workbook = XLSX.read(base64encode(readFileSync(filePath)), {type: 'base64'});
+    // Dump file second sheet (Interfaces)  content as JSON object
+    let XL_row_object = XLSX.utils.sheet_to_json(workbook.Sheets['Interactions'], {range: "A2:H100"});
+
+    // sort per 'connected application function', per 'Business Object' and per 'this application function'
+
+    XL_row_object = XL_row_object.sort(dynamicSort('Business Object'))
+    XL_row_object = XL_row_object.sort(dynamicSort('LAA Group'))
+    XL_row_object = XL_row_object.sort(dynamicSort('This Application Function'))
+
+    let baX = 600
+    let baY = 500
+    let baW = 120
+    let baH = 40
+    let baIncX = 20
+    let baIncY = 30
+
+    let afW = 150
+    let afH = 80
+    let afX = 40, afY = 40, afIncX = afW + 20, afIncY = afH + 20
+
+    // create the Business App Group
+    // get the Business Application from the tag name
+    ba = getOrCreateElement('application-collaboration', tag)
+    baName = tag
+
+    if (!!ba) {
+        // create the folder structure if not existing
+        createFolderStructure()
+
+        // and create the view
+        let viewName = 'INTERACTIONS ' + baName
+        let folder = folders['appInteractFolder']['folder']
+        view = $("." + viewName).first()
+        if (!!view) {
+            view.delete()
+        }
+        view = model.createArchimateView(viewName, folder)
+
+        // add the Business Applications 'app' as new object in the view
+        let afRels = $(ba).outRels('assignment-relationship')
+        baNode = view.add(ba, baX, baY, baW, 100 * (afRels.length + 1))
+
+        // get now all Application Functions and place them inside the Bus App concept
+        afRels.forEach(rel => {
+            baNode.add(rel.target, afX, afY, afW, afH);
+            afX += afIncX
+            afY += afIncY
+        })
+
+        // adjust baNode size
+
+        baNode.bounds = {width: afX + 40, height: afY + 20}
+
+    } else {
+        log('Error: unknown Business Application ' + tag)
+        return
+    }
+
+    // create the internal flows if they are defined
+    let intGrp = XL_row_object.filter((o) => {
+        return (o['Operation'].includes('[Internal]'))
+    })
+
+    afX = 40
+    afY = 40
+
+    intGrp.forEach(row => {
+        // get the Application Function name
+        afName = row['This Application Function']
+        af = getOrCreateElement('application-function', afName)
+        afNode = checkNodeInView(baNode, af)
+
+        af2Name = row['Other Application Function']
+        af2 = getOrCreateElement('application-function', af2Name)
+        af2Node = checkNodeInView(baNode, af2)
+
+        dir = row['Direction']
+
+        if (!!af && !!af2) {
+
+            // reposition the objects
+            afNode.bounds = {x: afX, y: afY}
+            afX += afIncX
+            afY += afIncY
+            af2Node.bounds = {x: afX, y: afY}
+
+            if (dir.includes('IN')) {
+                af2afRel = getOrCreateRelationship('flow-relationship', '', af2, af, true)
+                af2afConn = checkRelInView(af2afRel, af2Node, afNode, true, view)
+                lRel(af2afConn, 0, 0.4, 0.6)
+            }
+            if (dir.includes('OUT')) {
+                af2afRel = getOrCreateRelationship('flow-relationship', '', af, af2, true)
+                af2afConn = checkRelInView(af2afRel, afNode, af2Node, true, view)
+                lRel(af2afConn, 1, 0.4, 0.4)
+            }
+        }
+    })
+
+    // Create the Referential Zone
+    let zoneWidth = 325
+    let zoneHeight = 180
+    let zoneX = 700
+    let zoneY = 40
+
+
+    function createZoneModel(zone, zoneNode, view, alignDir = 0, textPos = 2) {
+
+        // default values
+        let groupWidth = 265
+        let groupHeight = 120
+        let groupX = 40, groupY = 40
+
+        let zoneWmax = 0
+        let zoneHmax = 0
+
+        let af, afNode
+        baX = 40
+        baY = 40
+        baW = 120
+        baH = 40
+
+        let group, groupNode
+        deb('zone', zoneNode.name)
+        zone.forEach(row => {
+            // get the LAA group if any, and the business app inside of this group
+            let groupName = row['LAA Group']
+            let bas = row['Connected IT Solution(s)'].split(',')
+            let dir = row['Direction']
+            let afName = row['This Application Function']
+            let boName = row['Business Object']
+
+            let nBa2 = bas.length
+            if (!!groupName && groupName !== '') {
+                // create the group object
+                // if it is a valid LAA object, we create a business function
+                group = getOrCreateElement('business-function', groupName)
+                if (!group) {
+                    // if not an LAA group, we just create a grouping object
+                    log('Warning: invalid group name for ' + groupName)
+                    group = getOrCreateElement('grouping', groupName, true)
+                }
+                // if a group exist with the same name and the same embedded applications, we keep it
+                groupNode = checkNodeInView(zoneNode, group)
+                if (!!groupNode) {
+                    let bas2 = []
+                    $(groupNode).inRels('serving-relationship').forEach(r => {
+                        bas2.push(r.source.name)
+                    })
+                    if (!areEqual(bas, bas2))
+                        groupNode = zoneNode.add(group, groupX, groupY, groupWidth, groupHeight)
+                } else
+                    // else we duplicate it to show the specific context
+                    groupNode = zoneNode.add(group, groupX, groupY, groupWidth, groupHeight)
+            } else if (nBa2 > 1) {
+                // if there are multiple business applications and no group, we create an unnamed one
+                group = getOrCreateElement('grouping', row['Connected IT Solution(s)'], true)
+                group.name = ''
+                groupNode = zoneNode.add(group, groupX, groupY, groupWidth, groupHeight)
+            } else {
+                // if there is a single application outside of a group, we jus add it in the zone
+                // and need to take care at positioning along the other existing groups
+                if (alignDir === 0) {
+                    baX = (!!groupNode) ? groupX + 20 : baX + baW + 20
+                    groupX = baX + baW + 20
+                    baY = 80
+                } else {
+                    baY = (!!groupNode) ? groupY + 20 : baY + baH + 20
+                    groupY = baY + baH + 20
+                    baX = 80
+                }
+                groupNode = null
+                group = null
+            }
+            deb('group', groupNode)
+            // Add the business applications in the group block & create relationships if needed
+            if (!!groupNode) {
+                baX = 40
+                baY = 40
+                baIncX = baW + 20
+                baIncY = baH + 20
+            }
+            let baXmax = 40
+            let baYmax = 40
+
+            bas.forEach(ba2Name => {
+                // TODO Ideally, create should be false and all Bus App alINy defined in the template
+                // it is not yet the case
+                ba2 = getOrCreateElement('application-collaboration', ba2Name, true)
+                ba2Node = checkNodeInView((!!groupNode) ? groupNode : zoneNode, ba2, true, baX, baY, baW, baH)
+                deb('ba2', ba2, groupNode)
+                if (!!groupNode && groupName !== '') {
+                    let ba2groupRel = getOrCreateRelationship('serving-relationship', '', ba2, group, true)
+                    checkRelInView(ba2groupRel, ba2Node, groupNode, true, view);
+                }
+
+                if (!!groupNode) {
+                    baXmax = Math.max(baX, baXmax)
+                    baYmax = Math.max(baY, baYmax)
+                    baX += baIncX
+                    if (baX > 3 * baIncX) {
+                        baX = 40
+                        baY += baIncY
+                    }
+                }
+                // add relationships with respect to the main business application and application functions:
+                // 1- flow relationships & visual connections between the application functions & the group block
+                af = getOrCreateElement('application-function', afName)
+                afNode = checkNodeInView(baNode, af)
+
+                if (dir.includes('IN') && !!groupNode && !!af) {
+
+                    let afRel = getOrCreateRelationship("flow-relationship", boName, group, af, true)
+                    let afConn = checkRelInView(afRel, groupNode, afNode, true, view, boName)
+
+                    afConn.textPosition = (textPos < 4) ? textPos : (textPos === 3) ? 2 : 0
+                }
+                if (dir.includes('OUT') && !!groupNode && !!af) {
+                    let afRel = getOrCreateRelationship("flow-relationship", boName, af, group, true)
+                    let afConn = checkRelInView(afRel, afNode, groupNode, true, view, boName)
+                    afConn.textPosition = (textPos < 4) ? textPos : (textPos === 3) ? 0 : 2
+                }
+
+                // 2- flow relationships only between the application function & the bus app inside the group block
+                if (dir.includes('IN') && !!af && !!ba2) {
+                    let afRel = getOrCreateRelationship("flow-relationship", boName, ba2, af, true)
+                    if (!groupNode) {
+                        let afConn = checkRelInView(afRel, ba2Node, afNode, true, view, boName)
+                        afConn.textPosition = (textPos < 4) ? textPos : (textPos === 3) ? 2 : 0
+                    }
+                }
+                if (dir.includes('OUT') && !!af && !!ba2) {
+                    let afRel = getOrCreateRelationship("flow-relationship", boName, af, ba2, true)
+                    if (!groupNode) {
+                        let afConn = checkRelInView(afRel, afNode, ba2Node, true, view, boName)
+                        afConn.textPosition = (textPos < 4) ? textPos : (textPos === 3) ? 0 : 2
+                    }
+                }
+
+                // 3- serving (dependency) relationships between apps in zone and the business application
+                if (dir.includes('IN')) {
+                    let baRel = getOrCreateRelationship("serving-relationship", '', ba2, ba, true)
+                    if (!af) {
+                        if (!!group) {
+                            baRel = getOrCreateRelationship("flow-relationship", boName, group, ba, true)
+                            let baConn = checkRelInView(baRel, groupNode, baNode, true, view, boName)
+                        } else {
+                            baRel = getOrCreateRelationship("flow-relationship", boName, ba2, ba, true)
+                            let baConn = checkRelInView(baRel, ba2Node, baNode, true, view, boName)
+                        }
+                    }
+
+                }
+                if (dir.includes('OUT')) {
+                    let baRel = getOrCreateRelationship("serving-relationship", '', ba, ba2, true)
+                    if (!af) {
+                        if (!!group) {
+                            baRel = getOrCreateRelationship("flow-relationship", boName, ba, group, true)
+                            let baConn = checkRelInView(baRel, baNode, groupNode, true, view, boName)
+                        } else {
+                            baRel = getOrCreateRelationship("flow-relationship", boName, ba, ba2, true)
+                            let baConn = checkRelInView(baRel, baNode, ba2Node, true, view, boName)
+                        }
+                    }
+                }
+
+            })
+
+            if (!!groupNode) {
+                groupNode.bounds = {
+                    width: baXmax + ba2Node.bounds.width + 20,
+                    height: baYmax + ba2Node.bounds.height + 20
+                }
+
+                zoneWmax = Math.max(zoneWmax, groupNode.bounds.x + groupNode.bounds.width + 20)
+                zoneHmax = Math.max(zoneHmax, groupNode.bounds.y + groupNode.bounds.height + 20)
+                zoneNode.bounds = {width: zoneWmax, height: zoneHmax}
+
+                if (alignDir === 0)
+                    groupX += groupNode.bounds.width + 20
+                else
+                    groupY = zoneHmax // += groupNode.bounds.height + 20
+
+            } else {
+                zoneWmax = Math.max(zoneWmax, ba2Node.bounds.x + ba2Node.bounds.width + 20)
+                zoneHmax = Math.max(zoneHmax, ba2Node.bounds.y + ba2Node.bounds.height + 20)
+                zoneNode.bounds = {width: zoneWmax, height: zoneHmax}
+                if (alignDir === 0)
+                    baX += baIncX
+                else
+                    baY += baIncY
+
+            }
+            // adjust Business Application block position below the Referentials zone
+            if (zoneNode.name === 'REFERENTIALS')
+                baNode.bounds = {
+                    x: zoneNode.bounds.x,
+                    y: zoneNode.bounds.y + zoneNode.bounds.height + 100
+                }
+        })
+
+
+        $(zoneNode).children().forEach(e => {
+            if (zoneNode.name === 'INPUT') {
+                let w = e.bounds.width
+                e.bounds = {x: zoneNode.bounds.width - w - 20}
+            }
+            // doEachRel(sRel)(e, 1 - alignDir)
+
+            let delta = 0.0
+            $(e).rels().forEach(r => {
+                sRel(r, 1 - alignDir, 0.5 + (alignDir) * delta, 0.5 + (1 - alignDir) * delta, 0.5 + (1 - alignDir) * delta)
+                delta += 0.025
+            })
+
+
+            distributeConnections(e)
+            distributeConnections(afNode)
+
+
+        })
+
+        return zoneNode
+
+    }
+
+    // filter the data
+    let zone = XL_row_object.filter((o) => {
+        return (o['Operation'].includes('[Referentials]'))
+    })
+
+    // create REFERENTIALS zone visual box
+    let zoneNode = view.createObject('diagram-model-group', zoneX, zoneY, zoneWidth, zoneHeight)
+    zoneNode.name = "REFERENTIALS"
+    zoneNode.borderType = BORDER.RECTANGLE
+    createZoneModel(zone, zoneNode, view, 0, 4)
+
+    // create INPUT zone visual box
+    // filter the data
+    zone = XL_row_object.filter((o) => {
+        return (o['Operation'].includes('[Input]'))
+    })
+
+    zoneX = 40
+    zoneY = baNode.bounds.y
+    zoneNode = view.createObject('diagram-model-group', zoneX, zoneY, zoneWidth, zoneHeight)
+    zoneNode.name = "INPUT"
+    zoneNode.borderType = BORDER.RECTANGLE
+    createZoneModel(zone, zoneNode, view, 1, 4)
+
+    // create SUPPORT zone visual box
+    // filter the data
+    zone = XL_row_object.filter((o) => {
+        return (o['Operation'].includes('[Support]'))
+    })
+    zoneX = baNode.bounds.x
+    zoneY = baNode.bounds.y + baNode.bounds.height + 100
+    zoneNode = view.createObject('diagram-model-group', zoneX, zoneY, zoneWidth, zoneHeight)
+    zoneNode.name = "SUPPORT"
+    zoneNode.borderType = BORDER.RECTANGLE
+    zoneNode = createZoneModel(zone, zoneNode, view, 0, 4)
+
+
+    // create OUTPUT zone visual box
+    // filter the data
+    zone = XL_row_object.filter((o) => {
+        return (o['Operation'].includes('[Output]'))
+    })
+    zoneX = baNode.bounds.x + baNode.bounds.width + 100
+    zoneY = baNode.bounds.y
+    zoneNode = view.createObject('diagram-model-group', zoneX, zoneY, zoneWidth, zoneHeight)
+    zoneNode.name = "OUTPUT"
+    zoneNode.borderType = BORDER.RECTANGLE
+    createZoneModel(zone, zoneNode, view, 1, 4)
+
+    // doEachRel(ortho)($(baNode))
+    deb('Done.')
+}
+
+
+createBusAppInterfaceView()
