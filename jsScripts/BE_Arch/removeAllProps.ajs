@@ -1,0 +1,13 @@
+load (__DIR__+'lib.ajs')
+debug=true
+$('element').forEach(e => {
+
+    try {
+        deb(e.name)
+        embedProperties(e)
+        e.prop().forEach(p => {
+            e.removeProp(p)
+        })
+    } catch (e) {
+    }
+})

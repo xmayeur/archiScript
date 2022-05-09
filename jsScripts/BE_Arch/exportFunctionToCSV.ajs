@@ -1,0 +1,181 @@
+console.clear()
+console.show()
+load(__SCRIPTS_DIR__ + 'lib/lib.ajs')
+// load(__SCRIPTS_DIR__ + 'libJs/sheetjs.js')
+load(__SCRIPTS_DIR__ + 'libJs/papaparse.min.js')
+
+/*
+we need the following fields:
+ Business Application Name
+ Application Function Reference;
+ Application Function Description;
+ LAA Reference;
+ Information Object Name;
+ Information Object Description;
+*/
+
+// Select the view
+/*
+
+let theView = $(selection).filter("archimate-diagram-model").first();
+if (!theView.name.includes('FUNCTIONAL')) {
+    console.log('Please select a Functional view!')
+    exit()
+}
+*/
+if (debug) {
+    deb('TEST')
+    views = $('.Application Functional').children('.FUNCTIONAL ANS')
+    deb(views.first())
+} else {
+    views = $('.Application Functional').children()
+}
+// let ba = $(theView).children().filter('application-collaboration').first()
+
+
+function parseView(ba) {
+    let data = []
+
+    // for each application function...
+    $(ba).outRels('assignment-relationship').forEach(rba => {
+        // prepare the record object
+        // there is one record unique combination of application function, business function, business object,
+        // business service, and capability
+
+        function newRec(rba) {
+            let d = {
+                'Business Application Name': rba.source.name,
+                'Business Application Reference': null,
+                'Application Function Reference': null,
+                'Application Function Description': null,
+                'Target Application Option 1': null,
+                'Target Application Option 2': null,
+                'Target Application Option 3': null
+            }
+
+            d['Application Function Reference'] = rba.target.name
+            if (!!rba.target.documentation)
+                d['Application Function Description'] = rba.target.documentation.replace(/\s*properties={[\s\S]*};/m, '')
+            d['Target Application Option 1'] = rba.target.prop('Target Application Option 1')
+            d['Target Application Option 2'] = rba.target.prop('Target Application Option 2')
+            d['Target Application Option 3'] = rba.target.prop('Target Application Option 3')
+            return d
+        }
+
+        let bos = []
+        let bfs = []
+        let fa = rba.target
+        // for each business object linked to the application function...
+        $(fa).outRels('access-relationship').forEach(rfa => {
+            // create a new record
+            let d = newRec(rba)
+            d['Information Object Name'] = rfa.target.name
+            let alias = JSON.parse(rfa.target.prop('alias'))
+            let doc = ''
+            let aliasName = ''
+
+            if (!!alias && ba.name in alias) {
+                    doc = alias[ba.name].documentation
+                    aliasName = alias[ba.name].name
+            }
+            if (aliasName !=='')
+                doc = '\nAlias: ' + aliasName + ' (' + doc + ')'
+
+            if (!!rfa.target.documentation)
+                d['Information Object Description'] = rfa.target.documentation.replace(/\s*properties={[\s\S]*};/m, '') + doc
+            else
+                d['Information Object Description'] = doc
+            bos.push(d)
+        })
+
+        // for each business function (LAA) linked to the application function
+        $(fa).outRels('realization-relationship').forEach(rfa => {
+            // create a new record to be later combined with all business object records
+            let d = newRec(rba)
+            let laa = rfa.target
+            d['LAA Reference'] = laa.name
+            // for each business service connected to an LAA function
+            let rlaas = $(laa).outRels()
+            if (rlaas.length > 0) {
+                rlaas.forEach(rlaa => {
+                    let bs = rlaa.target
+                    d['Business Service Description'] = bs.name
+                    // and for each business capability...
+                    let bsrs = $(bs).outRels()
+                    if (bsrs.length > 0) {
+                        bsrs.forEach(bsr => {
+                            let bc = bsr.target
+                            d['Capability Reference'] = bc.name
+                            bfs.push(d)
+                        })
+                    } else {
+                        bfs.push(d)
+                    }
+                })
+            } else {
+                bfs.push(d)
+            }
+        })
+
+        // combine results
+        bos.forEach(bo => {
+            if (bfs.length > 0) {
+                bfs.forEach(bf => {
+                    data.push({...bf, ...bo})
+                })
+            } else
+                data.push(bo)
+        })
+        bfs.forEach(bf => {
+            if (bos.length > 0) {
+                bos.forEach(bo => {
+                    data.push({...bf, ...bo})
+                })
+            } else
+                data.push(bf)
+        })
+        if (bfs.length === 0 && bos.length === 0)
+            data.push(newRec(rba))
+    })
+    // Deduplicate objects & return result
+    data = [...new Map(data.map(v => [JSON.stringify(v), v])).values()]
+
+    let records = []
+    data.forEach(d => {
+        let record = {
+            'Business Application Name': '',
+            'Business Application Reference': '',
+            'Capability Reference': '',
+            'Business Service Description': '',
+            'Functional Group description': '',
+            'Application Function Reference': '',
+            'Application Function Description': '',
+            'LAA Reference': '',
+            'Information Object Name': '',
+            'Information Object Description': '',
+            'Target Application Option 1': '',
+            'Target Application Option 2': '',
+            'Target Application Option 3': '',
+        }
+        Object.keys(record).forEach(k => {
+            record[k] = d[k]
+        })
+        records.push(record)
+    })
+
+    return records
+}
+
+
+    let i = 0
+    views.forEach(v => {
+        let ba = $(v).children().filter('application-collaboration').first()  // we only expect one!
+        console.print(ba.name + ', ')
+        let csv = Papa.unparse(parseView(ba), {delimiter: ';'})
+        const filePath = __DIR__ + '/../CSV/' + ba.name + '_functional_export.csv'
+        writeFile(filePath, csv)
+        i++
+    })
+
+
+console.log('\nDone ', i, 'files')

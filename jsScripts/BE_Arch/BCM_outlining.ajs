@@ -1,0 +1,30 @@
+/*
+ *
+ * UNFINISHED!
+ */
+
+console.clear()
+
+var theView = $(selection).filter("archimate-diagram-model").first()
+elems = $(theView).children('capability')
+
+p_outline = 0
+outline = 1
+level = 1
+
+elems.forEach(function (e) {
+    e.prop('outline', String(outline))
+    set_outline(e, String(outline), 1)
+    outline++
+})
+
+
+function set_outline(e, p_outline, outline) {
+    var ee = $(e).children('capability')
+    ee.forEach(function (o) {
+        outl = p_outline + "." + String(outline)
+        o.prop('outline', outl)
+        set_outline(o, outl, 1)
+        outline++
+    })
+}

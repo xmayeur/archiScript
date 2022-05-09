@@ -1,0 +1,64 @@
+// Read esperanto file and create business object
+
+console.clear()
+load(__SCRIPTS_DIR__ + 'lib/lib.ajs');
+/*
+//Papa Parse code
+ //initRequire()
+ // papa = require('papaparse');
+load('https://unpkg.com/papaparse@latest/papaparse.min.js');
+
+
+let filePath = __DIR__ + '../input files/esperanto.csv';
+//let filePath = __DIR__ + '../input files/x.csv';
+// let esperanto = papa.parse(readFile(filePath), {header: true});
+
+let esperanto = Papa.parse(readFully(readFile(filePath), 'utf-8'), {
+    header: true,
+    encoding: 'utf-8',
+    skipEmptyLines: true
+}).data;
+
+// end of papaparse code
+*/
+
+// sheetJS code
+load(__SCRIPTS_DIR__ + 'libJs/sheetjs.js')
+filePath = 'C:\\Users\\XY56RE\\ING\\BE Architecture CoE Application Landscape - General\\BE Mainframe Decommissioning\\IGC - GDM -  Information concepts.xls'
+console.log(filePath)
+workbook = XLSX.read(base64encode(readFileSync(filePath)), {type: 'base64'});
+esperanto = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], {range: "A1:C500"});
+console.log('len: '+esperanto.length)
+
+// end of sheetJS code
+
+
+// Create view
+//
+boFolder =  createSubFolder(parentFolderName='Business', '04. Esperanto Business Objects')
+
+ts = getTimestamp()
+
+esperanto.forEach(r => {
+    let row = Object.entries(r)
+    let parentBoName = r['Parent Object']    // row[0][1] // r['Parent Description'] returns null for any unknown reason !?
+    let boName = r['Lowest level Conceptual Data Object']  // r['Description']
+    if (!!parentBoName && !!boName) {
+        let parentBo = getOrCreateElement('business-object', parentBoName, create = true, folder=boFolder)
+        let bo = getOrCreateElement('business-object', boName, create = true, folder=boFolder)
+        bo.prop('status', (!!bo.prop('lastUpdate'))?'updated':'created')
+        bo.prop('ID',  md5(boName))
+        bo.documentation = r['Extended Description']
+        bo.prop('lastUpdate', ts)
+        bo.prop('ESPERANTO', 'Yes')
+        try {
+            let boRel = getOrCreateRelationship("specialization-relationship", "", bo, parentBo, true)
+            boRel.prop('status', (!!boRel.prop('lastUpdate'))?'updated':'created')
+            boRel.prop('lastUpdate', ts)
+        } catch (e) {
+            console.log('Error on ', bo, parentBo, '\n', e)
+        }
+    }
+});
+// createBusinessObjectViews()
+console.log('Done')

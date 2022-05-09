@@ -1,0 +1,17 @@
+
+
+$('element').forEach(e=>{
+
+  expandProperties(e)
+  if (!!e.prop('ARIS')){
+      if (e.id !== e.prop('ARIS')){
+          console.log('ID Mismatch ', e.name, e.id . e.prop('ARIS'))
+      }
+  } else {
+      e.prop("ARIS", e.id)
+      console.log('Added ID to ', e.name)
+  }
+  //
+  embedProperties(e)
+})
+console.log('Done')

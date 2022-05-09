@@ -1,0 +1,374 @@
+/*
+ * Author: Xavier Mayeur
+ * Date: February 2022
+ *
+ * This function read the BE MF Decomm functional application Excel file
+ * and create an Archimate view from it by parsing the columns
+ *
+ * This function is normally called by the import2Archi.ajs file, itself called by the windows batch importAll2Archi.bat
+ * This function gets its input -  filepath - from the command line argument
+ *
+ *
+ */
+
+
+if (model == null || model.id == null)
+    fatal("You must select a model or some Archimate elements.");
+
+function createBusAppFunctionalView() {
+
+    // initializations
+    let tag
+    let baNode = null;
+    // let appPath = 'C:\\Users\\XY56RE\\ING\\BE Architecture CoE Application Landscape - General\\BE Mainframe Decommissioning\\Application Functional Information\\'
+    let appPath = './mfAppFiles/Application Functional Information/'
+    let appTrailer = ' - BE Mainframe Application Functional Information.xlsx'
+    let bo = null;
+    let boRel = null;
+    let ba = null;
+    let bs = null;
+    let bcName = null;
+    let af = null;
+    let afRel = null;
+    let laa = null;
+    let laaRel = null;
+    let boNode = null;
+    let laaNode = null;
+    let boConn = null;
+    let laaConn = null;
+    let afNode = null;
+    let afConn = null;
+    let laaName = null;
+    let bsNode = null;
+    let bsRel = null;
+    let bsName = null;
+    let bsConn = null;
+    let bc = null;
+    let bcRel = null
+    let bcConn = null
+    let bcNode = null
+
+    let xApp = 500
+    let yApp = 600
+
+    let incY = 0
+    let xAf = 40
+    let yAf = 40
+    let xBs = 20
+    let yBs = 200
+    let incYBs = 0
+    let xLaa = 400
+    let yLaa = 400
+    let yLaa0 = yLaa
+    let xBo = 40
+    let yBo = 40
+
+    // library loading for creation of views by scripting
+    load(__SCRIPTS_DIR__ + 'lib/lib.ajs');
+    // library loading for relationship bend points management
+    load(__SCRIPTS_DIR__ + 'lib/relLib.ajs');
+    // javascript library for Excel workbook parsing
+    load(__SCRIPTS_DIR__ + 'libJs/sheetjs.js')
+    log('*** createBusAppFunctionalView')
+
+    // get file path from batch arguments
+    let filePath = ''
+    let argList = $.process.argv
+    for (let i = 0; i < argList.length; i++) {
+        if (argList[i] === '-tag') {
+            tag = argList[i + 1]
+            filePath = appPath + tag + appTrailer
+        } else if (argList[i] === '-f') {
+            filePath = argList[i + 1]
+            // tag = filePath.substr(0, 3)
+            tag = filePath.match(/(.*)\s+-\s+.*/)[1]
+        }
+    }
+
+    if (!filePath) {
+        logFile=__DIR__+'../test/log.log'
+        console.clear()
+        console.show()
+        debug = true
+        deb('*** TEST ***')
+        tag = 'TEST'
+        appPath = __DIR__+'../test/'
+        filePath = appPath + tag + appTrailer
+    }
+
+    debug = false
+    deb(tag)
+
+    if (!!tag)
+        model.name = tag
+
+    // Read XL file
+    let workbook = XLSX.read(base64encode(readFileSync(filePath)), {type: 'base64'});
+    // Dump file first sheet content as JSON object
+    let XL_row_object = XLSX.utils.sheet_to_json(workbook.Sheets['Functional'], {range: "A2:M100"});
+
+    // first row has a cell with the Business Application name
+    // get the related  concept element, assuming it exists
+    let baName = stripIllegalChar(XL_row_object[0]['Business Application Name'])
+    log('Application: '+baName)
+    ba = $("." + baName).first()
+
+    if (!!ba && ba.type === "application-collaboration") {
+        // create the folder structure if not existing
+        createFolderStructure()
+
+        // and create the view
+        let viewName = 'FUNCTIONAL ' + baName
+        let folder = folders['appFctFolder']['folder']
+        let view = $("." + viewName).first()
+        if (!!view) {
+            view.delete()
+        }
+        view = model.createArchimateView(viewName, folder)
+
+        // add the Business Application 'app' as new object in the view
+        baNode = view.add(ba, xApp, yApp, -1, 190)
+
+        // parse each row
+        // we need the following fields:
+        //  Application Function Reference;
+        //  Application Function Description;
+        //  LAA Reference;
+        //  Information Object Name;
+        //  Information Object Description;
+
+        // set some starting (x,y) coordinate for visual objects
+        // final layout will b managed at the end
+        let x = 40
+
+
+        // loop on each row of the XL sheet
+        XL_row_object.forEach(row => {
+            let rowNum = String(XL_row_object.indexOf(row) + 1)
+            // read relevant cells by column name
+            let afName = stripIllegalChar(row['Application Function Reference'])
+            if (!!afName && afName !== '') {
+                // get or create an application function object
+                af = getOrCreateElement('application-function', afName, true, folders['otherFolder']['folder'])
+                if (!!af) {
+                    af.documentation = stripIllegalChar(row['Application Function Description'])
+                    if (row[' Target Application Option 1'] !== '')
+                        af.prop('Target Application Option 1', row['Target Application Option 1'])
+                    if (row[' Target Application Option 2'] !== '')
+                        af.prop('Target Application Option 2', row['Target Application Option 2'])
+                    if (row[' Target Application Option 3'] !== '')
+                        af.prop('Target Application Option 3', row['Target Application Option 3'])
+                    // get or create the relationship with the application collaboration
+                    afRel = getOrCreateRelationship("assignment-relationship", "", ba, af, true)
+
+                    // get or create related business objects
+                    let boName = stripIllegalChar(row['Information Object Name'])
+                    bo = null
+                    if (!!boName && boName !== '') {
+                        // trying to match the information object with a known one
+                        bo = matchElemByName('business-object', boName, false, folders['boFolder']['folder'])
+                        if (!bo)
+                            bo = getOrCreateElement('business-object', boName, true, folders['otherBoFolder']['folder'])
+                        if (!bo.documentation) {
+                            bo.documentation = stripIllegalChar(row['Information Object Description'])
+                        }
+                        if (!bo.prop('ESPERANTO')) {
+                            log('Warning: Not normalized business object "' + bo.name + '"')
+                        }
+                        // get or create related relationship
+                        boRel = getOrCreateRelationship("access-relationship", "", af, bo, true)
+                        $(boRel).attr("access-type", "access")
+                    }
+                    // connect to LAA object
+                    laaName = stripIllegalChar(row['LAA Reference'])
+                    laa = null
+                    if (!!laaName && laaName !== '') {
+                        // Try to match  LAA by ref outline
+                        let laaOutl = laaName.match(/([\d|.]*)\s*/)
+                        laaOutl = (!!laaOutl) ? laaOutl[1] : null
+                        // and strip the possible outline number from the start of the laaName
+                        laaName = laaName.match(/[\d|.]*\s*(.*)\s*/)
+                        laaName = (!!laaName) ? laaName[1] : null
+                        if (!!laaName)
+                            laa = matchElemByName('business-function', laaName)
+                        else if (!!laaOutl) {
+                            {
+                                laa = matchElemByProperty('business-function', 'outline', laaOutl)
+                                laaName = (!!laa)?laa.name : ''
+                            }
+                        }
+                        if (!laa) {
+                            log('Warning: Invalid LAA block with name "' + laaName + "'")
+                            laa = getOrCreateElement('business-function', laaName, true, folders['bfFolder']['folder'])
+                        }
+                        laaRel = getOrCreateRelationship('realization-relationship', '', af, laa, true)
+                    } else {
+                        log('Error: Missing LAA field at row '+ rowNum)
+                    }
+                    // populate now the view with application functions
+                    // Spread on two rows & embed the application functions inside the business application
+                    afNode = checkNodeInView(view, af)
+                    if (!afNode) {
+                        afNode = baNode.add(af, xAf, yAf + incY * 70, -1, -1)
+                        incY = ++incY % 2 // switch row  coordinate
+                        xAf += 80
+                        // increase the width of the business application visual object
+                        baNode.bounds = {
+                            width: baNode.bounds.width + 80
+                        }
+                    }
+                    // create the connections between the business application visual object
+                    // and the embedded application functions
+                    afConn = checkRelInView(afRel, baNode, afNode, true, view)
+
+                    // Add now the Business Objects on the view & their connections
+                    // never create duplicates of object in the view
+                    if (!!bo && boName) {
+                        boNode = checkNodeInView(view, bo)
+                        if (!boNode) {
+                            boNode = view.add(bo, xBo, yBo, -1, -1)
+                            yBo += 75
+                        }
+                        boConn = checkRelInView(boRel, afNode, boNode, true, view)
+                    }
+
+                    // Add then the Business Service layer
+                    bsName = stripIllegalChar(row['Business Service Description'])
+                    bs = null
+                    if (!!bsName && bsName !== '' && bsName !== '<Free text>') {
+                        // get or create an application function object
+                        bs = getOrCreateElement('business-service', bsName, true, folders['bsFolder']['folder'])
+                        if (!!bs) {
+                            bsNode = checkNodeInView(view, bs)
+                            if (!bsNode) {
+                                bsNode = view.add(bs, xBs, yBs + incYBs * 80, -1, -1)
+                                incYBs = ++incYBs % 2
+                                xBs += 80
+                            }
+                        }
+                    }
+
+                    // And add the LAA Business Functions
+                    // LAA block has already been retrieved above
+                    if (!!laa && !!laaName) {
+                        laaNode = checkNodeInView(view, laa)
+                        if (!laaNode) {
+                            laaNode = view.add(laa, xLaa, yLaa, -1, -1)
+                            yLaa += 80
+                        }
+                        laaConn = checkRelInView(laaRel, afNode, laaNode, true, view)
+                        // if Business Services have been defined, connect them to the LAA bock
+                        if (!!bs) {
+                            bsRel = getOrCreateRelationship("realization-relationship", "", laa, bs, true)
+                            bsConn = checkRelInView(bsRel, laaNode, bsNode, true, view)
+                        }
+                    }
+                    // Also connect the Application to the Business Service, but do not create the visual connection in the view
+                    if(!!af && !!bs) {
+                        bsRel = getOrCreateRelationship("realization-relationship", '', af, bs, true)
+                        if (!laa)
+                            bsConn = checkRelInView(bsRel, afNode, bsNode, true, view)
+                    }
+                    // Check if there is a reference to a Business Capability linked to a Business Service
+                    // if yes, connect them
+                    bcName = stripIllegalChar(row['Capability Reference'])
+                    bc = null
+                    if (!!bcName && bcName !== '' && bcName !== '<Prefilled>' && !!bsName && bsName !== '' && bsName !== '<Free text>') {
+                        bc = matchElemByName('capability', bcName)
+                        // bc = getOrCreateElement('capability', bcName, false, folders['bcmFolder']['folder'])
+                        if (!!bc) {
+                            bcRel = getOrCreateRelationship('realization-relationship', '', bs, bc, true)
+                            bcNode = checkNodeInView(view, bc)
+                            bcNode = (!!bcNode) ? bcNode : embedParentsHierarchy(view, bc, 2 * x, 0)
+                            bcConn = checkRelInView(bcRel, bsNode, bcNode, true, view)
+                        } else {
+                            log('Error: Invalid Business Capability ' + bcName)
+                        }
+                    }
+
+                    x += 150
+                }
+            } else {
+                log('ERROR: Empty Application Function field at row ' + String(XL_row_object.indexOf(row) + 1))
+            }
+        })
+        // Add the Primary Business Capability to the Business Application if no Business Service was defined
+        if (!bcName || !bs) {
+            $(ba).outRels('realization-relationship').forEach(r => {
+                if (r.target.type === 'capability') {
+                    let capNode = embedParentsHierarchy(view, r.target, 280, 20)
+                    view.add(r, baNode, capNode);
+                }
+            })
+        }
+
+        // perform some moves to arrange the final layout of the view
+        // Arrange LAA in a single vertical lane, left to the Business Application
+        yLaa = 0
+        $(view).children('business-function').forEach(e => {
+            let _y = e.bounds.y + yBs + 180 - yLaa0
+            yLaa = Math.max(yLaa, _y)
+            e.bounds = {
+                x: xBs + 100,
+                y: _y
+            }
+        })
+        // Bus App block
+        baNode.bounds = {
+            x: xBs + 300,
+            y: yLaa + 100
+        }
+        // Arrange Business Objects in a horizontal lane below the Business Application if there is a 1-2-1 relationship
+        // with a single Application Function, else arrange the others in a vertical lane below and to the left of the Business Application
+        $(view).children('business-object').forEach(e => {
+            let _rels = $(e).inRels()
+            // check business object with one-to-one relationships
+            let _flg = false
+            if (_rels.length === 1) {
+                let _srcRels = $(_rels[0].source).outRels('access-relationship')
+                if (_srcRels.length > 1)
+                    _flg = true
+            }
+            // manage business object with more than one relation
+            if (_rels.length > 1 || _flg) {
+                let _y = e.bounds.y + yLaa + 350
+                e.bounds = {
+                    x: xBs + 100,
+                    y: _y
+                }
+            } else {
+                // manage the one with a single relation
+                // console.log(_rels[0].source)
+                e.bounds = {
+                    x: _rels[0].source.bounds.x + baNode.bounds.x,
+                    y: _rels[0].source.bounds.y + 200 + baNode.bounds.y
+                }
+            }
+        })
+        // create orthogonal 'L-shaped' connections and set the bendpoints below or on top of the Application Function objects
+        // connections start vertically
+        $(view).children('element').forEach(function (e) {
+            $(e).outRels().forEach(function (o) {
+                lRel(o, 1)
+            });
+            $(e).inRels().forEach(function (o) {
+                lRel(o, 1)
+            });
+        })
+        // excepted for the connections between business functions and business services
+        $(view).children('business-service').forEach(function (e) {
+            $(e).outRels().forEach(function (o) {
+                lRel(o, 0)
+            });
+            $(e).inRels().forEach(function (o) {
+                lRel(o, 0)
+            });
+        })
+    } else {
+        console.error('Business Application "' + ba.name + '" does not exist in the model as an IT Solution\n' +
+            'Please fill first and upload its ID Card record into the model ')
+    }
+    deb('Done.')
+}
+
+createBusAppFunctionalView()

@@ -9,6 +9,6 @@
 
 // console.show()
 console.clear()
-load(__DIR__ + 'lib/relLib.ajs')
+load(__SCRIPTS_DIR__ + 'lib/relLib.ajs')
 let srelV = doEachRel(sRel)
 srelV(selection, 1, 0.5, 0.5)

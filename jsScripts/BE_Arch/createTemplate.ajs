@@ -1,5 +1,5 @@
-load(__DIR__ + 'lib.ajs')
-load(__DIR__ + 'getMFApplicationIdentityCards.ajs')
+load(__SCRIPTS_DIR__ + 'lib/lib.ajs')
+load(__DIR__ + 'BE_Arch/getMFApplicationIdentityCards.ajs')
 
 console.show()
 console.clear()

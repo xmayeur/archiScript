@@ -16,7 +16,7 @@ var debug = false;
 
 // requires some libraries
 load(__DIR__ + "/lib/_fmt_lib_confluence.ajs")
-load(__DIR__ + '/lib/_util.ajs')
+load(__DIR__ + 'lib/_util.ajs')
 
 // clear and show the console
 console.show();
