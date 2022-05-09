@@ -191,7 +191,6 @@ function getObjXY(obj) {
     }
 }
 
-
 /**
  * Check whether a point given by its absolute coordinates is inside an object
  *
@@ -345,7 +344,6 @@ function _getObjPos(obj1, obj2) {
     return [pos, angle]
 }
 
-
 /**
  * Get the position of object 2 with respect to object 1
  *
@@ -384,7 +382,7 @@ function getObjPos(obj1, obj2) {
     if (b2.x - b2.width / 2 > b1.x + b1.width / 2 && b2.x + b2.width / 2 > b1.x + b1.width / 2)
         dist.gapX = b2.x - b2.width / 2 - b1.x - b1.width / 2
     else if (b2.x - b2.width / 2 < b1.x - b1.width / 2 && b2.x + b2.width / 2 < b1.x - b1.width / 2)
-        dist.gapX = b2.x + b2.width - b1.x + b1.width / 2
+        dist.gapX = b2.x + b2.width/2 - b1.x + b1.width / 2
 
     if (b2.y - b2.height / 2 > b1.y + b1.height / 2 && b2.y + b2.height / 2 > b1.y + b1.height / 2)
         dist.gapY = b2.y - b2.height/2 - b1.y - b1.height / 2
@@ -487,20 +485,19 @@ function distributeConnections(obj) {
         if (!isInsideObj(obj1, bo2.x, bo2.y)) {
             // if a connection does not have any bendpoint, add one in the middle of connection, so we can reposition it
             if (bps.length === 0) {
-
                 let _x, _y
                 if (p === 'L!') {
                     _x = bo1.x - bo1.width / 2 + dist.gapX / 2
-                    _y = (bo1.y + bo2.y) / 2
+                    _y = bo1.y
                 } else if (p === 'R!') {
                     _x = bo1.x + bo1.width / 2 + dist.gapX / 2
-                    _y = (bo1.y + bo2.y) / 2
+                    _y = bo1.y
                 } else if (p === 'B!') {
                     _y = bo1.y + bo1.height / 2 + dist.gapY / 2
-                    _x = (bo1.x + bo2.x) / 2
+                    _x = bo1.x
                 } else if (p === 'T!') {
                     _y = bo2.y + bo2.height / 2 - dist.gapY / 2
-                    _x = (bo1.x + bo2.x) / 2
+                    _x = bo1.x
                 } else {
                     _x = (bo2.x + bo1.x) / 2
                     _y = (bo2.y + bo1.y) / 2
@@ -583,7 +580,6 @@ function dynamicSort(property) {
         return result * sortOrder;
     }
 }
-
 
 // ----------------STILL USING RELATIVE COORDINATE METHODS ---------- TODO : REFACTORING ------------------------
 

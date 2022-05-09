@@ -1,8 +1,0 @@
-console.clear()
-console.show()
-
-load(__SCRIPTS_DIR__ + 'lib/lib.ajs')
-load(__SCRIPTS_DIR__ + 'libJs/sheetjs.js')
-
-debug = true
-deb('test!')
