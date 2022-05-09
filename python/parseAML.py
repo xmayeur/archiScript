@@ -47,8 +47,8 @@ def main():
         scale_x = 0.3
         scale_y = 0.4
 
+    tmpdir = os.environ['TMP']
     if 'http' in args.file:
-        tmpdir = os.environ['TMP']
         TMPFILE = os.path.join(tmpdir, '$parseAML.zip')
         cacerts = os.path.join(os.environ['USERPROFILE'],'.ssh','certs.pem')
         PROXY_URL = 'giba-proxy.wps.ing.net:8080'
@@ -62,6 +62,10 @@ def main():
         with zipfile.ZipFile(TMPFILE, "r") as zip_ref:
             zip_ref.extractall(tmpdir)
             args.file = os.path.join(tmpdir, "ARISAMLExport.xml")
+
+    elif '.zip' in args.file:
+        with zipfile.ZipFile(args.file, "r") as zip_ref:
+            zip_ref.extractall(tmpdir)
 
     aris = AML(args.file, name='arisExport', scale_x=scale_x, scale_y=scale_y, skip_bendpoint=False,
                include_organization=False if args.noOrgs else True,
