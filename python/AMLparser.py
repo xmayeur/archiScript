@@ -23,7 +23,7 @@ def get_text_size(text, points, font):
         from PIL import ImageFont
         font = ImageFont.truetype('DejaVuSans.ttf', points)
         size = font.getsize('Hello world')
-        return size[0, size[1]]
+        return size[0], size[1]
 
     else:
         class SIZE(ctypes.Structure):

@@ -164,14 +164,6 @@ class OpenExchange:
         for v in self.views:
             self.OEF['model']['views']['diagrams']['view'].append(v.view)
 
-        # Add Organizations
-        # if len(self.organizations) == 0:
-        #     if 'organizations' in self.OEF['model']:
-        #         del self.OEF['model']['organizations']
-        # else:
-        #     # TODO
-        #     pass
-
         return xmltodict.unparse(self.OEF, pretty=True)
 
     def add_elements(self, *elements):

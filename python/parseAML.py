@@ -48,7 +48,11 @@ def main():
         scale_x = 0.3
         scale_y = 0.4
 
-    tmpdir = os.environ['TMP']
+    if 'TMP' in os.environ:
+        tmpdir = os.environ['TMP']
+    else:
+        tmpdir = os.curdir
+
     if 'http' in args.file:
         TMPFILE = os.path.join(tmpdir, '$parseAML.zip')
         cacerts = os.path.join(os.environ['USERPROFILE'],'.ssh','certs.pem')

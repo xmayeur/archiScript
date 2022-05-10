@@ -2,3 +2,5 @@ xmltodict
 jsonpath-ng
 requests
 zipfile
+matplotlib
+PIL
