@@ -13,26 +13,33 @@ from xml.sax.saxutils import escape
 from jsonpath_ng import parse
 from archiObjects import *
 from type_mapping import type_map
-
+import platform
 
 used_elems_id = []
 
 
 def get_text_size(text, points, font):
-    class SIZE(ctypes.Structure):
-        _fields_ = [("cx", ctypes.c_long), ("cy", ctypes.c_long)]
+    if platform.system() == 'Linux':
+        from PIL import ImageFont
+        font = ImageFont.truetype('DejaVuSans.ttf', points)
+        size = font.getsize('Hello world')
+        return size[0, size[1]]
 
-    hdc = ctypes.windll.user32.GetDC(0)
-    hfont = ctypes.windll.gdi32.CreateFontA(points, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, font)
-    hfont_old = ctypes.windll.gdi32.SelectObject(hdc, hfont)
+    else:
+        class SIZE(ctypes.Structure):
+            _fields_ = [("cx", ctypes.c_long), ("cy", ctypes.c_long)]
 
-    size = SIZE(0, 0)
-    ctypes.windll.gdi32.GetTextExtentPoint32A(hdc, text, len(text), ctypes.byref(size))
+        hdc = ctypes.windll.user32.GetDC(0)
+        hfont = ctypes.windll.gdi32.CreateFontA(points, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, font)
+        hfont_old = ctypes.windll.gdi32.SelectObject(hdc, hfont)
 
-    ctypes.windll.gdi32.SelectObject(hdc, hfont_old)
-    ctypes.windll.gdi32.DeleteObject(hfont)
+        size = SIZE(0, 0)
+        ctypes.windll.gdi32.GetTextExtentPoint32A(hdc, text, len(text), ctypes.byref(size))
 
-    return size.cx, size.cy
+        ctypes.windll.gdi32.SelectObject(hdc, hfont_old)
+        ctypes.windll.gdi32.DeleteObject(hfont)
+
+        return size.cx, size.cy
 
 
 def str2xml_escape(txt):
@@ -147,6 +154,8 @@ class AML:
         self.add_elements()
         log.info('Adding relationships')
         self.add_relationships()
+
+        self.model.generate_xml()
         if len(self.model.OEF["model"]['relationships']['relationship']) == 0:
             del self.model.OEF["model"]['relationships']
 
@@ -183,9 +192,12 @@ class AML:
                     prop_key = attr_type
                     prop_val = sep.join([x.value for x in find_text(ad)])
                     prop_val = xml_escape2str(prop_val).encode('ascii', 'replace').decode()
-                    props.append(Property(prop_key, prop_val, self.pdef))
+                    # props.append(Property(prop_key, prop_val, self.pdef))
+                    props.append((prop_key, prop_val))
                     if attr_type == 'AT_DESC':
                         o_desc = prop_val
+
+
         return o_name, props, o_desc
 
     def parse_elements(self, groups=None):
@@ -215,8 +227,12 @@ class AML:
                     o_name, props, o_desc = self.get_attributes(o)
                     # XMA
                     e = Element(name=o_name, type=o_type, uuid=o_uuid, desc=o_desc)
-                    e.add_property(Property('UUID', o_uuid, self.pdef))
-                    e.add_property(*props)
+                    # e.add_property(Property('UUID', o_uuid, self.pdef))
+                    # e.add_property(('UUID', o_uuid))
+                    e.properties['UUID'] = o_uuid
+                    for p in props:
+                        e.properties[p[0]] = p[1]
+                    # e.add_property(*props)
                     elems_list[o_id] = e
                     elems_list[o_uuid] = e
 

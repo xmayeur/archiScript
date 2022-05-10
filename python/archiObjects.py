@@ -12,7 +12,6 @@
 from uuid import uuid4, UUID
 
 import xmltodict
-
 from logger import log
 from type_mapping import simplified_patterns
 
@@ -158,22 +157,20 @@ class OpenExchange:
                 self.OEF['model']['relationships'] = {'relationship': []}
             for r in self.relationships:
                 self.OEF['model']['relationships']['relationship'].append(r.relationship)
-            # Add Views
-            if 'views' not in self.OEF['model']:
-                self.OEF['model']['views'] = {'diagrams': {'view': []}}
-            for v in self.views:
-                self.OEF['model']['views']['diagrams']['view'].append(v.view)
-
-        # Add Organizations
-        if len(self.organizations) == 0:
-            del self.OEF['model']['organizations']
-        else:
-            # TODO
-            pass
 
         # Add Views
-        # TODO
-        pass
+        if 'views' not in self.OEF['model']:
+            self.OEF['model']['views'] = {'diagrams': {'view': []}}
+        for v in self.views:
+            self.OEF['model']['views']['diagrams']['view'].append(v.view)
+
+        # Add Organizations
+        # if len(self.organizations) == 0:
+        #     if 'organizations' in self.OEF['model']:
+        #         del self.OEF['model']['organizations']
+        # else:
+        #     # TODO
+        #     pass
 
         return xmltodict.unparse(self.OEF, pretty=True)
 
@@ -188,7 +185,6 @@ class OpenExchange:
             return [e for e in self.elements if e.type == type]
         else:
             return [e for e in self.elements if e.name == name and e.type == type]
-
 
     def add_relationships(self, *relationships):
         for r in relationships:
@@ -298,6 +294,7 @@ class Element:
             }
 
     def add_property(self, *properties):
+
         if 'properties' not in self.element:
             self.element['properties'] = {'property': []}
         for p in properties:
@@ -336,8 +333,7 @@ class Element:
     def get_desc(self):
         return self._desc
 
-    desc = property (get_desc, set_desc)
-
+    desc = property(get_desc, set_desc)
 
 
 class Property:
@@ -363,8 +359,7 @@ class Property:
         self.value = value
         if not isinstance(propdef, PropertyDefinitions):
             raise ValueError('"propdef" is not a PropertyDefinitions class.')
-        pdef = propdef.propertyDefinitions
-        ref = [x['@identifier'] for x in pdef if x['name'] == key]
+        ref = [x['@identifier'] for x in propdef.propertyDefinitions if x['name'] == key]
         if len(ref) == 0:
             _id = propdef.add(key)
         else:

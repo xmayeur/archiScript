@@ -1,3 +1,4 @@
+
 import argparse
 import os
 import zipfile
@@ -24,9 +25,9 @@ def main():
     parser.add_argument('-xV', '--noView', required=False, action='store_true',
                         help="Exclude views and report only concepts & relationships")
     parser.add_argument('-xo', '--noOptimization', required=False, action='store_true',
-                        help='Do no remove elements and relationships that are not used in views')
+                        help='Do not remove elements and relationships that are not used in views')
     parser.add_argument('-C', '--correct', required=False, action='store_true',
-                        help='Do no correct inverted relationships in embedded objects')
+                        help='Do correct inverted relationships in embedded objects')
     parser.add_argument('-o', '--outputfile', required=False, help="Output converted file")
     parser.add_argument('-v', '--verbose', required=False, action='store_true',
                         help="Display DEBUG & INFO log messages")

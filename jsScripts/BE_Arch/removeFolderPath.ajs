@@ -6,19 +6,6 @@ console.log('Expanding properties')
 $('element').forEach(c => {
     o = c.concept ? c.concept : c
     expandProperties(o)
-/*
-    if (c.type === 'capability')
-        o.prop('BCM', 'Yes')
-    else if (c.type === 'business-function')
-        o.prop('LAA', 'Yes')
-    else if (c.type === 'business-object')
-        o.prop('ESPERANTO', 'Yes')
-    o.prop('ARIS', o.id)
-    if (!!o.prop('objDefId'))
-        o.removeProp('objDefId')
-    embedProperties(o)
-*/
-
 })
 console.log('Managing organizations')
 const list = ['Strategy', 'Business', 'Application', 'Views']
