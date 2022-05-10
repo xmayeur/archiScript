@@ -71,6 +71,7 @@ def main():
     elif '.zip' in args.file:
         with zipfile.ZipFile(args.file, "r") as zip_ref:
             zip_ref.extractall(tmpdir)
+            args.file = os.path.join(tmpdir, "ARISAMLExport.xml")
 
     aris = AML(args.file, name='arisExport', scale_x=scale_x, scale_y=scale_y, skip_bendpoint=False,
                include_organization=False if args.noOrgs else True,

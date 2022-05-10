@@ -116,7 +116,7 @@ class AML:
 
 
         """
-        self.data = xmltodict.parse(open(aml_file, 'r').read())
+        self.data = xmltodict.parse(open(aml_file, 'r', encoding='utf8', errors='ignore').read())
         self.organizations = []
         self.name = name
         self.model = OpenExchange(self.name)
