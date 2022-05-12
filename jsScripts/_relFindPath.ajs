@@ -9,7 +9,7 @@ let start = []
 let end = []
 const rnd = Math.round
 
-mazeSolver(selection)
+doEachRel(mazeSolver) (selection)
 
 function mazeSolver(selection) {
     let rel = $(selection).filter('relationship').first()
@@ -20,13 +20,14 @@ function mazeSolver(selection) {
     let b1 = smallBounds(obj1)
     let b2 = smallBounds(obj2)
     let view = obj1.view
-    // console.log(view.name)
-    // create the "maze"
-    createMaze(view)
+
+    // create the "maze" and exclude the elements the object is embedded in
+    let excludes = $(obj1).parents()
+    createMaze(view, excludes)
 
     let [pos, angle] = getObjPos(obj1, obj2)
     pos = pos.substr(0, 1)
-    // console.log(pos, angle)
+
     try {
         if (pos === 'T') {
             x = b1.x
@@ -92,10 +93,8 @@ function mazeSolver(selection) {
 
         // console.log(displayMaze(maze, '\t'))
         let idx = 0
-        // console.log(pos, angle)
         rel.deleteAllBendpoints()
         bps.forEach(bp => {
-            // console.log('bp ', bp)
             addAbsoluteBendpoint(rel, bp.x, bp.y, idx++)
         })
     } else {
@@ -104,13 +103,13 @@ function mazeSolver(selection) {
 }
 
 // create a 'maze' grid filled by view's elements
-function createMaze(view) {
+function createMaze(view, excludes=null) {
     if (!!view) {
         let minX = 0
         let minY = 0
         let maxX = 0
         let maxY = 0
-        let elems = $(view).find().not('diagram-model-group').not('relationship').not('grouping')
+        let elems = $(view).find().not('diagram-model-group').not('relationship').not('grouping').not(excludes)
 
         elems.forEach(e => {
             try {

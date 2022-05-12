@@ -9,4 +9,9 @@ $('element').forEach( e => {
     expandProperties(e);
 });
 
+$('relationship').forEach( e => {
+        if ('Identifier' in e.prop() &&  e.prop('Identifier') !== '')
+             e.documentation = e.prop('Identifier')
+});
+
 console.log('Done')

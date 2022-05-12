@@ -1,9 +1,36 @@
 /**
+ *
+ * jArchi Library to manage Archi visual relationships in views
+ *
+ * Author: Xavier Mayeur
+ * Version: 1.1
+ * Date: May 2022
+ *
+ *
+ * Remarks: the code has been written to work with GraalVM, not Nashorn framework.
+ * Please update Archi scripting preferences accordingly.
+ */
+
+if (typeof relLlibLoaded === 'undefined') {
+    engine = ($.process.engine === 'com.oracle.truffle.js.scriptengine.GraalJSScriptEngine') ? 'GraalVM' : 'Nashorn'
+    if (engine === 'Nashorn') {
+        console.log('ERROR: this library only works with the GraalVM JavaScript Engine\nPlease modify Archi scription settings')
+        exit()
+    }
+    relLibLoaded = true
+}
+
+/**
  * decorator function to apply a element-based function to each element of a selection
  *
  * example:   const myFct = doEachElem(fct);
- *            myFct(args);
+ *            myFct(selection, other_args);
  *
+ *            or
+ *
+ *            doEachElem(fct)(selection, other_args)
+ *
+ *            where 'selection' is any Archi selection of objects, replacing the first argument of the passed function 'fct'*
  * @param {(function(): void)} fct - a jArchi function handling element
  * @returns {(function(): void)|*}
  */
@@ -37,6 +64,9 @@ function doEachElem(fct) {
 
 /**
  * decorator function to apply a relationship-based function to each connection of a selection
+ *
+ * Example:
+ *              doEachRel(fct)(selection, other_args)
  *
  * @param {(function(): void)} fct - a jArchi function handling visual connection
  * @returns {(function(): void)|*}
@@ -88,7 +118,7 @@ function doEachRel(fct) {
 }
 
 /**
- * Convert add a bendpoint to a visual connection using absolute coordinates
+ * Add a bendpoint to a visual connection using absolute coordinates
  * @param conn - visual connection object
  * @param x - X-coordinate
  * @param y - y coordinate
@@ -109,7 +139,7 @@ function addAbsoluteBendpoint(conn, x, y) {
 }
 
 /**
- * Convert set a bendpoint at index idx to a visual connection using absolute coordinates
+ * Set a bendpoint at index idx to a visual connection using absolute coordinates
  *
  * @param conn - visual connection object
  * @param x - X-coordinate
@@ -297,64 +327,6 @@ function sRel(conn, dir = 0, weightX = 0.5, weightY = 0.5, weight2 = 0.5) {
  *                                  - the second is a float number indicating the angle in degrees between the center of object 1 and object 2
  *
  */
-function _getObjPos(obj1, obj2) {
-    let b1 = ('x' in obj1) ? obj1 : getObjXY(obj1)
-    let b2 = ('x' in obj2) ? obj2 : getObjXY(obj2)
-    let dx = b2.x - b1.x
-    let dy = b2.y - b1.y
-    let pos
-
-    let angle = Math.atan2(dy, dx) * 180 / Math.PI
-    // normalize angle wrt obj1
-    if (angle < 0)
-        angle += 360
-    angle = (360 - angle) % 360
-
-    if (!(isBetween(b2.y, b1.y, b1.y + b1.height)
-            || isBetween(b2.y + b2.height, b1.y, b1.y + b1.height))
-        && !(isBetween(b2.x, b1.x, b1.x + b1.width)
-            || isBetween(b2.x + b2.width, b1.x, b1.x + b1.width))
-    ) {
-        if (angle < 45 && angle > 315) {
-            pos = 'R'
-        } else if (angle >= 45 && angle < 135) {
-            pos = 'T'
-        } else if (angle >= 135 && angle < 225) {
-            pos = 'L'
-
-        } else {
-            pos = 'B'
-
-        }
-    }
-
-    if ((angle > 90 || angle < -135) && (isBetween(b2.y, b1.y, b1.y + b1.height)
-        || isBetween(b2.y + b2.height, b1.y, b1.y + b1.height)))
-        pos = 'L!'
-    else if (angle > 0 && (isBetween(b2.x, b1.x, b1.x + b1.width)
-        || isBetween(b2.x + b2.width, b1.x, b1.x + b1.width)))
-        pos = 'B!'
-    else if (angle < 0 && (isBetween(b2.x, b1.x, b1.x + b1.width)
-        || isBetween(b2.x + b2.width, b1.x, b1.x + b1.width)))
-        pos = 'T!'
-    else if ((isBetween(b2.y, b1.y, b1.y + b1.height)
-        || isBetween(b2.y + b2.height, b1.y, b1.y + b1.height)))
-        pos = 'R!'
-
-    return [pos, angle]
-}
-
-/**
- * Get the position of object 2 with respect to object 1
- *
- * @param obj1  -   visual object 1
- * @param obj2  -   visual object 2
- * @returns {(string|number)[]} - return an array of two items
- *                                  - the first item is a string with the relative position (T,B,L,R)
- *                                      (Top, Bottom, Left, Right) followed by an option '!' if adjacent edges are overlapping
- *                                  - the second is a float number indicating the angle in degrees between the center of object 1 and object 2
- *
- */
 function getObjPos(obj1, obj2) {
     let b1 = ('x' in obj1) ? obj1 : getObjXY(obj1)
     let b2 = ('x' in obj2) ? obj2 : getObjXY(obj2)
@@ -442,13 +414,13 @@ function getPointPos(obj1, XY) {
         pos = 'B!'
     else if (angle < 180 && isBetween(XY.x, b.x-b.width/2, b.x + b.width/2))
         pos = 'T!'
-    else if (isBetween(XY.y, b.y, b.y + b.height))
+    else if (isBetween(XY.y, b.y-b.height/2, b.y + b.height/2))
         pos = 'R!'
     return [pos, angle]
 }
 
 /**
- * Function to equally distribute multiple connections along each edge of the selected object
+ * Function to equally distribute multiple connections along each edge of the selected object(s)
  *
  * @param obj
  */
@@ -524,7 +496,7 @@ function distributeConnections(obj) {
                 right.push({order: angle, bp: bp, r: r})
             }
             if (pos[0] === 'L') {
-                // angle = (angle + 180) % 360
+                angle = (angle + 180) % 360
                 left.push({order: angle, bp: bp, r: r})
             }
             if (pos[0] === 'T') {
@@ -540,12 +512,14 @@ function distributeConnections(obj) {
     i = 1
     right.sort(dynamicSort('order')).forEach(r => {
         r.bp.y = bo1.y - bo1.height * (0.5 - (i++ / (right.length + 1)))
+        // r.bp.x = r.bp.x + 5*i * ((r.order > 180)? 1:-1)
         setAbsoluteBendpoint(r.r, r.bp.x, r.bp.y, r.bp.idx)
     })
     i = 1
     left.sort(dynamicSort('order')).forEach(r => {
         r.bp.y = bo1.y - bo1.height * (0.5 - (i++ / (left.length + 1)))
-        setAbsoluteBendpoint(r.r, r.bp.x, r.bp.y, r.bp.idx)
+        // r.bp.x = r.bp.x + 5*i * ((r.order > 180)? 1:-1)
+        setAbsoluteBendpoint(r.r,r.bp.x, r.bp.y, r.bp.idx)
     })
     i = 1
     top.sort(dynamicSort('order')).forEach(r => {
@@ -581,7 +555,7 @@ function dynamicSort(property) {
     }
 }
 
-// ----------------STILL USING RELATIVE COORDINATE METHODS ---------- TODO : REFACTORING ------------------------
+// ----------------STILL USING RELATIVE COORDINATE METHODS ---------------------------------
 
 /**
  * Helper function to add a bendpoint for ortho()

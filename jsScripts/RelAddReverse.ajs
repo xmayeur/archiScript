@@ -9,18 +9,18 @@
 
 console.show();
 console.clear();
-relReverse(selection)
+relAddReverse(selection)
 
-function relReverse(selection) {
+function relAddReverse(selection) {
 
-    $(selection).filter("relationship").forEach(o => {
+    $(selection).filter("relationship").forEach(function(o) {
 
-        var view = o.view;
-        var source = o.source;
-        var target = o.target;
+        let view = o.view;
+        let source = o.source;
+        let target = o.target;
 
-        var revRel = model.createRelationship(o.type, o.name, target.concept, source.concept);
-        view.add(revRel, target, source)
+        let revRel = model.createRelationship(o.type, o.name, target.concept, source.concept);
+        let revCon = view.add(revRel, target, source)
 
-    }
+    });
 }

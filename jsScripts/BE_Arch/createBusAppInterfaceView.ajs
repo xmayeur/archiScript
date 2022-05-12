@@ -195,7 +195,7 @@ function createBusAppInterfaceView() {
         deb('zone', zoneNode.name)
         zone.forEach(row => {
             // get the LAA group if any, and the business app inside of this group
-            let groupName = row['LAA Group']
+            let groupName = stripIllegalChar(row['LAA Group'])
             let bas = row['Connected IT Solution(s)'].split(',')
             let dir = row['Direction']
             let afName = row['This Application Function']
@@ -208,7 +208,7 @@ function createBusAppInterfaceView() {
                 group = getOrCreateElement('business-function', groupName)
                 if (!group) {
                     // if not an LAA group, we just create a grouping object
-                    log('Warning: invalid group name for ' + groupName)
+                    log('Warning: No LAA block match for group name: ' + groupName)
                     group = getOrCreateElement('grouping', groupName, true)
                 }
                 // if a group exist with the same name and the same embedded applications, we keep it
