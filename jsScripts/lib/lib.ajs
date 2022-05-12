@@ -382,7 +382,7 @@ function readFile(filePath) {
  * @param delimiter
  * @returns {string}
  */
-function writeFile(filePath = 'default.log', text = '', mode = 'w', delimiter = '\n') {
+function writeFile(filePath, text = '', mode = 'w', delimiter = '\n') {
     let FileWriter = Java.type("java.io.FileWriter");
     let Types = Java.type("java.nio.charset.StandardCharsets");
     let theFile = new FileWriter(filePath, Types.UTF_8, (mode === 'a'));
@@ -551,7 +551,6 @@ function md5(txt) {
     }
     return CryptoJS.MD5(txt).toString()
 }
-
 
 /**
  *  base64 encoder

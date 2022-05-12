@@ -5,11 +5,11 @@ let test = false
 let onlyMerge = false
 
 if (test) {
-    modelName = __DIR__+'/../mfAppFiles/test/MF_Decomm.archimate'
-    mapFile = __DIR__+'/../mfAppFiles/test/Business Objects Analysis.xlsm'
+    modelName = __DIR__+'../../mfAppFiles/test/MF_Decomm.archimate'
+    mapFile = __DIR__+'../../mfAppFiles/test/Business Objects Analysis.xlsm'
 } else {
-    modelName = __DIR__+'/../MF_Decomm.archimate'
-    mapFile = __DIR__+'/../Business Objects Analysis.xlsm'
+    modelName = __DIR__+'../../MF_Decomm.archimate'
+    mapFile = __DIR__+'../../Business Objects Analysis.xlsm'
 }
 
 /**
