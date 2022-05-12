@@ -1,0 +1,15 @@
+/*
+ * New Archi Script
+ *
+ * Requires jArchi - https://www.archimatetool.com/blog/2018/07/02/jarchi/
+ *
+ * This script takes a selection of visual objects as input, filter it to keep only relationships
+ * and create L-shape ortho connector
+ */
+
+console.show();
+console.clear();
+
+load (__DIR__+'lib/relLib.ajs')
+const lRelH = doEachRel(lRel)
+lRelH(selection, 0)
