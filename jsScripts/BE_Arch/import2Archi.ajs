@@ -3,11 +3,11 @@ console.clear()
 try {
     load(__SCRIPTS_DIR__ + 'lib/lib.ajs');
     log('Creating Views', null, '\n___________________________\n')
-    load(__DIR__ + 'BE_Arch/createBusAppFunctionalViews.ajs');
-    load(__DIR__ + 'BE_Arch/createBusAppGovernanceViews.ajs')
-    load(__DIR__ + 'BE_Arch/createBusAppInterfaceView.ajs')
+    load(__DIR__ +'createBusAppFunctionalViews.ajs');
+    load(__DIR__ +'createBusAppGovernanceViews.ajs')
+    load(__DIR__ +'createBusAppInterfaceView.ajs')
     $('element').forEach(e=>{embedProperties(e)})
-    load(__DIR__ + 'BE_Arch/modelCleansing.ajs')
+    load(__DIR__ +'modelCleansing.ajs')
 } catch(e){
     log('ERROR: '+String(e))
 }

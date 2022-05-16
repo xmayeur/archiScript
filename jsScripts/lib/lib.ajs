@@ -469,14 +469,16 @@ function getTimestamp() {
  * @param text
  * @param file
  * @param delimiter
+ * @param console
  */
-function log(text, file = logFile, delimiter = '\n') {
+function log(text, file = logFile, delimiter = '\n', console=false) {
     if (!file)
         file = logFile
     // Define log text.
     const logText = getTimestamp() + '\t' + text;
     writeFile(file, logText, 'a', delimiter)
-    console.log(logText);
+    if (!!console)
+        console.log(logText);
 }
 
 /**

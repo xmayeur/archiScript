@@ -98,7 +98,7 @@ function mazeSolver(selection) {
             addAbsoluteBendpoint(rel, bp.x, bp.y, idx++)
         })
     } else {
-        console.log('No path found!')
+        console.print('X')
     }
 }
 

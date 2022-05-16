@@ -497,7 +497,7 @@ function distributeConnections(obj) {
             }
             if (pos[0] === 'L') {
                 angle = (angle + 180) % 360
-                left.push({order: angle, bp: bp, r: r})
+                left.push({order: -angle, bp: bp, r: r})
             }
             if (pos[0] === 'T') {
                 top.push({order: -angle, bp: bp, r: r})

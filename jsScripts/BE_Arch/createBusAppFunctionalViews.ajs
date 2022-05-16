@@ -21,8 +21,8 @@ function createBusAppFunctionalView() {
     let tag
     let baNode = null;
     // let appPath = 'C:\\Users\\XY56RE\\ING\\BE Architecture CoE Application Landscape - General\\BE Mainframe Decommissioning\\Application Functional Information\\'
-    let appPath = './mfAppFiles/Application Functional Information/'
-    let appTrailer = ' - BE Mainframe Application Functional Information.xlsx'
+    let XLpath = './mfAppFiles/Application Functional Information/'
+    let XLtrailer = ' - BE Mainframe Application Functional Information.xlsx'
     let bo = null;
     let boRel = null;
     let ba = null;
@@ -69,7 +69,6 @@ function createBusAppFunctionalView() {
     load(__SCRIPTS_DIR__ + 'lib/relLib.ajs');
     // javascript library for Excel workbook parsing
     load(__SCRIPTS_DIR__ + 'libJs/sheetjs.js')
-    log('*** createBusAppFunctionalView')
 
     // get file path from batch arguments
     let filePath = ''
@@ -77,11 +76,10 @@ function createBusAppFunctionalView() {
     for (let i = 0; i < argList.length; i++) {
         if (argList[i] === '-tag') {
             tag = argList[i + 1]
-            filePath = appPath + tag + appTrailer
+            filePath = XLpath + tag + XLtrailer
         } else if (argList[i] === '-f') {
             filePath = argList[i + 1]
-            // tag = filePath.substr(0, 3)
-            tag = filePath.match(/(.*)\s+-\s+.*/)[1]
+            tag = filePath.match(/([^/]*)\s+-\s+.*/)[1]
         }
     }
 
@@ -92,8 +90,9 @@ function createBusAppFunctionalView() {
         debug = true
         deb('*** TEST ***')
         tag = 'TEST'
-        appPath = __DIR__+'../../test/'
-        filePath = appPath + tag + appTrailer
+        XLpath = __DIR__+'../../test/'
+        filePath = XLpath + tag + XLtrailer
+        tag = 'EBK'
     }
 
     debug = false
@@ -289,7 +288,7 @@ function createBusAppFunctionalView() {
                     x += 150
                 }
             } else {
-                log('ERROR: Empty Application Function field at row ' + String(XL_row_object.indexOf(row) + 1))
+                log('Error: Empty Application Function field at row ' + String(XL_row_object.indexOf(row) + 1))
             }
         })
         // Add the Primary Business Capability to the Business Application if no Business Service was defined

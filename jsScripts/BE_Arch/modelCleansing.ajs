@@ -1,8 +1,7 @@
 
-load(__DIR__ + 'BE_Arch/elemRelDeleteUnused.ajs')
+load(__DIR__ +'elemRelDeleteUnused.ajs')
 load(__SCRIPTS_DIR__ + 'lib/lib.ajs')
 let done = false
-log('Cleansing the model - removing unused elements & relationships')
 function clean() {
 
     if (done)
@@ -45,7 +44,6 @@ function clean() {
 
     })
     done = true
-    log('Cleaning done')
 }
 
 clean()

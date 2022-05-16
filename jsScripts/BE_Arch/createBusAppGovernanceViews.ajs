@@ -17,15 +17,13 @@ function createBusAppGovernanceViews() {
     }
 
     if (!appName)
-        appName = 'KIC'
+        appName = 'EBK'
 
     let app = $("." + appName).first()
     if (!app || app.type !== 'application-collaboration') {
         log('Error: ' + appName + ' is not an existing IT Solution in the model')
         return
     }
-// $("application-collaboration").forEach(appName => {
-    log('*** createBusAppGovernanceViews')
 
     let appRels = $(app).inRels('association-relationship')
     if (appRels.length > 0) {
@@ -70,7 +68,6 @@ function createBusAppGovernanceViews() {
             }
         })
     }
-    console.log('Done')
 }
 
 createBusAppGovernanceViews()

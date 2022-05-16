@@ -12,7 +12,6 @@ function createBusAppInterfaceView() {
     load(__SCRIPTS_DIR__ + 'lib/relLib.ajs');
     // javascript library for Excel workbook parsing
     load(__SCRIPTS_DIR__ + 'libJs/sheetjs.js')
-    log('*** createBusAppInterfaceView')
 
     // Variables initialization
     // Objects <name>, <element>, <relation>, <node>, <connection>
@@ -20,7 +19,7 @@ function createBusAppInterfaceView() {
     let XLpath = './mfAppFiles/Application Functional Information/'
     let XLtrailer = ' - BE Mainframe Application Functional Information.xlsx'
     let bo2bfFile = './bo2bf.json'
-    let bo2bf={}       // bo to bf map
+    let bo2bf = {}       // bo to bf map
     let view                                        // the Application Interaction view
     let baName, ba, baNode           // business application (IT Solution)
 
@@ -41,8 +40,7 @@ function createBusAppInterfaceView() {
             filePath = XLpath + tag + XLtrailer
         } else if (argList[i] === '-f') {
             filePath = argList[i + 1]
-            // tag = filePath.substr(0, 3)
-            tag = filePath.match(/(.*)\s+-\s+.*/)[1]
+            tag = filePath.match(/([^/]*)\s+-\s+.*/)[1]
         }
     }
 
@@ -53,20 +51,22 @@ function createBusAppInterfaceView() {
         tag = 'TEST'
         XLpath = __DIR__ + '/../../test/'
         filePath = XLpath + tag + XLtrailer
-        tag = "KIC"
+        tag = "EBK"
         bo2bfFile = __DIR__ + '../../bo2bf.json'
     }
 
     if (!!tag)
         model.name = tag
+    /*
 
-    // read Business Object to Business Function mapping table
-    try {
-        bo2bf = JSON.parse(readFile(bo2bfFile))
-    } catch (e) {
-        bo2bf = {}
-    }
-    deb('***', bo2bf)
+        // read Business Object to Business Function mapping table
+        try {
+            bo2bf = JSON.parse(readFile(bo2bfFile))
+        } catch (e) {
+            bo2bf = {}
+        }
+        deb('***', bo2bf)
+    */
 
     // IN XL file
 
@@ -98,7 +98,8 @@ function createBusAppInterfaceView() {
 
     let afW = 150
     let afH = 80
-    let afX = 40, afY = 40, afIncX = afW + 20, afIncY = afH + 20
+    let afGap = 20
+    let afX = 40, afY = 40, afIncX = afW + afGap, afIncY = afH + afGap
 
     // create the Business App Group
     // get the Business Application from the tag name
@@ -123,15 +124,34 @@ function createBusAppInterfaceView() {
         baNode = view.add(ba, baX, baY, baW, 100 * (afRels.length + 1))
 
         // get now all Application Functions and place them inside the Bus App concept
-        afRels.forEach(rel => {
-            baNode.add(rel.target, afX, afY, afW, afH);
-            afX += afIncX
-            afY += afIncY
-        })
+        // two ways: if less than 6 App Fct, display in diagonal
+        // else arrange in a cell view
+        let nAf = afRels.length
+        let nCol = parseInt(Math.sqrt(nAf))
+        if (nAf < 6) {
+            nCol = 5
+            afRels.forEach(rel => {
+                baNode.add(rel.target, afX, afY, afW, afH);
+                afX += afIncX
+                afY += afIncY
+            })
+        } else {
+            afGap = 40
+            afIncX = afW + afGap
+            afIncY = afH + afGap
+            afRels.forEach(rel => {
+                baNode.add(rel.target, afX, afY, afW, afH)
+                afX += afIncX
+                if (afX > afIncX * nCol) {
+                    afX = 40
+                    afY += afIncY
+                }
+            })
+        }
 
         // adjust baNode size
 
-        baNode.bounds = {width: afX + 40, height: afY + 20}
+        baNode.bounds = {width: nCol * afIncX + 40, height: afY + afIncY + 20}
 
     } else {
         log('Error: unknown Business Application ' + tag)
@@ -213,21 +233,22 @@ function createBusAppInterfaceView() {
                 let boName = row['Business Object']
 
                 let nBa2 = bas.length
+                /*
+                                // Try to derive  the LAA block from the business object
+                                // if one and only one is found, it overrides the provided value
+                                let bfName = ''
+                                deb('--> ', boName, bo2bf[boName])
+                                if (!!bo2bf[boName]) {
+                                    bfName = bo2bf[boName]
+                                    deb('----> ', bfName)
+                                    let bf = getOrCreateElement('business-function', bfName)
+                                    if (!!bf) {
+                                        group = bf
+                                        groupName = bf.name
+                                    }
+                                }
 
-                // Try to derive  the LAA block from the business object
-                // if one and only one is found, it overrides the provided value
-                let bfName = ''
-                deb('--> ', boName, bo2bf[boName])
-                if (!!bo2bf[boName]) {
-                    bfName = bo2bf[boName]
-                    deb('----> ', bfName)
-                    let bf = getOrCreateElement('business-function', bfName)
-                    if (!!bf) {
-                        group = bf
-                        groupName = bf.name
-                    }
-                }
-
+                 */
                 if (!!groupName && groupName !== '') {
                     // create the group object
                     // if it is a valid LAA object, we create a business function
@@ -342,26 +363,30 @@ function createBusAppInterfaceView() {
                     if (dir.includes('IN')) {
                         let baRel = getOrCreateRelationship("serving-relationship", '', ba2, ba, true)
                         if (!af) {
+                            let baConn
                             if (!!group) {
                                 baRel = getOrCreateRelationship("flow-relationship", boName, group, ba, true)
-                                let baConn = checkRelInView(baRel, groupNode, baNode, true, view, boName)
+                                baConn = checkRelInView(baRel, groupNode, baNode, true, view, boName)
                             } else {
                                 baRel = getOrCreateRelationship("flow-relationship", boName, ba2, ba, true)
-                                let baConn = checkRelInView(baRel, ba2Node, baNode, true, view, boName)
+                                baConn = checkRelInView(baRel, ba2Node, baNode, true, view, boName)
                             }
+                            baConn.textPosition = (textPos < 4) ? textPos : (textPos === 3) ? 2 : 0
                         }
 
                     }
                     if (dir.includes('OUT')) {
+                        let baConn
                         let baRel = getOrCreateRelationship("serving-relationship", '', ba, ba2, true)
                         if (!af) {
                             if (!!group) {
                                 baRel = getOrCreateRelationship("flow-relationship", boName, ba, group, true)
-                                let baConn = checkRelInView(baRel, baNode, groupNode, true, view, boName)
+                                baConn = checkRelInView(baRel, baNode, groupNode, true, view, boName)
                             } else {
                                 baRel = getOrCreateRelationship("flow-relationship", boName, ba, ba2, true)
-                                let baConn = checkRelInView(baRel, baNode, ba2Node, true, view, boName)
+                                baConn = checkRelInView(baRel, baNode, ba2Node, true, view, boName)
                             }
+                            baConn.textPosition = (textPos < 4) ? textPos : (textPos === 3) ? 0 : 2
                         }
                     }
 
