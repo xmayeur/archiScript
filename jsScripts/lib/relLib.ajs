@@ -230,8 +230,8 @@ function getObjXY(obj) {
  * @returns {boolean} - true if inside
  */
 function isInsideObj(obj, x, y) {
-    let b = getObjXY(obj)
-    return (x > b.x-b.width/2 && x < b.x + b.width/2 && y > b.y-b.height/2 && y < b.y + b.height/2)
+    let b = ('x' in obj) ? obj : getObjXY(obj)
+    return (x > b.x - b.width / 2 && x < b.x + b.width / 2 && y > b.y - b.height / 2 && y < b.y + b.height / 2)
 }
 
 /**
@@ -354,10 +354,10 @@ function getObjPos(obj1, obj2) {
     if (b2.x - b2.width / 2 > b1.x + b1.width / 2 && b2.x + b2.width / 2 > b1.x + b1.width / 2)
         dist.gapX = b2.x - b2.width / 2 - b1.x - b1.width / 2
     else if (b2.x - b2.width / 2 < b1.x - b1.width / 2 && b2.x + b2.width / 2 < b1.x - b1.width / 2)
-        dist.gapX = b2.x + b2.width/2 - b1.x + b1.width / 2
+        dist.gapX = b2.x + b2.width / 2 - b1.x + b1.width / 2
 
     if (b2.y - b2.height / 2 > b1.y + b1.height / 2 && b2.y + b2.height / 2 > b1.y + b1.height / 2)
-        dist.gapY = b2.y - b2.height/2 - b1.y - b1.height / 2
+        dist.gapY = b2.y - b2.height / 2 - b1.y - b1.height / 2
     else if (b2.y - b2.height / 2 < b1.y - b1.height / 2 && b2.y + b2.height / 2 < b1.y - b1.height / 2)
         dist.gapY = b2.y + b2.height / 2 - b1.y + b1.height / 2
 
@@ -396,7 +396,7 @@ function getPointPos(obj1, XY) {
         angle += 360
     angle = (360 - angle) % 360
 
-    if (!isBetween(XY.y, b.y-b.height/2, b.y + b.height/2) && !isBetween(XY.x, b.x-b.width/2, b.x + b.width/2)) {
+    if (!isBetween(XY.y, b.y - b.height / 2, b.y + b.height / 2) && !isBetween(XY.x, b.x - b.width / 2, b.x + b.width / 2)) {
         if (angle >= 135 && angle < 225) {
             pos = 'R'
         } else if (angle >= 225 && angle < 315) {
@@ -408,13 +408,13 @@ function getPointPos(obj1, XY) {
         }
     }
 
-    if ((angle > 270 || angle < 90) && isBetween(XY.y, b.y-b.height/2, b.y + b.height/2))
+    if ((angle > 270 || angle < 90) && isBetween(XY.y, b.y - b.height / 2, b.y + b.height / 2))
         pos = 'L!'
-    else if (angle > 180 && isBetween(XY.x, b.x-b.width/2, b.x + b.width/2))
+    else if (angle > 180 && isBetween(XY.x, b.x - b.width / 2, b.x + b.width / 2))
         pos = 'B!'
-    else if (angle < 180 && isBetween(XY.x, b.x-b.width/2, b.x + b.width/2))
+    else if (angle < 180 && isBetween(XY.x, b.x - b.width / 2, b.x + b.width / 2))
         pos = 'T!'
-    else if (isBetween(XY.y, b.y-b.height/2, b.y + b.height/2))
+    else if (isBetween(XY.y, b.y - b.height / 2, b.y + b.height / 2))
         pos = 'R!'
     return [pos, angle]
 }
@@ -519,7 +519,7 @@ function distributeConnections(obj) {
     left.sort(dynamicSort('order')).forEach(r => {
         r.bp.y = bo1.y - bo1.height * (0.5 - (i++ / (left.length + 1)))
         // r.bp.x = r.bp.x + 5*i * ((r.order > 180)? 1:-1)
-        setAbsoluteBendpoint(r.r,r.bp.x, r.bp.y, r.bp.idx)
+        setAbsoluteBendpoint(r.r, r.bp.x, r.bp.y, r.bp.idx)
     })
     i = 1
     top.sort(dynamicSort('order')).forEach(r => {
@@ -553,6 +553,122 @@ function dynamicSort(property) {
         let result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
         return result * sortOrder;
     }
+}
+
+
+function newOrtho(o) {
+
+    let source = o.source;
+    let target = o.target;
+    sb = getObjXY(source)
+    tb = getObjXY(target)
+    const [pos, angle, dist] = getObjPos(source, target)
+
+    function addFirstAbsBendpoint(r, bo1, bo2, p, dist) {
+        let bps = getAbsoluteBendpoints(r)
+        if (bps.length === 0) {
+            let _x, _y
+            if (p === 'L!') {
+                _x = bo1.x - bo1.width / 2 + dist.gapX / 2
+                _y = bo1.y
+            } else if (p === 'R!') {
+                _x = bo1.x + bo1.width / 2 + dist.gapX / 2
+                _y = bo1.y
+            } else if (p === 'B!') {
+                _y = bo1.y + bo1.height / 2 + dist.gapY / 2
+                _x = bo1.x
+            } else if (p === 'T!') {
+                _y = bo2.y + bo2.height / 2 - dist.gapY / 2
+                _x = bo1.x
+            } else {
+                _x = (bo2.x + bo1.x) / 2
+                _y = (bo2.y + bo1.y) / 2
+            }
+            addAbsoluteBendpoint(r, _x, _y)
+            return getAbsoluteBendpoints(r)
+        } else return bps
+    }
+
+    let bps = addFirstAbsBendpoint(o, sb, tb, pos, dist)
+    // force the first bendpoint position to overcome some flaw after the source have been moved
+    let bp0 = bps[0];
+    let [bp0Pos, bp0Angle] = getPointPos(sb, bp0.x, bp0.y)
+    p = bp0Pos[0]
+
+    if (p === 'L' || p === 'R') {
+        bp0 = {x: bp0.x, y: sb.y}
+        dir = 0
+    } else if (p === 'B' || p === 'T') {
+        bp0 = {x: sb.x, y: bp0.y}
+        dir = 1
+    }
+    setAbsoluteBendpoint(o, bp0.x, bp0.y, 0)
+    bps = getAbsoluteBendpoints(o)
+
+
+    b = {x: 0, y: 0};
+    let prev = bp0;
+    idx = 0;
+
+    bps.forEach(function (bp) {
+
+        if (idx === 0) {
+            if (isInsideObj(sb, bp.x, bp.y)) {
+                let [p] = getPointPos(sb, bp)
+                p = p[0]
+                deb(p)
+                if (dir === 0 && p === 'R')
+                    b.x = sb.x + sb.width / 2 + 20
+                else if (dir === 0 && p === 'L')
+                    b.x = sb.x - sb.width / 2 - 20
+                else if (dir === 1 && p === 'T')
+                    b.y = sb.y - sb.height / 2 - 20
+                else
+                    b.y = sb.y + sb.height / 2 + 20
+            } else {
+                b = bp;
+            }
+        }
+        if (idx !== bps.length - 1) {
+            // all bendpoints which are the not first and the last ones
+            if (idx !== 0) {
+                b.x = bp.x * (1 - dir) + prev.x * dir;
+                b.y = prev.y * (1 - dir) + bp.y * dir;
+            }
+        } else {
+            let [p] = getPointPos(tb, bp)
+            if (p[0] === 'L' || p[0] === 'R') {
+                b.x = prev.x
+                b.y = tb.y
+            } else {
+                b.y = prev.y
+                b.x = tb.x
+            }
+            if (isInsideObj(tb, bp.x, bp.y)) {
+                p = p[0]
+                deb(p)
+                if (dir === 0 && p === 'R')
+                    b.x = tb.x + tb.width / 2 + 20
+                else if (dir === 0 && p === 'L')
+                    b.x = tb.x - tb.width / 2 - 20
+                else if (dir === 1 && p === 'T')
+                    b.y = tb.y - tb.height / 2 - 20
+                else
+                    b.y = tb.y + tb.height / 2 + 20
+            }
+        }
+
+        try {
+            setAbsoluteBendpoint(o, b.x, b.y, idx)
+        } catch (e) {
+            console.log(b, idx, e)
+        }
+
+        dir = (++dir) % 2;
+        prev = b;
+        idx++;
+    });
+
 }
 
 // ----------------STILL USING RELATIVE COORDINATE METHODS ---------------------------------
