@@ -89,13 +89,11 @@ function createBusAppFunctionalView() {
         console.show()
         debug = true
         deb('*** TEST ***')
-        tag = 'TEST'
+        tag = 'KIC'
         XLpath = __DIR__+'../../test/'
         filePath = XLpath + tag + XLtrailer
-        tag = 'EBK'
     }
 
-    debug = false
     deb(tag)
 
     if (!!tag)
@@ -260,10 +258,12 @@ function createBusAppFunctionalView() {
                         if (!!bs) {
                             bsRel = getOrCreateRelationship("realization-relationship", "", laa, bs, true)
                             bsConn = checkRelInView(bsRel, laaNode, bsNode, true, view)
+
                         }
                     }
-                    // Also connect the Application to the Business Service, but do not create the visual connection in the view
-                    if(!!af && !!bs) {
+                    // Also connect the Application to the Business Service,
+                    // but do not create the visual connection in the view if the LAA block exists
+                    if (!!af && !!bs) {
                         bsRel = getOrCreateRelationship("realization-relationship", '', af, bs, true)
                         if (!laa)
                             bsConn = checkRelInView(bsRel, afNode, bsNode, true, view)
@@ -277,6 +277,7 @@ function createBusAppFunctionalView() {
                         // bc = getOrCreateElement('capability', bcName, false, folders['bcmFolder']['folder'])
                         if (!!bc) {
                             bcRel = getOrCreateRelationship('realization-relationship', '', bs, bc, true)
+                            getOrCreateRelationship('realization-relationship', '', af, bc, true)
                             bcNode = checkNodeInView(view, bc)
                             bcNode = (!!bcNode) ? bcNode : embedParentsHierarchy(view, bc, 2 * x, 0)
                             bcConn = checkRelInView(bcRel, bsNode, bcNode, true, view)

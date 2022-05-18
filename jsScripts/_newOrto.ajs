@@ -8,6 +8,6 @@ console.show();
 load(__SCRIPTS_DIR__+'lib/relLib.ajs')
 load(__SCRIPTS_DIR__+'lib/lib.ajs')
 debug = true
-const setOrtho = doEachRel(newOrtho)
-setOrtho(selection)
+doEachRel(newOrtho)(selection)
+
 

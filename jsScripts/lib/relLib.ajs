@@ -391,10 +391,13 @@ function getPointPos(obj1, XY) {
     let pos = '*'
 
     let angle = Math.atan2(dy, dx) * 180 / Math.PI
+    if (isNaN(angle))
+        angle = 0
     // normalize angle wrt obj1
     if (angle < 0)
         angle += 360
     angle = (360 - angle) % 360
+
 
     if (!isBetween(XY.y, b.y - b.height / 2, b.y + b.height / 2) && !isBetween(XY.x, b.x - b.width / 2, b.x + b.width / 2)) {
         if (angle >= 135 && angle < 225) {
@@ -555,7 +558,6 @@ function dynamicSort(property) {
     }
 }
 
-
 function newOrtho(o) {
 
     let source = o.source;
@@ -590,6 +592,7 @@ function newOrtho(o) {
     }
 
     let bps = addFirstAbsBendpoint(o, sb, tb, pos, dist)
+
     // force the first bendpoint position to overcome some flaw after the source have been moved
     let bp0 = bps[0];
     let [bp0Pos, bp0Angle] = getPointPos(sb, bp0.x, bp0.y)
@@ -605,7 +608,7 @@ function newOrtho(o) {
     setAbsoluteBendpoint(o, bp0.x, bp0.y, 0)
     bps = getAbsoluteBendpoints(o)
 
-
+    // deb(bp0Pos, bp0Angle, p, dir)
     b = {x: 0, y: 0};
     let prev = bp0;
     idx = 0;
@@ -613,20 +616,18 @@ function newOrtho(o) {
     bps.forEach(function (bp) {
 
         if (idx === 0) {
+            b = bp
             if (isInsideObj(sb, bp.x, bp.y)) {
                 let [p] = getPointPos(sb, bp)
                 p = p[0]
-                deb(p)
                 if (dir === 0 && p === 'R')
-                    b.x = sb.x + sb.width / 2 + 20
-                else if (dir === 0 && p === 'L')
                     b.x = sb.x - sb.width / 2 - 20
+                else if (dir === 0 && p === 'L')
+                    b.x = sb.x + sb.width / 2 + 20
                 else if (dir === 1 && p === 'T')
                     b.y = sb.y - sb.height / 2 - 20
                 else
                     b.y = sb.y + sb.height / 2 + 20
-            } else {
-                b = bp;
             }
         }
         if (idx !== bps.length - 1) {
@@ -637,6 +638,7 @@ function newOrtho(o) {
             }
         } else {
             let [p] = getPointPos(tb, bp)
+
             if (p[0] === 'L' || p[0] === 'R') {
                 b.x = prev.x
                 b.y = tb.y
@@ -646,18 +648,16 @@ function newOrtho(o) {
             }
             if (isInsideObj(tb, bp.x, bp.y)) {
                 p = p[0]
-                deb(p)
                 if (dir === 0 && p === 'R')
-                    b.x = tb.x + tb.width / 2 + 20
-                else if (dir === 0 && p === 'L')
                     b.x = tb.x - tb.width / 2 - 20
+                else if (dir === 0 && p === 'L')
+                    b.x = tb.x + tb.width / 2 + 20
                 else if (dir === 1 && p === 'T')
                     b.y = tb.y - tb.height / 2 - 20
                 else
                     b.y = tb.y + tb.height / 2 + 20
             }
         }
-
         try {
             setAbsoluteBendpoint(o, b.x, b.y, idx)
         } catch (e) {

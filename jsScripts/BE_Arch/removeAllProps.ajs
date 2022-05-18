@@ -1,12 +1,11 @@
-load (__DIR__+'lib.ajs')
-debug=true
-$('element').forEach(e => {
+load(__SCRIPTS_DIR__ + 'lib/lib.ajs')
 
+$('concept').forEach(e => {
     try {
-        deb(e.name)
         embedProperties(e)
         e.prop().forEach(p => {
-            e.removeProp(p)
+            if (p !== 'Identifier' || e.prop('Identifier') === '')
+                e.removeProp(p)
         })
     } catch (e) {
     }

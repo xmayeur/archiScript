@@ -223,6 +223,8 @@ $('element').each(function(e) {
     }
 })
 
+load(__DIR__+'embedProps.ajs')
+load(__DIR__+'removeAllProps.ajs')
+
 model.name = 'MF App Decom'
 
-console.log('Done.')

@@ -5,8 +5,8 @@ if (model == null || model.id == null)
 function createBusAppGovernanceViews() {
     load(__SCRIPTS_DIR__ + 'lib/lib.ajs')
     load(__SCRIPTS_DIR__ + 'lib/relLib.ajs');
-    let appName = null
 
+    let appName = null
     let argList = $.process.argv
     for (let i = 0; i < argList.length; i++) {
         if (argList[i] === '-tag') {
@@ -17,7 +17,7 @@ function createBusAppGovernanceViews() {
     }
 
     if (!appName)
-        appName = 'EBK'
+        appName = 'KIC'
 
     let app = $("." + appName).first()
     if (!app || app.type !== 'application-collaboration') {

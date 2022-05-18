@@ -48,10 +48,9 @@ function createBusAppInterfaceView() {
         logFile = __DIR__ + '../../test/log.log'
         debug = true
         deb('*** TEST ***')
-        tag = 'TEST'
+        tag = 'KIC'
         XLpath = __DIR__ + '/../../test/'
         filePath = XLpath + tag + XLtrailer
-        tag = "EBK"
         bo2bfFile = __DIR__ + '../../bo2bf.json'
     }
 
@@ -106,7 +105,7 @@ function createBusAppInterfaceView() {
     ba = getOrCreateElement('application-collaboration', tag)
     baName = tag
 
-    if (!!ba) {
+    if (!!ba && XL_row_object.length > 0) {
         // create the folder structure if not existing
         createFolderStructure()
 
@@ -153,8 +152,11 @@ function createBusAppInterfaceView() {
 
         baNode.bounds = {width: nCol * afIncX + 40, height: afY + afIncY + 20}
 
+    } else if (XL_row_object.length > 0) {
+        log('Error: unknown Business Application ' + tag )
+        return
     } else {
-        log('Error: unknown Business Application ' + tag)
+        // no row to process
         return
     }
 
@@ -334,13 +336,14 @@ function createBusAppInterfaceView() {
 
                         let afRel = getOrCreateRelationship("flow-relationship", boName, group, af, true)
                         let afConn = checkRelInView(afRel, groupNode, afNode, true, view, boName)
-
+                        afConn.lineColor = "#00aa00"
                         afConn.textPosition = (textPos < 4) ? textPos : (textPos === 3) ? 2 : 0
                     }
                     if (dir.includes('OUT') && !!groupNode && !!af) {
                         let afRel = getOrCreateRelationship("flow-relationship", boName, af, group, true)
                         let afConn = checkRelInView(afRel, afNode, groupNode, true, view, boName)
                         afConn.textPosition = (textPos < 4) ? textPos : (textPos === 3) ? 0 : 2
+                        afConn.lineColor = "#0000ff"
                     }
 
                     // 2- flow relationships only between the application function & the bus app inside the group block
@@ -349,6 +352,7 @@ function createBusAppInterfaceView() {
                         if (!groupNode) {
                             let afConn = checkRelInView(afRel, ba2Node, afNode, true, view, boName)
                             afConn.textPosition = (textPos < 4) ? textPos : (textPos === 3) ? 2 : 0
+                            afConn.lineColor = "#00aa00"
                         }
                     }
                     if (dir.includes('OUT') && !!af && !!ba2) {
@@ -356,6 +360,7 @@ function createBusAppInterfaceView() {
                         if (!groupNode) {
                             let afConn = checkRelInView(afRel, afNode, ba2Node, true, view, boName)
                             afConn.textPosition = (textPos < 4) ? textPos : (textPos === 3) ? 0 : 2
+                            afConn.lineColor = "#0000ff"
                         }
                     }
 
@@ -367,9 +372,11 @@ function createBusAppInterfaceView() {
                             if (!!group) {
                                 baRel = getOrCreateRelationship("flow-relationship", boName, group, ba, true)
                                 baConn = checkRelInView(baRel, groupNode, baNode, true, view, boName)
+                                baConn.lineColor = "#00aa00"
                             } else {
                                 baRel = getOrCreateRelationship("flow-relationship", boName, ba2, ba, true)
                                 baConn = checkRelInView(baRel, ba2Node, baNode, true, view, boName)
+                                baConn.lineColor = "#00aa00"
                             }
                             baConn.textPosition = (textPos < 4) ? textPos : (textPos === 3) ? 2 : 0
                         }
@@ -382,9 +389,11 @@ function createBusAppInterfaceView() {
                             if (!!group) {
                                 baRel = getOrCreateRelationship("flow-relationship", boName, ba, group, true)
                                 baConn = checkRelInView(baRel, baNode, groupNode, true, view, boName)
+                                baConn.lineColor = "#0000ff"
                             } else {
                                 baRel = getOrCreateRelationship("flow-relationship", boName, ba, ba2, true)
                                 baConn = checkRelInView(baRel, baNode, ba2Node, true, view, boName)
+                                baConn.lineColor = "#0000ff"
                             }
                             baConn.textPosition = (textPos < 4) ? textPos : (textPos === 3) ? 0 : 2
                         }
