@@ -566,8 +566,8 @@ function base64encode(byteArray) {
 
 function base64decode(str) {
     let Base64 = Java.type("java.util.Base64");
-    str = Base64.getEncoder().encodeToString(str);
-    return Base64.getDecoder().decode(str).toString()
+    // str = Base64.getEncoder().encodeToString(str);
+    return Base64.getDecoder().decode(str)
 }
 
 function b64Encode(myString) {

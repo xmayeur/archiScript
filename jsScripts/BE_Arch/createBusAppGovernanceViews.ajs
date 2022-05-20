@@ -17,7 +17,7 @@ function createBusAppGovernanceViews() {
     }
 
     if (!appName)
-        appName = 'KIC'
+        appName = 'GAL'
 
     let app = $("." + appName).first()
     if (!app || app.type !== 'application-collaboration') {

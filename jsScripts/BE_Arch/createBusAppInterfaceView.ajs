@@ -48,7 +48,7 @@ function createBusAppInterfaceView() {
         logFile = __DIR__ + '../../test/log.log'
         debug = true
         deb('*** TEST ***')
-        tag = 'KIC'
+        tag = 'GAL'
         XLpath = __DIR__ + '/../../test/'
         filePath = XLpath + tag + XLtrailer
         bo2bfFile = __DIR__ + '../../bo2bf.json'

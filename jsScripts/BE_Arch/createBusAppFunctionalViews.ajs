@@ -89,7 +89,7 @@ function createBusAppFunctionalView() {
         console.show()
         debug = true
         deb('*** TEST ***')
-        tag = 'KIC'
+        tag = 'GAL'
         XLpath = __DIR__+'../../test/'
         filePath = XLpath + tag + XLtrailer
     }

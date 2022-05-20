@@ -1,0 +1,61 @@
+console.clear()
+console.show()
+
+// library loading for creation of views by scripting
+load(__SCRIPTS_DIR__ + 'lib/lib.ajs');
+// library loading for relationship bend points management
+load(__SCRIPTS_DIR__ + 'lib/relLib.ajs');
+// javascript library for CSV parsing
+load(__SCRIPTS_DIR__ + 'libJs/papaparse.min.js')
+
+let filePath = __DIR__ + '../../mfAppFiles/Dependencies/MF BA2BA Dep.csv'
+let modelName = __DIR__ + '../../template.archimate'
+
+let rows = Papa.parse(readFileByte(filePath, 'char'), {
+    header: true,
+    skipEmptyLines: true,
+    delimiter: ';'
+}).data
+
+deb(rows.length)
+
+if (rows.length > 0) {
+
+    // Open the MF Decom consolidated model
+    mfDecom = $.model.load(modelName)
+    mfDecom.setAsCurrent()
+
+    rows.forEach(r => {
+        let key = r['Key']
+        let bas = key.split('-')
+
+
+        let baFrom = getOrCreateElement('application-collaboration', bas[0])
+        let baTo = getOrCreateElement('application-collaboration', bas[1])
+
+        if (!baFrom) {
+            let itp = getOrCreateElement('application-component', bas[0])
+            if (!!itp) {
+                let rel = $(itp).inRels('aggregation-relationship').first()
+                if (!!rel)
+                    baFrom = rel.source
+            }
+        }
+        if (!baTo) {
+            let itp = getOrCreateElement('application-component', bas[1])
+            if (!!itp) {
+                let rel = $(itp).inRels('aggregation-relationship').first()
+                if (!!rel)
+                    baTo = rel.source
+            }
+
+        }
+
+        if (!!baFrom && !!baTo) {
+            getOrCreateRelationship('serving-relationship', 'Interacts with', baFrom, baTo, true)
+        } else {
+            deb(bas[0], '<< X >>', bas[1])
+        }
+
+    })
+}
