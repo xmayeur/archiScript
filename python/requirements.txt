@@ -4,3 +4,5 @@ requests
 zipfile
 matplotlib
 PIL
+pandas
+neo4j

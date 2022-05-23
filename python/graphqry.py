@@ -4,8 +4,10 @@ This program reads Archimate CSV-export files and load them into a Neo4j databas
 
 """
 
-from os.path import join
 import re
+import sys
+from os.path import join
+
 import pandas as pd
 from neo4j import GraphDatabase
 
@@ -14,7 +16,7 @@ ELEM = r'MF_Decom_elements.csv'
 PROP = r'MF_Decom_properties.csv'
 REL = r'MF_Decom_relations.csv'
 DB_USR = 'neo4j'
-DB_PWD = 'mfdecom' # 'test' #
+DB_PWD = 'mfdecom'  # 'test' #
 URL = r'bolt://localhost:7687'  # 7687' # 11001'
 
 i = 1
@@ -42,7 +44,7 @@ class Graphdb(object):
         else:
             cmd = "MATCH (n) DETACH DELETE n;"
 
-        with self._driver.session(database = self.database) as session:
+        with self._driver.session(database=self.database) as session:
             result = session.write_transaction(self.run, cmd)
         return result
 
@@ -72,7 +74,9 @@ class Graphdb(object):
 
         # print('\n', cmd)
         i += 1
-        with self._driver.session(database = self.database) as session:
+        if i % 10 == 0:
+            print(f"Nodes:  {i}", end='\r', flush=True)
+        with self._driver.session(database=self.database) as session:
             result = session.write_transaction(self.run, cmd)
         return result
 
@@ -106,13 +110,15 @@ class Graphdb(object):
                       '''
         # print('\n', cmd)
         i += 1
-        with self._driver.session(database = self.database) as session:
+        if i % 10 == 0:
+            print(f"Edges:  {i}", end='\r', flush=True)
+        with self._driver.session(database=self.database) as session:
             result = session.write_transaction(self.run, cmd)
         return result
 
 
 def query(self, cmd):
-    with self._driver.session(database = self.database) as session:
+    with self._driver.session(database=self.database) as session:
         result = session.write_transaction(self.run, cmd)
     return result
 
@@ -170,10 +176,10 @@ def main():
     rels = pd.read_csv(join(DIR, REL), delimiter=';', quotechar='"', engine='python', encoding='Latin1').fillna('')
 
     print('Creating nodes in the database')
-    i=1
+    i = 1
     elems.apply(lambda row: add_node(row, props), axis=1)
     print(i)
-    i=1
+    i = 1
     print('Creating edges in the database')
     rels.apply(lambda row: add_edge(row, props), axis=1)
     print(i)
