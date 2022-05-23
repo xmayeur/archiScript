@@ -1,0 +1,30 @@
+// Simulate node.js require fonctionality
+// create a 'node_modeles' directory and use 'npm' from a terminal in the jArchi script parent directory
+// Experimental!
+function initRequire() {
+    if (typeof require === 'undefined') {
+        load(__DIR__ + "libJs/jvm-npm.js");
+        require.addPath(__SCRIPTS_DIR__);
+        require.addPath(__SCRIPTS_DIR__ + '/node_modules');
+        require.addPath(__DIR__ + '/node_modules');
+    }
+}
+
+/**
+ *  Antother experimental function to use node.js require function
+ */
+function initGraalJS() {
+    console.log('Init GraalJS')
+    if ($.process.engine !== "com.oracle.truffle.js.scriptengine.GraalJSScriptEngine") {
+        console.log("This script only works with GraalVM script engine.")
+        exit();
+    }
+
+    let System = Java.type("java.lang.System");
+    if (System.getProperties().get("polyglot.js.commonjs-require") !== "true") {
+        System.getProperties().put("polyglot.js.commonjs-require", "true");
+        System.getProperties().put("polyglot.js.commonjs-require-cwd", __SCRIPTS_DIR__);
+        console.log("GraalJS Module loading was previously disabled. Restart your script");
+        exit()
+    }
+}

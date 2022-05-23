@@ -1,5 +1,0 @@
-console.clear()
-
-load (__DIR__+'lib/relLib.ajs')
-const lRelH = doEachElem(distributeConnections)
-lRelH(selection)

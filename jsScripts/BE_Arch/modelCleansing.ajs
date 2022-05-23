@@ -1,0 +1,49 @@
+
+load(__DIR__ +'elemRelDeleteUnused.ajs')
+load(__SCRIPTS_DIR__ + 'lib/lib.ajs')
+let done = false
+function clean() {
+
+    if (done)
+        return
+    // clean un-necessary views
+    const views = ['BCM', 'ESPERANTO', 'LAA', 'All IT Solutions', 'All Teams & Roles']
+    views.forEach(v => {
+        $("." + v).forEach(x => {
+            if (x.type === 'folder')
+                x.delete()
+        })
+    })
+    $('view').forEach(v => {
+        if ($(v).parent().first().name === 'Views')
+            v.delete()
+    })
+
+    /*    // delete empty folders
+
+        $('folder').find('folder').forEach(f => {
+            if ($(f).children().size() === 0) {
+                let pp = $(f).parents()
+                f.delete()
+                pp.forEach(p => {
+                    if ($(p).children().size() === 0)
+                        p.delete()
+                })
+            }
+        })*/
+
+    // delete unused elements
+    deleteUnusedElements()
+
+    // embed properties
+    $('element').forEach(o => {
+        embedProperties(o)
+        o.prop().forEach(p => {
+            o.removeProp(p)
+        })
+
+    })
+    done = true
+}
+
+clean()

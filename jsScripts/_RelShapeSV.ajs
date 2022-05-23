@@ -1,0 +1,14 @@
+/*
+ * New Archi Script
+ *
+ * Requires jArchi - https://www.archimatetool.com/blog/2018/07/02/jarchi/
+ *
+ * This script takes a selection of visual objects as input, filter it to keep only relationships
+ * and create S-shape ortho connector
+ */
+
+// console.show()
+console.clear()
+load(__SCRIPTS_DIR__ + 'lib/relLib.ajs')
+let srelV = doEachRel(sRel)
+srelV(selection, 1, 0.5, 0.5)

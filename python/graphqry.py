@@ -136,7 +136,7 @@ def add_node(row, props):
     pp = props.loc[props.ID == row['ID']].dropna()
     attributes = {}
     for x, y in zip(pp['Key'], pp['Value']):
-        attributes[x] = y
+        attributes[x] = y.replace('"', '\\"')
 
     # create or update a graph DB node
     db.node(elem, attributes)

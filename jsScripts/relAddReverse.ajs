@@ -1,0 +1,26 @@
+﻿/*
+ * New Archi Script
+ *
+ * Requires jArchi - https://www.archimatetool.com/blog/2018/07/02/jarchi/
+ *
+ * This script takes a selection of visual objects as input, filter it to keep only relationships
+ * It add a relationship with reversed the source and destination elements
+ */
+
+console.show();
+console.clear();
+relAddReverse(selection)
+
+function relAddReverse(selection) {
+
+    $(selection).filter("relationship").forEach(function(o) {
+
+        let view = o.view;
+        let source = o.source;
+        let target = o.target;
+
+        let revRel = model.createRelationship(o.type, o.name, target.concept, source.concept);
+        let revCon = view.add(revRel, target, source)
+
+    });
+}

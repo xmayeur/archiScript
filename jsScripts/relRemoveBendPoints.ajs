@@ -1,0 +1,7 @@
+load(__DIR__+'lib/relLib.ajs')
+
+function rmBP(c) {
+    c.deleteAllBendpoints()
+}
+
+doEachRel(rmBP)()

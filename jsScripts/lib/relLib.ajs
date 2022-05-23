@@ -1,9 +1,36 @@
 /**
+ *
+ * jArchi Library to manage Archi visual relationships in views
+ *
+ * Author: Xavier Mayeur
+ * Version: 1.1
+ * Date: May 2022
+ *
+ *
+ * Remarks: the code has been written to work with GraalVM, not Nashorn framework.
+ * Please update Archi scripting preferences accordingly.
+ */
+
+if (typeof relLlibLoaded === 'undefined') {
+    engine = ($.process.engine === 'com.oracle.truffle.js.scriptengine.GraalJSScriptEngine') ? 'GraalVM' : 'Nashorn'
+    if (engine === 'Nashorn') {
+        console.log('ERROR: this library only works with the GraalVM JavaScript Engine\nPlease modify Archi scription settings')
+        exit()
+    }
+    relLibLoaded = true
+}
+
+/**
  * decorator function to apply a element-based function to each element of a selection
  *
  * example:   const myFct = doEachElem(fct);
- *            myFct(args);
+ *            myFct(selection, other_args);
  *
+ *            or
+ *
+ *            doEachElem(fct)(selection, other_args)
+ *
+ *            where 'selection' is any Archi selection of objects, replacing the first argument of the passed function 'fct'*
  * @param {(function(): void)} fct - a jArchi function handling element
  * @returns {(function(): void)|*}
  */
@@ -37,6 +64,9 @@ function doEachElem(fct) {
 
 /**
  * decorator function to apply a relationship-based function to each connection of a selection
+ *
+ * Example:
+ *              doEachRel(fct)(selection, other_args)
  *
  * @param {(function(): void)} fct - a jArchi function handling visual connection
  * @returns {(function(): void)|*}
@@ -88,7 +118,7 @@ function doEachRel(fct) {
 }
 
 /**
- * Convert add a bendpoint to a visual connection using absolute coordinates
+ * Add a bendpoint to a visual connection using absolute coordinates
  * @param conn - visual connection object
  * @param x - X-coordinate
  * @param y - y coordinate
@@ -109,7 +139,7 @@ function addAbsoluteBendpoint(conn, x, y) {
 }
 
 /**
- * Convert set a bendpoint at index idx to a visual connection using absolute coordinates
+ * Set a bendpoint at index idx to a visual connection using absolute coordinates
  *
  * @param conn - visual connection object
  * @param x - X-coordinate
@@ -200,9 +230,8 @@ function getObjXY(obj) {
  * @returns {boolean} - true if inside
  */
 function isInsideObj(obj, x, y) {
-    // TODO add embedding objets X/Y
-    let b = getObjXY(obj)
-    return (x > b.x && x < b.x + b.width && y > b.y && y < b.y + b.height)
+    let b = ('x' in obj) ? obj : getObjXY(obj)
+    return (x > b.x - b.width / 2 && x < b.x + b.width / 2 && y > b.y - b.height / 2 && y < b.y + b.height / 2)
 }
 
 /**
@@ -230,13 +259,10 @@ function lRel(conn, dir = 0, weightX = 0.5, weightY = 0.5) {
     conn.deleteAllBendpoints()
     let sXY = getObjXY(conn.source)
     let tXY = getObjXY(conn.target)
-    let dx = tXY.x - sXY.x
-    let dy = tXY.y - sXY.y
+
     let pos, a
     [pos, a] = getObjPos(sXY, tXY)
-    if (pos.includes('!')) {
-        return
-    }
+
     if (dir === 0 && !isInsideObj(conn.source, tXY.x, sXY.y) && !isInsideObj(conn.target, tXY.x, sXY.y))
         addAbsoluteBendpoint(conn,
             tXY.x + conn.target.bounds.width * (0.5 - weightX),
@@ -253,36 +279,30 @@ function lRel(conn, dir = 0, weightX = 0.5, weightY = 0.5) {
  * @param conn      - visual connection
  * @param dir       - direction of the s-shape : 0 starts the connection horizontally, 1 starts vertically
  * @param weightX   - 0->1 weight to move the connection bendpoints X-coordinate along the adjacent edges of the connected objects
- * @param weightY   - 0->1 weight to move the connection bendpoints Y-coordinate along the adjacent edges of the connected objects
+ * @param weightY   - 0->1 weight to move the connection bendpoints Y-coordinate along the adjacent edges of the source objects
+ * @param weight2   - 0->1 weight to move the connection bendpoints X-or Y-coordinate along the adjacent edges of the target objects
  */
-function sRel(conn, dir = 0, weightX = 0.5, weightY = 0.5) {
+function sRel(conn, dir = 0, weightX = 0.5, weightY = 0.5, weight2 = 0.5) {
 
     conn.deleteAllBendpoints()
     let sXY = getObjXY(conn.source)
     let tXY = getObjXY(conn.target)
     let pos, a
     [pos, a] = getObjPos(sXY, tXY)
-    if (dir === 1 && (pos === "L!" || pos === "R!")) {
-        return
-    }
-
-    if (dir === 0 && (pos === "T!" || pos === "B!")) {
-        return
-    }
 
     let dx = tXY.x - sXY.x
     let dy = tXY.y - sXY.y
     let bp1X, bp1Y, bp2X, bp2Y
 
     if (dir === 0) {
-        bp1X = sXY.x + dx / 2 - conn.source.bounds.width * (0.5 - weightX) / 2
+        bp1X = sXY.x + dx * weightX
         bp1Y = sXY.y - conn.source.bounds.height * (0.5 - weightY)
         bp2X = bp1X
-        bp2Y = tXY.y
+        bp2Y = tXY.y - conn.target.bounds.height * (0.5 - weight2)
     } else {
         bp1X = sXY.x - conn.source.bounds.width * (0.5 - weightX)
         bp1Y = sXY.y + dy / 2 - conn.source.bounds.height * (0.5 - weightY) / 2
-        bp2X = tXY.x
+        bp2X = tXY.x - conn.target.bounds.width * (0.5 - weight2)
         bp2Y = bp1Y
     }
 
@@ -313,6 +333,7 @@ function getObjPos(obj1, obj2) {
     let dx = b2.x - b1.x
     let dy = b2.y - b1.y
     let pos
+    let dist = {dx: dx, dy: dy, gapX: 0, gapY: 0}
 
     let angle = Math.atan2(dy, dx) * 180 / Math.PI
     // normalize angle wrt obj1
@@ -320,40 +341,37 @@ function getObjPos(obj1, obj2) {
         angle += 360
     angle = (360 - angle) % 360
 
-    if (!(isBetween(b2.y, b1.y, b1.y + b1.height)
-            || isBetween(b2.y + b2.height, b1.y, b1.y + b1.height))
-        && !(isBetween(b2.x, b1.x, b1.x + b1.width)
-            || isBetween(b2.x + b2.width, b1.x, b1.x + b1.width))
-    ) {
-        if (angle < 45 && angle > 315) {
-            pos = 'R'
-
-        } else if (angle >= 45 && angle < 135) {
-            pos = 'T'
-
-        } else if (angle >= 135 && angle < 225) {
-            pos = 'L'
-
-        } else {
-            pos = 'B'
-
-        }
+    if (angle < 45 || angle > 315) {
+        pos = 'R'
+    } else if (angle >= 45 && angle < 135) {
+        pos = 'T'
+    } else if (angle >= 135 && angle < 225) {
+        pos = 'L'
+    } else {
+        pos = 'B'
     }
 
-    if ((angle > 90 || angle < -135) && (isBetween(b2.y, b1.y, b1.y + b1.height)
-        || isBetween(b2.y + b2.height, b1.y, b1.y + b1.height)))
-        pos = 'L!'
-    else if (angle > 0 && (isBetween(b2.x, b1.x, b1.x + b1.width)
-        || isBetween(b2.x + b2.width, b1.x, b1.x + b1.width)))
-        pos = 'B!'
-    else if (angle < 0 && (isBetween(b2.x, b1.x, b1.x + b1.width)
-        || isBetween(b2.x + b2.width, b1.x, b1.x + b1.width)))
-        pos = 'T!'
-    else if ((isBetween(b2.y, b1.y, b1.y + b1.height)
-        || isBetween(b2.y + b2.height, b1.y, b1.y + b1.height)))
-        pos = 'R!'
+    if (b2.x - b2.width / 2 > b1.x + b1.width / 2 && b2.x + b2.width / 2 > b1.x + b1.width / 2)
+        dist.gapX = b2.x - b2.width / 2 - b1.x - b1.width / 2
+    else if (b2.x - b2.width / 2 < b1.x - b1.width / 2 && b2.x + b2.width / 2 < b1.x - b1.width / 2)
+        dist.gapX = b2.x + b2.width / 2 - b1.x + b1.width / 2
 
-    return [pos, angle]
+    if (b2.y - b2.height / 2 > b1.y + b1.height / 2 && b2.y + b2.height / 2 > b1.y + b1.height / 2)
+        dist.gapY = b2.y - b2.height / 2 - b1.y - b1.height / 2
+    else if (b2.y - b2.height / 2 < b1.y - b1.height / 2 && b2.y + b2.height / 2 < b1.y - b1.height / 2)
+        dist.gapY = b2.y + b2.height / 2 - b1.y + b1.height / 2
+
+
+    if (dist.gapX === 0 && dist.gapY < 0)
+        pos = "T!"
+    else if (dist.gapX === 0 && dist.gapY > 0)
+        pos = "B!"
+    else if (dist.gapX < 0 && dist.gapY === 0)
+        pos = "L!"
+    else if (dist.gapX > 0 && dist.gapY === 0)
+        pos = "R!"
+    // console.log('getObjPos', b1, b2, pos, angle, dist)
+    return [pos, angle, dist]
 }
 
 /**
@@ -370,44 +388,42 @@ function getPointPos(obj1, XY) {
     let b = ('x' in obj1) ? obj1 : getObjXY(obj1)
     let dx = XY.x - b.x
     let dy = XY.y - b.y
-    let pos
+    let pos = '*'
 
     let angle = Math.atan2(dy, dx) * 180 / Math.PI
-
-    if (!isBetween(XY.y, b.y, b.y + b.height) && !isBetween(XY.x, b.x, b.x + b.width)) {
-        if (angle >= -45 && angle < 45) {
-            pos = 'R'
-
-        } else if (angle >= 45 && angle < 135) {
-            pos = 'B'
-
-        } else if (angle >= 135 || angle < -135) {
-            pos = 'L'
-
-        } else {
-            pos = 'T'
-
-        }
-    }
-
-    if ((angle > 90 || angle < -135) && isBetween(XY.y, b.y, b.y + b.height))
-        pos = 'L!'
-    else if (angle > 0 && isBetween(XY.x, b.x, b.x + b.width))
-        pos = 'B!'
-    else if (angle < 0 && isBetween(XY.x, b.x, b.x + b.width))
-        pos = 'T!'
-    else if (isBetween(XY.y, b.y, b.y + b.height))
-        pos = 'R!'
-
+    if (isNaN(angle))
+        angle = 0
+    // normalize angle wrt obj1
     if (angle < 0)
         angle += 360
     angle = (360 - angle) % 360
 
+
+    if (!isBetween(XY.y, b.y - b.height / 2, b.y + b.height / 2) && !isBetween(XY.x, b.x - b.width / 2, b.x + b.width / 2)) {
+        if (angle >= 135 && angle < 225) {
+            pos = 'R'
+        } else if (angle >= 225 && angle < 315) {
+            pos = 'B'
+        } else if (angle >= 315 || angle < 45) {
+            pos = 'L'
+        } else {
+            pos = 'T'
+        }
+    }
+
+    if ((angle > 270 || angle < 90) && isBetween(XY.y, b.y - b.height / 2, b.y + b.height / 2))
+        pos = 'L!'
+    else if (angle > 180 && isBetween(XY.x, b.x - b.width / 2, b.x + b.width / 2))
+        pos = 'B!'
+    else if (angle < 180 && isBetween(XY.x, b.x - b.width / 2, b.x + b.width / 2))
+        pos = 'T!'
+    else if (isBetween(XY.y, b.y - b.height / 2, b.y + b.height / 2))
+        pos = 'R!'
     return [pos, angle]
 }
 
 /**
- * Function to equally distribute multiple connections along each edge of the selected object
+ * Function to equally distribute multiple connections along each edge of the selected object(s)
  *
  * @param obj
  */
@@ -435,52 +451,77 @@ function distributeConnections(obj) {
         }
         bo1 = getObjXY(obj1)
         bo2 = getObjXY(obj2)
-        const [p, a] = getObjPos(obj1, obj2)
+        const [p, a, dist] = getObjPos(obj1, obj2)
         angle = a
 
         bps = getAbsoluteBendpoints(r)
-        if (bps.length === 0) {
-            let _x = (bo2.x + bo1.x) / 2
-            let _y = (bo2.y + bo1.y) / 2
-            addAbsoluteBendpoint(r, _x, _y)
-            bps = getAbsoluteBendpoints(r)
-        }
 
-        if (r.target.id === obj.id) {
-            bp = bps[bps.length - 1]
-            bp.idx = bps.length - 1
-        } else {
-            bp = bps[0]
-            bp.idx = 0
-        }
+        // only manage connections that are relating non-embedded objects
+        if (!isInsideObj(obj1, bo2.x, bo2.y)) {
+            // if a connection does not have any bendpoint, add one in the middle of connection, so we can reposition it
+            if (bps.length === 0) {
+                let _x, _y
+                if (p === 'L!') {
+                    _x = bo1.x - bo1.width / 2 + dist.gapX / 2
+                    _y = bo1.y
+                } else if (p === 'R!') {
+                    _x = bo1.x + bo1.width / 2 + dist.gapX / 2
+                    _y = bo1.y
+                } else if (p === 'B!') {
+                    _y = bo1.y + bo1.height / 2 + dist.gapY / 2
+                    _x = bo1.x
+                } else if (p === 'T!') {
+                    _y = bo2.y + bo2.height / 2 - dist.gapY / 2
+                    _x = bo1.x
+                } else {
+                    _x = (bo2.x + bo1.x) / 2
+                    _y = (bo2.y + bo1.y) / 2
+                }
+                addAbsoluteBendpoint(r, _x, _y)
+                bps = getAbsoluteBendpoints(r)
+                // console.log('mid point', p, a, dist, obj1.name, bo1, obj2.name, bo2, _x, _y)
+            }
 
-        let [pos, a1] = getPointPos(obj1, bp)
+            if (r.target.id === obj.id) {
+                bp = bps[bps.length - 1]
+                bp.idx = bps.length - 1
+            } else {
+                bp = bps[0]
+                bp.idx = 0
+            }
 
-        if (pos[0] === 'R') {
-            angle = (angle + 180) % 360
-            right.push({order: -angle, bp: bp, r: r})
-        } else if (pos[0] === 'L') {
-            // angle = (angle + 180) % 360
-            left.push({order: angle, bp: bp, r: r})
+            let [pos] = getPointPos(bo1, bp)
+            // console.log('BP pos', pos, bp)
+
+
+            if (pos[0] === 'R') {
+                // angle = (angle + 180) % 360
+                right.push({order: angle, bp: bp, r: r})
+            }
+            if (pos[0] === 'L') {
+                angle = (angle + 180) % 360
+                left.push({order: -angle, bp: bp, r: r})
+            }
+            if (pos[0] === 'T') {
+                top.push({order: -angle, bp: bp, r: r})
+            }
+            if (pos[0] === 'B') {
+                // angle = (angle + 180) % 360
+                bottom.push({order: angle, bp: bp, r: r})
+            }
         }
-        if (pos[0] === 'T') {
-            top.push({order: -angle, bp: bp, r: r})
-        }
-        if (pos[0] === 'B') {
-            angle = (angle + 180) % 360
-            bottom.push({order: angle, bp: bp, r: r})
-        }
-        // console.log(obj1.name, '->', obj2.name, '\t', angle)
     })
 
     i = 1
     right.sort(dynamicSort('order')).forEach(r => {
         r.bp.y = bo1.y - bo1.height * (0.5 - (i++ / (right.length + 1)))
+        // r.bp.x = r.bp.x + 5*i * ((r.order > 180)? 1:-1)
         setAbsoluteBendpoint(r.r, r.bp.x, r.bp.y, r.bp.idx)
     })
     i = 1
     left.sort(dynamicSort('order')).forEach(r => {
         r.bp.y = bo1.y - bo1.height * (0.5 - (i++ / (left.length + 1)))
+        // r.bp.x = r.bp.x + 5*i * ((r.order > 180)? 1:-1)
         setAbsoluteBendpoint(r.r, r.bp.x, r.bp.y, r.bp.idx)
     })
     i = 1
@@ -517,8 +558,120 @@ function dynamicSort(property) {
     }
 }
 
+function newOrtho(o) {
 
-// ----------------STILL USING RELATIVE COORDINATE METHODS ---------- TODO : REFACTORING ------------------------
+    let source = o.source;
+    let target = o.target;
+    sb = getObjXY(source)
+    tb = getObjXY(target)
+    const [pos, angle, dist] = getObjPos(source, target)
+
+    function addFirstAbsBendpoint(r, bo1, bo2, p, dist) {
+        let bps = getAbsoluteBendpoints(r)
+        if (bps.length === 0) {
+            let _x, _y
+            if (p === 'L!') {
+                _x = bo1.x - bo1.width / 2 + dist.gapX / 2
+                _y = bo1.y
+            } else if (p === 'R!') {
+                _x = bo1.x + bo1.width / 2 + dist.gapX / 2
+                _y = bo1.y
+            } else if (p === 'B!') {
+                _y = bo1.y + bo1.height / 2 + dist.gapY / 2
+                _x = bo1.x
+            } else if (p === 'T!') {
+                _y = bo2.y + bo2.height / 2 - dist.gapY / 2
+                _x = bo1.x
+            } else {
+                _x = (bo2.x + bo1.x) / 2
+                _y = (bo2.y + bo1.y) / 2
+            }
+            addAbsoluteBendpoint(r, _x, _y)
+            return getAbsoluteBendpoints(r)
+        } else return bps
+    }
+
+    let bps = addFirstAbsBendpoint(o, sb, tb, pos, dist)
+
+    // force the first bendpoint position to overcome some flaw after the source have been moved
+    let bp0 = bps[0];
+    let [bp0Pos, bp0Angle] = getPointPos(sb, bp0.x, bp0.y)
+    p = bp0Pos[0]
+
+    if (p === 'L' || p === 'R') {
+        bp0 = {x: bp0.x, y: sb.y}
+        dir = 0
+    } else if (p === 'B' || p === 'T') {
+        bp0 = {x: sb.x, y: bp0.y}
+        dir = 1
+    }
+    setAbsoluteBendpoint(o, bp0.x, bp0.y, 0)
+    bps = getAbsoluteBendpoints(o)
+
+    // deb(bp0Pos, bp0Angle, p, dir)
+    b = {x: 0, y: 0};
+    let prev = bp0;
+    idx = 0;
+
+    bps.forEach(function (bp) {
+
+        if (idx === 0) {
+            b = bp
+            if (isInsideObj(sb, bp.x, bp.y)) {
+                let [p] = getPointPos(sb, bp)
+                p = p[0]
+                if (dir === 0 && p === 'R')
+                    b.x = sb.x - sb.width / 2 - 20
+                else if (dir === 0 && p === 'L')
+                    b.x = sb.x + sb.width / 2 + 20
+                else if (dir === 1 && p === 'T')
+                    b.y = sb.y - sb.height / 2 - 20
+                else
+                    b.y = sb.y + sb.height / 2 + 20
+            }
+        }
+        if (idx !== bps.length - 1) {
+            // all bendpoints which are the not first and the last ones
+            if (idx !== 0) {
+                b.x = bp.x * (1 - dir) + prev.x * dir;
+                b.y = prev.y * (1 - dir) + bp.y * dir;
+            }
+        } else {
+            let [p] = getPointPos(tb, bp)
+
+            if (p[0] === 'L' || p[0] === 'R') {
+                b.x = prev.x
+                b.y = tb.y
+            } else {
+                b.y = prev.y
+                b.x = tb.x
+            }
+            if (isInsideObj(tb, bp.x, bp.y)) {
+                p = p[0]
+                if (dir === 0 && p === 'R')
+                    b.x = tb.x - tb.width / 2 - 20
+                else if (dir === 0 && p === 'L')
+                    b.x = tb.x + tb.width / 2 + 20
+                else if (dir === 1 && p === 'T')
+                    b.y = tb.y - tb.height / 2 - 20
+                else
+                    b.y = tb.y + tb.height / 2 + 20
+            }
+        }
+        try {
+            setAbsoluteBendpoint(o, b.x, b.y, idx)
+        } catch (e) {
+            console.log(b, idx, e)
+        }
+
+        dir = (++dir) % 2;
+        prev = b;
+        idx++;
+    });
+
+}
+
+// ----------------STILL USING RELATIVE COORDINATE METHODS ---------------------------------
 
 /**
  * Helper function to add a bendpoint for ortho()
@@ -603,12 +756,12 @@ function setXY(bnd, x, y) {
  * @param o
  */
 function ortho(o) {
-    var view = o.view;
-    var rel = o.concept;
-    var source = o.source;
-    var target = o.target;
-    var sb = source.bounds;
-    var tb = target.bounds;
+
+
+    let source = o.source;
+    let target = o.target;
+    let sb = source.bounds;
+    let tb = target.bounds;
 
     $(source).parents().forEach(function (p) {
         try {
@@ -634,10 +787,10 @@ function ortho(o) {
     let dx = tb.cpx - sb.cpx;
     let dy = tb.cpy - sb.cpy;
 
-    var bps = o.getRelativeBendpoints();
+    let bps = o.getRelativeBendpoints();
 
     let b = addFirstBendpoint(sb, tb, dx, dy);
-    bn = Object.keys(b).length;
+    let bn = Object.keys(b).length;
     // there is no bendpoint
     if (bps.length === 0) {
         // source & destination objects are not aligned, so create a bendpoint

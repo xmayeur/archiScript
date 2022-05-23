@@ -1,0 +1,358 @@
+console.clear()
+console.log()
+if (model == null || model.id == null)
+    fatal("You must select a model or some Archimate elements.");
+
+function createBusAppInterfaceView() {
+    // library loading for creation of views by scripting
+    load(__SCRIPTS_DIR__ + 'lib/lib.ajs');
+    // library loading for relationship bend points management
+    load(__SCRIPTS_DIR__ + 'lib/relLib.ajs');
+    // javascript library for Excel workbook parsing
+    load(__SCRIPTS_DIR__ + 'libJs/sheetjs.js')
+    log('*** createBusAppInterfaceView')
+
+    let option_simple = true
+
+    // Variables initialization
+    // Objects <name>, <element>, <relation>, <node>, <connection>
+    let tag, filePath
+    let XLpath = './mfAppFiles/Application Functional Information/'
+    let XLtrailer = ' - BE Mainframe Application Functional Information.xlsx'
+    let view                                        // the Application Interaction view
+    let baName, ba, baRel, baNode, baConn           // business application (IT Solution)
+    let gtwName, gtw, gtwRel, gtwNode, gtwConn      // Gateway platform if any (IT Solution)
+    let ba2Name, ba2, ba2Rel, ba2Node, ba2Conn      // connected business application (IT Solution)
+    let afName, af, afRel, afNode, afConn           // Application Function
+    let af2Name, af2, af2Rel, af2Node, af2Conn      // connected Application Function
+    let acName, ac, acRel, acNode, acConn           // Application Component (IT Product)
+    let ac2Name, ac2, ac2Rel, ac2Node, ac2Conn      // connected Application Component (IT Product)
+    let boName, bo, boRel, boNode, boConn           // Business Object
+    let bo2Rel, bo2Conn                             // Bus Object relation with connected Application Function
+    let aiName, ai, aiRel, aiNode, aiConn           // Application Interface
+    let ba2baRel, af2afRel                          // relationships between connected business application, app function & bus object
+    let ba2baConn, af2afConn
+    let ac2acRel, ac2GtwRel, ac22GtwRel             // relationships between app. components & with gateway
+    let ac2acConn
+    let ac2GtwConn, ac22GtwConn
+    let ac2aiRel, ac2aiTrigRel                      // relationship between app comp and app interface (flow, trigger)
+    let dir                                         // flow direction
+
+    // Coordinates for object's node placement in views
+    let xApp1 = 40, yApp1 = 40
+    let xApp2 = 800, yApp2 = 40
+    let wApp = 450
+    let xAf = 40, yAf = 40, incX = 0, incY = 0
+    let xAf2 = 40, yAf2 = 40, incX2 = 0, incY2 = 0
+    let incBa2 = 0
+
+    // get file path from batch arguments
+    let argList = $.process.argv
+    for (let i = 0; i < argList.length; i++) {
+        if (argList[i] === '-tag') {
+            tag = argList[i + 1]
+            filePath = XLpath + tag + XLtrailer
+        } else if (argList[i] === '-f') {
+            filePath = argList[i + 1]
+            // tag = filePath.substr(0, 3)
+            tag = filePath.match(/(.*)\s+-\s+.*/)[1]
+        } else if (argList[i] === '-s') {
+            option_simple = true
+        }
+    }
+
+    if (!filePath) {
+        logFile = __DIR__ + '../test/log.log'
+        debug = true
+        deb('*** TEST ***')
+        tag = 'TEST'
+        XLpath = __DIR__ + '../test/'
+        filePath = XLpath + tag + XLtrailer
+    }
+
+    if (!!tag)
+        model.name = tag
+
+    // Read XL file
+    let workbook = XLSX.read(base64encode(readFileSync(filePath)), {type: 'base64'});
+    // Dump file second sheet (Interfaces)  content as JSON object
+    let XL_row_object = XLSX.utils.sheet_to_json(workbook.Sheets['Interactions'], {range: "A2:I100"});
+
+    // create the folder structure if not existing
+    createFolderStructure()
+
+    // get the Business Application from the first Application Function relationships
+    afName = stripIllegalChar(XL_row_object[0]['This Application Function'])
+    if (!!afName && afName !== '') {
+        af = getOrCreateElement('application-function', afName, false, folders['otherFolder']['folder'])
+        if (!af) {
+            log('Fatal: Not found - Application Function "' + afName + '" at row 2')
+            return
+        }
+        // get the related Business Application
+        afRel = $(af).inRels('assignment-relationship').first()
+        if (!afRel) {
+            log('Fatal: Application Function "' + afName + '" has not upward Business Application at row ' + String(XL_row_object.indexOf(row) + 2))
+            return
+        }
+        ba = afRel.source
+        baName = ba.name
+
+        // and create the view
+        let viewName = 'INTERACTIONS ' + baName
+        let folder = folders['appInteractFolder']['folder']
+        view = $("." + viewName).first()
+        if (!!view) {
+            view.delete()
+        }
+        view = model.createArchimateView(viewName, folder)
+        // add the Business Applications 'app' as new object in the view
+        baNode = view.add(ba, xApp1, yApp1, wApp, 100 * (XL_row_object.length + 1))
+    } else {
+        log('Fatal: Missing - Application Function at row ' + String(XL_row_object.indexOf(row) + 2))
+        return
+    }
+    // parse each row
+    // we need the following columns:
+    //  This Application Function
+    //  Business Object
+    //  Direction
+    //  Connected Application Function
+    //  Connected IT Solution
+    //  This Application Technical Component (IT Product)
+    //  Interface
+    //  Gateway (IT Product)
+    //  Connected Application Technical Component (IT Product)
+
+    XL_row_object.forEach(row => {
+        nRow = XL_row_object.indexOf(row)
+        // read relevant cells by column name
+        // related Application Function
+        afName = stripIllegalChar(row['This Application Function'])
+        if (!!afName && afName !== '') {
+            console.log('Processing ' + afName)
+            // get the application function object, which is assumed to already exist
+            af = getOrCreateElement('application-function', afName, false, folders['otherFolder']['folder'])
+            if (!af) {
+                log('Fatal: Not found - Application Function "' + afName + '" at row ' + String(XL_row_object.indexOf(row) + 2))
+                return
+            }
+
+            // get the related Business Application
+            afRel = $(af).inRels('assignment-relationship').first()
+            if (!afRel) {
+                log('Fatal: Application Function "' + afName + '" has not upward Business Application at row ' + String(XL_row_object.indexOf(row) + 2))
+                return
+            }
+
+            boName = stripIllegalChar(row['Business Object'])
+            if (!boName || boName === '') {
+                log('Fatal: Missing Business Object field at row ' + String(XL_row_object.indexOf(row) + 2))
+                return
+            }
+
+            bo = getOrCreateElement('business-object', boName, false, folders['otherBoFolder']['folder'])
+            if (!bo) {
+                log('Fatal: Not found - Business Object "' + boName + '" at row ' + String(XL_row_object.indexOf(row) + 2))
+                return
+            }
+
+            boRel = getOrCreateRelationship("access-relationship", "", af, bo)
+            if (!boRel) {
+                log('Fatal: Not found -  Business Object Relationship "' + afName + '" at row ' + String(XL_row_object.indexOf(row) + 2))
+                return
+            }
+
+            // get the connected Business Application - create it if needed
+            ba2Name = stripIllegalChar(row['Connected IT Solution'])
+            ba2 = getOrCreateElement('application-collaboration', ba2Name, true, folders['itsFolder']['folder'])
+
+            // and so for the related Application Function
+            let af2Name = stripIllegalChar(row['Connected Application Function'])
+            af2 = getOrCreateElement('application-function', af2Name, true, folders['otherFolder']['folder'])
+            // and relate them
+            // ba 2 ba dependency
+            ba2baRel = getOrCreateRelationship('flow-relationship', 'Depends on', ba, ba2, true)
+            // ba2 to af2
+            af2Rel = getOrCreateRelationship('assignment-relationship', '', ba2, af2, true)
+            // af 2 af
+            dir = stripIllegalChar(row['Direction']).toUpperCase()
+            if (dir === 'IN')
+                af2afRel = getOrCreateRelationship('flow-relationship', '', af2, af, true)
+            else
+                af2afRel = getOrCreateRelationship('flow-relationship', '', af, af2, true)
+
+            bo2Rel = getOrCreateRelationship("access-relationship", "", af2, bo, true)
+            $(bo2Rel).attr("access-type", "access")
+
+            // create the connected Business Application
+            ba2Node = checkNodeInView(view, ba2)
+
+            if (!ba2Node) {
+                ba2Node = view.add(ba2, xApp2, yApp2 + incBa2, wApp, (option_simple)?60:150)
+                incBa2 += (option_simple)?140:250
+            }
+
+            if (!option_simple) {
+                // add the ba 2 ba depencency connection
+                ba2baConn = checkRelInView(ba2baRel, baNode, ba2Node, true, view)
+                ba2baConn.lineColor = "#6F6F6F"
+                ba2baConn.fontColor = "#6F6F6F"
+            }
+
+            // add the Application Function inside the Bus App
+            afNode = checkNodeInView(view, af)
+            if (!afNode) {
+                afNode = baNode.add(af, xAf, yAf + incY, -1, -1)
+                incY += (option_simple)?140:250
+                // adjust baNode height
+                baNode.bounds = {height: baNode.bounds.height + 120}
+
+            }
+            afConn = checkRelInView(afRel, baNode, afNode, true, view)
+
+            // add the application function flows
+            af2Node = checkNodeInView(view, af2)
+            if (!af2Node) {
+                let nn = []
+                $(ba2).outRels('assignment-relationship').forEach(r => {
+                    nn.push(r.target.name)
+                })
+                incY2 = Math.min(0, ((option_simple)?100:250) * nn.indexOf(af2.name))
+                af2Node = ba2Node.add(af2, xAf2 + 230, yAf2 + incY2, -1, -1)
+
+                // adjust baNode height
+                ba2Node.bounds = {height: ba2Node.bounds.height + 70}
+            }
+
+            if (dir === 'IN') {
+                af2afConn = checkRelInView(af2afRel, af2Node, afNode, true, view)
+            } else {
+                af2afConn = checkRelInView(af2afRel, afNode, af2Node, true, view)
+            }
+
+            let [pos, angle] = getObjPos(af2Node, afNode)
+            if (pos.includes('!')) {
+                let afBounds = getObjXY(afNode)
+                addAbsoluteBendpoint(af2afConn, afBounds.x + 300, afBounds.y - 20)
+            } else {
+                // lRel(af2afConn, (dir === 'OUT')?1:0, (nRow + 1) * 0.025, (nRow + 1) * 0.025, (nRow + 1) * 0.025)
+                if (dir === 'OUT')
+                    lRel(af2afConn, 1, 0.33 )
+                else
+                    lRel(af2afConn, 0, 0.33 )
+            }
+
+
+            // Add the common business object between the 2 app functions
+            boNode = checkNodeInView(view, bo)
+            // check if af2Node already has BO
+            let nBo = $(af2Node).outRels("access-relationship").size()
+            boNode = (!!boNode) ? boNode : view.add(bo,
+                (ba2Node.bounds.x + baNode.bounds.x + baNode.bounds.width - 120) / 2,
+                ba2Node.bounds.y + af2Node.bounds.y + 40 + nBo * 60, -1, -1)
+            boConn = checkRelInView(boRel, afNode, boNode, true, view)
+            bo2Conn = checkRelInView(bo2Rel, af2Node, boNode, true, view)
+            let [pos2, angle2] = getObjPos(afNode, boNode)
+            let [pos3, angle3] = getObjPos(af2Node, boNode)
+            if (!pos2.includes('!')) {
+                sRel(boConn, 0, 0.05+nRow*0.015, 0.3)
+            }
+            if (!pos3.includes('!')) {
+                sRel(bo2Conn, 0, 0.8-nRow*0.015, 0.3)
+            }
+
+            boConn.lineColor = "#00AA00"
+            boConn.fontColor = "#00AA00"
+            bo2Conn.lineColor = "#00AA00"
+            bo2Conn.fontColor = "#00AA00"
+
+            if (!option_simple) {
+                // add now the Application Components
+                acName = stripIllegalChar(row['This Application Technical Component (IT Product)'])
+                if (!acName) {
+                    log('Fatal: Missing Application Technical Component at row ' + String(XL_row_object.indexOf(row) + 2))
+                    return
+                }
+                ac = getOrCreateElement('application-component', acName, true, folders['itpFolder']['folder'])
+
+                ac2Name = stripIllegalChar(row['Connected Application Technical Component (IT Product)'])
+                if (!ac2Name) {
+                    log('Fatal: Missing Connected Application Technical Component at row ' + String(XL_row_object.indexOf(row) + 2))
+                    return
+                }
+                ac2 = getOrCreateElement('application-component', ac2Name, true, folders['itpFolder']['folder'])
+
+                // related them to their Application Function
+                acRel = getOrCreateRelationship('serving-relationship', '', ac, af, true)
+                ac2Rel = getOrCreateRelationship('serving-relationship', '', ac2, af2, true)
+
+                // and insert them in the view
+                acNode = checkNodeInView(view, ac)
+                acNode = (!!acNode) ? acNode : baNode.add(ac,
+                    afNode.bounds.x,
+                    afNode.bounds.y + 120, -1, -1)
+                acConn = checkRelInView(acRel, acNode, afNode, true, view)
+
+                ac2Node = checkNodeInView(view, ac2)
+                ac2Node = (!!ac2Node) ? ac2Node : ba2Node.add(ac2,
+                    af2Node.bounds.x,
+                    af2Node.bounds.y + 120, -1, -1)
+                ac2Conn = checkRelInView(ac2Rel, ac2Node, af2Node, true, view)
+
+                // check if a gateways should be added
+                gtwName = stripIllegalChar(row['Gateway (IT Product)'])
+                let s = stripIllegalChar(row['Interface'])
+                s = (!!s) ? s : ''
+                if (!!gtwName && gtwName !== '') {
+                    gtw = getOrCreateElement('application-collaboration', gtwName + ' GATEWAY', true, folders['itsFolder']['folder'])
+                    gtwNode = checkNodeInView(view, gtw)
+                    gtwNode = (!!gtwNode) ? gtwNode : view.add(gtw,
+                        (ba2Node.bounds.x + baNode.bounds.x + baNode.bounds.width - 120) / 2,
+                        ba2Node.bounds.y + af2Node.bounds.y + 120, -1, -1)
+                    // set the flow connections with the technical components
+                    if (dir === 'IN') {
+                        ac2GtwRel = getOrCreateRelationship("flow-relationship", s, gtw, ac, true)
+                        ac2GtwConn = checkRelInView(ac2GtwRel, gtwNode, acNode, true, view)
+
+                        ac22GtwRel = getOrCreateRelationship("flow-relationship", s, ac2, gtw, true)
+                        ac22GtwConn = checkRelInView(ac22GtwRel, ac2Node, gtwNode, true, view)
+                    } else {
+                        ac2GtwRel = getOrCreateRelationship("flow-relationship", s, ac, gtw, true)
+                        ac2GtwConn = checkRelInView(ac2GtwRel, acNode, gtwNode, true, view)
+
+                        ac22GtwRel = getOrCreateRelationship("flow-relationship", s, gtw, ac2, true)
+                        ac22GtwConn = checkRelInView(ac22GtwRel, gtwNode, ac2Node, true, view)
+                    }
+
+                } else {
+                    // no gateways, no API
+                    if (dir === 'IN') {
+                        ac2acRel = getOrCreateRelationship('flow-relationship', s, ac2, ac, true)
+                        ac2acConn = checkRelInView(ac2acRel, ac2Node, acNode, true, view)
+                    } else {
+                        ac2acRel = getOrCreateRelationship('flow-relationship', s, ac, ac2, true)
+                        ac2acConn = checkRelInView(ac2acRel, acNode, ac2Node, true, view)
+                    }
+                }
+            }
+
+        }
+
+    })
+
+    if (!option_simple) {
+        // Re-position the dependency flows connections between Application Collaborations
+        $(baNode).outRels('flow-relationship').forEach(d => {
+            ba2Node = d.target
+            addAbsoluteBendpoint(d,
+                (baNode.bounds.x + baNode.bounds.width + ba2Node.bounds.x) / 2,
+                ba2Node.bounds.y + 20)
+        })
+    }
+
+
+    console.log('Done.')
+}
+
+createBusAppInterfaceView()

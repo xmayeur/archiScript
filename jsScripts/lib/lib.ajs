@@ -1,0 +1,695 @@
+/*
+ * Author: Xavier MAYEUR
+ * Date: February 2022
+ *
+ * jArchi libraries to support the creation of views by scripting
+ *
+ */
+
+if (typeof libLoaded === 'undefined') {
+    engine = ($.process.engine === 'com.oracle.truffle.js.scriptengine.GraalJSScriptEngine') ? 'GraalVM' : 'Nashorn'
+    if (engine === 'Nashorn') {
+        console.log('ERROR: this library only works with the GraalVM JavaScript Engine\nPlease modify Archi scription settings')
+        exit()
+    }
+    unique = (arr) => [...new Set(arr)]
+    uniqueItems = (list, keyFn) => list.reduce((resultSet, item) =>
+            resultSet.add(typeof keyFn === 'string' ? item[keyFn] : keyFn(item)),
+        new Set).size;
+
+    uniqueItemsIf = (list, keyFn, condition) => list.filter((o) => {
+        return (o[keyFn].includes(condition))
+    }).length
+
+    // TODO Detect OS / version
+
+    /* TODO implement this structure for BE
+
+     folders = {
+        bcmFolder: {path: 'Strategy/01. Reference Models/01. Capability Models/01. Business Capability Map'},
+        bfFolder: {path: 'Business/01. Reference Models/03. Logical Application Architecture - LAA'},
+        boFolder: {path: 'Business/01. Reference Models/04. Esperanto Business Objects'},
+        otherBoFolder: {path: 'Business/04. Belgium/07. Business Objects'},
+        roleFolder: {path: 'Business/04. Belgium/03. Roles'},
+        peopleFolder: {path: 'Business/04. Belgium/05. Persons'},
+        teamFolder: {path: 'Business/04. Belgium/04. Teams'},
+        bsFolder: {path: 'Business/04. Belgium/06. Business Services Architecture'},
+        itsFolder: {path: 'Application/04. Belgium/02. IT Architecture/01. IT Solutions'},
+        itpFolder: {path: 'Application/04. Belgium/02. IT Architecture/01. IT Solutions'},
+        otherFolder: {path: 'Application/04. Belgium/02. IT Architecture/02. Components'},
+        appFctFolder: {path: 'Views/04. Belgium/02. IT Architecture/02. Application Functional'},
+        appGovFolder: {path: 'Views/04. Belgium/02. IT Architecture/03. Application Governance'}
+    }
+
+     */
+    // folders object with folders definition for different types of objects
+    folders = {
+        bcmFolder: {path: 'Strategy'},                           // folder for Business Capability
+        bfFolder: {path: 'Business'},                            // folder for Business Function
+        boFolder: {path: 'Business'},                            // folder for Business Objects / Esperanto
+        otherBoFolder: {path: 'Business'},                       // folder for other type of Business concepts
+        roleFolder: {path: 'Business'},                          // folder for roles concepts
+        peopleFolder: {path: 'Business'},                        // folder for people actor concepts
+        teamFolder: {path: 'Business'},                          // folder for Team role concepts
+        bsFolder: {path: 'Business'},                            // folder for Business Services
+        itsFolder: {path: 'Application'},                        // folder for IT Solutions
+        itpFolder: {path: 'Application'},                        // folder for IT Products
+        otherFolder: {path: 'Application'},                      // folder for other Application concepts
+        appFctFolder: {path: 'Views/Application Functional'},    // folder for Application Functional views
+        appGovFolder: {path: 'Views/Application Governance'},     // folder for Application Governance views
+        appInteractFolder: {path: 'Views/Application Interactions'} // folder to Application Interations views
+    }                                                        // Other folders to add when needed
+    // TextEncoder - TextDecoder
+    // let encoded = new TextEncoder().encode("Hello");
+    // let decoded = new TextDecoder("utf-8").decode(encoded);
+
+    load(__SCRIPTS_DIR__ + 'libJs/EncoderDecoderTogether.min.js')
+    logFile = __DIR__ + 'default.log'
+    debug = false
+    libLoaded = true
+
+}
+
+/**
+ * Function to print arguments if debug variable is true
+ *
+ */
+function deb() {
+    if (!!debug) {
+        console.print('Debug: ')
+        console.log(...arguments)
+    }
+}
+
+/**
+ * Function to create a folder structure according to the global 'folders' object
+ * calling this function enriches the global folders variable with
+ * references to the actual folder objects and their parent
+ * e.g. folders[<folderName>]['folder'] returns the actual folder object
+ *      folders[<folderName>]['parentFolder'] returns the actual parent folder object
+ *
+ */
+function createFolderStructure() {
+    Object.entries(folders).forEach(x => {
+        let _key = x[0]
+        let _value = x[1].path.split('/')
+        let _parent = null
+        let _folder
+        _value.forEach(p => {
+            if (!!_parent) {
+                _folder = $(_parent).children().filter(o => {
+                    return (o.name === p)
+                }).first()
+                if (!_folder)
+                    _folder = _parent.createFolder(p)
+                folders[_key]['folder'] = _folder
+                folders[_key]['parentFolder'] = _parent
+                _parent = _folder
+            } else {
+                _parent = $('folder.' + _value[0]).first()
+                folders[_key]['folder'] = _parent
+                folders[_key]['parentFolder'] = null
+            }
+        })
+
+    })
+}
+
+/**
+ *  function to create a sub-folder under a given parent
+ *
+ * @param parentFolder
+ * @param folderName
+ * @returns {null|*|jQuery} null or a folder object
+ */
+function createSubFolder(parentFolder, folderName) {
+    folderName = folderName.trim()
+    let folder = $('folder.' + folderName).first()
+    if (!folder) {
+        let _parentFolder = (typeof parentFolder === 'string') ? $('folder.' + parentFolder).first() : parentFolder
+        if (!!_parentFolder)
+            folder = _parentFolder.createFolder(folderName)
+        else {
+            if (!!_parentFolder)
+                console.log('Unknown parent folder ' + _parentFolder)
+            return null
+        }
+    }
+    return folder
+}
+
+/**
+ * function to create a role if it does not exist yet
+ *
+ * @param roleName
+ * @param  folder folder
+ * @returns role object
+ */
+function getOrCreateRole(roleName, folder = null) {
+    if (!folder)
+        folder = folders['roleFolder']['folder']
+    roleName = roleName.trim()
+    let roles = $("." + roleName);
+    let role = roles.first();
+    if (roles.length === 0) {
+        role = model.createElement("business-role", roleName, folder);
+    }
+    return role
+}
+
+/**
+ * function to retrieve or create a relationship by type, source and target objects
+ *
+ * @param type      Archimate type of relationship
+ * @param name      Relationship Name to set
+ * @param source    Source concept object
+ * @param target    Target concept object
+ * @param create    boolean - true to force creation if the relationship does not exist
+ * @param folder    folder object
+ * @returns {null|object} relationship object or null in case of error
+ */
+function getOrCreateRelationship(type = "", name = "", source, target, create = false, folder = null) {
+    if (typeof source === 'undefined' || typeof target === 'undefined' || !source || !target)
+        return null
+    let rel = null;
+    let rels = (type === "") ? $(source).outRels() : $(source).outRels(type);
+    rels.forEach(function (r) {
+        if (r.target.id === target.id && (r.name === name || name === '')) {
+            rel = r
+        }
+    });
+    if (!rel && !!create) {
+        try {
+            rel = (!folder) ? model.createRelationship(type, name, source, target) : model.createRelationship(type, name, source, target, folder);
+        } catch (exc) {
+            console.log('Error in getOrCreateRelationship ', exc, type, source.name, target.name)
+        }
+    }
+    rel.name = name
+    return rel
+}
+
+/**
+ * function to retrieve or create an element of given type
+ *
+ * @param type      Archimate type of element
+ * @param name      Element name
+ * @param create    boolean  - true to force creation of the element if not found
+ * @param folder    folder object to store the element
+ * @returns {null|object} element object or null in case of error
+ */
+function getOrCreateElement(type, name, create = false, folder = null) {
+    if (!type || !name) {
+        return
+    }
+    name = name.trim()
+    let e = $('.' + name);
+    let elem
+    if (e.length === 0 && !!create) {
+        elem = (!folder) ? model.createElement(type, name) : model.createElement(type, name, folder)
+    } else {
+        try {
+            e.forEach(x => {
+                if (type === x.type) {
+                    elem = x
+                    throw 'BREAK'
+                }
+            })
+        } catch (exc) {
+            if (exc === 'BREAK')
+                return elem
+            else
+                throw(exc)
+        }
+        if (!!create) {
+            elem = (!folder) ? model.createElement(type, name) : model.createElement(type, name, folder)
+        }
+    }
+    return elem
+}
+
+/**
+ * function to match an element by name, ignoring case, and redundant spaces
+ *
+ * @param type      type of element
+ * @param name      name of element
+ * @param create    boolean - if true, new element is created
+ * @returns {*|undefined}   return the element object if created
+ */
+function matchElemByName(type, name, create = false) {
+    name = name.toLowerCase().trim().replaceAll('  ', ' ')
+    let elem, eName
+    try {
+        $(type).forEach(e => {
+            eName = e.name.toLowerCase().trim().replaceAll('  ', ' ')
+            if (eName === name) {
+                elem = e
+                throw 'BREAK'
+            }
+        });
+    } catch (exc) {
+        if (exc === 'BREAK') {
+            return elem
+        } else {
+            throw exc
+        }
+    }
+
+    return (!!create) ? model.createElement(type, name) : undefined
+
+}
+
+/**
+ * function to match an element of a given type by matching a given property value
+ * @param type
+ * @param property_key
+ * @param property_value
+ */
+function matchElemByProperty(type, property_key, property_value) {
+    return $('element').filter(e => {
+        return (e.prop(property_key) === property_value) && (e.type === type)
+    }).first()
+}
+
+/**
+ * function to create at most three parent embedding levels of aggregated objects
+ *
+ * @param view      view in which the the objects have t obe created
+ * @param elem      lowest level object
+ * @param x         x-coordinate of the lowest level object
+ * @param y         y-coordinate of the lowest level object
+ * @returns {*}     the visual object of the lowest level object
+ */
+function embedParentsHierarchy(view, elem, x, y) {
+    let rel2 = $(elem).inRels('aggregation-relationship').first()
+    let parent2 = (!!rel2) ? rel2.source : undefined
+
+    let rel1 = (!!parent2) ? $(parent2).inRels('aggregation-relationship').first() : undefined
+    let parent1 = (!!rel1) ? rel1.source : undefined
+    let p1Node, p2Node, node
+    if (!!parent1) {
+        p1Node = view.add(parent1, x, y, 260, 165)
+        p2Node = p1Node.add(parent2, 40, 40, 180, 110)
+        node = p2Node.add(elem, 40, 40, 120, 55)
+        view.add(rel1, p1Node, p2Node)
+        view.add(rel2, p2Node, node)
+
+    } else if (!!parent2) {
+        p2Node = view.add(parent2, x, y, 180, 110)
+        node = p2Node.add(elem, 40, 40, 120, 55)
+        view.add(rel2, p2Node, node)
+    } else {
+        node = view.add(elem, x, y, 120, 55)
+    }
+    return node
+
+}
+
+/**
+ * function to embed object properties as a jsonified string at the end of the documentation attribute
+ * for interoperabiity with system not having defined the whole set of properties
+ *
+ * @param o object for which properties need to be embedded
+ */
+function embedProperties(o) {
+    let doc = ' '
+    if (!!o.documentation) {
+        let match = o.documentation.match(/([^]*?)\n*properties=/m);
+        doc = (match) ? match[1] : o.documentation
+    }
+
+    $(o).objectRefs().forEach(n => {
+        if (!!o.prop('label'))
+            o.prop('label', n.getLabelExpression())
+    })
+
+    if (!o.prop('GUID'))
+        o.prop('GUID', o.id)
+
+    let pp = {};
+    o.prop().forEach(function (p) {
+        if (p !== 'AT_DESC')
+            pp[p] = o.prop(p);
+    })
+    if (pp.length !== 0)
+        o.documentation = doc.strip() + '\n\nproperties=' + JSON.stringify(pp, null, 4) + ';\n';
+}
+
+/**
+ * function to retrieve jsonified properties into the documentation of the object and to expand them as properties
+ *
+ * @param o    object for which properties need to be expanded
+ */
+function expandProperties(o) {
+    if (!!o.documentation) {
+        let props = o.documentation.match(/properties=([^]*);/m)
+        if (!!props) {
+            let pp = JSON.parse(props[1]);
+            for (const p in pp) {
+                o.prop(p, pp[p]);
+            }
+        }
+    }
+}
+
+/**
+ *  simple loop to pause execution for some milliseconds
+ * @param millis
+ */
+function pause(millis) {
+    let date = new Date();
+    let curDate = null;
+    do {
+        curDate = new Date();
+    }
+    while (curDate - date < millis);
+}
+
+/**
+ *  Function to read text file
+ * @param filePath
+ * @returns {string}
+ */
+function readFile(filePath) {
+    return readFileByte(filePath, 'char')
+}
+
+/**
+ *  Function to write to a text file
+ * @param filePath
+ * @param text
+ * @param mode 'w' | 'a'
+ * @param delimiter
+ * @returns {string}
+ */
+function writeFile(filePath, text = '', mode = 'w', delimiter = '\n') {
+    let FileWriter = Java.type("java.io.FileWriter");
+    let Types = Java.type("java.nio.charset.StandardCharsets");
+    let theFile = new FileWriter(filePath, Types.UTF_8, (mode === 'a'));
+    if (mode === 'w')
+        theFile.write(text)
+    else
+        theFile.append(delimiter + text);
+    theFile.close();
+}
+
+/**
+ * Function to read binary file
+ * @param path
+ * @returns {*}
+ */
+function readFileSync(path) {
+    let Files = Java.type("java.nio.file.Files");
+    let Paths = Java.type("java.nio.file.Paths");
+    return Files.readAllBytes(Paths.get(path));
+}
+
+/**
+ * Function to write binary file
+ * @param path
+ * @param byteArray
+ * @return {*}
+ */
+function writeFileSync(path, byteArray) {
+    let Files = Java.type("java.nio.file.Files");
+    let Paths = Java.type("java.nio.file.Paths");
+    return Files.write(Paths.get(path), byteArray);
+}
+
+/**
+ * another one
+ */
+function readFileByte(filePath, mode = 'bytes') {
+
+    mode = mode || 'char';
+
+    let FileReader = Java.type("java.io.FileReader");
+    let bytes = Java.type('byte[]');
+    let fd = new FileReader(filePath);
+
+    let chars = "";
+
+    let data = fd.read();
+    while (data !== -1) {
+        bytes += data
+        let theCharacter = String.fromCharCode(data);
+        chars += theCharacter;
+        data = fd.read();
+    }
+    fd.close();
+    if (mode === 'char') {
+        if (chars.charCodeAt(0) === 0xEF && chars.charCodeAt(1) === 0xBB && chars.charCodeAt(2) === 0xBF)
+            chars = chars.slice(3)
+        return chars;
+    } else {
+        return bytes;
+    }
+}
+
+/**
+ *  padding function for getTimestamp
+ * @param text
+ * @returns {string}
+ */
+function lpad(text) {
+    return ('0' + text).substr(-2);
+}
+
+/**
+ *  Function to return a timestamp
+ * @returns {string}
+ */
+function getTimestamp() {
+    let currentDateTime = new Date();
+    return lpad(currentDateTime.getDate()) + '/' + lpad(currentDateTime.getMonth() + 1) + '/' + currentDateTime.getFullYear() + ' ' + lpad(currentDateTime.getHours()) + ':' + lpad(currentDateTime.getMinutes()) + ':' + lpad(currentDateTime.getSeconds());
+}
+
+/**
+ * Function to log text messages to file and console
+ * @param text
+ * @param file
+ * @param delimiter
+ * @param console
+ */
+function log(text, file = logFile, delimiter = '\n', console=false) {
+    if (!file)
+        file = logFile
+    // Define log text.
+    const logText = getTimestamp() + '\t' + text;
+    writeFile(file, logText, 'a', delimiter)
+    if (!!console)
+        console.log(logText);
+}
+
+/**
+ *  Function to check if a visual object corresponding to an Archimate concept exists in a given view
+ * @param view          view object to search in
+ * @param concept       parent concept of the visual object to find in the view or a name to create it
+ * @param create        force creation if object does not exist
+ * @param x
+ * @param y
+ * @param width
+ * @param height
+ * @param type          if the concept is null, create it with the given type
+ * @returns {null|node} visual object or null if not found
+ */
+function checkNodeInView(view, concept = '', create = false, x = 0, y = 0, width = -1, height = -1, type = null) {
+    if (!view || !concept)
+        return null
+    let _node = null
+    if (typeof concept === 'string') {
+        create = true
+        concept = getOrCreateElement(type, name, true)
+    }
+    $(view).find().forEach(n => {
+        if (n.concept.id === concept.id)
+            _node = n
+    })
+    if (!_node && !!create)
+        _node = view.add(concept, x, y, width, height)
+    return _node
+}
+
+/**
+ * Function to check if a connection exist between two visual concepts
+ * @param rel           parent relation of the connection to find
+ * @param source        source visual object
+ * @param target        target visual object
+ * @param create        create connection if it does not exist
+ * @param view          view in which the connection need to be created if aked for
+ * @param name          name of the connection to check
+ * @returns {null|*}    connection object or null if not found
+ */
+function checkRelInView(rel, source, target, create = false, view = null, name = null) {
+    if (!source || !target || !rel || !view)
+        return null
+
+    let x = null
+    $(source).rels().forEach(r => {
+        if (r.type === rel.type && r.target.id === target.id && r.source.id === source.id) {
+            if (!name || r.name === name)
+                x = r
+        }
+    })
+    if (!x && !!create) {
+        try {
+            x = view.add(rel, source, target)
+        } catch (e) {
+            console.log('Error: rel ' + rel + ': ' + source.name + ' ->' + target.name + '\n\t' + String(e))
+        }
+    }
+    return x
+}
+
+/**
+ *  md5 function using CryptoJS library
+ * @param txt
+ * @returns {*}
+ */
+function md5(txt) {
+    if (typeof CryptoJS === 'undefined') {
+        load(__SCRIPTS_DIR__ + 'libJs/core.js')
+        load(__SCRIPTS_DIR__ + 'libJs/md5.js')
+    }
+    return CryptoJS.MD5(txt).toString()
+}
+
+/**
+ *  base64 encoder
+ * @param byteArray
+ * @returns {*}
+ */
+function base64encode(byteArray) {
+    let Base64 = Java.type("java.util.Base64");
+    return Base64.getEncoder().encodeToString(byteArray);
+}
+
+function base64decode(str) {
+    let Base64 = Java.type("java.util.Base64");
+    // str = Base64.getEncoder().encodeToString(str);
+    return Base64.getDecoder().decode(str)
+}
+
+function b64Encode(myString) {
+    if (typeof CryptoJS === 'undefined') {
+        load(__SCRIPTS_DIR__ + 'libJs/crypto-js.min.js')
+        // load(__DIR__+'libJs/'https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/enc-base64.min.js')
+    }
+    let encodedWord
+    if (typeof myString === 'string')
+        encodedWord = CryptoJS.enc.Utf8.parse(myString); // encodedWord Array object
+    else
+        encodedWord = myString
+    return CryptoJS.enc.Base64.stringify(encodedWord); // string: 'NzUzMjI1NDE='
+
+}
+
+function b64Decode(encoded) {
+    if (typeof CryptoJS === 'undefined') {
+        load(__SCRIPTS_DIR__ + 'libJs/crypto-js.min.js')
+        // load('https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/enc-base64.min.js')
+    }
+
+    let encodedWord
+    if (typeof encoded === 'string')
+        encodedWord = CryptoJS.enc.Base64.parse(encoded); // encodedWord via Base64.parse()
+    else
+        encodedWord = encoded
+    return CryptoJS.enc.Utf8.stringify(encodedWord); // decode encodedWord via Utf8.stringify() '75322541'
+}
+
+/**
+ * Function to restore label property as label expression
+ * label properties were set by the deprecated specialization plugin
+ * @param view
+ */
+function setViewLabels(view) {
+    $(view).forEach(v => {
+        $(v).find('element').forEach(e => {
+            e.setLabelExpression((!!e.prop('label')) ? e.prop('label') : '')
+        })
+    });
+}
+
+/**
+ * function to remove a portion of a folder path
+ * @param pathToRemove portion of folder path to remove were folder names are separated by '/' character
+ */
+function remfolder(pathToRemove) {
+    let paths = pathToRemove.split('/')
+    $('folder').forEach(f => {
+        let found = false
+        // find the first one
+        let p0 = $(f).children('folder').filter(c => {
+            return c.name === paths[0]
+        }).first()
+        let p
+        let p1 = p0
+        if (!!p0) {
+            found = true
+            for (let i = 1; i < paths.length; i++) {
+                p = $(p1).children('folder').filter(c => {
+                    return c.name === paths[i]
+                }).first()
+                if (!!p) {
+                    p1 = p
+                } else {
+                    found = false
+                    break
+                }
+            }
+        }
+        if (found) {
+            $(p).children().forEach(c => {
+                f.add(c)
+            })
+            p0.delete()
+        }
+    })
+}
+
+/**
+ * Function to remove illegal characters from text and trim blanks
+ *
+ * @param text
+ * @param pat   a regex pattern to match characters to be removed
+ * @returns {*}
+ */
+function stripIllegalChar(text, pat = null) {
+    if (typeof text === 'string' && !!text)
+        return text.replace((!!pat) ? pat : /[^\d\w&-_ .]*/g, '').replace(/\s+/g, ' ').trim()
+}
+
+/**
+ * Function to check if two arrays contains the same elements
+ *
+ * @param array1
+ * @param array2
+ * @return {boolean|*}
+ */
+function areEqual(array1, array2) {
+    if (!!array1 && !!array2 && array1.length === array2.length) {
+        return array1.every(element => {
+            return !!array2.includes(element);
+        });
+    }
+    return false;
+}
+
+/**
+ * Function to find duplicate elements in an array
+ * @param {String []} arry
+ * @return {String []}
+ */
+function findDuplicates(arry) {
+    const uniqueElements = new Set(arry);
+    const filteredElements = arry.filter(item => {
+        if (uniqueElements.has(item)) {
+            uniqueElements.delete(item);
+        } else {
+            return item;
+        }
+    });
+
+    return [...new Set(filteredElements)]
+}

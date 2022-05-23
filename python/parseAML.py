@@ -1,3 +1,5 @@
+
+
 import argparse
 import os
 import zipfile
@@ -24,9 +26,9 @@ def main():
     parser.add_argument('-xV', '--noView', required=False, action='store_true',
                         help="Exclude views and report only concepts & relationships")
     parser.add_argument('-xo', '--noOptimization', required=False, action='store_true',
-                        help='Do no remove elements and relationships that are not used in views')
+                        help='Do not remove elements and relationships that are not used in views')
     parser.add_argument('-C', '--correct', required=False, action='store_true',
-                        help='Do no correct inverted relationships in embedded objects')
+                        help='Do correct inverted relationships in embedded objects')
     parser.add_argument('-o', '--outputfile', required=False, help="Output converted file")
     parser.add_argument('-v', '--verbose', required=False, action='store_true',
                         help="Display DEBUG & INFO log messages")
@@ -47,8 +49,12 @@ def main():
         scale_x = 0.3
         scale_y = 0.4
 
-    if 'http' in args.file:
+    if 'TMP' in os.environ:
         tmpdir = os.environ['TMP']
+    else:
+        tmpdir = os.curdir
+
+    if 'http' in args.file:
         TMPFILE = os.path.join(tmpdir, '$parseAML.zip')
         cacerts = os.path.join(os.environ['USERPROFILE'],'.ssh','certs.pem')
         PROXY_URL = 'giba-proxy.wps.ing.net:8080'
@@ -60,6 +66,11 @@ def main():
         open(TMPFILE, 'wb').write(r.content)
 
         with zipfile.ZipFile(TMPFILE, "r") as zip_ref:
+            zip_ref.extractall(tmpdir)
+            args.file = os.path.join(tmpdir, "ARISAMLExport.xml")
+
+    elif '.zip' in args.file:
+        with zipfile.ZipFile(args.file, "r") as zip_ref:
             zip_ref.extractall(tmpdir)
             args.file = os.path.join(tmpdir, "ARISAMLExport.xml")
 

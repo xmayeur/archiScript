@@ -1,0 +1,146 @@
+console.clear()
+console.show()
+
+
+modelName = __DIR__ + '/../MF_Decomm.archimate'
+mapFile = __DIR__ + '/../originalBoDoc.xlsx'
+
+
+/**
+ * Function to merge a list of 'element' objects into a single one, given by its index in the list
+ * @param {object} elems
+ * @param {string} idx
+ */
+function mergeElem(elems, idx = 1) {
+    let merge_target = elems.get(idx - 1);
+    let to_be_deleted = $("#null");
+    let GUID = merge_target.prop('GUID')
+    elems.not($(merge_target)).each(function (o) {
+
+        // We don't want to delete while iterating on the collection, so create
+        // another collection containing the element (not object) to delete
+        to_be_deleted.add(concept(o));
+        // do not merge the documentation and properties
+        // but consolidate alias property into a single object
+        // and merge
+
+        let alias = JSON.parse(o.prop('alias'))
+        if (o.prop() != null)
+            o.prop().forEach(p => {
+                o.removeProp(p);
+            });
+        o.documentation = ''
+        concept(merge_target).merge(concept(o));
+        if (merge_target.prop('alias', true) != null)
+            merge_target.prop('alias', true).forEach(x => {
+                alias = {...alias, ...JSON.parse(x)}
+            })
+        merge_target.removeProp('alias')
+        merge_target.removeProp('GUID')
+        merge_target.prop('alias', JSON.stringify(alias))
+        merge_target.prop('GUID', GUID)
+        embedProperties(merge_target)
+    });
+
+    // Deletion loop
+    to_be_deleted.each(function (e) {
+        e.delete();
+    });
+}
+
+/**
+ * Function to get the concept of an element
+ * @param {object} o
+ * @return {object}
+ */
+function concept(o) {
+    if (o.concept)
+        return o.concept;
+    else
+        return o;
+}
+
+function createAlias() {
+    // library loading for creation of views by scripting
+    load(__SCRIPTS_DIR__ + 'lib/lib.ajs');
+    // library loading for relationship bend points management
+    load(__SCRIPTS_DIR__ + 'lib/relLib.ajs');
+    // javascript library for Excel workbook parsing
+    load(__SCRIPTS_DIR__ + 'libJs/sheetjs.js')
+
+    // Open the MF Decom consolidated model
+    mfDecom = $.model.load(modelName)
+    mfDecom.setAsCurrent()
+
+    // Open the excel business object files with aliases
+    let workbook = XLSX.read(base64encode(readFileSync(mapFile)), {type: 'base64'});
+    // Dump file sheet (BO information)  content as JSON object
+    let rows = XLSX.utils.sheet_to_json(workbook.Sheets['Sheet1'], {range: "A1:E350"});
+
+    let bos = $('business-object')
+    bos.forEach(bo => {
+        bo.removeProp("alias")
+        bo.documentation = ""
+    })
+
+    // Map all non-esperanto business object
+    rows.forEach(row => {
+            let alias
+            let bo
+            let baName = row['BA']
+            let boName = row['BO']
+            let isEsperanto = (row['isEsperanto'] === "Yes")
+            let stdBoName = row['StdBO']
+            let doc = row['Bodoc']
+
+            if (isEsperanto) {
+                bo = getOrCreateElement('business-object', boName)
+            } else {
+                bo = getOrCreateElement('business-object', stdBoName)
+            }
+
+            if (!!bo) {
+                if (!!bo.prop('alias'))
+                    alias = JSON.parse(bo.prop('alias'))
+                else
+                    alias = {}
+                if (isEsperanto) {
+                    bo.documentation = doc
+                } else {
+                    bo.doc = ''
+                    alias[baName] = {originalName: boName, originalDoc: doc}
+                }
+                bo.prop('alias', JSON.stringify(alias))
+            } else {
+                console.log("Error: " + baName + " - invalid object " + stdBoName)
+            }
+        }
+    )
+
+    bos.forEach(bo => {
+        let match = bo.documentation.match(/([^]*?)\n*properties=/m);
+        let doc = (match) ? match[1] : bo.documentation
+        let alias = JSON.parse(bo.prop('alias'))
+        if (!!alias) {
+            Object.entries(alias).forEach(item => {
+                const [k, v] = item
+                let thisDoc = v.originalDoc
+                if (!!thisDoc)
+                    thisDoc = thisDoc.replace(/[\r\n]/g, '')
+                    if (thisDoc !== '')
+                        thisDoc = ' (' + thisDoc +')'
+                else
+                    thisdoc = ''
+                bo.documentation += '\n* ' + k + ' context: ' + v.originalName  + thisDoc
+            })
+        }
+        embedProperties(bo)
+    })
+
+    // save the model
+    model.save()
+    deb('Done.')
+}
+
+
+createAlias()
